@@ -7,6 +7,9 @@ import BootstrapVue from "bootstrap-vue";
 Vue.use(BootstrapVue);
 import "@/assets/sass/main.scss";
 
+import titleMixin from "@/titleMixin";
+Vue.mixin(titleMixin);
+
 Vue.config.productionTip = false;
 
 new Vue({
