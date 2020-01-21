@@ -1,1 +1,6 @@
+@import './variables';
+
+$theme-colors: ( // color for bootstrap
+  "site-theme": $site-theme
+);
 @import "~bootstrap";
