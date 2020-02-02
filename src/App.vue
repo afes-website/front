@@ -2,9 +2,19 @@
   <div id="app">
     <div class="header">
       <div class="top">
-        <div class="hamburger" @click="toggle_sidebar">
-          🍔
-        </div>
+        <font-awesome-icon
+          icon="bars"
+          size="2x"
+          class="hamburger"
+          @click="toggle_sidebar"
+        />
+        <font-awesome-icon
+          icon="times"
+          size="2x"
+          class="hamburger-closer"
+          :class="{ open: sidebar_shown }"
+          @click="toggle_sidebar"
+        />
         <h2>73rd afes</h2>
         <nav class="menu" :class="{ shown: sidebar_shown }">
           <ul>
@@ -24,7 +34,7 @@
               <a href="#">校内マップ</a>
             </li>
             <li class="li-expand">
-              ▼
+              <font-awesome-icon icon="angle-down" />
               <a href="#">ブログ</a>
               <ul>
                 <li><a href="#">お知らせ</a></li>
@@ -84,7 +94,8 @@ body,
   align-items: stretch;
   .top {
     flex-grow: 1;
-    .hamburger {
+    .hamburger,
+    .hamburger-closer {
       display: none;
     }
     .menu {
@@ -163,9 +174,21 @@ main {
     display: flex;
     padding: 0.5rem;
     .hamburger {
-      display: block;
+      display: inline-block;
+      color: $site-theme;
+    }
+    .hamburger-closer {
+      color: #fff;
+      transition: opacity 0.3s;
       z-index: 1501;
-      padding: 5px;
+      opacity: 0;
+      position: fixed;
+      top: 10px;
+      left: 10px;
+
+      &.open {
+        opacity: 1;
+      }
     }
     h2 {
       margin-bottom: 0;
