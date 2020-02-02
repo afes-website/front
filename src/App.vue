@@ -38,7 +38,7 @@
             <li>
               <a href="#">校内マップ</a>
             </li>
-            <li class="li-expand">
+            <li>
               <a href="#">ブログ</a>
               <ul>
                 <li><a href="#">お知らせ</a></li>
@@ -102,11 +102,18 @@ body,
       box-shadow: 0 0 1em rgba(0, 0, 0, 0.3);
 
       text-align: left;
-      padding: 2rem;
+      padding: 2rem 2.5rem;
       //border: 1px solid #eee;
       border-radius: 1rem;
       & > ul {
         padding-left: 0;
+        line-height: 2;
+      }
+      li {
+        margin: 0;
+        & > ul {
+          padding-left: 2rem;
+        }
       }
       a {
         color: inherit;
