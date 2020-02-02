@@ -39,7 +39,6 @@
               <a href="#">校内マップ</a>
             </li>
             <li class="li-expand">
-              <font-awesome-icon icon="angle-down" />
               <a href="#">ブログ</a>
               <ul>
                 <li><a href="#">お知らせ</a></li>
