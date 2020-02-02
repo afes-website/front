@@ -24,22 +24,13 @@
               <a href="#">校内マップ</a>
             </li>
             <li class="li-expand">
-              <span variant="link" v-b-toggle.collapse-blog>
-                <template v-if="collapse_blog_stat">▼</template>
-                <template v-else>▶</template>
-              </span>
+              ▼
               <a href="#">ブログ</a>
-              <b-collapse
-                visible
-                id="collapse-blog"
-                v-model="collapse_blog_stat"
-              >
-                <ul>
-                  <li><a href="#">お知らせ</a></li>
-                  <li><a href="#">活動の様子</a></li>
-                  <li><a href="#">在校生向け</a></li>
-                </ul>
-              </b-collapse>
+              <ul>
+                <li><a href="#">お知らせ</a></li>
+                <li><a href="#">活動の様子</a></li>
+                <li><a href="#">在校生向け</a></li>
+              </ul>
             </li>
           </ul>
         </nav>
@@ -258,7 +249,6 @@ import sidebar from "@/components/sidebar.vue";
 
 @Component
 export default class Layout extends Vue {
-  collapse_blog_stat: Boolean = true;
   sidebar_shown: Boolean = false;
 
   hide() {
