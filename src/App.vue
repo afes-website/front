@@ -16,6 +16,11 @@
           @click="toggle_sidebar"
         />
         <h2>73rd afes</h2>
+        <div class="icons">
+          <img src="/img/Twitter_Logo_Blue.svg" />
+          <img src="/img/instagram.png" />
+          <img src="/img/azabu_icon.svg" />
+        </div>
         <nav class="menu" :class="{ shown: sidebar_shown }">
           <ul>
             <li>
@@ -50,21 +55,14 @@
           @click="hide"
         ></div>
       </div>
-      <div class="bottom">
-        <div class="icons">
-          <!-- TODO:icons
-          <img src="" />
-          <img src="" />
-          <img src="" />
-          -->
-        </div>
-        <p><small>&copy;第73回文化祭実行委員会 2020</small></p>
-      </div>
     </div>
     <div class="main-wrapper">
       <main>
         <router-view></router-view>
       </main>
+      <div class="bottom">
+        <p><small>&copy;第73回文化祭実行委員会 2020</small></p>
+      </div>
     </div>
   </div>
 </template>
@@ -82,8 +80,7 @@ body,
 }
 
 .header {
-  width: 15%;
-  min-width: 20rem;
+  width: 20rem;
   padding: 2rem;
   padding-bottom: 0;
   margin-right: 2rem;
@@ -116,16 +113,9 @@ body,
         color: inherit;
       }
     }
-  }
-
-  .bottom {
     .icons {
-      display: flex;
-
       img {
-        margin-right: 1rem;
-        margin-bottom: 1rem;
-
+        margin: 0.5rem 1rem 0.5rem 0;
         width: 2rem;
         height: 2rem;
       }
@@ -147,6 +137,12 @@ a {
   height: 100vh;
   overflow-y: auto;
   padding-top: 2rem;
+
+  display: flex;
+  flex-direction: column;
+  main {
+    flex-grow: 1;
+  }
 }
 main {
   margin-right: 15rem;
@@ -172,19 +168,21 @@ main {
     border-bottom: 1px solid $site-theme;
     background-color: #fff;
     display: flex;
+    align-items: center;
     padding: 0.5rem;
     .hamburger {
       display: inline-block;
       color: $site-theme;
     }
     .hamburger-closer {
+      display: block;
       color: #fff;
       transition: opacity 0.3s;
       z-index: 1501;
       opacity: 0;
       position: fixed;
-      top: 10px;
-      left: 10px;
+      top: 1rem;
+      left: 1rem;
 
       &.open {
         opacity: 1;
@@ -193,6 +191,22 @@ main {
     h2 {
       margin-bottom: 0;
       line-height: 1;
+    }
+    .icons {
+      display: flex;
+      flex-grow: 1;
+      justify-content: flex-end;
+      align-items: center;
+      margin: 0;
+      padding: 0;
+      img {
+        // width: 1.5rem;
+        // height: 1.5rem;
+        min-width: 29px;
+        min-height: 29px;
+        margin: 0.7rem;
+        margin-left: 0;
+      }
     }
   }
   .menu {
@@ -217,7 +231,7 @@ main {
       }
     }
     //display: none;
-    padding-top: 3rem !important;
+    padding-top: 4rem !important;
     position: fixed;
     width: 80%;
     max-width: 300px;
@@ -230,33 +244,22 @@ main {
       left: 0;
     }
   }
-  .bottom {
-    position: fixed;
-    z-index: 0;
-    bottom: 0;
-    width: 100vw;
-    border-top: 1px solid $site-theme;
-    background-color: #fff;
-    padding: 0.5rem;
-    .icons {
-      justify-content: center;
-      img {
-        width: 1.4rem;
-        height: 1.4rem;
-        margin: 0.7rem;
-        margin-left: 0;
-      }
-    }
-    p {
-      text-align: center;
-      margin: 0;
-    }
-  }
   .main-wrapper {
     margin-top: 5rem;
-    margin-bottom: 5rem;
     overflow-y: visible;
     height: auto;
+    .bottom {
+      //z-index: 0;
+      width: 100vw;
+      border-top: 1px solid $site-theme;
+      background-color: #fff;
+      padding: 0.5rem;
+      padding-top: 0;
+      p {
+        text-align: center;
+        margin: 0;
+      }
+    }
   }
   main {
     margin-right: unset;
