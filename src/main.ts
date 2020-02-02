@@ -10,6 +10,13 @@ import "@/assets/sass/main.scss";
 import titleMixin from "@/titleMixin";
 Vue.mixin(titleMixin);
 
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { fas } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+
+library.add(fas);
+Vue.component("font-awesome-icon", FontAwesomeIcon);
+
 Vue.config.productionTip = false;
 
 new Vue({
