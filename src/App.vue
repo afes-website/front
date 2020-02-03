@@ -121,7 +121,7 @@ body,
     }
     .icons {
       img {
-        margin: 0.5rem 1rem 0.5rem 0;
+        margin: 0.5rem 1rem 1rem 0;
         width: 2rem;
         height: 2rem;
       }
