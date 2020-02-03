@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" v-touch:swipe.right="show" v-touch:swipe.left="hide">
     <div class="header">
       <div class="top">
         <font-awesome-icon
@@ -279,12 +279,19 @@ main {
 
 <script lang="ts">
 import { Component, Emit, Prop, Vue } from "vue-property-decorator";
+import Vue2TouchEvents from "vue2-touch-events";
 import JQuery from "jquery";
 import sidebar from "@/components/sidebar.vue";
+
+Vue.use(Vue2TouchEvents);
 
 @Component
 export default class Layout extends Vue {
   sidebar_shown: Boolean = false;
+
+  show() {
+    this.sidebar_shown = true;
+  }
 
   hide() {
     this.sidebar_shown = false;
