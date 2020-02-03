@@ -169,6 +169,7 @@ main {
     position: fixed;
     top: 0;
     .top {
+      height: 4rem;
       width: 100vw;
       border-bottom: 1px solid $site-theme;
       background-color: #fff;
@@ -249,7 +250,8 @@ main {
     }
   }
   .main-wrapper {
-    margin-top: 5rem;
+    margin-top: 4rem;
+    padding-top: 0;
     overflow-y: visible;
     height: auto;
     .bottom {
