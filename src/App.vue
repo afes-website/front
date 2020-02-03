@@ -120,9 +120,9 @@ body,
     }
     .icons {
       img {
-        margin: 0.5rem 1rem 1rem 0;
-        width: 2rem;
-        height: 2rem;
+        margin: 8px 16px 16px 0;
+        width: 32px;
+        height: 32px;
       }
     }
   }
@@ -205,12 +205,7 @@ main {
         margin: 0;
         padding: 0;
         img {
-          // width: 1.5rem;
-          // height: 1.5rem;
-          min-width: 29px;
-          min-height: 29px;
-          margin: 0.7rem;
-          margin-left: 0;
+          margin: 8px 16px 8px 0;
         }
       }
       .menu {
