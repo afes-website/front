@@ -6,6 +6,7 @@ import router from "./router";
 import BootstrapVue from "bootstrap-vue";
 Vue.use(BootstrapVue);
 import "@/assets/sass/main.scss";
+import "@/assets/sass/style.scss";
 
 import titleMixin from "@/titleMixin";
 Vue.mixin(titleMixin);
