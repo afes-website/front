@@ -169,6 +169,7 @@ main {
     position: fixed;
     top: 0;
     .top {
+      height: 4rem;
       width: 100vw;
       border-bottom: 1px solid $site-theme;
       background-color: #fff;
