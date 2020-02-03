@@ -95,11 +95,13 @@ body,
       pointer-events: auto;
       background: $site-theme;
       color: #fff;
+      font-size: 1.1rem;
+      width: 14rem;
 
       box-shadow: 0 0 1em rgba(0, 0, 0, 0.3);
 
       text-align: left;
-      padding: 2rem 2.5rem;
+      padding: 1rem 2rem;
       //border: 1px solid #eee;
       border-radius: 1rem;
       & > ul {
