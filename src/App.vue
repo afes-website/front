@@ -235,11 +235,12 @@ main {
           }
         }
         //display: none;
-        padding-top: 4rem !important;
+        padding: 4rem 1.6rem !important;
+        font-size: 1.3rem;
         position: fixed;
-        width: 80%;
+        width: 60%;
         max-width: 300px;
-        left: -80%;
+        left: -60%;
         height: 100vh;
         border-radius: 0 !important;
         overflow-y: auto;
