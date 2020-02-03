@@ -157,6 +157,7 @@ main {
 @media screen and (max-width: 900px) {
   // smartphone
   #app {
+    height: auto;
     display: block;
   }
   .header {
