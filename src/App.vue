@@ -250,7 +250,8 @@ main {
     }
   }
   .main-wrapper {
-    margin-top: 5rem;
+    margin-top: 4rem;
+    padding-top: 0;
     overflow-y: visible;
     height: auto;
     .bottom {
