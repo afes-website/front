@@ -205,7 +205,7 @@ main {
         margin: 0;
         padding: 0;
         img {
-          margin: 8px 16px 8px 0;
+          margin-bottom: 8px;
         }
       }
       .menu {
