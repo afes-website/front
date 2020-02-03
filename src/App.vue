@@ -5,13 +5,13 @@
         <font-awesome-icon
           icon="bars"
           size="2x"
-          class="hamburger"
+          class="hamburger fa-fw"
           @click="toggle_sidebar"
         />
         <font-awesome-icon
           icon="times"
           size="2x"
-          class="hamburger-closer"
+          class="hamburger-closer fa-fw"
           :class="{ open: sidebar_shown }"
           @click="toggle_sidebar"
         />
@@ -178,6 +178,7 @@ main {
       .hamburger {
         display: inline-block;
         color: $site-theme;
+        margin: 0.7rem;
       }
       .hamburger-closer {
         display: block;
@@ -186,8 +187,8 @@ main {
         z-index: 1501;
         opacity: 0;
         position: fixed;
-        top: 1rem;
-        left: 1rem;
+        top: calc(0.5rem + 0.7rem);
+        left: calc(0.5rem + 0.7rem);
         &.open {
           opacity: 1;
         }
