@@ -66,7 +66,7 @@
   </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 html,
 body,
 #app {
@@ -168,53 +168,53 @@ main {
     height: auto;
     position: fixed;
     top: 0;
-  }
-  .top {
-    width: 100vw;
-    border-bottom: 1px solid $site-theme;
-    background-color: #fff;
-    display: flex;
-    align-items: center;
-    padding: 0.5rem;
-    .hamburger {
-      display: inline-block;
-      color: $site-theme;
-    }
-    .hamburger-closer {
-      display: block;
-      color: #fff;
-      transition: opacity 0.3s;
-      z-index: 1501;
-      opacity: 0;
-      position: fixed;
-      top: 1rem;
-      left: 1rem;
-
-      &.open {
-        opacity: 1;
-      }
-    }
-    h2 {
-      margin-bottom: 0;
-      line-height: 1;
-    }
-    .icons {
+    .top {
+      width: 100vw;
+      border-bottom: 1px solid $site-theme;
+      background-color: #fff;
       display: flex;
-      flex-grow: 1;
-      justify-content: flex-end;
       align-items: center;
-      margin: 0;
-      padding: 0;
-      img {
-        // width: 1.5rem;
-        // height: 1.5rem;
-        min-width: 29px;
-        min-height: 29px;
-        margin: 0.7rem;
-        margin-left: 0;
+      padding: 0.5rem;
+      .hamburger {
+        display: inline-block;
+        color: $site-theme;
+      }
+      .hamburger-closer {
+        display: block;
+        color: #fff;
+        transition: opacity 0.3s;
+        z-index: 1501;
+        opacity: 0;
+        position: fixed;
+        top: 1rem;
+        left: 1rem;
+        &.open {
+          opacity: 1;
+        }
+      }
+      h2 {
+        margin-bottom: 0;
+        line-height: 1;
+      }
+      .icons {
+        display: flex;
+        flex-grow: 1;
+        justify-content: flex-end;
+        align-items: center;
+        margin: 0;
+        padding: 0;
+        img {
+          // width: 1.5rem;
+          // height: 1.5rem;
+          min-width: 29px;
+          min-height: 29px;
+          margin: 0.7rem;
+          margin-left: 0;
+        }
       }
     }
   }
+
   .menu {
     &,
     &-fade {
