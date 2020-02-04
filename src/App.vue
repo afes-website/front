@@ -24,7 +24,7 @@
         <nav class="menu" :class="{ shown: sidebar_shown }">
           <ul>
             <li>
-              <a href="#">ごあいさつ</a>
+              <router-link to="about">ごあいさつ</router-link>
             </li>
             <li>
               <a href="#">アクセス</a>
