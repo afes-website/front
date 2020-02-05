@@ -2,6 +2,28 @@
   <div id="home">
     <img id="top-image" src="https://placehold.jp/600x400.png" alt="中庭" />
     <div id="first-view">
+      <div class="buttons">
+        <top-page-button
+          :icon-name="'map-marker-alt'"
+          :button-name="'アクセス'"
+          :link-address="'access'"
+        />
+        <top-page-button
+          :icon-name="'list'"
+          :button-name="'展示一覧'"
+          :link-address="'exhibition'"
+        />
+        <top-page-button
+          :icon-name="['far', 'map']"
+          :button-name="'校内マップ'"
+          :link-address="'access'"
+        />
+        <top-page-button
+          :icon-name="'map-marker-alt'"
+          :button-name="'アクセス'"
+          :link-address="'access'"
+        />
+      </div>
       <h1>第73回 麻布中学校・高等学校 文化祭</h1>
       <p>第73回麻布学園文化祭公式ウェブサイトです。</p>
       <p>当日の展示に関する情報や、日々の活動の様子などを発信しています。</p>
@@ -22,6 +44,8 @@
     height: calc(100vh - 2rem);
     padding: 0;
     padding-bottom: 2rem;
+    position: relative;
+
     h1 {
       font-size: 2rem;
       font-weight: 400;
@@ -31,7 +55,10 @@
       font-size: 1.2rem;
       margin-bottom: 0.5rem;
     }
-    position: relative;
+
+    .buttons {
+      display: none;
+    }
     #lower-right {
       position: absolute;
       bottom: 2rem;
@@ -53,10 +80,14 @@
       width: 100%;
     }
     #first-view {
-      padding: 0 2rem;
-      #title {
-        display: none;
+      padding: 1rem;
+
+      .buttons {
+        display: inline-flex;
+        flex-wrap: wrap;
       }
+
+      h1,
       #lower-right {
         display: none;
       }
@@ -67,7 +98,12 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
+import TopPageButton from "@/components/TopPageButton.vue";
 
-@Component
+@Component({
+  components: {
+    TopPageButton
+  }
+})
 export default class Home extends Vue {}
 </script>
