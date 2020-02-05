@@ -27,7 +27,7 @@
               <router-link to="about">ごあいさつ</router-link>
             </li>
             <li>
-              <a href="#">アクセス</a>
+              <router-link to="access">アクセス</router-link>
             </li>
             <li>
               <a href="#">展示一覧</a>
