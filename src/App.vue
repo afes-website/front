@@ -144,9 +144,12 @@ a {
   display: flex;
   flex-direction: column;
 
+  main {
+    flex-grow: 1;
+  }
+
   main,
   .bottom {
-    flex-grow: 1;
     padding: 0 1rem 0 2rem;
     max-width: 900px;
   }
