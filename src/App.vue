@@ -76,10 +76,8 @@ body,
 }
 
 .header {
-  width: 20rem;
-  padding: 2rem;
-  padding-bottom: 0;
-  margin-right: 2rem;
+  width: 16rem;
+  padding: 2rem 0 0 2rem;
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -145,13 +143,16 @@ a {
 
   display: flex;
   flex-direction: column;
+
   main {
     flex-grow: 1;
   }
-}
-main {
-  margin-right: 15rem;
-  min-width: 500px;
+
+  main,
+  .bottom {
+    padding: 0 1rem 0 2rem;
+    max-width: 900px;
+  }
 }
 </style>
 
@@ -254,10 +255,17 @@ main {
     padding-top: 0;
     overflow-y: visible;
     height: auto;
+
+    main {
+      padding: 0 1rem;
+      max-width: unset;
+    }
+
     .bottom {
       //z-index: 0;
       width: 100vw;
       border-top: 1px solid $site-theme;
+      max-width: unset;
       background-color: #fff;
       padding: 0.5rem;
       padding-top: 0;
@@ -266,10 +274,6 @@ main {
         margin: 0;
       }
     }
-  }
-  main {
-    margin-right: unset;
-    min-width: unset;
   }
 }
 </style>
