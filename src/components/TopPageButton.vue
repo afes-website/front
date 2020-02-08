@@ -8,24 +8,29 @@
 <style lang="scss" scoped>
 .top-page-button {
   background-color: $site-theme;
-  width: calc(50vw - 2rem);
+  width: calc(50vw - 1rem);
   height: 5rem;
-  padding: 1rem;
-  margin: 0 0.5rem 1rem 0.5rem;
-  border-radius: 20px;
+  padding: 0.8rem;
+  margin: 0.5rem;
+  border-radius: 1rem;
   box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.3);
   position: relative;
 
   .button-icon {
     position: absolute;
-    top: 1rem;
+    top: 0;
     bottom: 0;
-    right: 0;
-    left: 1rem;
+    margin: auto;
     color: #fff;
     font-size: 2.5rem;
   }
   .button-text {
+    display: block;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 1.5rem;
+    // vertical-align: center;
     color: #fff;
     font-size: 1.5rem;
   }
@@ -39,11 +44,11 @@ import router from "@/router";
 @Component
 export default class TopPageButton extends Vue {
   @Prop()
-  private iconName?: string = "question";
+  private iconName?: string;
   @Prop()
-  private buttonName?: string = "test";
+  private buttonName?: string;
   @Prop()
-  private linkAddress?: string = "#";
+  private linkAddress?: string;
 
   private onClick = () => {
     router.push({ name: this.linkAddress });

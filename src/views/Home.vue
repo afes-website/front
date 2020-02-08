@@ -15,13 +15,13 @@
         />
         <top-page-button
           :icon-name="['far', 'map']"
-          :button-name="'校内マップ'"
-          :link-address="'access'"
+          :button-name="'校内地図'"
+          :link-address="'map'"
         />
         <top-page-button
-          :icon-name="'map-marker-alt'"
-          :button-name="'アクセス'"
-          :link-address="'access'"
+          :icon-name="'clock'"
+          :button-name="'ステージ'"
+          :link-address="'timetable'"
         />
       </div>
       <h1>第73回 麻布中学校・高等学校 文化祭</h1>
@@ -77,14 +77,19 @@
   #home {
     #top-image {
       display: block;
-      width: 100%;
+      position: relative;
+      left: -1rem;
+      width: 100vw;
     }
     #first-view {
-      padding: 1rem;
-
+      height: unset;
       .buttons {
         display: inline-flex;
         flex-wrap: wrap;
+        position: relative;
+        left: -1rem;
+        width: 100vw;
+        margin-top: 0.5rem;
       }
 
       h1,
