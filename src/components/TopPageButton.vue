@@ -7,7 +7,7 @@
 
 <style lang="scss" scoped>
 .top-page-button {
-  background-color: $site-theme;
+  border: solid 2px $site-theme;
   width: calc((100vw - 1.5rem) / 2);
   height: 5rem;
   padding: 0.8rem;
@@ -22,7 +22,7 @@
     top: 0;
     bottom: 0;
     margin: auto;
-    color: #fff;
+    color: $site-theme;
     font-size: 2.5rem;
   }
   .button-text {
@@ -32,7 +32,7 @@
     transform: translateY(-50%);
     right: 1.5rem;
     // vertical-align: center;
-    color: #fff;
+    color: $site-theme;
     font-size: 1.5rem;
   }
 }

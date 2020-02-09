@@ -19,7 +19,7 @@
           :link-address="'map'"
         />
         <top-page-button
-          :icon-name="'clock'"
+          :icon-name="['far', 'clock']"
           :button-name="'ステージ'"
           :link-address="'timetable'"
         />
