@@ -84,12 +84,12 @@
     #first-view {
       height: unset;
       .buttons {
-        display: inline-flex;
+        display: flex;
         flex-wrap: wrap;
         position: relative;
         left: -1rem;
-        width: 100vw;
-        margin-top: 0.5rem;
+        width: calc(100vw - 0.5rem);
+        margin: 0.25rem;
       }
 
       h1,

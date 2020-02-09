@@ -8,11 +8,11 @@
 <style lang="scss" scoped>
 .top-page-button {
   background-color: $site-theme;
-  width: calc(50vw - 1rem);
+  width: calc((100vw - 1.5rem) / 2);
   height: 5rem;
   padding: 0.8rem;
-  margin: 0.5rem;
-  border-radius: 1rem;
+  margin: 0.25rem;
+  border-radius: 0.5rem;
   box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.3);
   position: relative;
 
