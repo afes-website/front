@@ -1,6 +1,6 @@
 <template>
   <div id="home">
-    <img id="top-image" src="https://placehold.jp/600x400.png" alt="中庭" />
+    <img id="top-image" src="@/assets/top.jpg" alt="中庭" />
     <div id="first-view">
       <div class="buttons">
         <top-page-button
