@@ -44,7 +44,6 @@
     height: calc(100vh - 2rem);
     padding: 0;
     padding-bottom: 2rem;
-    position: relative;
 
     h1 {
       font-size: 2rem;
@@ -61,8 +60,8 @@
     }
     #lower-right {
       position: absolute;
-      bottom: 2rem;
-      right: -8rem;
+      bottom: 4rem;
+      right: 4rem;
       .date {
         text-align: right;
         font-size: 2.3rem;
