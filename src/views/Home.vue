@@ -1,6 +1,6 @@
 <template>
   <div id="home">
-    <img id="top-image" src="@/assets/top.jpg" alt="中庭" />
+    <div id="top-image" />
     <div id="first-view">
       <div class="buttons">
         <top-page-button
@@ -38,7 +38,28 @@
 <style lang="scss" scoped>
 #home {
   #top-image {
-    display: none;
+    background-image: url("../assets/top.jpg");
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    filter: blur(2px);
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -2;
+
+    &::before {
+      content: "";
+      background-color: rgba(255, 255, 255, 0.65);
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: -1;
+    }
   }
   #first-view {
     height: calc(100vh - 2rem);
@@ -74,11 +95,21 @@
 <style lang="scss" scoped>
 @media screen and (max-width: 900px) {
   #home {
+    position: relative;
     #top-image {
       display: block;
+      background-position: unset;
+      background-size: contain;
+      filter: none;
       position: relative;
+      top: 0;
       left: -1rem;
       width: 100vw;
+      height: calc(100vw / 3 * 2);
+
+      &::before {
+        background-color: rgba(0, 0, 0, 0);
+      }
     }
     #first-view {
       height: unset;
