@@ -41,6 +41,18 @@
     font-size: 1.5rem;
   }
 }
+
+@media screen and (max-width: 420px) {
+  .top-page-button {
+    .button-icon {
+      display: none;
+    }
+    .button-text {
+      left: 1.5rem;
+      right: unset;
+    }
+  }
+}
 </style>
 
 <script lang="ts">
