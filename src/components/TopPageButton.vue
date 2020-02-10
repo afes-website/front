@@ -3,7 +3,6 @@
     class="top-page-button"
     variant="outline-site-theme"
     @click="onClick"
-    :disabled="!isValid"
   >
     <font-awesome-icon :icon="iconName" class="button-icon fa-fw" />
     <span class="button-text">
@@ -67,8 +66,6 @@ export default class TopPageButton extends Vue {
   private buttonName?: string;
   @Prop({ required: true })
   private linkAddress?: string;
-  @Prop({ required: false, default: true })
-  private isValid?: boolean;
 
   private onClick = () => {
     router.push({ name: this.linkAddress });

@@ -12,7 +12,7 @@
           icon-name="list"
           button-name="展示一覧"
           link-address="exhibition"
-          is-valid="false"
+          disabled
         />
         <top-page-button
           icon-name="user-tie"
