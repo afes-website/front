@@ -29,7 +29,6 @@
     bottom: 0;
     left: 0.8rem;
     margin: auto;
-    color: $site-theme;
     font-size: 2.5rem;
   }
   .button-text {
@@ -39,7 +38,6 @@
     transform: translateY(-50%);
     right: 1.5rem;
     // vertical-align: center;
-    color: $site-theme;
     font-size: 1.5rem;
   }
 }
