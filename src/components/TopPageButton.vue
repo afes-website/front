@@ -1,13 +1,20 @@
 <template>
-  <div class="top-page-button" @click="onClick">
+  <b-button
+    class="top-page-button"
+    variant="outline-site-theme"
+    @click="onClick"
+    :disabled="!isValid"
+  >
     <font-awesome-icon :icon="iconName" class="button-icon fa-fw" />
-    <span class="button-text">{{ buttonName }}</span>
-  </div>
+    <span class="button-text">
+      {{ buttonName }}
+    </span>
+  </b-button>
 </template>
 
 <style lang="scss" scoped>
 .top-page-button {
-  border: solid 2px $site-theme;
+  border-width: 2px;
   width: calc((100vw - 1.5rem) / 2);
   height: 5rem;
   padding: 0.8rem;
@@ -20,6 +27,7 @@
     position: absolute;
     top: 0;
     bottom: 0;
+    left: 0.8rem;
     margin: auto;
     color: $site-theme;
     font-size: 2.5rem;
@@ -49,6 +57,8 @@ export default class TopPageButton extends Vue {
   private buttonName?: string;
   @Prop()
   private linkAddress?: string;
+  @Prop({ default: true })
+  private isValid?: boolean;
 
   private onClick = () => {
     router.push({ name: this.linkAddress });

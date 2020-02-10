@@ -12,16 +12,17 @@
           :icon-name="'list'"
           :button-name="'展示一覧'"
           :link-address="'exhibition'"
+          :is-valid="false"
         />
         <top-page-button
-          :icon-name="['far', 'map']"
-          :button-name="'校内地図'"
-          :link-address="'map'"
+          :icon-name="'user-tie'"
+          :button-name="'ご挨拶'"
+          :link-address="'about'"
         />
         <top-page-button
-          :icon-name="['far', 'clock']"
-          :button-name="'ステージ'"
-          :link-address="'timetable'"
+          :icon-name="'book'"
+          :button-name="'ブログ'"
+          :link-address="'blog'"
         />
       </div>
       <h1>第73回 麻布中学校・高等学校 文化祭</h1>
