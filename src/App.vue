@@ -60,7 +60,7 @@
         <router-view></router-view>
       </main>
       <footer>
-        <address>&copy; 第73回文化祭実行委員会 2020</address>
+        <small>&copy; 第73回文化祭実行委員会 2020</small>
         <b-link to="policy">プライバシーポリシー</b-link>
       </footer>
     </div>
@@ -155,8 +155,10 @@ a {
   footer {
     display: flex;
     justify-content: space-between;
-    address {
+    margin-bottom: 0.5rem;
+    small {
       text-align: center;
+      font-size: 1rem;
     }
   }
 }
@@ -280,11 +282,14 @@ a {
       background-color: #fff;
       padding: 0.5rem;
       padding-top: 0;
-      display: unset;
+      display: flex;
+      flex-direction: column;
       text-align: center;
 
-      address {
+      small {
+        display: inline-block;
         margin: 0.25rem 0;
+        padding: 0;
       }
     }
   }
