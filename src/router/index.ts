@@ -14,6 +14,12 @@ const routes = [
     name: "access",
     component: () =>
       import(/* webpackChunkName: "about" */ "@/views/access.vue")
+  },
+  {
+    path: "/policy",
+    name: "policy",
+    component: () =>
+      import(/* webpackChunkName: "policy" */ "@/views/policy.vue")
   }
 ];
 
