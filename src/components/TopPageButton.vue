@@ -53,11 +53,11 @@ import router from "@/router";
 @Component
 export default class TopPageButton extends Vue {
   @Prop({ required: true })
-  private iconName?: string;
+  private iconName!: string;
   @Prop({ required: true })
-  private buttonName?: string;
+  private buttonName!: string;
   @Prop({ required: true })
-  private linkAddress?: string;
+  private linkAddress!: string;
 
   private onClick() {
     router.push({ name: this.linkAddress });
