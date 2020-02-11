@@ -24,26 +24,26 @@
         <nav class="menu" :class="{ shown: sidebar_shown }">
           <ul>
             <li>
-              <router-link to="about">ごあいさつ</router-link>
+              <b-link to="about">ごあいさつ</b-link>
             </li>
             <li>
-              <router-link to="access">アクセス</router-link>
+              <b-link to="access">アクセス</b-link>
             </li>
             <li>
-              <a href="#">展示一覧</a>
+              <b-link to="#" disabled>展示一覧</b-link>
             </li>
             <li>
-              <a href="#">タイムテーブル</a>
+              <b-link to="#" disabled>タイムテーブル</b-link>
             </li>
             <li>
-              <a href="#">校内マップ</a>
+              <b-link to="#" disabled>校内マップ</b-link>
             </li>
             <li>
-              <a href="#">ブログ</a>
+              <b-link to="#">ブログ</b-link>
               <ul>
-                <li><a href="#">お知らせ</a></li>
-                <li><a href="#">活動の様子</a></li>
-                <li><a href="#">在校生向け</a></li>
+                <li><b-link to="#">お知らせ</b-link></li>
+                <li><b-link to="#">活動の様子</b-link></li>
+                <li><b-link to="#">在校生向け</b-link></li>
               </ul>
             </li>
           </ul>
@@ -244,6 +244,12 @@ main {
         &.shown {
           left: 0;
           box-shadow: 0 0 1em rgba(0, 0, 0, 0.3);
+        }
+        a {
+          text-decoration: none;
+          &.disabled {
+            opacity: 0.65;
+          }
         }
       }
     }
