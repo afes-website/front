@@ -115,6 +115,10 @@ body,
       }
       a {
         color: inherit;
+        text-decoration: none;
+        &.disabled {
+          opacity: 0.65;
+        }
       }
     }
     .icons {
@@ -254,12 +258,6 @@ a {
         &.shown {
           left: 0;
           box-shadow: 0 0 1em rgba(0, 0, 0, 0.3);
-        }
-        a {
-          text-decoration: none;
-          &.disabled {
-            opacity: 0.65;
-          }
         }
       }
     }
