@@ -14,30 +14,25 @@
 <style lang="scss" scoped>
 .top-page-button {
   border-width: 2px;
-  width: calc((100vw - 1.5rem) / 2);
-  height: 5rem;
-  padding: 0.8rem;
-  margin: 0.25rem;
   border-radius: 0.5rem;
   box-shadow: 0 3px 4px -1px rgba(0, 0, 0, 0.4);
-  position: relative;
+
+  padding: 0.8rem;
+  $margin: 0.25rem;
+  margin: $margin;
+  height: 5rem;
+  width: calc((100vw - #{$margin} * 6) / 2);
+
+  display: flex;
+  flex-grow: 1;
 
   .button-icon {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0.8rem;
-    margin: auto;
     font-size: 2.5rem;
   }
   .button-text {
     display: block;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    right: 1.5rem;
-    // vertical-align: center;
     font-size: 1.5rem;
+    flex-grow: 1;
   }
 }
 
@@ -45,10 +40,6 @@
   .top-page-button {
     .button-icon {
       display: none;
-    }
-    .button-text {
-      left: 1.5rem;
-      right: unset;
     }
   }
 }
@@ -67,8 +58,8 @@ export default class TopPageButton extends Vue {
   @Prop({ required: true })
   private linkAddress?: string;
 
-  private onClick = () => {
+  private onClick() {
     router.push({ name: this.linkAddress });
-  };
+  }
 }
 </script>

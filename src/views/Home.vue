@@ -117,10 +117,10 @@
       .buttons {
         display: flex;
         flex-wrap: wrap;
-        position: relative;
-        left: -1rem;
-        width: calc(100vw - 0.5rem);
-        margin: 0.25rem;
+        $margin: 0.25rem;
+        margin: $margin;
+        margin-left: -1rem + $margin;
+        width: calc(100vw - #{$margin} * 2);
       }
 
       h1,
