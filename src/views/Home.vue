@@ -30,6 +30,7 @@
       <p>当日の展示に関する情報や、日々の活動の様子などを発信しています。</p>
       <div id="lower-right">
         <p class="date">2020/5/1(Fri)～5/3(Sun)</p>
+        <!-- TODO: logo -->
         <img src="https://placehold.jp/400x100.png" alt="logo" />
       </div>
     </div>
