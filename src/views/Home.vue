@@ -97,15 +97,14 @@
 <style lang="scss" scoped>
 @media screen and (max-width: 900px) {
   #home {
-    position: relative;
+    position: unset;
     #top-image {
       display: block;
       background-position: unset;
       background-size: contain;
       filter: none;
-      position: relative;
-      top: 0;
-      left: -1rem;
+      position: unset;
+      margin-left: calc(((100vw - 100%) / 2) * -1);
       width: 100vw;
       height: calc(100vw / 3 * 2);
 
