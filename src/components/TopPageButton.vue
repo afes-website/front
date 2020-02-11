@@ -25,6 +25,7 @@
 
   display: flex;
   flex-grow: 1;
+  z-index: -1;
 
   .button-icon {
     font-size: 2.5rem;
