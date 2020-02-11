@@ -97,6 +97,7 @@
 <style lang="scss" scoped>
 @media screen and (max-width: 900px) {
   #home {
+    padding: 0;
     #top-image {
       display: block;
       background-position: unset;

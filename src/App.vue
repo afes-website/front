@@ -141,16 +141,18 @@ a {
   height: 100vh;
   overflow-y: auto;
   padding-top: 2rem;
-  max-width: 500px;
 
   display: flex;
   flex-direction: column;
 
+  * {
+    max-width: 900px;
+    padding: 0 1rem 0 2rem;
+  }
   main {
     flex-grow: 1;
   }
   footer {
-    padding: 0 1rem 0 2rem;
     display: flex;
     justify-content: space-between;
     address {
