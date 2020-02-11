@@ -59,9 +59,10 @@
       <main>
         <router-view></router-view>
       </main>
-      <div class="bottom">
-        <p><small>&copy;第73回文化祭実行委員会 2020</small></p>
-      </div>
+      <footer>
+        <address>&copy; 第73回文化祭実行委員会 2020</address>
+        <b-link to="policy">プライバシーポリシー</b-link>
+      </footer>
     </div>
   </div>
 </template>
@@ -142,11 +143,19 @@ a {
   height: 100vh;
   overflow-y: auto;
   padding-top: 2rem;
+  max-width: 900px;
 
   display: flex;
   flex-direction: column;
   main {
     flex-grow: 1;
+  }
+  footer {
+    display: flex;
+    justify-content: space-between;
+    address {
+      text-align: center;
+    }
   }
 }
 main {
@@ -258,16 +267,18 @@ main {
     margin-top: 5rem;
     overflow-y: visible;
     height: auto;
-    .bottom {
+    footer {
       //z-index: 0;
       width: 100vw;
       border-top: 1px solid $site-theme;
       background-color: #fff;
       padding: 0.5rem;
       padding-top: 0;
-      p {
-        text-align: center;
-        margin: 0;
+      display: unset;
+      text-align: center;
+
+      address {
+        margin: 0.25rem 0;
       }
     }
   }
