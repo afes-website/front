@@ -1,5 +1,5 @@
 <template>
-  <article>
+  <article id="about">
     <h1>学校長・委員長挨拶</h1>
     <div id="pair_picture">
       <img src="https://placehold.jp/1600x1200.png" />
@@ -20,10 +20,15 @@
 </template>
 
 <style lang="scss" scoped>
-#pair_picture {
-  text-align: center;
-  img {
-    width: 60%;
+#about {
+  padding: 0;
+
+  #pair_picture {
+    text-align: center;
+
+    img {
+      width: 60%;
+    }
   }
 }
 </style>

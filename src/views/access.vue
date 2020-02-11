@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="access">
     <h1>アクセス</h1>
     <h2>学校所在地</h2>
     <address>
@@ -21,10 +21,14 @@
 </template>
 
 <style lang="scss" scoped>
-#access_map {
-  width: 100%;
-  height: 30rem;
-  frameborder: 0;
-  border: 0;
+#access {
+  padding: 0;
+
+  #access_map {
+    width: 100%;
+    height: 30rem;
+    frameborder: 0;
+    border: 0;
+  }
 }
 </style>
