@@ -2,7 +2,7 @@
   <article id="about">
     <h1>学校長・委員長挨拶</h1>
     <div id="pair_picture">
-      <img src="https://placehold.jp/1600x1200.png" />
+      <img src="https://placehold.jp/1800x1200.png" />
     </div>
     <section>
       <h2 class="author_name">平秀明</h2>
@@ -29,6 +29,15 @@
     img {
       width: 60%;
     }
+  }
+}
+</style>
+
+<style lang="scss" scoped>
+@media screen and (max-width: 900px) {
+  #about #pair_picture img {
+    width: 100vw;
+    margin-left: calc(((100vw - 100%) / 2) * -1);
   }
 }
 </style>
