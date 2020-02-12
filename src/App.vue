@@ -30,20 +30,20 @@
               <b-link to="access">アクセス</b-link>
             </li>
             <li>
-              <b-link to="" disabled>展示一覧</b-link>
+              <b-link disabled>展示一覧</b-link>
             </li>
             <li>
-              <b-link to="" disabled>タイムテーブル</b-link>
+              <b-link disabled>タイムテーブル</b-link>
             </li>
             <li>
-              <b-link to="" disabled>校内マップ</b-link>
+              <b-link disabled>校内マップ</b-link>
             </li>
             <li>
-              <b-link to="" disabled>ブログ</b-link>
+              <b-link disabled>ブログ</b-link>
               <ul>
-                <li><b-link to="" disabled>お知らせ</b-link></li>
-                <li><b-link to="" disabled>活動の様子</b-link></li>
-                <li><b-link to="" disabled>在校生向け</b-link></li>
+                <li><b-link disabled>お知らせ</b-link></li>
+                <li><b-link disabled>活動の様子</b-link></li>
+                <li><b-link disabled>在校生向け</b-link></li>
               </ul>
             </li>
           </ul>
