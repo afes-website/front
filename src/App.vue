@@ -17,9 +17,9 @@
         />
         <h1>73rd afes</h1>
         <div class="icons">
-          <img src="/img/Twitter_Logo_Blue.svg" />
-          <img src="/img/instagram.png" />
-          <img src="/img/azabu_icon.svg" />
+          <img src="/img/Twitter_Logo_Blue.svg" alt="Twitter" />
+          <img src="/img/instagram.png" alt="Instagram" />
+          <img src="/img/azabu_icon.svg" alt="school website" />
         </div>
         <nav class="menu" :class="{ shown: sidebar_shown }">
           <ul>
