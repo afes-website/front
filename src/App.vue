@@ -118,6 +118,8 @@ body,
       }
       li {
         margin: 0;
+        list-style-type: none;
+        margin-bottom: 0.5rem;
         & > ul {
           padding-left: 2rem;
         }
@@ -138,11 +140,6 @@ body,
       }
     }
   }
-}
-
-li {
-  list-style-type: none;
-  margin-bottom: 0.5rem;
 }
 
 .main-wrapper {
