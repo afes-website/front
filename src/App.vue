@@ -60,8 +60,17 @@
         <router-view></router-view>
       </main>
       <footer>
+        <nav>
+          <ul>
+            <li>
+              <b-link disabled>お問い合わせ</b-link>
+            </li>
+            <li>
+              <b-link to="policy">プライバシーポリシー</b-link>
+            </li>
+          </ul>
+        </nav>
         <small>&copy; 第73回文化祭実行委員会 2020</small>
-        <b-link to="policy">プライバシーポリシー</b-link>
       </footer>
     </div>
   </div>
@@ -154,11 +163,24 @@ li {
     flex-grow: 1;
   }
   footer {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 0.5rem;
+    text-align: center;
+    padding: 0;
+    padding-bottom: 0.25rem;
+    border-top: 1px solid #ccc;
+
+    & > nav > ul {
+      margin: 0.25rem 0;
+      padding: 0;
+      li {
+        list-style-type: none;
+        display: inline;
+
+        &:not(:last-of-type)::after {
+          content: " ･ ";
+        }
+      }
+    }
     small {
-      text-align: center;
       font-size: 1rem;
     }
   }
@@ -274,12 +296,6 @@ li {
       //z-index: 0;
       width: 100vw;
       border-top: 1px solid $site-theme;
-      background-color: #fff;
-      padding: 0.5rem;
-      padding-top: 0;
-      display: flex;
-      flex-direction: column;
-      text-align: center;
 
       small {
         display: inline-block;
