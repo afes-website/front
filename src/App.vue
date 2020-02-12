@@ -15,7 +15,7 @@
           :class="{ open: sidebar_shown }"
           @click="toggle_sidebar"
         />
-        <h2>73rd afes</h2>
+        <h1>73rd afes</h1>
         <div class="icons">
           <img src="/img/Twitter_Logo_Blue.svg" />
           <img src="/img/instagram.png" />
