@@ -24,26 +24,26 @@
         <nav class="menu" :class="{ shown: sidebar_shown }">
           <ul>
             <li>
-              <a href="#">ごあいさつ</a>
+              <b-link to="about">ごあいさつ</b-link>
             </li>
             <li>
-              <a href="#">アクセス</a>
+              <b-link to="access">アクセス</b-link>
             </li>
             <li>
-              <a href="#">展示一覧</a>
+              <b-link disabled>展示一覧</b-link>
             </li>
             <li>
-              <a href="#">タイムテーブル</a>
+              <b-link disabled>タイムテーブル</b-link>
             </li>
             <li>
-              <a href="#">校内マップ</a>
+              <b-link disabled>校内マップ</b-link>
             </li>
             <li>
-              <a href="#">ブログ</a>
+              <b-link disabled>ブログ</b-link>
               <ul>
-                <li><a href="#">お知らせ</a></li>
-                <li><a href="#">活動の様子</a></li>
-                <li><a href="#">在校生向け</a></li>
+                <li><b-link disabled>お知らせ</b-link></li>
+                <li><b-link disabled>活動の様子</b-link></li>
+                <li><b-link disabled>在校生向け</b-link></li>
               </ul>
             </li>
           </ul>
@@ -59,9 +59,19 @@
       <main>
         <router-view></router-view>
       </main>
-      <div class="bottom">
-        <p><small>&copy;第73回文化祭実行委員会 2020</small></p>
-      </div>
+      <footer>
+        <nav>
+          <ul>
+            <li>
+              <b-link disabled>お問い合わせ</b-link>
+            </li>
+            <li>
+              <b-link to="policy">プライバシーポリシー</b-link>
+            </li>
+          </ul>
+        </nav>
+        <small>&copy; 第73回文化祭実行委員会 2020</small>
+      </footer>
     </div>
   </div>
 </template>
@@ -114,6 +124,10 @@ body,
       }
       a {
         color: inherit;
+        text-decoration: none;
+        &.disabled {
+          opacity: 0.65;
+        }
       }
     }
     .icons {
@@ -131,10 +145,6 @@ li {
   margin-bottom: 0.5rem;
 }
 
-a {
-  color: inherit; // extend parent
-}
-
 .main-wrapper {
   flex-grow: 1;
   height: 100vh;
@@ -144,14 +154,35 @@ a {
   display: flex;
   flex-direction: column;
 
+  main,
+  footer {
+    max-width: 900px;
+    padding: 0 1rem 0 2rem;
+  }
   main {
     flex-grow: 1;
   }
+  footer {
+    text-align: center;
+    padding: 0;
+    padding-bottom: 0.25rem;
+    border-top: 1px solid #ccc;
 
-  main,
-  .bottom {
-    padding: 0 1rem 0 2rem;
-    max-width: 900px;
+    & > nav > ul {
+      margin: 0.25rem 0;
+      padding: 0;
+      li {
+        list-style-type: none;
+        display: inline;
+
+        &:not(:last-of-type)::after {
+          content: " ･ ";
+        }
+      }
+    }
+    small {
+      font-size: 1rem;
+    }
   }
 }
 </style>
@@ -255,23 +286,21 @@ a {
     padding-top: 0;
     overflow-y: visible;
     height: auto;
+    max-width: unset;
 
     main {
       padding: 0 1rem;
-      max-width: unset;
     }
 
-    .bottom {
+    footer {
       //z-index: 0;
       width: 100vw;
       border-top: 1px solid $site-theme;
-      max-width: unset;
-      background-color: #fff;
-      padding: 0.5rem;
-      padding-top: 0;
-      p {
-        text-align: center;
-        margin: 0;
+
+      small {
+        display: inline-block;
+        margin: 0.25rem 0;
+        padding: 0;
       }
     }
   }
