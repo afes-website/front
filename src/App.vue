@@ -136,10 +136,6 @@ li {
   margin-bottom: 0.5rem;
 }
 
-a {
-  color: inherit; // extend parent
-}
-
 .main-wrapper {
   flex-grow: 1;
   height: 100vh;
