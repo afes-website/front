@@ -190,7 +190,7 @@ body,
     text-align: center;
     padding: 0;
     padding-bottom: 0.25rem;
-    border-top: 1px solid #ccc;
+    border-top: 1px solid $site-theme;
 
     & > nav > ul {
       margin: 0.25rem 0;
