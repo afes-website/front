@@ -93,6 +93,7 @@ body,
   flex-direction: column;
   justify-content: center;
   align-items: stretch;
+  z-index: 1000000007;
   .top {
     flex-grow: 1;
     .hamburger,
