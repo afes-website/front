@@ -1,5 +1,6 @@
 <template>
   <div id="app" v-touch:swipe.right="show" v-touch:swipe.left="hide">
+    <div class="background-image" />
     <div class="header">
       <div class="top">
         <font-awesome-icon
@@ -83,6 +84,31 @@ body,
   height: 100vh;
   margin: 0;
   display: flex;
+}
+
+.background-image {
+  background-image: url("assets/back.jpg");
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  filter: blur(2px);
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -2;
+
+  &::before {
+    content: "";
+    background-color: rgba(255, 255, 255, 0.7);
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: -1;
+  }
 }
 
 .header {
@@ -192,6 +218,11 @@ body,
     height: auto;
     display: block;
   }
+
+  .background-image {
+    display: none;
+  }
+
   .header {
     display: block;
     padding: 0;
