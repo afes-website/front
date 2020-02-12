@@ -1,5 +1,5 @@
 <template>
-  <div id="policy">
+  <article id="policy">
     <h1>プライバシーポリシー</h1>
     <p>
       第73回麻布中学校･高等学校文化祭ウェブサイト（以下当サイトとする）では、以下のポリシーのもとで情報を提供しています。
@@ -55,5 +55,5 @@
         </li>
       </ul>
     </section>
-  </div>
+  </article>
 </template>
