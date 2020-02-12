@@ -21,8 +21,6 @@
 
 <style lang="scss" scoped>
 #about {
-  padding: 0;
-
   #pair_picture {
     text-align: center;
 

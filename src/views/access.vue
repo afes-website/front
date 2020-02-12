@@ -22,8 +22,6 @@
 
 <style lang="scss" scoped>
 #access {
-  padding: 0;
-
   #access_map {
     width: 100%;
     height: 30rem;

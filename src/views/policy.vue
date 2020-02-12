@@ -57,9 +57,3 @@
     </section>
   </div>
 </template>
-
-<style lang="scss">
-#policy {
-  padding: 0;
-}
-</style>

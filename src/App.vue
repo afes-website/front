@@ -149,7 +149,8 @@ a {
   display: flex;
   flex-direction: column;
 
-  * {
+  main,
+  footer {
     max-width: 900px;
     padding: 0 1rem 0 2rem;
   }
