@@ -1,6 +1,6 @@
 <template>
   <div id="app" v-touch:swipe.right="show" v-touch:swipe.left="hide">
-    <div class="header">
+    <header>
       <div class="top">
         <font-awesome-icon
           icon="bars"
@@ -54,7 +54,7 @@
           @click="hide"
         ></div>
       </div>
-    </div>
+    </header>
     <div class="main-wrapper">
       <main>
         <router-view></router-view>
@@ -85,7 +85,7 @@ body,
   display: flex;
 }
 
-.header {
+header {
   width: 16rem;
   padding: 2rem 0 0 2rem;
   height: 100vh;
@@ -192,7 +192,7 @@ body,
     height: auto;
     display: block;
   }
-  .header {
+  header {
     display: block;
     padding: 0;
     height: auto;
