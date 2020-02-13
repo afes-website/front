@@ -2,7 +2,7 @@
   <div id="home">
     <div id="top-image" />
     <div id="first-view">
-      <div class="buttons">
+      <div id="buttons">
         <top-page-button
           icon-name="map-marker-alt"
           button-name="アクセス"
@@ -29,7 +29,7 @@
       <p>第73回麻布学園文化祭公式ウェブサイトです。</p>
       <p>当日の展示に関する情報や、日々の活動の様子などを発信しています。</p>
       <div id="lower-right">
-        <p class="date">2020/5/1(Fri)～5/3(Sun)</p>
+        <p id="date">2020/5/1(Fri)～5/3(Sun)</p>
         <!-- TODO: logo -->
         <img src="https://placehold.jp/400x100.png" alt="logo" />
       </div>
@@ -73,19 +73,22 @@
       font-weight: 400;
       margin-bottom: 1.5rem;
     }
+
     p {
       font-size: 1.2rem;
       margin-bottom: 0.5rem;
     }
 
-    .buttons {
+    #buttons {
       display: none;
     }
+
     #lower-right {
       position: absolute;
       bottom: 4rem;
       right: 4rem;
-      .date {
+
+      #date {
         text-align: right;
         font-size: 2.3rem;
       }
@@ -113,7 +116,7 @@
     }
     #first-view {
       height: unset;
-      .buttons {
+      #buttons {
         display: flex;
         flex-wrap: wrap;
         $margin: 0.25rem;
