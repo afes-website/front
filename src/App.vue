@@ -17,7 +17,7 @@
           :class="{ open: sidebar_shown }"
           @click="toggle_sidebar"
         />
-        <h1>73rd afes</h1>
+        <b-link id="brand" href="/">73rd afes</b-link>
         <div id="icons">
           <img src="/img/Twitter_Logo_Blue.svg" alt="Twitter" />
           <img src="/img/instagram.png" alt="Instagram" />
@@ -102,6 +102,12 @@ header {
     #hamburger-closer {
       display: none;
     }
+    #brand {
+      font-size: 2rem;
+      font-weight: 600;
+      color: inherit;
+    }
+
     #menu {
       pointer-events: auto;
       background: $site-theme;
@@ -226,7 +232,7 @@ header {
           opacity: 1;
         }
       }
-      h2 {
+      #brand {
         margin-bottom: 0;
         line-height: 1;
       }
