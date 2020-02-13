@@ -1,27 +1,29 @@
 <template>
   <div id="app" v-touch:swipe.right="show" v-touch:swipe.left="hide">
     <header>
-      <div class="top">
+      <div id="top">
         <font-awesome-icon
           icon="bars"
           size="2x"
-          class="hamburger fa-fw"
+          id="hamburger"
+          class="fa-fw"
           @click="toggle_sidebar"
         />
         <font-awesome-icon
           icon="times"
           size="2x"
-          class="hamburger-closer fa-fw"
+          id="hamburger-closer"
+          class="fa-fw"
           :class="{ open: sidebar_shown }"
           @click="toggle_sidebar"
         />
         <h1>73rd afes</h1>
-        <div class="icons">
+        <div id="icons">
           <img src="/img/Twitter_Logo_Blue.svg" alt="Twitter" />
           <img src="/img/instagram.png" alt="Instagram" />
           <img src="/img/azabu_icon.svg" alt="school website" />
         </div>
-        <nav class="menu" :class="{ shown: sidebar_shown }">
+        <nav id="menu" :class="{ shown: sidebar_shown }">
           <ul>
             <li>
               <b-link to="about">ごあいさつ</b-link>
@@ -49,13 +51,13 @@
           </ul>
         </nav>
         <div
-          class="menu-fade"
+          id="menu-fade"
           :class="{ shown: sidebar_shown }"
           @click="hide"
         ></div>
       </div>
     </header>
-    <div class="main-wrapper">
+    <div id="main-wrapper">
       <main>
         <router-view></router-view>
       </main>
@@ -94,13 +96,13 @@ header {
   justify-content: center;
   align-items: stretch;
   z-index: 1000000007;
-  .top {
+  #top {
     flex-grow: 1;
-    .hamburger,
-    .hamburger-closer {
+    #hamburger,
+    #hamburger-closer {
       display: none;
     }
-    .menu {
+    #menu {
       pointer-events: auto;
       background: $site-theme;
       color: #fff;
@@ -133,7 +135,7 @@ header {
         }
       }
     }
-    .icons {
+    #icons {
       img {
         margin: 8px 16px 16px 0;
         width: 32px;
@@ -143,7 +145,7 @@ header {
   }
 }
 
-.main-wrapper {
+#main-wrapper {
   flex-grow: 1;
   height: 100vh;
   overflow-y: auto;
@@ -198,7 +200,7 @@ header {
     height: auto;
     position: fixed;
     top: 0;
-    .top {
+    #top {
       height: 4rem;
       width: 100vw;
       border-bottom: 1px solid $site-theme;
@@ -206,12 +208,12 @@ header {
       display: flex;
       align-items: center;
       padding: 0.5rem;
-      .hamburger {
+      #hamburger {
         display: inline-block;
         color: $site-theme;
         margin: 0.7rem;
       }
-      .hamburger-closer {
+      #hamburger-closer {
         display: block;
         color: #fff;
         transition: opacity 0.3s;
@@ -228,7 +230,7 @@ header {
         margin-bottom: 0;
         line-height: 1;
       }
-      .icons {
+      #icons {
         display: flex;
         flex-grow: 1;
         justify-content: flex-end;
@@ -239,7 +241,7 @@ header {
           margin-bottom: 8px;
         }
       }
-      .menu {
+      #menu {
         &,
         &-fade {
           transition: opacity, left 0.3s;
@@ -279,7 +281,7 @@ header {
       }
     }
   }
-  .main-wrapper {
+  #main-wrapper {
     margin-top: 4rem;
     padding-top: 0;
     overflow-y: visible;
