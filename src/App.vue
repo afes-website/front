@@ -18,7 +18,7 @@
           :class="{ open: sidebar_shown }"
           @click="toggle_sidebar"
         />
-        <b-link id="brand" href="/">73rd afes</b-link>
+        <b-link id="brand" :to="{ name: 'Home' }">73rd afes</b-link>
         <div id="icons">
           <img src="/img/Twitter_Logo_Blue.svg" alt="Twitter" />
           <img src="/img/instagram.png" alt="Instagram" />
