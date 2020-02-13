@@ -60,7 +60,7 @@
       <main>
         <router-view></router-view>
       </main>
-      <footer>
+      <footer class="box">
         <nav>
           <ul>
             <li>
@@ -178,19 +178,17 @@ body,
   display: flex;
   flex-direction: column;
 
-  main,
-  footer {
-    max-width: 900px;
-    padding: 0 1rem 0 2rem;
-  }
   main {
     flex-grow: 1;
+    max-width: 900px;
+    padding: 0 1rem 0 2rem;
   }
   footer {
     text-align: center;
     padding: 0;
     padding-bottom: 0.25rem;
-    border-top: 1px solid $site-theme;
+    max-width: calc(900px - 3rem);
+    margin: 1rem 1rem 1rem 2rem;
 
     & > nav > ul {
       margin: 0.25rem 0;
@@ -325,6 +323,8 @@ body,
       //z-index: 0;
       width: 100vw;
       border-top: 1px solid $site-theme;
+      border-radius: 0;
+      margin: 0;
 
       small {
         display: inline-block;

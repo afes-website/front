@@ -1,5 +1,5 @@
 <template>
-  <article id="about">
+  <article id="about" class="box">
     <h1>学校長・委員長挨拶</h1>
     <div id="pair_picture">
       <img src="https://placehold.jp/1800x1200.png" />

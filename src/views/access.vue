@@ -1,5 +1,5 @@
 <template>
-  <article id="access">
+  <article id="access" class="box">
     <h1>アクセス</h1>
     <h2>学校所在地</h2>
     <address>
