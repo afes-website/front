@@ -92,20 +92,19 @@ body,
   background-repeat: no-repeat;
   background-size: cover;
   filter: blur(2px);
-  position: absolute;
+  height: 120vh;
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  bottom: 0;
   z-index: -2;
 
   &::before {
     content: "";
     background-color: rgba(255, 255, 255, 0.7);
-    position: absolute;
+    position: fixed;
     top: 0;
     right: 0;
-    bottom: 0;
     left: 0;
     z-index: -1;
   }
