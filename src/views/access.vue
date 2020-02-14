@@ -26,11 +26,26 @@
 
 <style lang="scss" scoped>
 #access {
+  ul {
+    border-top: solid 1px #aaa;
+    border-bottom: solid 1px #aaa;
+    padding: 0.5rem 0.5rem 0.5rem 2rem;
+    width: max-content;
+  }
+
   #access_map {
     width: 100%;
     height: 30rem;
     frameborder: 0;
     border: 0;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  #access {
+    ul {
+      width: unset;
+    }
   }
 }
 </style>
