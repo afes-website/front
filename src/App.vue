@@ -1,5 +1,6 @@
 <template>
   <div id="app" v-touch:swipe.right="show" v-touch:swipe.left="hide">
+    <div id="background-image" />
     <header>
       <div id="top">
         <font-awesome-icon
@@ -17,7 +18,7 @@
           :class="{ open: sidebar_shown }"
           @click="toggle_sidebar"
         />
-        <b-link id="brand" href="/">73rd afes</b-link>
+        <b-link id="brand" :to="{ name: 'Home' }">73rd afes</b-link>
         <div id="icons">
           <img src="/img/Twitter_Logo_Blue.svg" alt="Twitter" />
           <img src="/img/instagram.png" alt="Instagram" />
@@ -61,7 +62,7 @@
       <main>
         <router-view></router-view>
       </main>
-      <footer>
+      <footer class="box">
         <nav>
           <ul>
             <li>
@@ -85,6 +86,31 @@ body,
   height: 100vh;
   margin: 0;
   display: flex;
+}
+
+#background-image {
+  background-image: url("assets/back.jpg");
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  filter: blur(2px);
+  height: 120vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: -2;
+
+  &::before {
+    content: "";
+    background-color: rgba(#fff, 0.7);
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    z-index: -1;
+  }
 }
 
 header {
@@ -160,19 +186,17 @@ header {
   display: flex;
   flex-direction: column;
 
-  main,
-  footer {
-    max-width: 900px;
-    padding: 0 1rem 0 2rem;
-  }
   main {
     flex-grow: 1;
+    max-width: 900px;
+    padding: 0 1rem 0 2rem;
   }
   footer {
     text-align: center;
     padding: 0;
     padding-bottom: 0.25rem;
-    border-top: 1px solid #ccc;
+    max-width: calc(900px - 3rem);
+    margin: 1rem 1rem 1rem 2rem;
 
     & > nav > ul {
       margin: 0.25rem 0;
@@ -200,6 +224,11 @@ header {
     height: auto;
     display: block;
   }
+
+  #background-image {
+    display: none;
+  }
+
   header {
     display: block;
     padding: 0;
@@ -302,6 +331,8 @@ header {
       //z-index: 0;
       width: 100vw;
       border-top: 1px solid $site-theme;
+      border-radius: 0;
+      margin: 0;
 
       small {
         display: inline-block;

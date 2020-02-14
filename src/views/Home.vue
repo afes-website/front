@@ -40,7 +40,7 @@
 <style lang="scss" scoped>
 #home {
   #top-image {
-    background-image: url("../assets/top.jpg");
+    background-image: url("../assets/back.jpg");
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
