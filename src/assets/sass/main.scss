@@ -40,6 +40,15 @@ small {
   line-height: 1.75rem;
 }
 
+a {
+  &,
+  &:visited,
+  &:hover {
+    color: $site-theme;
+    text-decoration: none;
+  }
+}
+
 section {
   margin: 1.5rem 0;
 }
