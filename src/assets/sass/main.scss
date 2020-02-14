@@ -53,6 +53,11 @@ section {
   margin: 1.5rem 0;
 }
 
+*::selection {
+  background-color: $site-theme;
+  color: #fff;
+}
+
 
 .box {
   background-color: rgba(#fff, 0.8);
