@@ -13,6 +13,21 @@ $theme-colors: ( // color for bootstrap
   font-family: "Noto Sans JP", sans-serif;
 }
 
+h1 {
+  font-size: 2.2rem;
+  font-weight: 500;
+  padding-bottom: .4rem;
+  border-bottom: solid 2px $site-theme;
+  margin-bottom: 1.2rem;
+}
+
+h2 {
+  font-size: 1.8rem;
+  font-weight: 500;
+  padding: 0 0 .2rem .6rem;
+  border-left: solid 0.8rem $site-theme;
+  margin-bottom: .8rem;
+}
 
 .box {
   background-color: rgba(#fff, 0.8);

@@ -69,9 +69,8 @@
     padding-bottom: 2rem;
 
     h1 {
-      font-size: 2rem;
-      font-weight: 400;
       margin-bottom: 1.5rem;
+      border: none;
     }
 
     p {
