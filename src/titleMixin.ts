@@ -1,11 +1,17 @@
 import Vue from "vue";
-import VueRouter from "vue-router";
-import { Component, Mixin, Mixins } from "vue-mixin-decorator";
+import { Route } from "vue-router";
+import { Mixin } from "vue-mixin-decorator";
+import { Watch } from "vue-property-decorator";
 
+const TITLE_SUFFIX: string = "afes73"; // TODO: should change
 @Mixin
 export default class TitleMixin extends Vue {
-  created() {
-    let title: string | undefined = this.$options.title;
-    if (title) document.title = title;
+  @Watch("title", { immediate: true })
+  onTitleChange(newTitle: any) {
+    console.log("changed", newTitle);
+    if (typeof newTitle === "string") {
+      if (newTitle === "") document.title = TITLE_SUFFIX;
+      else document.title = newTitle + " - " + TITLE_SUFFIX;
+    }
   }
 }
