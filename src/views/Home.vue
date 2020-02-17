@@ -31,7 +31,7 @@
       <div id="lower-right">
         <span id="date">2020/5/1(金)～5/3(日)</span>
         <!-- TODO: logo -->
-        <img src="https://placehold.jp/400x100.png" alt="logo" />
+        <img src="https://placehold.jp/500x125.png" alt="logo" />
       </div>
     </div>
   </div>
@@ -96,7 +96,7 @@
       #date {
         text-align: right;
         font-weight: 700;
-        font-size: 2.4rem;
+        font-size: 3rem;
         margin-bottom: 0.5rem;
         text-shadow: 0 0.125rem 0.25rem rgba(#000, 0.1);
       }
