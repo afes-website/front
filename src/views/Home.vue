@@ -1,6 +1,6 @@
 <template>
   <div id="home">
-    <div id="top-image" />
+    <img id="top-image" src="../assets/back.jpg" alt="中庭" />
     <div id="first-view">
       <div id="buttons">
         <top-page-button
@@ -40,28 +40,7 @@
 <style lang="scss" scoped>
 #home {
   #top-image {
-    background-image: url("../assets/back.jpg");
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    filter: blur(2px);
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: -2;
-
-    &::before {
-      content: "";
-      background-color: rgba(255, 255, 255, 0.65);
-      position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      z-index: -1;
-    }
+    display: none;
   }
   #first-view {
     height: calc(100vh - 2rem);
@@ -110,18 +89,10 @@
   #home {
     #top-image {
       display: block;
-      background-position: unset;
-      background-size: contain;
-      filter: none;
-      position: unset;
       margin-left: calc(((100vw - 100%) / 2) * -1);
       margin-top: -0.8rem;
       width: 100vw;
       height: calc(100vw / 3 * 2);
-
-      &::before {
-        background-color: rgba(0, 0, 0, 0);
-      }
     }
     #first-view {
       height: unset;
