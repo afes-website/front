@@ -51,6 +51,7 @@
 
     h1 {
       margin-bottom: 1.5rem;
+      font-weight: 700;
       border: none;
       text-shadow: 0 0.125rem 0.25rem rgba(#000, 0.1);
     }
