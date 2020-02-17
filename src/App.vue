@@ -20,13 +20,25 @@
         />
         <b-link id="brand" :to="{ name: 'Home' }">73rd afes</b-link>
         <div id="icons">
-          <b-link target="_blank" href="https://twitter.com/73_Afes">
+          <b-link
+            target="_blank"
+            title="Twitter"
+            href="https://twitter.com/73_Afes"
+          >
             <img src="@/assets/sns/twitter.svg" alt="Twitter" />
           </b-link>
-          <b-link target="_blank" href="https://www.instagram.com/73_afes/">
+          <b-link
+            target="_blank"
+            title="Instagram"
+            href="https://www.instagram.com/73_afes/"
+          >
             <img src="@/assets/sns/instagram.png" alt="Instagram" />
           </b-link>
-          <b-link target="_blank" href="https://www.azabu-jh.ed.jp/">
+          <b-link
+            target="_blank"
+            title="School Website"
+            href="https://www.azabu-jh.ed.jp/"
+          >
             <img src="@/assets/sns/azabu.svg" alt="school website" />
           </b-link>
         </div>
