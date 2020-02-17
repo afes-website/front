@@ -1,6 +1,6 @@
 <template>
   <article id="policy" class="box">
-    <h1>プライバシーポリシー</h1>
+    <h1>{{ title }}</h1>
     <p>
       第73回麻布中学校･高等学校文化祭ウェブサイト（以下当サイトとする）では、以下のポリシーのもとで情報を提供しています。
     </p>
@@ -57,3 +57,10 @@
     </section>
   </article>
 </template>
+<script lang="ts">
+import { Component, Vue } from "vue-property-decorator";
+@Component
+export default class Policy extends Vue {
+  readonly title: string = "プライバシーポリシー";
+}
+</script>
