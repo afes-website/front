@@ -25,21 +25,21 @@
             title="Twitter"
             href="https://twitter.com/73_Afes"
           >
-            <img src="@/assets/sns/twitter.svg" alt="Twitter" />
+            <img src="@/assets/sns/twitter.svg" alt="Twitter Icon" />
           </b-link>
           <b-link
             target="_blank"
             title="Instagram"
             href="https://www.instagram.com/73_afes/"
           >
-            <img src="@/assets/sns/instagram.png" alt="Instagram" />
+            <img src="@/assets/sns/instagram.png" alt="Instagram Icon" />
           </b-link>
           <b-link
             target="_blank"
             title="School Website"
             href="https://www.azabu-jh.ed.jp/"
           >
-            <img src="@/assets/sns/azabu.svg" alt="school website" />
+            <img src="@/assets/sns/azabu.svg" alt="School Icon" />
           </b-link>
         </div>
         <nav id="menu" :class="{ shown: sidebar_shown }">
