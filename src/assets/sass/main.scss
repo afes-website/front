@@ -41,10 +41,10 @@ small {
 }
 
 a {
-  &,
-  &:visited,
-  &:hover {
+  &:visited {
     color: $site-theme;
+  }
+  &:hover {
     text-decoration: none;
   }
 }
