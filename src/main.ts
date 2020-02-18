@@ -21,6 +21,9 @@ Vue.component("font-awesome-icon", FontAwesomeIcon);
 
 Vue.config.productionTip = false;
 
+import Axios from "axios";
+Axios.defaults.baseURL = process.env.VUE_APP_API_BASE_URL;
+
 new Vue({
   router,
   render: h => h(App)

@@ -1,6 +1,6 @@
 <template>
   <article id="about" class="box">
-    <h1>学校長・委員長挨拶</h1>
+    <h1>{{ title }}</h1>
     <div id="pair_picture">
       <img src="https://placehold.jp/1800x1200.png" />
     </div>
@@ -47,3 +47,11 @@
   }
 }
 </style>
+
+<script lang="ts">
+import { Component, Vue } from "vue-property-decorator";
+@Component
+export default class About extends Vue {
+  readonly title: string = "学校長・委員長挨拶";
+}
+</script>

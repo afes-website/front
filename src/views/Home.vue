@@ -125,5 +125,7 @@ import TopPageButton from "@/components/TopPageButton.vue";
     TopPageButton
   }
 })
-export default class Home extends Vue {}
+export default class Home extends Vue {
+  readonly title: string = "";
+}
 </script>
