@@ -1,6 +1,6 @@
 <template>
   <article id="access" class="box">
-    <h1>アクセス</h1>
+    <h1>{{ title }}</h1>
     <h2>学校所在地</h2>
     <address>
       麻布中学校･高等学校<br />
@@ -30,3 +30,11 @@
   }
 }
 </style>
+
+<script lang="ts">
+import { Component, Vue } from "vue-property-decorator";
+@Component
+export default class About extends Vue {
+  readonly title: string = "アクセス";
+}
+</script>
