@@ -28,6 +28,14 @@
       width: 60%;
     }
   }
+
+  small {
+    font-size: 1em;
+    font-weight: 500;
+    position: relative;
+    top: -0.5rem;
+    border-bottom: solid 1px $site-theme;
+  }
 }
 </style>
 

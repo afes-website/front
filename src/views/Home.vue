@@ -1,6 +1,6 @@
 <template>
   <div id="home">
-    <div id="top-image" />
+    <img id="top-image" src="../assets/back.jpg" alt="中庭" />
     <div id="first-view">
       <div id="buttons">
         <top-page-button
@@ -29,9 +29,9 @@
       <p>第73回麻布学園文化祭公式ウェブサイトです。</p>
       <p>当日の展示に関する情報や、日々の活動の様子などを発信しています。</p>
       <div id="lower-right">
-        <p id="date">2020/5/1(Fri)～5/3(Sun)</p>
+        <span id="date">2020/5/1(金)～5/3(日)</span>
         <!-- TODO: logo -->
-        <img src="https://placehold.jp/400x100.png" alt="logo" />
+        <img src="https://placehold.jp/450x125.png" alt="logo" />
       </div>
     </div>
   </div>
@@ -40,43 +40,26 @@
 <style lang="scss" scoped>
 #home {
   #top-image {
-    background-image: url("../assets/back.jpg");
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    filter: blur(2px);
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: -2;
-
-    &::before {
-      content: "";
-      background-color: rgba(255, 255, 255, 0.65);
-      position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      z-index: -1;
-    }
+    display: none;
   }
   #first-view {
     height: calc(100vh - 2rem);
+    width: calc(100vw - 32rem);
+    min-width: min(calc(900px - 3rem), 100vw - 20rem);
     padding: 0;
-    padding-bottom: 2rem;
+    position: relative;
 
     h1 {
-      font-size: 2rem;
-      font-weight: 400;
       margin-bottom: 1.5rem;
+      font-weight: 700;
+      border: none;
+      text-shadow: 0 0.125rem 0.25rem rgba(#000, 0.1);
     }
 
     p {
       font-size: 1.2rem;
       margin-bottom: 0.5rem;
+      text-shadow: 0 0.125rem 0.25rem rgba(#000, 0.1);
     }
 
     #buttons {
@@ -86,11 +69,16 @@
     #lower-right {
       position: absolute;
       bottom: 4rem;
-      right: 4rem;
+      right: 0;
+      display: flex;
+      flex-direction: column;
 
       #date {
         text-align: right;
-        font-size: 2.3rem;
+        font-weight: 700;
+        font-size: 2.6rem;
+        margin-bottom: 0.5rem;
+        text-shadow: 0 0.125rem 0.25rem rgba(#000, 0.1);
       }
     }
   }
@@ -102,20 +90,14 @@
   #home {
     #top-image {
       display: block;
-      background-position: unset;
-      background-size: contain;
-      filter: none;
-      position: unset;
       margin-left: calc(((100vw - 100%) / 2) * -1);
+      margin-top: -0.8rem;
       width: 100vw;
       height: calc(100vw / 3 * 2);
-
-      &::before {
-        background-color: rgba(0, 0, 0, 0);
-      }
     }
     #first-view {
       height: unset;
+      width: unset;
       #buttons {
         display: flex;
         flex-wrap: wrap;

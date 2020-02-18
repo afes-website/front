@@ -61,7 +61,7 @@
             </li>
             <li>
               <b-link disabled>ブログ</b-link>
-              <ul>
+              <ul class="menu-secondary">
                 <li><b-link disabled>お知らせ</b-link></li>
                 <li><b-link disabled>活動の様子</b-link></li>
                 <li><b-link disabled>在校生向け</b-link></li>
@@ -176,6 +176,9 @@ header {
         & > ul {
           padding-left: 2rem;
         }
+      }
+      .menu-secondary {
+        margin-top: 0.5rem;
       }
       a {
         color: inherit;
@@ -342,7 +345,7 @@ header {
     max-width: unset;
 
     main {
-      padding: 0 1rem;
+      padding: 0.8rem 1rem 0 1rem;
     }
 
     footer {

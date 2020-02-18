@@ -30,6 +30,7 @@
     font-size: 2.5rem;
   }
   .button-text {
+    font-weight: 700;
     display: block;
     font-size: 1.5rem;
     flex-grow: 1;
