@@ -373,7 +373,7 @@ Vue.use(Vue2TouchEvents);
 
 @Component
 export default class Layout extends Vue {
-  sidebar_shown: Boolean = false;
+  sidebar_shown = false;
 
   show() {
     this.sidebar_shown = true;
