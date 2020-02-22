@@ -15,6 +15,7 @@
     "@fortawesome/free-solid-svg-icons": "^5.12.1",
     "@fortawesome/vue-fontawesome": "^0.1.9",
     "@types/jquery": "^3.3.31",
+    "@types/js-cookie": "^2.2.4",
     "@typescript-eslint/eslint-plugin": "^2.20.0",
     "@typescript-eslint/parser": "^2.20.0",
     "aspida": "^0.13.0",
