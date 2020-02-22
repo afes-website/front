@@ -2,6 +2,13 @@
 # yarn lockfile v1
 
 
+"@aspida/axios@^0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@aspida/axios/-/axios-0.4.0.tgz#eab55b92ad50a2d4a67e4eedde0b17c2070b4fbe"
+  integrity sha512-gfCdzNRHFJwNXMkA0l6Dh92fTcIUupgHUq+2JsD8wgkMdyhokyJLXbIkp1guh4mb7WTEKTzfPz/ThHJNPJll0Q==
+  dependencies:
+    aspida "^0.14.0"
+
 "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.8.3":
   version "7.8.3"
   resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.8.3.tgz#33e25903d7481181534e12ec0a25f16b6fcf419e"
@@ -1781,6 +1788,15 @@ aspida@^0.13.0:
     chokidar "^3.3.1"
     minimist "^1.2.0"
     ts-morph "^6.0.2"
+
+aspida@^0.14.0:
+  version "0.14.0"
+  resolved "https://registry.yarnpkg.com/aspida/-/aspida-0.14.0.tgz#a387a1a3a818d97c6a893f80ab8e712f6c5a4ae1"
+  integrity sha512-wHGlohLp8y5c6OTF2004buCW+8kAxmHDj0dlZlsF7yAbIR8drwDefO7II1TKuS3GuaQTQ1adqadoi6uEhJEgNQ==
+  dependencies:
+    chokidar "^3.3.1"
+    minimist "^1.2.0"
+    ts-morph "^6.0.3"
 
 assert-plus@1.0.0, assert-plus@^1.0.0:
   version "1.0.0"
@@ -8910,7 +8926,7 @@ ts-loader@^6.2.1:
     micromatch "^4.0.0"
     semver "^6.0.0"
 
-ts-morph@^6.0.2:
+ts-morph@^6.0.2, ts-morph@^6.0.3:
   version "6.0.3"
   resolved "https://registry.yarnpkg.com/ts-morph/-/ts-morph-6.0.3.tgz#1fdd15ab45de728d3caec626e6ac71fd9707d549"
   integrity sha512-Pq4AQvwIZoEgnZiYjMcUbuQi8SrLrFGnRM3gwBaIstPg7cFqknt1Hm1q8od9ng37y0bErHASG6tyWlx/yXPMuQ==
