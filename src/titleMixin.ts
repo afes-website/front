@@ -1,5 +1,4 @@
 import Vue from "vue";
-import { Route } from "vue-router";
 import { Mixin } from "vue-mixin-decorator";
 import { Watch } from "vue-property-decorator";
 

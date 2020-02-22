@@ -366,10 +366,8 @@ header {
 </style>
 
 <script lang="ts">
-import { Component, Emit, Prop, Vue } from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
 import Vue2TouchEvents from "vue2-touch-events";
-import JQuery from "jquery";
-import sidebar from "@/components/sidebar.vue";
 
 Vue.use(Vue2TouchEvents);
 
