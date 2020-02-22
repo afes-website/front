@@ -6,7 +6,7 @@ const TITLE_SUFFIX = "afes73"; // TODO: should change
 @Mixin
 export default class TitleMixin extends Vue {
   @Watch("title", { immediate: true })
-  onTitleChange(newTitle: any) {
+  onTitleChange(newTitle: unknown) {
     if (typeof newTitle === "string") {
       if (newTitle === "") document.title = TITLE_SUFFIX;
       else document.title = newTitle + " - " + TITLE_SUFFIX;
