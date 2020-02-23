@@ -16,6 +16,13 @@ jobs:
         run: echo "$SSH_PRIVATE_KEY" > .ssh/id_ed25519 && chmod 600 .ssh/id_ed25519
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSHKEY }}
+      - name: Cache yarn packages
+        uses: actions/cache@v1
+        with:
+          path: ~/.cache/yarn
+          key: ${{ runner.os }}-yarn-${{ hashFiles(format('{0}{1}', github.workspace, '/yarn.lock')) }}
+          restore-keys:
+            ${{ runner.os }}-yarn-
       - name: install packages
         run: yarn install
       - name: build api
