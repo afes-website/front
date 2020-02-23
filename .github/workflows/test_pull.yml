@@ -1,0 +1,17 @@
+name: Test pull request
+
+on:
+  pull_request:
+    types:
+    - opened
+    - synchronize
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: lint
+        run: npm run lint
+      - name: build
+        run: npm run build
