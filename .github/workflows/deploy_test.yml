@@ -17,11 +17,11 @@ jobs:
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSHKEY }}
       - name: install packages
-        run: npm install
+        run: yarn install
       - name: build api
-        run: npm run api:build
+        run: yarn api:build
       - name: build
-        run: npm run build
+        run: yarn build
       - name: push with scp
         run: scp -r -o StrictHostKeyChecking=no -P $SSH_PORT -i .ssh/id_ed25519 ./dist/. $SSH_USER@$SSH_HOST:$DIR
         env:
