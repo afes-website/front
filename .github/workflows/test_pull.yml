@@ -21,7 +21,7 @@ jobs:
       - name: install packages
         run: yarn install
       - name: lint
-        run: yarn lint
+        run: yarn lint --no-fix --max-warnings=0
       - name: build api
         run: yarn api:build
       - name: build
