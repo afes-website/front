@@ -13,8 +13,8 @@ export default class JWT {
   }
 
   isValidAt(now: Date = new Date()): boolean {
-    const not_valid_before: Date = new Date(this.payload["iat"]);
-    const expiration: Date = new Date(this.payload["exp"]);
+    const not_valid_before: Date = new Date(Number(this.payload["iat"]) * 1000);
+    const expiration: Date = new Date(Number(this.payload["exp"]) * 1000);
     return not_valid_before <= now && now <= expiration;
   }
 
