@@ -94,7 +94,7 @@
         <small>&copy; 第73回文化祭実行委員会 2020</small>
       </footer>
     </div>
-    <admin-login-modal :value="modal_shown" @show="modal_show" />
+    <admin-login-modal />
   </div>
 </template>
 
@@ -387,12 +387,6 @@ export default class Layout extends Vue {
 
   toggle_sidebar() {
     this.sidebar_shown = !this.sidebar_shown;
-  }
-
-  modal_shown = false;
-
-  modal_show() {
-    this.modal_shown = true;
   }
 }
 </script>
