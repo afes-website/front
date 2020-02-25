@@ -45,7 +45,6 @@ import { Component, Vue } from "vue-property-decorator";
 import aspida from "@aspida/axios";
 
 import Auth from "@/libs/auth";
-import { AxiosError } from "axios";
 import EventHub from "@/libs/auth/admin_auth_eventhub";
 
 @Component
@@ -79,7 +78,7 @@ export default class AdminLoginModal extends Vue {
         this.value = false;
         EventHub.emitLoginSuccess();
       })
-      .catch((e: AxiosError) => {
+      .catch(() => {
         this.status = "fail";
       });
   }

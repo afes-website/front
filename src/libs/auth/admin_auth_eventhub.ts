@@ -2,7 +2,7 @@
 
 // export const ModalEvent = new Vue();
 
-import { Component, Vue } from "vue-property-decorator";
+import { Vue } from "vue-property-decorator";
 
 const OPEN_MODAL = "openModal";
 const LOGIN_SUCCESS = "loginSuccess";
