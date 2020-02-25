@@ -33,6 +33,14 @@ const routes = [
       import(
         /* webpackChunkName: "new_revision" */ "@/views/blog/admin/new_revision.vue"
       )
+  },
+  {
+    path: "/blog/articles",
+    name: "article_list",
+    component: () =>
+      import(
+        /* webpackChunkName: "article_list" */ "@/views/blog/article_list.vue"
+      )
   }
 ];
 
