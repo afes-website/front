@@ -95,6 +95,7 @@
       </footer>
     </div>
     <admin-login-modal />
+    <writer-login-modal />
   </div>
 </template>
 
@@ -370,10 +371,11 @@ header {
 import { Component, Vue } from "vue-property-decorator";
 import Vue2TouchEvents from "vue2-touch-events";
 import AdminLoginModal from "./components/AdminLoginModal.vue";
+import WriterLoginModal from "./components/WriterLoginModal.vue";
 
 Vue.use(Vue2TouchEvents);
 
-@Component({ components: { AdminLoginModal } })
+@Component({ components: { AdminLoginModal, WriterLoginModal } })
 export default class Layout extends Vue {
   sidebar_shown = false;
 
