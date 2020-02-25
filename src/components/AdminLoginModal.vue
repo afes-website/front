@@ -1,7 +1,7 @@
 <template>
   <b-modal
     id="modal-1"
-    title="BootstrapVue"
+    title="Admin Login"
     v-model="value"
     @ok="modal_ok"
     @hidden="modal_cancel"
