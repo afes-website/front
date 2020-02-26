@@ -1,5 +1,5 @@
 <template>
-  <article class="box">
+  <div class="box">
     <h1>{{ title }}</h1>
     <b-button @click="load">Reload</b-button>
     {{ fetch_status }}
@@ -45,7 +45,7 @@
         </b-tr>
       </tbody>
     </table>
-  </article>
+  </div>
 </template>
 
 <script lang="ts">

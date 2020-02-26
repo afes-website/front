@@ -1,5 +1,5 @@
 <template>
-  <article class="box">
+  <div class="box">
     <h1>{{ title }}</h1>
     <b-button @click="load">reload</b-button>
     <section id="form">
@@ -73,7 +73,7 @@
     <b-button @click="apply_changes" variant="primary" :disabled="!can_apply"
       >apply</b-button
     >
-  </article>
+  </div>
 </template>
 
 <script lang="ts">

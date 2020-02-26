@@ -1,12 +1,12 @@
 <template>
-  <article class="box">
+  <div class="box">
     <h1>{{ title }}</h1>
     <p>path:<b-input v-model="article_path" /></p>
     <p>title:<b-input v-model="article_title" /></p>
     <b-textarea v-model="content"></b-textarea>
     <b-button @click="post" variant="primary">post</b-button>
     {{ status }}
-  </article>
+  </div>
 </template>
 
 <style lang="scss"></style>

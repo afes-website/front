@@ -1,5 +1,5 @@
 <template>
-  <article class="box">
+  <div class="box">
     <h1>{{ title }}</h1>
     <div id="articles">
       <div v-for="article in shown_articles" :key="article.id">
@@ -25,7 +25,7 @@
       :per-page="perPage"
       aria-controls="my-table"
     ></b-pagination>
-  </article>
+  </div>
 </template>
 
 <script lang="ts">
