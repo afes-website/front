@@ -2,7 +2,7 @@
   <article>
     <h1>{{ title }}</h1>
     <div id="articles">
-      <div v-for="article in articles" :key="article.id">
+      <div v-for="article in shown_articles" :key="article.id">
         <!-- <img src="https://placehold.jp/256x256.png" /> -->
         <!-- TODO:add image -->
         <h4>
@@ -13,6 +13,12 @@
         </p>
       </div>
     </div>
+    <b-pagination
+      v-model="currentPage"
+      :total-rows="rows"
+      :per-page="perPage"
+      aria-controls="my-table"
+    ></b-pagination>
   </article>
 </template>
 
@@ -27,6 +33,9 @@ export default class ArticleList extends Vue {
   title = "ブログ 記事一覧";
   articles: BlogArticle[] = [];
   client = aspida();
+
+  perPage = 10;
+  currentPage = 1;
   mounted() {
     api(this.client)
       .blog.articles.$get({ query: this.filter_query })
@@ -37,6 +46,17 @@ export default class ArticleList extends Vue {
 
   get filter_query(): BlogArticleParameter {
     return {};
+  }
+
+  get rows(): number {
+    return this.articles.length;
+  }
+
+  get shown_articles(): BlogArticle[] {
+    return this.articles.slice(
+      (this.currentPage - 1) * this.perPage,
+      this.currentPage * this.perPage
+    );
   }
 }
 </script>
