@@ -87,7 +87,7 @@ import { Component, Vue } from "vue-property-decorator";
 import api from "@/apis/$api";
 import aspida from "@aspida/axios";
 import { BlogArticle } from "@/apis/blog/articles/@types";
-import { attempt_get_JWT } from "@/libs/auth/admin_auth";
+import AdminAuth from "@/libs/auth/admin_auth";
 import { BlogRevision } from "@/apis/blog/revisions/@types";
 
 interface Path {
@@ -129,7 +129,9 @@ export default class PathList extends Vue {
       })
       .then(async () => {
         return api(this.client).blog.revisions.$get({
-          headers: { "X-ADMIN-TOKEN": (await attempt_get_JWT()).content }
+          headers: {
+            "X-ADMIN-TOKEN": (await AdminAuth.attempt_get_JWT()).content
+          }
         });
       })
       .then((data: BlogRevision[]) => {

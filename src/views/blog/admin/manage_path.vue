@@ -80,7 +80,7 @@
 import { Component, Vue } from "vue-property-decorator";
 import api from "@/apis/$api";
 import aspida from "@aspida/axios";
-import { attempt_get_JWT } from "@/libs/auth/admin_auth";
+import AdminAuth from "@/libs/auth/admin_auth";
 import { BlogRevision } from "@/apis/blog/revisions/@types";
 import { BlogArticle } from "@/apis/blog/articles/@types";
 
@@ -113,7 +113,7 @@ export default class ManagePath extends Vue {
           article_id: this.$route.params.id
         },
         headers: {
-          "X-ADMIN-TOKEN": (await attempt_get_JWT()).content
+          "X-ADMIN-TOKEN": (await AdminAuth.attempt_get_JWT()).content
         }
       })
       .then((data: BlogRevision[]) => {
@@ -127,7 +127,9 @@ export default class ManagePath extends Vue {
     api(this.client)
       .blog.revisions._id(id)
       .accept.$patch({
-        headers: { "X-ADMIN-TOKEN": (await attempt_get_JWT()).content }
+        headers: {
+          "X-ADMIN-TOKEN": (await AdminAuth.attempt_get_JWT()).content
+        }
       })
       .then((data: BlogRevision) => {
         this.$set(this.revisions, id, data);
@@ -135,10 +137,13 @@ export default class ManagePath extends Vue {
   }
 
   async reject_revision(id: number) {
+    AdminAuth.attempt_get_JWT();
     api(this.client)
       .blog.revisions._id(id)
       .reject.$patch({
-        headers: { "X-ADMIN-TOKEN": (await attempt_get_JWT()).content }
+        headers: {
+          "X-ADMIN-TOKEN": (await AdminAuth.attempt_get_JWT()).content
+        }
       })
       .then((data: BlogRevision) => {
         this.$set(this.revisions, id, data);
@@ -158,7 +163,9 @@ export default class ManagePath extends Vue {
       .blog.articles._id(this.$route.params.id)
       .$patch({
         data: { category: this.category, revision_id: this.revision_selection },
-        headers: { "X-ADMIN-TOKEN": (await attempt_get_JWT()).content }
+        headers: {
+          "X-ADMIN-TOKEN": (await AdminAuth.attempt_get_JWT()).content
+        }
       });
   }
 

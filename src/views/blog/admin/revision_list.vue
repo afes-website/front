@@ -53,7 +53,7 @@ import { Component, Vue } from "vue-property-decorator";
 import api from "@/apis/$api";
 import aspida from "@aspida/axios";
 import { BlogArticle } from "@/apis/blog/articles/@types";
-import { attempt_get_JWT } from "@/libs/auth/writer_auth";
+import WriterAuth from "@/libs/auth/writer_auth";
 import { BlogRevision } from "@/apis/blog/revisions/@types";
 
 interface Path {
@@ -82,7 +82,9 @@ export default class RevisionList extends Vue {
     this.revisions = [];
     api(this.client)
       .blog.revisions.$get({
-        headers: { "X-BLOG-WRITER-TOKEN": (await attempt_get_JWT()).content }
+        headers: {
+          "X-BLOG-WRITER-TOKEN": (await WriterAuth.attempt_get_JWT()).content
+        }
       })
       .then((data: BlogRevision[]) => {
         this.revisions = data;

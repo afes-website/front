@@ -15,7 +15,7 @@
 import { Component, Vue } from "vue-property-decorator";
 import api from "@/apis/$api";
 import aspida from "@aspida/axios";
-import { attempt_get_JWT } from "@/libs/auth/writer_auth";
+import WriterAuth from "@/libs/auth/writer_auth";
 import { BlogRevision } from "@/apis/blog/revisions/@types";
 
 interface Path {
@@ -47,7 +47,7 @@ export default class NewRevision extends Vue {
           content: this.content
         },
         headers: {
-          "X-BLOG-WRITER-TOKEN": (await attempt_get_JWT()).content
+          "X-BLOG-WRITER-TOKEN": (await WriterAuth.attempt_get_JWT()).content
         }
       })
       .then((data: BlogRevision) => {

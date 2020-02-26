@@ -7,7 +7,7 @@ import { AspidaClient } from "aspida";
 import { AxiosRequestConfig } from "axios";
 import EventHub from "./admin_auth_eventhub";
 
-export function getJWT(): JWT | null {
+function getJWT(): JWT | null {
   const admin_token = Cookie.get("admin_token");
   if (!admin_token) return null;
   const jwt = new JWT(admin_token);
@@ -15,7 +15,7 @@ export function getJWT(): JWT | null {
   return jwt;
 }
 
-export function attempt_get_JWT(): Promise<JWT> {
+function attempt_get_JWT(): Promise<JWT> {
   return new Promise((s, r) => {
     const ret = getJWT();
     if (ret) {
@@ -33,7 +33,7 @@ export function attempt_get_JWT(): Promise<JWT> {
   });
 }
 
-export function login(
+function login(
   client: AspidaClient<AxiosRequestConfig>,
   id: string,
   password: string
@@ -46,4 +46,4 @@ export function login(
     });
 }
 
-export default { getJWT, login };
+export default { getJWT, login, attempt_get_JWT };
