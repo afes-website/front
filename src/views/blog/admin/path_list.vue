@@ -23,7 +23,16 @@
           <td>{{ path.category || "-" }}</td>
           <td>{{ path.created_at || "-" }}</td>
           <td>{{ path.updated_at || "-" }}</td>
-          <td><b-link>show</b-link></td>
+          <td>
+            <b-link
+              v-if="path.category"
+              :to="{
+                name: 'show_article',
+                params: { category: path.category, id: route }
+              }"
+              >show</b-link
+            >
+          </td>
           <td>
             <b-link :to="{ name: 'manage_path', params: { id: route } }"
               >edit</b-link
