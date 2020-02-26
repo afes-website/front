@@ -6,7 +6,13 @@
         <!-- <img src="https://placehold.jp/256x256.png" /> -->
         <!-- TODO:add image -->
         <h4>
-          <b-link>{{ article.title }}</b-link>
+          <b-link
+            :to="{
+              name: 'show_article',
+              params: { category: article.category, id: article.id }
+            }"
+            >{{ article.title }}</b-link
+          >
         </h4>
         <p>
           {{ article.content }}
