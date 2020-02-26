@@ -35,7 +35,7 @@ const routes = [
       )
   },
   {
-    path: "/blog/articles/:category?",
+    path: "/blog/:category?",
     name: "article_list",
     component: () =>
       import(
@@ -43,7 +43,7 @@ const routes = [
       )
   },
   {
-    path: "/blog/articles/:category/:id",
+    path: "/blog/:category/:id",
     name: "show_article",
     component: () =>
       import(
