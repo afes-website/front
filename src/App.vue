@@ -60,11 +60,11 @@
               <b-link disabled>校内マップ</b-link>
             </li>
             <li>
-              <b-link disabled>ブログ</b-link>
+              <b-link to="/blog">ブログ</b-link>
               <ul class="menu-secondary">
-                <li><b-link disabled>お知らせ</b-link></li>
-                <li><b-link disabled>活動の様子</b-link></li>
-                <li><b-link disabled>在校生向け</b-link></li>
+                <li><b-link to="/blog/お知らせ">お知らせ</b-link></li>
+                <li><b-link to="/blog/活動の様子">活動の様子</b-link></li>
+                <li><b-link to="/blog/在校生向け">在校生向け</b-link></li>
               </ul>
             </li>
           </ul>
