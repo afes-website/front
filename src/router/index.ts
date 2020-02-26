@@ -49,6 +49,14 @@ const routes = [
       import(
         /* webpackChunkName: "path_list" */ "@/views/blog/admin/path_list.vue"
       )
+  },
+  {
+    path: "/blog/admin/paths/:id",
+    name: "manage_path",
+    component: () =>
+      import(
+        /* webpackChunkName: "manage_path" */ "@/views/blog/admin/manage_path.vue"
+      )
   }
 ];
 
