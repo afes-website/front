@@ -3,7 +3,12 @@
     <h1>{{ title }}</h1>
     <b-button @click="load">reload</b-button>
     <section id="form">
-      Category <b-input v-model="category" @input="get_category_articles" />
+      Category
+      <b-input
+        v-model="category"
+        @input="get_category_articles"
+        :state="category != ''"
+      />
       <output>this category has {{ category_article_count }} articles</output>
       <table class="table">
         <thead>
@@ -65,7 +70,9 @@
         class="border rounded"
       ><code>{{revisions[revision_selection].content}}</code></pre>
     </section>
-    <b-button @click="apply_changes" variant="primary">apply</b-button>
+    <b-button @click="apply_changes" variant="primary" :disabled="!can_apply"
+      >apply</b-button
+    >
   </article>
 </template>
 
@@ -153,6 +160,10 @@ export default class RevisionList extends Vue {
         data: { category: this.category, revision_id: this.revision_selection },
         headers: { "X-ADMIN-TOKEN": (await attempt_get_JWT()).content }
       });
+  }
+
+  get can_apply() {
+    return this.category != "" && this.revision_selection in this.revisions;
   }
 }
 </script>
