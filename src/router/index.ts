@@ -35,7 +35,7 @@ const routes = [
       )
   },
   {
-    path: "/blog/articles",
+    path: "/blog/articles/:category?",
     name: "article_list",
     component: () =>
       import(

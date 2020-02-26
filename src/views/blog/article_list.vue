@@ -23,7 +23,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
 import api from "@/apis/$api";
 import aspida from "@aspida/axios";
 import { BlogArticle, BlogArticleParameter } from "@/apis/blog/articles/@types";
@@ -37,6 +37,15 @@ export default class ArticleList extends Vue {
   perPage = 10;
   currentPage = 1;
   mounted() {
+    this.load();
+  }
+  @Watch("$route")
+  route_changed() {
+    this.load();
+  }
+  load() {
+    if (this.$route.params.category)
+      this.title = "カテゴリ: " + this.$route.params.category;
     api(this.client)
       .blog.articles.$get({ query: this.filter_query })
       .then(data => {
@@ -45,7 +54,9 @@ export default class ArticleList extends Vue {
   }
 
   get filter_query(): BlogArticleParameter {
-    return {};
+    const ret: BlogArticleParameter = {};
+    if (this.$route.params.category) ret.category = this.$route.params.category;
+    return ret;
   }
 
   get rows(): number {
