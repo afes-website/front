@@ -68,6 +68,24 @@
               </ul>
             </li>
           </ul>
+          <ul class="admin" v-if="this.$route.path.startsWith('/blog/admin')">
+            <li>
+              <b-link disabled>ブログ管理</b-link>
+              <ul class="menu-secondary">
+                <li>
+                  <b-link :to="{ name: 'new_revision' }">新規リクエスト</b-link>
+                </li>
+                <li>
+                  <b-link :to="{ name: 'revision_list' }"
+                    >リクエスト一覧</b-link
+                  >
+                </li>
+                <li>
+                  <b-link :to="{ name: 'path_list' }">記事一覧</b-link>
+                </li>
+              </ul>
+            </li>
+          </ul>
         </nav>
         <div
           id="menu-fade"
