@@ -18,6 +18,7 @@ import { Component, Vue, Watch } from "vue-property-decorator";
 import api from "@/apis/$api";
 import aspida from "@aspida/axios";
 import { BlogArticle } from "@/apis/blog/articles/@types";
+import is_axios_error from "@/libs/is_axios_error";
 
 @Component
 export default class ShowArticle extends Vue {
@@ -53,7 +54,10 @@ export default class ShowArticle extends Vue {
         this.title = data.title;
         this.fetch_status = "idle";
       })
-      .catch(() => {
+      .catch((e: unknown) => {
+        if (is_axios_error(e)) {
+          //if (e.response && e.response.status == 404) console.log("404");
+        }
         this.fetch_status = "fail";
       });
   }
