@@ -23,7 +23,11 @@
           <td>{{ path.created_at || "-" }}</td>
           <td>{{ path.updated_at || "-" }}</td>
           <td><b-link>show</b-link></td>
-          <td><b-link>edit</b-link></td>
+          <td>
+            <b-link :to="{ name: 'manage_path', params: { id: route } }"
+              >edit</b-link
+            >
+          </td>
           <td>
             <b-badge
               variant="info"
