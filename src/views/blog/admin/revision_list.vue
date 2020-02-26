@@ -36,7 +36,7 @@
               v-if="revision.status == 'accepted'"
               :to="{
                 name: 'show_article',
-                params: { category: 'category', id: 'revision.article_id' } // this will be redirected.
+                params: { category: 'category', id: revision.article_id } // this will be redirected.
               }"
             >
               show
