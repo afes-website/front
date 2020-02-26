@@ -98,56 +98,61 @@ export default class ManagePath extends Vue {
     this.load();
   }
 
-  async load() {
-    api(this.client)
-      .blog.articles._id(this.$route.params.id)
-      .$get()
-      .then((data: BlogArticle) => {
-        this.category = data.category;
-        this.revision_selection = data.revision_id;
-      })
-      .then(this.get_category_articles);
-    api(this.client)
-      .blog.revisions.$get({
-        query: {
-          article_id: this.$route.params.id
-        },
-        headers: {
-          "X-ADMIN-TOKEN": (await AdminAuth.attempt_get_JWT()).content
-        }
-      })
-      .then((data: BlogRevision[]) => {
-        for (const revision of data) {
-          this.$set(this.revisions, revision.id, revision);
-        }
-      });
+  load() {
+    AdminAuth.attempt_get_JWT().then(token => {
+      api(this.client)
+        .blog.articles._id(this.$route.params.id)
+        .$get()
+        .then((data: BlogArticle) => {
+          this.category = data.category;
+          this.revision_selection = data.revision_id;
+        })
+        .then(this.get_category_articles);
+      api(this.client)
+        .blog.revisions.$get({
+          query: {
+            article_id: this.$route.params.id
+          },
+          headers: {
+            "X-ADMIN-TOKEN": token.content
+          }
+        })
+        .then((data: BlogRevision[]) => {
+          for (const revision of data) {
+            this.$set(this.revisions, revision.id, revision);
+          }
+        });
+    });
   }
 
-  async accept_revision(id: number) {
-    api(this.client)
-      .blog.revisions._id(id)
-      .accept.$patch({
-        headers: {
-          "X-ADMIN-TOKEN": (await AdminAuth.attempt_get_JWT()).content
-        }
-      })
-      .then((data: BlogRevision) => {
-        this.$set(this.revisions, id, data);
-      });
+  accept_revision(id: number) {
+    AdminAuth.attempt_get_JWT().then(token => {
+      api(this.client)
+        .blog.revisions._id(id)
+        .accept.$patch({
+          headers: {
+            "X-ADMIN-TOKEN": token.content
+          }
+        })
+        .then((data: BlogRevision) => {
+          this.$set(this.revisions, id, data);
+        });
+    });
   }
 
-  async reject_revision(id: number) {
-    AdminAuth.attempt_get_JWT();
-    api(this.client)
-      .blog.revisions._id(id)
-      .reject.$patch({
-        headers: {
-          "X-ADMIN-TOKEN": (await AdminAuth.attempt_get_JWT()).content
-        }
-      })
-      .then((data: BlogRevision) => {
-        this.$set(this.revisions, id, data);
-      });
+  reject_revision(id: number) {
+    AdminAuth.attempt_get_JWT().then(token => {
+      api(this.client)
+        .blog.revisions._id(id)
+        .reject.$patch({
+          headers: {
+            "X-ADMIN-TOKEN": token.content
+          }
+        })
+        .then((data: BlogRevision) => {
+          this.$set(this.revisions, id, data);
+        });
+    });
   }
 
   get_category_articles() {
@@ -158,15 +163,20 @@ export default class ManagePath extends Vue {
       });
   }
 
-  async apply_changes() {
-    api(this.client)
-      .blog.articles._id(this.$route.params.id)
-      .$patch({
-        data: { category: this.category, revision_id: this.revision_selection },
-        headers: {
-          "X-ADMIN-TOKEN": (await AdminAuth.attempt_get_JWT()).content
-        }
-      });
+  apply_changes() {
+    AdminAuth.attempt_get_JWT().then(token => {
+      api(this.client)
+        .blog.articles._id(this.$route.params.id)
+        .$patch({
+          data: {
+            category: this.category,
+            revision_id: this.revision_selection
+          },
+          headers: {
+            "X-ADMIN-TOKEN": token.content
+          }
+        });
+    });
   }
 
   get can_apply() {

@@ -114,43 +114,48 @@ export default class PathList extends Vue {
     if (this.fetch_status == "pending") return;
     this.fetch_status = "pending";
     this.paths = {};
-    api(this.client)
-      .blog.articles.$get()
-      .then((data: BlogArticle[]) => {
-        for (const article of data) {
-          this.$set(this.paths, article.id, {
-            category: article.category,
-            title: article.title,
-            created_at: article.created_at,
-            updated_at: article.updated_at,
-            waiting_count: 0
+    AdminAuth.attempt_get_JWT()
+      .then(token => {
+        api(this.client)
+          .blog.articles.$get()
+          .then((data: BlogArticle[]) => {
+            for (const article of data) {
+              this.$set(this.paths, article.id, {
+                category: article.category,
+                title: article.title,
+                created_at: article.created_at,
+                updated_at: article.updated_at,
+                waiting_count: 0
+              });
+            }
           });
-        }
+        return token;
       })
-      .then(async () => {
-        return api(this.client).blog.revisions.$get({
-          headers: {
-            "X-ADMIN-TOKEN": (await AdminAuth.attempt_get_JWT()).content
-          }
-        });
-      })
-      .then((data: BlogRevision[]) => {
-        for (const revision of data) {
-          if (!(revision.article_id in this.paths)) {
-            // does not exist
-            this.$set(this.paths, revision.article_id, {
-              title: revision.title,
-              waiting_count: 0
-            });
-          }
-          if (revision.status === "waiting") {
-            this.paths[revision.article_id].waiting_count++;
-          }
-        }
-        this.fetch_status = "idle";
-      })
-      .catch(() => {
-        this.fetch_status = "fail";
+      .then(token => {
+        api(this.client)
+          .blog.revisions.$get({
+            headers: {
+              "X-ADMIN-TOKEN": token.content
+            }
+          })
+          .then((data: BlogRevision[]) => {
+            for (const revision of data) {
+              if (!(revision.article_id in this.paths)) {
+                // does not exist
+                this.$set(this.paths, revision.article_id, {
+                  title: revision.title,
+                  waiting_count: 0
+                });
+              }
+              if (revision.status === "waiting") {
+                this.paths[revision.article_id].waiting_count++;
+              }
+            }
+            this.fetch_status = "idle";
+          })
+          .catch(() => {
+            this.fetch_status = "fail";
+          });
       });
   }
 }

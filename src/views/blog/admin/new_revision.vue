@@ -36,31 +36,33 @@ export default class NewRevision extends Vue {
 
   status: "idle" | "pending" | "success" | "fail" = "idle";
 
-  async post() {
+  post() {
     this.status = "pending";
 
-    api(aspida())
-      .blog.revisions.$post({
-        data: {
-          title: this.article_title,
-          article_id: this.article_path,
-          content: this.content
-        },
-        headers: {
-          "X-BLOG-WRITER-TOKEN": (await WriterAuth.attempt_get_JWT()).content
-        }
-      })
-      .then((data: BlogRevision) => {
-        this.status = "success";
-        this.$bvToast.toast("Revision created: " + data.id, {
-          // TODO: toast won't shows (main.scss causes?)
-          title: "Create new revision",
-          autoHideDelay: 5000
+    WriterAuth.attempt_get_JWT().then(token => {
+      api(aspida())
+        .blog.revisions.$post({
+          data: {
+            title: this.article_title,
+            article_id: this.article_path,
+            content: this.content
+          },
+          headers: {
+            "X-BLOG-WRITER-TOKEN": token.content
+          }
+        })
+        .then((data: BlogRevision) => {
+          this.status = "success";
+          this.$bvToast.toast("Revision created: " + data.id, {
+            // TODO: toast won't shows (main.scss causes?)
+            title: "Create new revision",
+            autoHideDelay: 5000
+          });
+        })
+        .catch(() => {
+          this.status = "fail";
         });
-      })
-      .catch(() => {
-        this.status = "fail";
-      });
+    });
   }
 }
 </script>

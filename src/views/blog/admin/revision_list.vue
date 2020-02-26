@@ -75,23 +75,25 @@ export default class RevisionList extends Vue {
     this.load();
   }
 
-  async load() {
+  load() {
     if (this.fetch_status == "pending") return;
     this.fetch_status = "pending";
     this.revisions = [];
-    api(this.client)
-      .blog.revisions.$get({
-        headers: {
-          "X-BLOG-WRITER-TOKEN": (await WriterAuth.attempt_get_JWT()).content
-        }
-      })
-      .then((data: BlogRevision[]) => {
-        this.revisions = data;
-        this.fetch_status = "idle";
-      })
-      .catch(() => {
-        this.fetch_status = "fail";
-      });
+    WriterAuth.attempt_get_JWT().then(token => {
+      api(this.client)
+        .blog.revisions.$get({
+          headers: {
+            "X-BLOG-WRITER-TOKEN": token.content
+          }
+        })
+        .then((data: BlogRevision[]) => {
+          this.revisions = data;
+          this.fetch_status = "idle";
+        })
+        .catch(() => {
+          this.fetch_status = "fail";
+        });
+    });
   }
 }
 </script>
