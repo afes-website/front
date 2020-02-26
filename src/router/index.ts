@@ -27,11 +27,11 @@ const routes = [
       import(/* webpackChunkName: "policy" */ "@/views/policy.vue")
   },
   {
-    path: "/blog/admin/post",
-    name: "new_revision",
+    path: "/blog",
+    name: "category_list",
     component: () =>
       import(
-        /* webpackChunkName: "new_revision" */ "@/views/blog/admin/new_revision.vue"
+        /* webpackChunkName: "category_list" */ "@/views/blog/category_list.vue"
       )
   },
   {
@@ -48,6 +48,14 @@ const routes = [
     component: () =>
       import(
         /* webpackChunkName: "show_article" */ "@/views/blog/show_article.vue"
+      )
+  },
+  {
+    path: "/blog/admin/post",
+    name: "new_revision",
+    component: () =>
+      import(
+        /* webpackChunkName: "new_revision" */ "@/views/blog/admin/new_revision.vue"
       )
   },
   {
