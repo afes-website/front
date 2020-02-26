@@ -52,7 +52,6 @@
 import { Component, Vue } from "vue-property-decorator";
 import api from "@/apis/$api";
 import aspida from "@aspida/axios";
-import { BlogArticle } from "@/apis/blog/articles/@types";
 import WriterAuth from "@/libs/auth/writer_auth";
 import { BlogRevision } from "@/apis/blog/revisions/@types";
 
