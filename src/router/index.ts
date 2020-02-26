@@ -43,6 +43,14 @@ const routes = [
       )
   },
   {
+    path: "/blog/articles/:id",
+    name: "show_article",
+    component: () =>
+      import(
+        /* webpackChunkName: "show_article" */ "@/views/blog/show_article.vue"
+      )
+  },
+  {
     path: "/blog/admin/paths",
     name: "path_list",
     component: () =>
