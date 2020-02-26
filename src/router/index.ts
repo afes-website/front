@@ -43,7 +43,7 @@ const routes = [
       )
   },
   {
-    path: "/blog/articles/:id",
+    path: "/blog/articles/:category/:id",
     name: "show_article",
     component: () =>
       import(

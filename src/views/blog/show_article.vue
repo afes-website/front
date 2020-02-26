@@ -42,6 +42,14 @@ export default class ShowArticle extends Vue {
       .$get()
       .then(data => {
         this.article = data;
+        if (data.category !== this.$route.params.category)
+          this.$router.push({
+            name: "show_article",
+            params: {
+              category: data.category,
+              id: this.$route.params.id
+            }
+          });
         this.title = data.title;
         this.fetch_status = "idle";
       })
