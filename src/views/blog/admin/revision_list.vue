@@ -65,7 +65,7 @@ interface Path {
 }
 
 @Component
-export default class PathList extends Vue {
+export default class RevisionList extends Vue {
   title = "ブログ あなたの記事リクエスト一覧";
   revisions: BlogRevision[] = [];
   client = aspida();

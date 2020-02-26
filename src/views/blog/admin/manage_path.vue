@@ -85,7 +85,7 @@ import { BlogRevision } from "@/apis/blog/revisions/@types";
 import { BlogArticle } from "@/apis/blog/articles/@types";
 
 @Component
-export default class RevisionList extends Vue {
+export default class ManagePath extends Vue {
   title = "ブログ 管理画面 記事管理";
   revisions: { [key: number]: BlogRevision } = {};
   client = aspida();

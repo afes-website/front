@@ -27,7 +27,7 @@ interface Path {
 }
 
 @Component
-export default class ArticleList extends Vue {
+export default class NewRevision extends Vue {
   title = "ブログ 記事投稿/編集";
 
   article_title = "";

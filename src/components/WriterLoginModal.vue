@@ -48,7 +48,7 @@ import Auth from "@/libs/auth";
 import EventHub from "@/libs/auth/writer_auth_eventhub";
 
 @Component
-export default class AdminLoginModal extends Vue {
+export default class WriterLoginModal extends Vue {
   id = "";
   password = "";
   status: "idle" | "pending" | "success" | "fail" = "idle";
