@@ -2,6 +2,7 @@
   <article class="box">
     <h1>{{ title }}</h1>
     <b-button @click="load">Reload</b-button>
+    {{ fetch_status }}
     <table class="table">
       <thead>
         <tr>
@@ -93,11 +94,16 @@ export default class PathList extends Vue {
   title = "ブログ 管理画面 記事情報";
   paths: { [key: string]: Path } = {};
   client = aspida();
+
+  fetch_status: "idle" | "pending" | "fail" = "idle";
+
   mounted() {
     this.load();
   }
 
   load() {
+    if (this.fetch_status == "pending") return;
+    this.fetch_status = "pending";
     this.paths = {};
     api(this.client)
       .blog.articles.$get()
@@ -130,6 +136,10 @@ export default class PathList extends Vue {
             this.paths[revision.article_id].waiting_count++;
           }
         }
+        this.fetch_status = "idle";
+      })
+      .catch(() => {
+        this.fetch_status = "fail";
       });
   }
 }
