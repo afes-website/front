@@ -35,22 +35,6 @@ const routes = [
       )
   },
   {
-    path: "/blog/:category?",
-    name: "article_list",
-    component: () =>
-      import(
-        /* webpackChunkName: "article_list" */ "@/views/blog/article_list.vue"
-      )
-  },
-  {
-    path: "/blog/:category/:id",
-    name: "show_article",
-    component: () =>
-      import(
-        /* webpackChunkName: "show_article" */ "@/views/blog/show_article.vue"
-      )
-  },
-  {
     path: "/blog/admin/post",
     name: "new_revision",
     component: () =>
@@ -80,6 +64,22 @@ const routes = [
     component: () =>
       import(
         /* webpackChunkName: "revision_list" */ "@/views/blog/admin/revision_list.vue"
+      )
+  },
+  {
+    path: "/blog/:category?",
+    name: "article_list",
+    component: () =>
+      import(
+        /* webpackChunkName: "article_list" */ "@/views/blog/article_list.vue"
+      )
+  },
+  {
+    path: "/blog/:category/:id",
+    name: "show_article",
+    component: () =>
+      import(
+        /* webpackChunkName: "show_article" */ "@/views/blog/show_article.vue"
       )
   }
 ];
