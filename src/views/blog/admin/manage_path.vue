@@ -83,6 +83,7 @@ import aspida from "@aspida/axios";
 import AdminAuth from "@/libs/auth/admin_auth";
 import { BlogRevision } from "@/apis/blog/revisions/@types";
 import { BlogArticle } from "@/apis/blog/articles/@types";
+import is_axios_error from "@/libs/is_axios_error";
 
 @Component
 export default class ManagePath extends Vue {
@@ -107,7 +108,14 @@ export default class ManagePath extends Vue {
           this.category = data.category;
           this.revision_selection = data.revision_id;
         })
-        .then(this.get_category_articles);
+        .then(this.get_category_articles)
+        .catch((e: unknown) => {
+          if (is_axios_error(e) && e.response && e.response.status == 404) {
+            // article may not to exist
+            return;
+          }
+          throw e;
+        });
       api(this.client)
         .blog.revisions.$get({
           query: {
