@@ -94,6 +94,7 @@
         <small>&copy; 第73回文化祭実行委員会 2020</small>
       </footer>
     </div>
+    <admin-login-modal />
   </div>
 </template>
 
@@ -368,10 +369,11 @@ header {
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import Vue2TouchEvents from "vue2-touch-events";
+import AdminLoginModal from "./components/AdminLoginModal.vue";
 
 Vue.use(Vue2TouchEvents);
 
-@Component
+@Component({ components: { AdminLoginModal } })
 export default class Layout extends Vue {
   sidebar_shown = false;
 
