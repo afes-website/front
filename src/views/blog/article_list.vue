@@ -1,5 +1,5 @@
 <template>
-  <article>
+  <article class="box">
     <h1>{{ title }}</h1>
     <div id="articles">
       <div v-for="article in shown_articles" :key="article.id">
