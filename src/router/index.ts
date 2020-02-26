@@ -28,7 +28,7 @@ const routes = [
   },
   {
     path: "/blog",
-    name: "category_list",
+    name: "blog_top",
     component: () =>
       import(
         /* webpackChunkName: "category_list" */ "@/views/blog/category_list.vue"

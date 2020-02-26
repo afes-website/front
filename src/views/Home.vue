@@ -22,7 +22,7 @@
         <top-page-button
           icon-name="book"
           button-name="ブログ"
-          link-address="blog"
+          link-address="blog_top"
         />
       </div>
       <h1>第73回 麻布中学校・高等学校 文化祭</h1>
