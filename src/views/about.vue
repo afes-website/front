@@ -2,7 +2,7 @@
   <article id="about" class="box">
     <h1>{{ title }}</h1>
     <div id="pair_picture">
-      <img src="https://placehold.jp/1800x1200.png" />
+      <img src="../assets/about.jpg" alt="two-shot" />
     </div>
     <section>
       <h2 class="author_name">平秀明</h2>
