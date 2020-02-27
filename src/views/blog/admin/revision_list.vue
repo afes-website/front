@@ -61,7 +61,7 @@ import aspida from "@aspida/axios";
 import WriterAuth from "@/libs/auth/writer_auth";
 import { BlogRevision } from "@/apis/blog/revisions/@types";
 import { BlogArticle } from "@/apis/blog/articles/@types";
-import is_axios_error from "../../../libs/is_axios_error";
+import is_axios_error from "@/libs/is_axios_error";
 
 interface BlogRevisionWithArticle extends BlogRevision {
   article: BlogArticle | null;
