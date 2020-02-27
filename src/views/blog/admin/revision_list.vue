@@ -39,7 +39,10 @@
               "
               :to="{
                 name: 'show_article',
-                params: { category: 'category', id: revision.article_id } // this will be redirected.
+                params: {
+                  category: revision.article.category,
+                  id: revision.article_id
+                }
               }"
             >
               show
