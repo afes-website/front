@@ -4,8 +4,10 @@
     <p>path:<b-input v-model="article_path" /></p>
     <p>title:<b-input v-model="article_title" /></p>
     <b-textarea v-model="content"></b-textarea>
-    <b-button @click="post" variant="primary">post</b-button>
-    {{ status }}
+    <b-button @click="post" variant="primary">
+      post
+      <fetch-status-icon :status="status" small />
+    </b-button>
   </div>
 </template>
 
@@ -18,8 +20,9 @@ import aspida from "@aspida/axios";
 import WriterAuth from "@/libs/auth/writer_auth";
 import { BlogRevision } from "@/apis/blog/revisions/@types";
 import FetchStatus from "@/libs/fetch_status";
+import FetchStatusIcon from "@/components/FetchStatusIcon.vue";
 
-@Component
+@Component({ components: { FetchStatusIcon } })
 export default class NewRevision extends Vue {
   title = "ブログ 記事投稿/編集";
 

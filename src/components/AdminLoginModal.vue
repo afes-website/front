@@ -21,18 +21,13 @@
           v-model="password"
           required
           type="password"
+          @keypress.enter="submit"
         ></b-form-input>
       </b-form-group>
     </b-form>
 
     <template v-slot:modal-footer="{ ok }">
-      <!-- TODO: show status, improve UI/UX -->
-      <!-- <p v-if="status == 'idlle'">なにもひょうじしない</p>
-      <p v-if="status == 'pending'">くるくる</p>
-      <p v-if="status == 'success'">ちぇっく</p>
-      <p v-if="status == 'success'">ちぇっく</p>
-      <p v-if="status == 'fail'">びっくり</p> -->
-      <p>{{ status }}</p>
+      <fetch-status-icon :status="status" />
       <b-button variant="primary" @click="ok">
         Login
       </b-button>
@@ -47,8 +42,9 @@ import aspida from "@aspida/axios";
 import Auth from "@/libs/auth";
 import EventHub from "@/libs/auth/admin_auth_eventhub";
 import FetchStatus from "@/libs/fetch_status";
+import FetchStatusIcon from "@/components/FetchStatusIcon.vue";
 
-@Component
+@Component({ components: { FetchStatusIcon } })
 export default class AdminLoginModal extends Vue {
   id = "";
   password = "";

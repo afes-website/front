@@ -1,7 +1,10 @@
 <template>
   <div class="box">
     <h1>{{ title }}</h1>
-    <b-button @click="load">reload</b-button>
+    <b-button @click="load">
+      reload
+      <fetch-status-icon :status="fetch_status" small />
+    </b-button>
     <section id="form">
       Category
       <b-input
@@ -70,9 +73,10 @@
         class="border rounded"
       ><code>{{revisions[revision_selection].content}}</code></pre>
     </section>
-    <b-button @click="apply_changes" variant="primary" :disabled="!can_apply"
-      >apply</b-button
-    >
+    <b-button @click="apply_changes" variant="primary" :disabled="!can_apply">
+      apply
+      <fetch-status-icon :status="post_status" small />
+    </b-button>
   </div>
 </template>
 
@@ -84,8 +88,10 @@ import AdminAuth from "@/libs/auth/admin_auth";
 import { BlogRevision } from "@/apis/blog/revisions/@types";
 import { BlogArticle } from "@/apis/blog/articles/@types";
 import is_axios_error from "@/libs/is_axios_error";
+import FetchStatus from "@/libs/fetch_status";
+import FetchStatusIcon from "@/components/FetchStatusIcon.vue";
 
-@Component
+@Component({ components: { FetchStatusIcon } })
 export default class ManagePath extends Vue {
   title = "ブログ 管理画面 記事管理";
   revisions: { [key: number]: BlogRevision } = {};
@@ -95,42 +101,58 @@ export default class ManagePath extends Vue {
   category = "";
   category_article_count = -1;
 
+  fetch_status: FetchStatus = "idle";
+  post_status: FetchStatus = "idle";
+
   mounted() {
     this.load();
   }
 
   load() {
-    AdminAuth.attempt_get_JWT().then(token => {
-      api(this.client)
-        .blog.articles._id(this.$route.params.id)
-        .$get()
-        .then((data: BlogArticle) => {
-          this.category = data.category;
-          this.revision_selection = data.revision_id;
-        })
-        .then(this.get_category_articles)
-        .catch((e: unknown) => {
-          if (is_axios_error(e) && e.response && e.response.status == 404) {
-            // article may not to exist
-            return;
-          }
-          throw e;
-        });
-      api(this.client)
-        .blog.revisions.$get({
-          query: {
-            article_id: this.$route.params.id
-          },
-          headers: {
-            "X-ADMIN-TOKEN": token.content
-          }
-        })
-        .then((data: BlogRevision[]) => {
-          for (const revision of data) {
-            this.$set(this.revisions, revision.id, revision);
-          }
-        });
-    });
+    this.fetch_status = "pending";
+    AdminAuth.attempt_get_JWT()
+      .then(token => {
+        Promise.all([
+          api(this.client)
+            .blog.articles._id(this.$route.params.id)
+            .$get()
+            .then((data: BlogArticle) => {
+              this.category = data.category;
+              this.revision_selection = data.revision_id;
+            })
+            .then(this.get_category_articles)
+            .catch((e: unknown) => {
+              if (is_axios_error(e) && e.response && e.response.status == 404) {
+                // article may not to exist
+                return;
+              }
+              throw e;
+            }),
+          api(this.client)
+            .blog.revisions.$get({
+              query: {
+                article_id: this.$route.params.id
+              },
+              headers: {
+                "X-ADMIN-TOKEN": token.content
+              }
+            })
+            .then((data: BlogRevision[]) => {
+              for (const revision of data) {
+                this.$set(this.revisions, revision.id, revision);
+              }
+            })
+        ])
+          .then(() => {
+            this.fetch_status = "idle";
+          })
+          .catch(() => {
+            this.fetch_status = "fail";
+          });
+      })
+      .catch(() => {
+        this.fetch_status = "fail";
+      });
   }
 
   accept_revision(id: number) {
@@ -172,19 +194,27 @@ export default class ManagePath extends Vue {
   }
 
   apply_changes() {
-    AdminAuth.attempt_get_JWT().then(token => {
-      api(this.client)
-        .blog.articles._id(this.$route.params.id)
-        .$patch({
-          data: {
-            category: this.category,
-            revision_id: this.revision_selection
-          },
-          headers: {
-            "X-ADMIN-TOKEN": token.content
-          }
-        });
-    });
+    this.post_status = "pending";
+    AdminAuth.attempt_get_JWT()
+      .then(token => {
+        return api(this.client)
+          .blog.articles._id(this.$route.params.id)
+          .$patch({
+            data: {
+              category: this.category,
+              revision_id: this.revision_selection
+            },
+            headers: {
+              "X-ADMIN-TOKEN": token.content
+            }
+          });
+      })
+      .then(() => {
+        this.post_status = "idle";
+      })
+      .catch(() => {
+        this.post_status = "fail";
+      });
   }
 
   get can_apply() {

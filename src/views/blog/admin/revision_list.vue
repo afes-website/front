@@ -1,8 +1,10 @@
 <template>
   <div class="box">
     <h1>{{ title }}</h1>
-    <b-button @click="load">Reload</b-button>
-    {{ fetch_status }}
+    <b-button @click="load">
+      Reload
+      <fetch-status-icon :status="fetch_status" small />
+    </b-button>
     <table class="table">
       <thead>
         <tr>
@@ -63,12 +65,13 @@ import { BlogRevision } from "@/apis/blog/revisions/@types";
 import { BlogArticle } from "@/apis/blog/articles/@types";
 import is_axios_error from "@/libs/is_axios_error";
 import FetchStatus from "@/libs/fetch_status";
+import FetchStatusIcon from "@/components/FetchStatusIcon.vue";
 
 interface BlogRevisionWithArticle extends BlogRevision {
   article: BlogArticle | null;
 }
 
-@Component
+@Component({ components: { FetchStatusIcon } })
 export default class RevisionList extends Vue {
   title = "ブログ あなたの記事リクエスト一覧";
   revisions: BlogRevisionWithArticle[] = [];
@@ -105,23 +108,20 @@ export default class RevisionList extends Vue {
                       article: article
                     });
                   })
-                  .catch(
-                    (e: unknown) =>
-                      new Promise((a, r) => {
-                        if (
-                          is_axios_error(e) &&
-                          e.response &&
-                          e.response.status == 404
-                        ) {
-                          this.revisions.push({
-                            ...revision,
-                            article: null
-                          });
-                          a();
-                        }
-                        r(e);
-                      })
-                  )
+                  .catch((e: unknown) => {
+                    if (
+                      is_axios_error(e) &&
+                      e.response &&
+                      e.response.status == 404
+                    ) {
+                      this.revisions.push({
+                        ...revision,
+                        article: null
+                      });
+                      return;
+                    }
+                    throw e;
+                  })
               );
             }
             Promise.all(promises)
@@ -131,6 +131,9 @@ export default class RevisionList extends Vue {
               .catch(() => {
                 this.fetch_status = "fail";
               });
+          })
+          .catch(() => {
+            this.fetch_status = "fail";
           });
       })
       .catch(() => {

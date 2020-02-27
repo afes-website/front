@@ -1,8 +1,10 @@
 <template>
   <div class="box">
     <h1>{{ title }}</h1>
-    <b-button @click="load">Reload</b-button>
-    {{ fetch_status }}
+    <b-button @click="load">
+      Reload
+      <fetch-status-icon :status="fetch_status" small />
+    </b-button>
     <table class="table">
       <thead>
         <tr>
@@ -90,6 +92,7 @@ import { BlogArticle } from "@/apis/blog/articles/@types";
 import AdminAuth from "@/libs/auth/admin_auth";
 import { BlogRevision } from "@/apis/blog/revisions/@types";
 import FetchStatus from "@/libs/fetch_status";
+import FetchStatusIcon from "@/components/FetchStatusIcon.vue";
 
 interface Path {
   category?: string;
@@ -99,7 +102,7 @@ interface Path {
   waiting_count: number;
 }
 
-@Component
+@Component({ components: { FetchStatusIcon } })
 export default class PathList extends Vue {
   title = "ブログ 管理画面 記事情報";
   paths: { [key: string]: Path } = {};
