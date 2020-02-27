@@ -29,9 +29,7 @@
                 {{ getStringTime(article.created_at) }}
               </span>
             </b-card-sub-title>
-            <b-card-text>
-              {{ article.content }}
-            </b-card-text>
+            <b-card-text v-html="md.render(article.content)" />
           </b-card>
         </b-link>
       </div>
@@ -66,8 +64,6 @@
   .card-text {
     display: block;
     height: 4.5em;
-    line-height: 1.5;
-
     position: relative;
     overflow: hidden;
     &::before,
@@ -89,6 +85,24 @@
 }
 </style>
 
+<style lang="scss">
+#article-list {
+  #articles {
+    .card-text {
+      * {
+        line-height: 1.5;
+        margin: 0;
+        padding: 0;
+        font-size: 1em;
+        height: auto;
+        text-decoration: none;
+        border: none;
+      }
+    }
+  }
+}
+</style>
+
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
 import api from "@/apis/$api";
@@ -100,6 +114,21 @@ export default class ArticleList extends Vue {
   title = "ブログ 記事一覧";
   articles: BlogArticle[] = [];
   client = aspida();
+  /* eslint-disable @typescript-eslint/no-var-requires */
+  md = require("markdown-it")({ linkify: true })
+    .use(require("markdown-it-sanitizer"))
+    .use(require("markdown-it-imsize"))
+    .use(require("markdown-it-checkbox"))
+    .use(require("markdown-it-mark"))
+    .use(require("markdown-it-emoji"))
+    .use(require("markdown-it-ins"))
+    .use(require("markdown-it-container"), "alert-success")
+    .use(require("markdown-it-container"), "alert-info")
+    .use(require("markdown-it-container"), "alert-warning")
+    .use(require("markdown-it-container"), "alert-danger")
+    .use(require("markdown-it-sub"))
+    .use(require("markdown-it-cjk-breaks"));
+  /* eslint-enable */
 
   perPage = 10;
   currentPage = 1;

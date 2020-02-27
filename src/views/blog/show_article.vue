@@ -1,5 +1,5 @@
 <template>
-  <article class="box">
+  <article id="show-article" class="box">
     <template v-if="article !== null">
       <h1>{{ title }}</h1>
       <div class="under-title">
@@ -16,7 +16,7 @@
           {{ getStringTime(article.created_at) }}
         </span>
       </div>
-      <p>{{ article.content }}</p>
+      <div class="main-content" v-html="md.render(article.content)" />
     </template>
     <template v-else>
       <p>{{ fetch_status }}</p>
@@ -27,7 +27,7 @@
 <style lang="scss" scoped>
 article {
   .under-title {
-    margin-top: -16px;
+    margin-top: -14px;
     margin-bottom: 16px;
     text-align: right;
     color: #6c757d;
@@ -37,6 +37,36 @@ article {
       margin-right: 0.5em;
     }
   }
+}
+</style>
+
+<style lang="scss">
+article#show-article {
+  .main-content {
+    @import "~bootstrap";
+    h2 {
+      margin: 2rem 0 1rem 0;
+    }
+
+    img {
+      width: 100%;
+    }
+
+    .alert-success,
+    .alert-info,
+    .alert-warning,
+    .alert-danger {
+      @extend .alert;
+      p {
+        margin: 0;
+      }
+    }
+  }
+}
+</style>
+
+<style lang="scss">
+article#show-article {
 }
 </style>
 
@@ -53,6 +83,21 @@ export default class ShowArticle extends Vue {
   article: BlogArticle | null = null;
   client = aspida();
   fetch_status: "idle" | "pending" | "fail" = "idle";
+  /* eslint-disable @typescript-eslint/no-var-requires */
+  md = require("markdown-it")({ linkify: true })
+    .use(require("markdown-it-sanitizer"))
+    .use(require("markdown-it-imsize"))
+    .use(require("markdown-it-checkbox"))
+    .use(require("markdown-it-mark"))
+    .use(require("markdown-it-emoji"))
+    .use(require("markdown-it-ins"))
+    .use(require("markdown-it-container"), "alert-success")
+    .use(require("markdown-it-container"), "alert-info")
+    .use(require("markdown-it-container"), "alert-warning")
+    .use(require("markdown-it-container"), "alert-danger")
+    .use(require("markdown-it-sub"))
+    .use(require("markdown-it-cjk-breaks"));
+  /* eslint-enable */
 
   mounted() {
     this.load();
