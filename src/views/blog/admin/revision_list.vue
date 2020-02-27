@@ -33,7 +33,10 @@
           <td>{{ revision.status }}</td>
           <td>
             <b-link
-              v-if="revision.status == 'accepted'"
+              v-if="
+                revision.article !== null &&
+                  revision.article.revision_id == revision.id
+              "
               :to="{
                 name: 'show_article',
                 params: { category: 'category', id: revision.article_id } // this will be redirected.
@@ -54,11 +57,17 @@ import api from "@/apis/$api";
 import aspida from "@aspida/axios";
 import WriterAuth from "@/libs/auth/writer_auth";
 import { BlogRevision } from "@/apis/blog/revisions/@types";
+import { BlogArticle } from "@/apis/blog/articles/@types";
+import is_axios_error from "../../../libs/is_axios_error";
+
+interface BlogRevisionWithArticle extends BlogRevision {
+  article: BlogArticle | null;
+}
 
 @Component
 export default class RevisionList extends Vue {
   title = "ブログ あなたの記事リクエスト一覧";
-  revisions: BlogRevision[] = [];
+  revisions: BlogRevisionWithArticle[] = [];
   client = aspida();
 
   fetch_status: "idle" | "pending" | "fail" = "idle";
@@ -71,21 +80,58 @@ export default class RevisionList extends Vue {
     if (this.fetch_status == "pending") return;
     this.fetch_status = "pending";
     this.revisions = [];
-    WriterAuth.attempt_get_JWT().then(token => {
-      api(this.client)
-        .blog.revisions.$get({
-          headers: {
-            "X-BLOG-WRITER-TOKEN": token.content
-          }
-        })
-        .then((data: BlogRevision[]) => {
-          this.revisions = data;
-          this.fetch_status = "idle";
-        })
-        .catch(() => {
-          this.fetch_status = "fail";
-        });
-    });
+    WriterAuth.attempt_get_JWT()
+      .then(token => {
+        api(this.client)
+          .blog.revisions.$get({
+            headers: {
+              "X-BLOG-WRITER-TOKEN": token.content
+            }
+          })
+          .then((data: BlogRevision[]) => {
+            const promises: Promise<void>[] = [];
+            for (const revision of data) {
+              promises.push(
+                api(this.client)
+                  .blog.articles._id(revision.article_id)
+                  .$get()
+                  .then((article: BlogArticle) => {
+                    this.revisions.push({
+                      ...revision,
+                      article: article
+                    });
+                  })
+                  .catch(
+                    (e: unknown) =>
+                      new Promise((a, r) => {
+                        if (
+                          is_axios_error(e) &&
+                          e.response &&
+                          e.response.status == 404
+                        ) {
+                          this.revisions.push({
+                            ...revision,
+                            article: null
+                          });
+                          a();
+                        }
+                        r(e);
+                      })
+                  )
+              );
+            }
+            Promise.all(promises)
+              .then(() => {
+                this.fetch_status = "idle";
+              })
+              .catch(() => {
+                this.fetch_status = "fail";
+              });
+          });
+      })
+      .catch(() => {
+        this.fetch_status = "fail";
+      });
   }
 }
 </script>
