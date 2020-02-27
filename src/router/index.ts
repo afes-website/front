@@ -35,6 +35,14 @@ const routes = [
       )
   },
   {
+    path: "/blog/admin",
+    name: "admin_top",
+    component: () =>
+      import(
+        /* webpackChunkName: "admin_top" */ "@/views/blog/admin/admin_top.vue"
+      )
+  },
+  {
     path: "/blog/admin/post",
     name: "new_revision",
     component: () =>

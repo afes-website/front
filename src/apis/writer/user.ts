@@ -1,5 +1,5 @@
 import { WriterAuthToken } from "@/apis/@types";
-interface WriterUserInfo {
+export interface WriterUserInfo {
   id: string;
   name: string;
 }

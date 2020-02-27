@@ -67,11 +67,12 @@
                 <li><b-link to="/blog/在校生向け">在校生向け</b-link></li>
               </ul>
             </li>
-          </ul>
-          <ul class="admin" v-if="this.$route.path.startsWith('/blog/admin')">
             <li>
-              <b-link disabled>ブログ管理</b-link>
-              <ul class="menu-secondary">
+              <b-link :to="{ name: 'admin_top' }">ブログ管理</b-link>
+              <ul
+                class="menu-secondary"
+                v-if="this.$route.path.startsWith('/blog/admin')"
+              >
                 <li>
                   <b-link :to="{ name: 'new_revision' }">新規リクエスト</b-link>
                 </li>

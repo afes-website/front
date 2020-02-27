@@ -1,5 +1,5 @@
 import { AdminAuthToken } from "@/apis/@types";
-interface AdminUserInfo {
+export interface AdminUserInfo {
   id: string;
   name: string;
 }
