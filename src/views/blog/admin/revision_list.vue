@@ -55,14 +55,6 @@ import aspida from "@aspida/axios";
 import WriterAuth from "@/libs/auth/writer_auth";
 import { BlogRevision } from "@/apis/blog/revisions/@types";
 
-interface Path {
-  category?: string;
-  title?: string;
-  created_at?: string;
-  updated_at?: string;
-  waiting_count: number;
-}
-
 @Component
 export default class RevisionList extends Vue {
   title = "ブログ あなたの記事リクエスト一覧";
