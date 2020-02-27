@@ -2,9 +2,20 @@
   <article class="box">
     <template v-if="article !== null">
       <h1>{{ title }}</h1>
-      <p>Category: {{ article.category }}</p>
-      <p>author: article.author</p>
-      <hr />
+      <div class="under-title">
+        <span>
+          <font-awesome-icon :icon="'user'" class="fa-fw" />
+          {{ "author" }}
+        </span>
+        <span>
+          <font-awesome-icon :icon="'folder'" class="fa-fw" />
+          {{ article.category }}
+        </span>
+        <span>
+          <font-awesome-icon :icon="'clock'" class="fa-fw" />
+          {{ getStringTime(article.created_at) }}
+        </span>
+      </div>
       <p>{{ article.content }}</p>
     </template>
     <template v-else>
@@ -12,6 +23,22 @@
     </template>
   </article>
 </template>
+
+<style lang="scss" scoped>
+article {
+  .under-title {
+    margin-top: -16px;
+    margin-bottom: 16px;
+    text-align: right;
+    color: #6c757d;
+    font-weight: 500;
+
+    span {
+      margin-right: 0.5em;
+    }
+  }
+}
+</style>
 
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
@@ -33,6 +60,16 @@ export default class ShowArticle extends Vue {
   @Watch("$route")
   route_changed() {
     this.load();
+  }
+
+  getStringTime(laravel_time: string): string {
+    const date = new Date(Date.parse(laravel_time));
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    const hour = date.getHours();
+    const min = date.getMinutes();
+    return year + "/" + month + "/" + day + " " + hour + ":" + min;
   }
 
   load() {
