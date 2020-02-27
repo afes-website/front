@@ -76,13 +76,14 @@ import api from "@/apis/$api";
 import aspida from "@aspida/axios";
 import { BlogArticle } from "@/apis/blog/articles/@types";
 import is_axios_error from "@/libs/is_axios_error";
+import FetchStatus from "@/libs/fetch_status";
 
 @Component
 export default class ShowArticle extends Vue {
   title = "";
   article: BlogArticle | null = null;
   client = aspida();
-  fetch_status: "idle" | "pending" | "fail" = "idle";
+  fetch_status: FetchStatus = "idle";
   /* eslint-disable @typescript-eslint/no-var-requires */
   md = require("markdown-it")({ linkify: true })
     .use(require("markdown-it-sanitizer"))

@@ -62,6 +62,7 @@ import WriterAuth from "@/libs/auth/writer_auth";
 import { BlogRevision } from "@/apis/blog/revisions/@types";
 import { BlogArticle } from "@/apis/blog/articles/@types";
 import is_axios_error from "@/libs/is_axios_error";
+import FetchStatus from "@/libs/fetch_status";
 
 interface BlogRevisionWithArticle extends BlogRevision {
   article: BlogArticle | null;
@@ -73,7 +74,7 @@ export default class RevisionList extends Vue {
   revisions: BlogRevisionWithArticle[] = [];
   client = aspida();
 
-  fetch_status: "idle" | "pending" | "fail" = "idle";
+  fetch_status: FetchStatus = "idle";
 
   mounted() {
     this.load();

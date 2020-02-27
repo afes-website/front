@@ -46,12 +46,13 @@ import aspida from "@aspida/axios";
 
 import Auth from "@/libs/auth";
 import EventHub from "@/libs/auth/writer_auth_eventhub";
+import FetchStatus from "@/libs/fetch_status";
 
 @Component
 export default class WriterLoginModal extends Vue {
   id = "";
   password = "";
-  status: "idle" | "pending" | "success" | "fail" = "idle";
+  status: FetchStatus = "idle";
 
   value = false;
 
@@ -74,7 +75,7 @@ export default class WriterLoginModal extends Vue {
     this.status = "pending";
     Auth.WriterAuth.login(aspida(), this.id, this.password)
       .then(() => {
-        this.status = "success";
+        this.status = "idle";
         this.value = false;
         EventHub.emitLoginSuccess();
       })

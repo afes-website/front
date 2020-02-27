@@ -17,6 +17,7 @@ import api from "@/apis/$api";
 import aspida from "@aspida/axios";
 import WriterAuth from "@/libs/auth/writer_auth";
 import { BlogRevision } from "@/apis/blog/revisions/@types";
+import FetchStatus from "@/libs/fetch_status";
 
 @Component
 export default class NewRevision extends Vue {
@@ -26,7 +27,7 @@ export default class NewRevision extends Vue {
   article_path = "";
   content = "";
 
-  status: "idle" | "pending" | "success" | "fail" = "idle";
+  status: FetchStatus = "idle";
 
   post() {
     this.status = "pending";
@@ -44,7 +45,7 @@ export default class NewRevision extends Vue {
           }
         })
         .then((data: BlogRevision) => {
-          this.status = "success";
+          this.status = "idle";
           this.$bvToast.toast("Revision created: " + data.id, {
             // TODO: toast won't shows (main.scss causes?)
             title: "Create new revision",

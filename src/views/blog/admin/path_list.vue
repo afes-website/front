@@ -89,6 +89,7 @@ import aspida from "@aspida/axios";
 import { BlogArticle } from "@/apis/blog/articles/@types";
 import AdminAuth from "@/libs/auth/admin_auth";
 import { BlogRevision } from "@/apis/blog/revisions/@types";
+import FetchStatus from "@/libs/fetch_status";
 
 interface Path {
   category?: string;
@@ -104,7 +105,7 @@ export default class PathList extends Vue {
   paths: { [key: string]: Path } = {};
   client = aspida();
 
-  fetch_status: "idle" | "pending" | "fail" = "idle";
+  fetch_status: FetchStatus = "idle";
 
   mounted() {
     this.load();
