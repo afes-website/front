@@ -1,32 +1,93 @@
 <template>
-  <div class="box">
+  <div id="article-list" class="box">
     <h1>{{ title }}</h1>
     <div id="articles">
       <div v-for="article in shown_articles" :key="article.id">
-        <!-- <img src="https://placehold.jp/256x256.png" /> -->
-        <!-- TODO:add image -->
-        <h4>
-          <b-link
-            :to="{
-              name: 'show_article',
-              params: { category: article.category, id: article.id }
-            }"
-            >{{ article.title }}</b-link
+        <b-link
+          :to="{
+            name: 'show_article',
+            params: { category: article.category, id: article.id }
+          }"
+        >
+          <b-card
+            img-src="https://placehold.jp/30/cccccc/888888/150x150.jpg?text=no%20image"
+            img-alt="eye catch"
+            img-left
+            class="mb-3"
           >
-        </h4>
-        <p>
-          {{ article.content }}
-        </p>
+            <!-- TODO:add image -->
+            <b-card-title>
+              {{ article.title }}
+            </b-card-title>
+            <b-card-sub-title>
+              <span>
+                <font-awesome-icon :icon="'user'" class="fa-fw" />
+                {{ "author" }}
+              </span>
+              <span>
+                <font-awesome-icon :icon="'clock'" class="fa-fw" />
+                {{ getStringTime(article.created_at) }}
+              </span>
+            </b-card-sub-title>
+            <b-card-text>
+              {{ article.content }}
+            </b-card-text>
+          </b-card>
+        </b-link>
       </div>
     </div>
+
     <b-pagination
+      id="article-page-nav"
       v-model="currentPage"
       :total-rows="rows"
       :per-page="perPage"
       aria-controls="my-table"
+      align="center"
     ></b-pagination>
   </div>
 </template>
+
+<style lang="scss" scoped>
+.card-body {
+  height: 150px;
+  width: 100%;
+  color: #222;
+  .card-title {
+    margin-top: -8px;
+    margin-bottom: 12px;
+  }
+  .card-subtitle {
+    margin-bottom: 5px;
+    span {
+      margin-right: 0.5em;
+    }
+  }
+  .card-text {
+    display: block;
+    height: 4.5em;
+    line-height: 1.5;
+
+    position: relative;
+    overflow: hidden;
+    &::before,
+    &::after {
+      position: absolute;
+      background: #fff;
+    }
+    &::before {
+      content: "…";
+      bottom: 0;
+      right: 0;
+    }
+    &::after {
+      content: "";
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
+</style>
 
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
@@ -51,12 +112,20 @@ export default class ArticleList extends Vue {
   }
   load() {
     if (this.$route.params.category)
-      this.title = "カテゴリ: " + this.$route.params.category;
+      this.title = this.$route.params.category + " 記事一覧";
     api(this.client)
       .blog.articles.$get({ query: this.filter_query })
       .then(data => {
         this.articles = data;
       });
+  }
+
+  getStringTime(laravel_time: string): string {
+    const date = new Date(Date.parse(laravel_time));
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    return year + "/" + month + "/" + day;
   }
 
   get filter_query(): BlogArticleParameter {
