@@ -22,6 +22,7 @@
             <th>created</th>
             <th>status</th>
             <th>operations</th>
+            <th>preview</th>
           </tr>
         </thead>
         <tbody>
@@ -61,17 +62,14 @@
                 >Reject</b-button
               >
             </td>
+            <td>
+              <b-link :to="{ name: 'revision_preview', params: { id: id } }">
+                preview
+              </b-link>
+            </td>
           </b-tr>
         </tbody>
       </table>
-    </section>
-    <section id="content_preview">
-      <h2>記事のプレビュー</h2>
-      <pre
-        v-if="revision_selection in revisions"
-        id="preview_pre"
-        class="border rounded"
-      ><code>{{revisions[revision_selection].content}}</code></pre>
     </section>
     <b-button @click="apply_changes" variant="primary" :disabled="!can_apply">
       apply

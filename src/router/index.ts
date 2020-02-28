@@ -75,6 +75,14 @@ const routes = [
       )
   },
   {
+    path: "/blog/admin/revisions/:id(\\d+)",
+    name: "revision_preview",
+    component: () =>
+      import(
+        /* webpackChunkName: "revision_preview" */ "@/views/blog/admin/revision_preview.vue"
+      )
+  },
+  {
     path: "/blog/:category?",
     name: "article_list",
     component: () =>

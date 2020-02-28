@@ -49,6 +49,12 @@
             >
               show
             </b-link>
+            <b-link
+              v-else
+              :to="{ name: 'revision_preview', params: { id: revision.id } }"
+            >
+              preview
+            </b-link>
           </td>
         </b-tr>
       </tbody>
