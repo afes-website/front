@@ -12,8 +12,8 @@
           <th>title</th>
           <th>path</th>
           <th>time</th>
-          <th>status</th>
-          <th>show</th>
+          <th></th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -32,7 +32,15 @@
           <td>{{ revision.title }}</td>
           <td>{{ revision.article_id }}</td>
           <td>{{ getStringTime(revision.timestamp) }}</td>
-          <td>{{ revision.status }}</td>
+          <td>
+            <font-awesome-icon
+              :icon="
+                revision.status === 'accepted'
+                  ? 'check-circle'
+                  : ['far', 'hand-paper']
+              "
+            />
+          </td>
           <td>
             <b-link
               v-if="
@@ -47,13 +55,13 @@
                 }
               }"
             >
-              show
+              <font-awesome-icon :icon="'file'" />
             </b-link>
             <b-link
               v-else
               :to="{ name: 'revision_preview', params: { id: revision.id } }"
             >
-              preview
+              <font-awesome-icon :icon="['far', 'file']" />
             </b-link>
           </td>
         </b-tr>

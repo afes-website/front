@@ -13,8 +13,8 @@
           <th>category</th>
           <th>created</th>
           <th>updated</th>
-          <th>show</th>
-          <th>edit</th>
+          <th></th>
+          <th></th>
           <th></th>
         </tr>
       </thead>
@@ -32,13 +32,14 @@
                 name: 'show_article',
                 params: { category: path.category, id: route }
               }"
-              >show</b-link
             >
+              <font-awesome-icon :icon="'file'" />
+            </b-link>
           </td>
           <td>
-            <b-link :to="{ name: 'manage_path', params: { id: route } }"
-              >edit</b-link
-            >
+            <b-link :to="{ name: 'manage_path', params: { id: route } }">
+              <font-awesome-icon :icon="'tools'" />
+            </b-link>
           </td>
           <td>
             <b-badge
@@ -46,8 +47,9 @@
               v-if="path.waiting_count != 0"
               v-b-tooltip.hover
               :title="'has ' + path.waiting_count + ' waiting revisions'"
-              >{{ path.waiting_count }}</b-badge
             >
+              {{ path.waiting_count }}
+            </b-badge>
           </td>
         </tr>
       </tbody>
