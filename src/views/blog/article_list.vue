@@ -24,7 +24,7 @@
           <b-card-sub-title>
             <span>
               <font-awesome-icon :icon="'user'" class="fa-fw" />
-              {{ "author" }}
+              {{ article.author.name }}
             </span>
             <span>
               <font-awesome-icon :icon="'clock'" class="fa-fw" />

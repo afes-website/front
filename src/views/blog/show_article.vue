@@ -5,7 +5,7 @@
       <div class="under-title">
         <span>
           <font-awesome-icon :icon="'user'" class="fa-fw" />
-          {{ "author" }}
+          {{ article.author.name }}
         </span>
         <span>
           <font-awesome-icon :icon="'folder'" class="fa-fw" />
