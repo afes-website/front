@@ -18,7 +18,7 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSHKEY }}
       - name: make local environment file
         run: |
-          cat<<EOF > .env.local
+          cat<<EOF > .env.local.production
           VUE_APP_API_BASE_URL=https://api.dev.afes.info
           EOF
       - name: Cache yarn packages
@@ -37,7 +37,7 @@ jobs:
       - name: push with scp
         run: scp -r -o StrictHostKeyChecking=no -P $SSH_PORT -i .ssh/id_ed25519 ./dist/. $SSH_USER@$SSH_HOST:$DIR
         env:
-          DIR: ${{ secrets.DEST_DIR_TEST }}
+          DIR: ~/public_html/dev.afes.info
           SSH_HOST: ${{ secrets.SERVER_HOST }}
           SSH_USER: ${{ secrets.SERVER_USER }}
           SSH_PORT: ${{ secrets.SERVER_PORT }}
