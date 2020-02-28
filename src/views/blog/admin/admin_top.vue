@@ -6,6 +6,7 @@
       <template v-if="this.admin_user !== null">
         <span class="name">{{ this.admin_user.name }}</span>
         <span class="id">@{{ this.admin_user.id }}</span>
+        <b-button @click="admin_logout">ログアウト</b-button>
       </template>
       <b-button v-else @click="admin_login">ログイン</b-button>
     </p>
@@ -14,6 +15,7 @@
       <template v-if="this.writer_user !== null">
         <span class="name">{{ this.writer_user.name }}</span>
         <span class="id">@{{ this.writer_user.id }}</span>
+        <b-button @click="writer_logout">ログアウト</b-button>
       </template>
       <b-button v-else @click="writer_login">ログイン</b-button>
     </p>
@@ -106,10 +108,20 @@ export default class AdminTop extends Vue {
     });
   }
 
+  admin_logout() {
+    AdminAuth.logout();
+    this.admin_user = null;
+  }
+
   writer_login() {
     WriterAuth.attempt_get_JWT().then(() => {
       this.load();
     });
+  }
+
+  writer_logout() {
+    WriterAuth.logout();
+    this.writer_user = null;
   }
 
   get admin_logged_in() {
