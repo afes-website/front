@@ -12,6 +12,6 @@ import { Component, Vue } from "vue-property-decorator";
 
 @Component
 export default class CategoryList extends Vue {
-  title = "ブログ";
+  title = "近況";
 }
 </script>
