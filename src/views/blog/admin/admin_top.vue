@@ -6,18 +6,30 @@
       <template v-if="this.admin_user !== null">
         <span class="name">{{ this.admin_user.name }}</span>
         <span class="id">@{{ this.admin_user.id }}</span>
-        <b-button @click="admin_logout">ログアウト</b-button>
+        <b-button @click="admin_logout" size="sm" variant="outline-danger">
+          <font-awesome-icon :icon="'sign-out-alt'" class="fa-fw" />
+          ログアウト
+        </b-button>
       </template>
-      <b-button v-else @click="admin_login">ログイン</b-button>
+      <b-button v-else @click="admin_login" size="sm" variant="primary">
+        <font-awesome-icon :icon="'sign-in-alt'" class="fa-fw" />
+        ログイン
+      </b-button>
     </p>
     <p class="profile">
       <font-awesome-icon icon="user-edit" class="fa-fw" />
       <template v-if="this.writer_user !== null">
         <span class="name">{{ this.writer_user.name }}</span>
         <span class="id">@{{ this.writer_user.id }}</span>
-        <b-button @click="writer_logout">ログアウト</b-button>
+        <b-button @click="writer_logout" size="sm" variant="outline-danger">
+          <font-awesome-icon :icon="'sign-out-alt'" class="fa-fw" />
+          ログアウト
+        </b-button>
       </template>
-      <b-button v-else @click="writer_login">ログイン</b-button>
+      <b-button v-else @click="writer_login" size="sm" variant="primary">
+        <font-awesome-icon :icon="'sign-in-alt'" class="fa-fw" />
+        ログイン
+      </b-button>
     </p>
     <template v-if="writer_logged_in">
       <section>
@@ -48,9 +60,11 @@
 <style lang="scss" scoped>
 #admin-top {
   .profile {
-    text-align: right;
-
     span {
+      margin-left: 0.5rem;
+    }
+
+    .btn {
       margin-left: 0.5rem;
     }
   }
