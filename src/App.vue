@@ -60,13 +60,14 @@
               <b-link disabled>校内マップ</b-link>
             </li>
             <li>
-              <b-link disabled>ブログ</b-link>
+              <b-link disabled>近況</b-link>
               <ul class="menu-secondary">
                 <li><b-link disabled>お知らせ</b-link></li>
                 <li><b-link disabled>活動の様子</b-link></li>
                 <li><b-link disabled>在校生向け</b-link></li>
               </ul>
             </li>
+            <li><b-link to="document">文化祭資料</b-link></li>
           </ul>
         </nav>
         <div
