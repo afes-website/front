@@ -5,12 +5,12 @@ import JWT from "./jwt";
 import api from "@/apis/$api";
 import { AspidaClient } from "aspida";
 import { AxiosRequestConfig } from "axios";
-import EventHub from "./admin_auth_eventhub";
+import EventHub from "./writer_auth_eventhub";
 
 function getJWT(): JWT | null {
-  const admin_token = Cookie.get("admin_token");
-  if (!admin_token) return null;
-  const jwt = new JWT(admin_token);
+  const writer_token = Cookie.get("writer_token");
+  if (!writer_token) return null;
+  const jwt = new JWT(writer_token);
   if (!jwt.isValidAt(new Date())) return null;
   return jwt;
 }
@@ -39,15 +39,15 @@ function login(
   password: string
 ): Promise<string> {
   return api(client)
-    .admin.login.$post({ data: { id, password } })
+    .writer.login.$post({ data: { id, password } })
     .then((d: { token: string }) => {
-      Cookie.set("admin_token", d.token);
+      Cookie.set("writer_token", d.token);
       return d.token;
     });
 }
 
 function logout() {
-  Cookie.remove("admin_token");
+  Cookie.remove("writer_token");
 }
 
 export default { getJWT, login, logout, attempt_get_JWT };

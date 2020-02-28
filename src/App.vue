@@ -62,11 +62,74 @@
               <b-link disabled>校内マップ</b-link>
             </li>
             <li>
-              <b-link disabled>近況</b-link>
+              <b-link to="/blog">近況</b-link>
               <ul class="menu-secondary">
-                <li><b-link disabled>お知らせ</b-link></li>
-                <li><b-link disabled>活動の様子</b-link></li>
-                <li><b-link disabled>在校生向け</b-link></li>
+                <li>
+                  <b-link
+                    :to="{ name: 'article_list', params: { category: 'news' } }"
+                  >
+                    {{ getCategory("news") }}
+                  </b-link>
+                </li>
+                <li>
+                  <b-link
+                    :to="{
+                      name: 'article_list',
+                      params: { category: 'general' }
+                    }"
+                  >
+                    {{ getCategory("general") }}
+                  </b-link>
+                </li>
+                <li>
+                  <b-link
+                    :to="{
+                      name: 'article_list',
+                      params: { category: 'workTeam' }
+                    }"
+                  >
+                    {{ getCategory("workTeam") }}
+                  </b-link>
+                </li>
+                <li>
+                  <b-link
+                    :to="{
+                      name: 'article_list',
+                      params: { category: 'exh' }
+                    }"
+                  >
+                    {{ getCategory("exh") }}
+                  </b-link>
+                </li>
+                <li>
+                  <b-link
+                    :to="{
+                      name: 'article_list',
+                      params: { category: 'contrib' }
+                    }"
+                  >
+                    {{ getCategory("contrib") }}
+                  </b-link>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <b-link :to="{ name: 'admin_top' }">ブログ管理</b-link>
+              <ul
+                class="menu-secondary"
+                v-if="this.$route.path.startsWith('/blog/admin')"
+              >
+                <li>
+                  <b-link :to="{ name: 'new_revision' }">新規リクエスト</b-link>
+                </li>
+                <li>
+                  <b-link :to="{ name: 'revision_list' }"
+                    >リクエスト一覧</b-link
+                  >
+                </li>
+                <li>
+                  <b-link :to="{ name: 'path_list' }">記事一覧</b-link>
+                </li>
               </ul>
             </li>
             <li><b-link to="document">文化祭資料</b-link></li>
@@ -98,6 +161,7 @@
       </footer>
     </div>
     <admin-login-modal />
+    <writer-login-modal />
   </div>
 </template>
 
@@ -377,12 +441,15 @@ header {
 import { Component, Vue } from "vue-property-decorator";
 import Vue2TouchEvents from "vue2-touch-events";
 import AdminLoginModal from "./components/AdminLoginModal.vue";
+import WriterLoginModal from "./components/WriterLoginModal.vue";
+import getCategory from "@/libs/categories";
 
 Vue.use(Vue2TouchEvents);
 
-@Component({ components: { AdminLoginModal } })
+@Component({ components: { AdminLoginModal, WriterLoginModal } })
 export default class Layout extends Vue {
   sidebar_shown = false;
+  getCategory = getCategory;
 
   show() {
     this.sidebar_shown = true;
