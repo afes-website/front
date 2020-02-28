@@ -117,6 +117,7 @@ import api from "@/apis/$api";
 import aspida from "@aspida/axios";
 import { BlogArticle, BlogArticleParameter } from "@/apis/blog/articles/@types";
 import Markdown from "@/libs/markdown";
+import getCategory from "@/libs/categories";
 
 @Component
 export default class ArticleList extends Vue {
@@ -135,7 +136,7 @@ export default class ArticleList extends Vue {
   }
   load() {
     if (this.$route.params.category)
-      this.title = this.$route.params.category + " 記事一覧";
+      this.title = getCategory(this.$route.params.category) + " 記事一覧";
     api(this.client)
       .blog.articles.$get({ query: this.filter_query })
       .then(data => {

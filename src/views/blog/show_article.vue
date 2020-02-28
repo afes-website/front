@@ -9,7 +9,7 @@
         </span>
         <span>
           <font-awesome-icon :icon="'folder'" class="fa-fw" />
-          {{ article.category }}
+          {{ getCategory(article.category) }}
         </span>
         <span>
           <font-awesome-icon :icon="'clock'" class="fa-fw" />
@@ -78,6 +78,7 @@ import { BlogArticle } from "@/apis/blog/articles/@types";
 import is_axios_error from "@/libs/is_axios_error";
 import FetchStatus from "@/libs/fetch_status";
 import Markdown from "@/libs/markdown";
+import getCategory from "@/libs/categories";
 
 @Component
 export default class ShowArticle extends Vue {
@@ -85,6 +86,7 @@ export default class ShowArticle extends Vue {
   article: BlogArticle | null = null;
   client = aspida();
   fetch_status: FetchStatus = "idle";
+  getCategory = getCategory;
 
   mounted() {
     this.load();

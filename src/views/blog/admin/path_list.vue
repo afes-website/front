@@ -22,7 +22,7 @@
         <tr v-for="(path, route) in paths" :key="route">
           <th>{{ route }}</th>
           <td>{{ path.title || "-" }}</td>
-          <td>{{ path.category || "-" }}</td>
+          <td>{{ getCategory(path.category) || "-" }}</td>
           <td>{{ getStringTime(path.created_at) || "-" }}</td>
           <td>{{ getStringTime(path.updated_at) || "-" }}</td>
           <td>
@@ -101,6 +101,7 @@ import AdminAuth from "@/libs/auth/admin_auth";
 import { BlogRevision } from "@/apis/blog/revisions/@types";
 import FetchStatus from "@/libs/fetch_status";
 import FetchStatusIcon from "@/components/FetchStatusIcon.vue";
+import getCategory from "@/libs/categories";
 
 interface Path {
   category?: string;
@@ -115,6 +116,7 @@ export default class PathList extends Vue {
   title = "ブログ 管理画面 記事情報";
   paths: { [key: string]: Path } = {};
   client = aspida();
+  getCategory = getCategory;
 
   fetch_status: FetchStatus = "idle";
 
