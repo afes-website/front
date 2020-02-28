@@ -3,7 +3,7 @@
     <h1>{{ title }}</h1>
     <p>path:<b-input v-model="article_path" /></p>
     <p>
-      <b-button @click="load">
+      <b-button @click="load" :disabled="article_path === ''">
         記事情報を読みこむ
         <fetch-status-icon :status="fetch_status" />
       </b-button>
@@ -20,7 +20,11 @@
         <div id="diff-view" v-html="diff_from_current" class="diff"></div>
       </b-tab>
     </b-tabs>
-    <b-button @click="post" variant="primary">
+    <b-button
+      @click="post"
+      variant="primary"
+      :disabled="article_path === '' || article_title === ''"
+    >
       post
       <fetch-status-icon :status="status" small />
     </b-button>
