@@ -18,7 +18,9 @@
           :class="{ open: sidebar_shown }"
           @click="toggle_sidebar"
         />
-        <b-link id="brand" :to="{ name: 'Home' }">73rd afes</b-link>
+        <b-link id="brand" :to="{ name: 'Home' }">
+          <img src="./assets/logo.png" alt="logo" />
+        </b-link>
         <div id="icons">
           <b-link
             target="_blank"
@@ -148,9 +150,10 @@ header {
       display: none;
     }
     #brand {
-      font-size: 2rem;
-      font-weight: 600;
-      color: inherit;
+      img {
+        margin-left: -16px;
+        width: calc(100% + 30px);
+      }
     }
 
     #menu {
@@ -284,8 +287,11 @@ header {
         }
       }
       #brand {
-        margin-bottom: 0;
-        line-height: 1;
+        img {
+          margin-top: 5px;
+          width: auto;
+          height: 64px;
+        }
       }
       #icons {
         display: flex;
