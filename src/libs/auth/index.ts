@@ -1,3 +1,4 @@
 import JWT from "./jwt";
 import AdminAuth from "./admin_auth";
-export default { JWT, AdminAuth };
+import WriterAuth from "./writer_auth";
+export default { JWT, AdminAuth, WriterAuth };

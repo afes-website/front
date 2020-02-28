@@ -1,12 +1,9 @@
+import { BlogRevision } from "../@types";
 import { AdminAuthToken } from "@/apis/@types";
-export interface AdminUserInfo {
-  id: string;
-  name: string;
-}
 
 export interface Methods {
-  get: {
+  patch: {
     reqHeaders: AdminAuthToken;
-    resData: AdminUserInfo;
+    resData: BlogRevision;
   };
 }
