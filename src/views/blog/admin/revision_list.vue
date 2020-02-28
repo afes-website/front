@@ -18,7 +18,7 @@
       </thead>
       <tbody>
         <b-tr
-          v-for="revision in revisions"
+          v-for="revision in sorted(revisions)"
           :key="revision.id"
           :variant="
             revision.status == 'accepted'
@@ -151,6 +151,12 @@ export default class RevisionList extends Vue {
       .catch(() => {
         this.fetch_status = "fail";
       });
+  }
+
+  sorted(revisions: BlogRevisionWithArticle[]) {
+    return revisions.sort((a, b) => {
+      return a.id - b.id;
+    });
   }
 }
 </script>
