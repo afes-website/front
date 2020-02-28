@@ -2,37 +2,38 @@
   <div id="article-list" class="box">
     <h1>{{ title }}</h1>
     <div id="articles">
-      <div v-for="article in shown_articles" :key="article.id">
-        <b-link
-          :to="{
-            name: 'show_article',
-            params: { category: article.category, id: article.id }
-          }"
+      <b-link
+        :to="{
+          name: 'show_article',
+          params: { category: article.category, id: article.id }
+        }"
+        class="card-wrap-link"
+        v-for="article in shown_articles"
+        :key="article.id"
+      >
+        <b-card
+          img-src="https://placehold.jp/30/cccccc/888888/150x150.jpg?text=no%20image"
+          img-alt="eye catch"
+          img-left
+          class="mb-3"
         >
-          <b-card
-            img-src="https://placehold.jp/30/cccccc/888888/150x150.jpg?text=no%20image"
-            img-alt="eye catch"
-            img-left
-            class="mb-3"
-          >
-            <!-- TODO:add image -->
-            <b-card-title>
-              {{ article.title }}
-            </b-card-title>
-            <b-card-sub-title>
-              <span>
-                <font-awesome-icon :icon="'user'" class="fa-fw" />
-                {{ "author" }}
-              </span>
-              <span>
-                <font-awesome-icon :icon="'clock'" class="fa-fw" />
-                {{ getStringTime(article.created_at) }}
-              </span>
-            </b-card-sub-title>
-            <b-card-text v-html="rendered_md(article.content)" />
-          </b-card>
-        </b-link>
-      </div>
+          <!-- TODO:add image -->
+          <b-card-title>
+            {{ article.title }}
+          </b-card-title>
+          <b-card-sub-title>
+            <span>
+              <font-awesome-icon :icon="'user'" class="fa-fw" />
+              {{ "author" }}
+            </span>
+            <span>
+              <font-awesome-icon :icon="'clock'" class="fa-fw" />
+              {{ getStringTime(article.created_at) }}
+            </span>
+          </b-card-sub-title>
+          <b-card-text v-html="rendered_md(article.content)" />
+        </b-card>
+      </b-link>
     </div>
 
     <b-pagination
@@ -47,46 +48,51 @@
 </template>
 
 <style lang="scss" scoped>
-.card {
+.card-wrap-link {
   height: 150px;
   width: 100%;
-  color: #222;
-  .card-body {
-    .card-title {
-      margin-top: -8px;
-      margin-bottom: 12px;
-    }
+  .card {
+    height: 150px;
+    width: 100%;
+    color: #222;
 
-    .card-subtitle {
-      margin-bottom: 5px;
-
-      span {
-        margin-right: 0.5em;
-      }
-    }
-
-    .card-text {
-      display: block;
-      height: 4.5em;
-      position: relative;
-      overflow: hidden;
-
-      &::before,
-      &::after {
-        position: absolute;
-        background: #fff;
+    .card-body {
+      .card-title {
+        margin-top: -8px;
+        margin-bottom: 12px;
       }
 
-      &::before {
-        content: "…";
-        bottom: 0;
-        right: 0;
+      .card-subtitle {
+        margin-bottom: 5px;
+
+        span {
+          margin-right: 0.5em;
+        }
       }
 
-      &::after {
-        content: "";
-        width: 100%;
-        height: 100%;
+      .card-text {
+        display: block;
+        height: 4.5em;
+        position: relative;
+        overflow: hidden;
+
+        &::before,
+        &::after {
+          position: absolute;
+          background: #fff;
+        }
+
+        &::before {
+          content: "…";
+          bottom: 0;
+          right: 0;
+        }
+
+        &::after {
+          content: "";
+          width: 100%;
+          height: 100%;
+        }
       }
     }
   }
