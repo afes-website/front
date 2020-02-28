@@ -71,6 +71,10 @@
         </tbody>
       </table>
     </section>
+    <section>
+      <h2>差分</h2>
+      <div id="diff-view" v-html="diff_from_original"></div>
+    </section>
     <b-button @click="apply_changes" variant="primary" :disabled="!can_apply">
       apply
       <fetch-status-icon :status="post_status" small />
@@ -89,6 +93,23 @@
   </div>
 </template>
 
+<style lang="scss">
+@import "~diff2html/bundles/css/diff2html.min.css";
+#diff-view {
+  .d2h-file-list-wrapper {
+    display: none;
+  }
+  .d2h-wrapper {
+    .d2h-file-header {
+      display: none;
+    }
+    td {
+      padding: 0;
+    }
+  }
+}
+</style>
+
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import api from "@/apis/$api";
@@ -99,6 +120,8 @@ import { BlogArticle } from "@/apis/blog/articles/@types";
 import is_axios_error from "@/libs/is_axios_error";
 import FetchStatus from "@/libs/fetch_status";
 import FetchStatusIcon from "@/components/FetchStatusIcon.vue";
+import DiffLib from "difflib";
+import * as Diff2Html from "diff2html";
 
 @Component({ components: { FetchStatusIcon } })
 export default class ManagePath extends Vue {
@@ -107,6 +130,7 @@ export default class ManagePath extends Vue {
   client = aspida();
 
   revision_selection = 0;
+  original_selection = 0;
   category = "";
   category_article_count = -1;
 
@@ -124,6 +148,7 @@ export default class ManagePath extends Vue {
     this.fetch_status = "pending";
     this.article_exists = false;
     this.revision_selection = 0;
+    this.original_selection = 0;
     AdminAuth.attempt_get_JWT()
       .then(token => {
         Promise.all([
@@ -132,6 +157,7 @@ export default class ManagePath extends Vue {
             .$get()
             .then((data: BlogArticle) => {
               this.category = data.category;
+              this.original_selection = data.revision_id;
               this.revision_selection = data.revision_id;
               this.article_exists = true;
             })
@@ -254,6 +280,29 @@ export default class ManagePath extends Vue {
       .catch(() => {
         this.delete_status = "fail";
       });
+  }
+
+  get diff_from_original() {
+    const original_content =
+      this.original_selection in this.revisions
+        ? this.revisions[this.original_selection].content.split("\n")
+        : [];
+    const current_content =
+      this.revision_selection in this.revisions
+        ? this.revisions[this.revision_selection].content.split("\n")
+        : [];
+
+    const diff = DiffLib.unifiedDiff(original_content, current_content, {
+      fromfile: "Original",
+      tofile: "Current",
+      lineterm: ""
+    }).join("\n");
+
+    return Diff2Html.html(diff, {
+      drawFileList: true,
+      matching: "lines",
+      outputFormat: "side-by-side"
+    });
   }
 }
 </script>
