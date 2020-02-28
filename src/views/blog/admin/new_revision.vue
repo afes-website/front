@@ -11,13 +11,13 @@
     <p>title:<b-input v-model="article_title" /></p>
     <b-tabs>
       <b-tab title="編集" active>
-        <b-textarea v-model="content" rows="30"></b-textarea>
+        <b-textarea v-model="content" class="edit-area"></b-textarea>
       </b-tab>
       <b-tab title="プレビュー">
-        <div v-html="rendered_content"></div>
+        <div v-html="rendered_content" class="preview"></div>
       </b-tab>
       <b-tab title="現在との差分">
-        <div id="diff-view" v-html="diff_from_current"></div>
+        <div id="diff-view" v-html="diff_from_current" class="diff"></div>
       </b-tab>
     </b-tabs>
     <b-button @click="post" variant="primary">
@@ -26,6 +26,20 @@
     </b-button>
   </div>
 </template>
+
+<style lang="scss" scoped>
+.edit-area,
+div.preview,
+div.diff {
+  height: 750px;
+  overflow: scroll;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+}
+div.preview {
+  padding: 6px 12px;
+}
+</style>
 
 <style lang="scss">
 @import "~diff2html/bundles/css/diff2html.min.css";
@@ -39,6 +53,7 @@
     }
     td {
       padding: 0;
+      position: unset;
     }
   }
 }
