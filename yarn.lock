@@ -943,6 +943,11 @@
   resolved "https://registry.yarnpkg.com/@types/color-name/-/color-name-1.1.1.tgz#1c1261bbeaa10a8055bbc5d8ab84b7b2afc846a0"
   integrity sha512-rr+OQyAjxze7GgWrSaJwydHStIhHq2lvY3BOC2Mj7KnzI7XK0Uw1TOOdI9lDoajEbSWLiYgoo4f1R51erQfhPQ==
 
+"@types/diff2html@^0.0.5":
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/@types/diff2html/-/diff2html-0.0.5.tgz#99de7b7a8ac77194db10ac047f7a0c86463e49a5"
+  integrity sha512-ZNANtIL5cZ/V9eDnH0P7qERxPchSSM1X6wUuOSioC+aWQE6uie/LVMO3KClOmgxLCu1fD77jy8sanYPP8wH7Yw==
+
 "@types/eslint-visitor-keys@^1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@types/eslint-visitor-keys/-/eslint-visitor-keys-1.0.0.tgz#1ee30d79544ca84d68d4b3cdb0af4f205663dd2d"
