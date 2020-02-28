@@ -7,6 +7,10 @@
     </b-button>
     <section id="form">
       Category
+      <p>
+        <code>news</code>, <code>general</code>, <code>workTeam</code>,
+        <code>exh</code>, <code>contrib</code> のうちどれか
+      </p>
       <b-input
         v-model="category"
         @input="get_category_articles"
