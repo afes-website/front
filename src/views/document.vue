@@ -51,7 +51,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 @Component
-export default class Policy extends Vue {
+export default class Document extends Vue {
   readonly title: string = "資料庫";
 }
 </script>
