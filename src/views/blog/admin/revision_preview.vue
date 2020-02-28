@@ -90,7 +90,6 @@ import FetchStatus from "@/libs/fetch_status";
 import Markdown from "@/libs/markdown";
 import AdminAuth from "@/libs/auth/admin_auth";
 import WriterAuth from "@/libs/auth/writer_auth";
-import { Dictionary } from "vue-router/types/router";
 import { AdminAuthToken, WriterAuthToken } from "../../../apis/@types";
 
 @Component
