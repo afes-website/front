@@ -16,7 +16,9 @@
       <b-tab title="プレビュー">
         <div v-html="rendered_content"></div>
       </b-tab>
-      <b-tab title="現在との差分" disabled></b-tab>
+      <b-tab title="現在との差分">
+        <div id="diff-view" v-html="diff_from_current"></div>
+      </b-tab>
     </b-tabs>
     <b-button @click="post" variant="primary">
       post
@@ -25,7 +27,22 @@
   </div>
 </template>
 
-<style lang="scss"></style>
+<style lang="scss">
+@import "~diff2html/bundles/css/diff2html.min.css";
+#diff-view {
+  .d2h-file-list-wrapper {
+    display: none;
+  }
+  .d2h-wrapper {
+    .d2h-file-header {
+      display: none;
+    }
+    td {
+      padding: 0;
+    }
+  }
+}
+</style>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
@@ -36,6 +53,8 @@ import { BlogRevision } from "@/apis/blog/revisions/@types";
 import FetchStatus from "@/libs/fetch_status";
 import FetchStatusIcon from "@/components/FetchStatusIcon.vue";
 import Markdown from "@/libs/markdown";
+import DiffLib from "difflib";
+import * as Diff2Html from "diff2html";
 
 @Component({ components: { FetchStatusIcon } })
 export default class NewRevision extends Vue {
@@ -96,6 +115,23 @@ export default class NewRevision extends Vue {
 
   get rendered_content() {
     return Markdown.render(this.content);
+  }
+
+  get diff_from_current(): string {
+    const diff = DiffLib.unifiedDiff(
+      this.latest_content.split("\n"), // old
+      this.content.split("\n"), // new
+      {
+        fromfile: "Original",
+        tofile: "Current",
+        lineterm: ""
+      }
+    ).join("\n");
+    return Diff2Html.html(diff, {
+      drawFileList: true,
+      matching: "lines",
+      outputFormat: "side-by-side"
+    });
   }
 }
 </script>
