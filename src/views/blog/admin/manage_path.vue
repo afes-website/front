@@ -75,6 +75,17 @@
       apply
       <fetch-status-icon :status="post_status" small />
     </b-button>
+    <b-button
+      v-b-modal="'delete-confirm-modal'"
+      variant="danger"
+      :disabled="!article_exists"
+    >
+      delete
+      <fetch-status-icon :status="delete_status" small />
+    </b-button>
+    <b-modal id="delete-confirm-modal" @ok="delete_article">
+      <p>削除してもよろしいですか?</p>
+    </b-modal>
   </div>
 </template>
 
@@ -101,6 +112,9 @@ export default class ManagePath extends Vue {
 
   fetch_status: FetchStatus = "idle";
   post_status: FetchStatus = "idle";
+  delete_status: FetchStatus = "idle";
+
+  article_exists = false;
 
   mounted() {
     this.load();
@@ -108,6 +122,8 @@ export default class ManagePath extends Vue {
 
   load() {
     this.fetch_status = "pending";
+    this.article_exists = false;
+    this.revision_selection = 0;
     AdminAuth.attempt_get_JWT()
       .then(token => {
         Promise.all([
@@ -117,6 +133,7 @@ export default class ManagePath extends Vue {
             .then((data: BlogArticle) => {
               this.category = data.category;
               this.revision_selection = data.revision_id;
+              this.article_exists = true;
             })
             .then(this.get_category_articles)
             .catch((e: unknown) => {
@@ -209,6 +226,7 @@ export default class ManagePath extends Vue {
       })
       .then(() => {
         this.post_status = "idle";
+        this.load();
       })
       .catch(() => {
         this.post_status = "fail";
@@ -217,6 +235,25 @@ export default class ManagePath extends Vue {
 
   get can_apply() {
     return this.category != "" && this.revision_selection in this.revisions;
+  }
+
+  delete_article() {
+    this.delete_status = "pending";
+    AdminAuth.attempt_get_JWT()
+      .then(token => {
+        return api(this.client)
+          .blog.articles._id(this.$route.params.id)
+          .delete({
+            headers: { "X-ADMIN-TOKEN": token.content }
+          });
+      })
+      .then(() => {
+        this.delete_status = "idle";
+        this.load();
+      })
+      .catch(() => {
+        this.delete_status = "fail";
+      });
   }
 }
 </script>
