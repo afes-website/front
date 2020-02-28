@@ -45,10 +45,10 @@
         <nav id="menu" :class="{ shown: sidebar_shown }">
           <ul>
             <li>
-              <b-link to="about">ごあいさつ</b-link>
+              <b-link :to="{ name: 'about' }">ごあいさつ</b-link>
             </li>
             <li>
-              <b-link to="access">アクセス</b-link>
+              <b-link :to="{ name: 'access' }">アクセス</b-link>
             </li>
             <li>
               <b-link disabled>展示一覧</b-link>
@@ -150,7 +150,7 @@
               <b-link disabled>お問い合わせ</b-link>
             </li>
             <li>
-              <b-link to="policy">プライバシーポリシー</b-link>
+              <b-link :to="{ name: 'policy' }">プライバシーポリシー</b-link>
             </li>
           </ul>
         </nav>
