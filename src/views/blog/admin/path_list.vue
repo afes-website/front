@@ -23,8 +23,8 @@
           <th>{{ route }}</th>
           <td>{{ path.title || "-" }}</td>
           <td>{{ path.category || "-" }}</td>
-          <td>{{ path.created_at || "-" }}</td>
-          <td>{{ path.updated_at || "-" }}</td>
+          <td>{{ getStringTime(path.created_at) || "-" }}</td>
+          <td>{{ getStringTime(path.updated_at) || "-" }}</td>
           <td>
             <b-link
               v-if="path.category"
@@ -167,6 +167,17 @@ export default class PathList extends Vue {
             this.fetch_status = "fail";
           });
       });
+  }
+
+  getStringTime(laravel_time: string): string {
+    if (!laravel_time) return "";
+    const date = new Date(Date.parse(laravel_time));
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    const hour = date.getHours();
+    const min = date.getMinutes();
+    return year + "/" + month + "/" + day + " " + hour + ":" + min;
   }
 }
 </script>

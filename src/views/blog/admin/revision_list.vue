@@ -11,7 +11,7 @@
           <th>id</th>
           <th>title</th>
           <th>path</th>
-          <th>timestamp</th>
+          <th>time</th>
           <th>status</th>
           <th>show</th>
         </tr>
@@ -31,7 +31,7 @@
           <th>{{ revision.id }}</th>
           <td>{{ revision.title }}</td>
           <td>{{ revision.article_id }}</td>
-          <td>{{ revision.timestamp }}</td>
+          <td>{{ getStringTime(revision.timestamp) }}</td>
           <td>{{ revision.status }}</td>
           <td>
             <b-link
@@ -157,6 +157,16 @@ export default class RevisionList extends Vue {
     return revisions.sort((a, b) => {
       return a.id - b.id;
     });
+  }
+
+  getStringTime(laravel_time: string): string {
+    const date = new Date(Date.parse(laravel_time));
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    const hour = date.getHours();
+    const min = date.getMinutes();
+    return year + "/" + month + "/" + day + " " + hour + ":" + min;
   }
 }
 </script>
