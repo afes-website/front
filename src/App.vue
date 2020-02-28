@@ -67,6 +67,7 @@
                 <li><b-link disabled>在校生向け</b-link></li>
               </ul>
             </li>
+            <li><b-link disabled>文化祭資料</b-link></li>
           </ul>
         </nav>
         <div
