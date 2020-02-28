@@ -23,6 +23,7 @@
     <b-button
       @click="post"
       variant="primary"
+      class="mt-3 mb-2"
       :disabled="article_path === '' || article_title === ''"
     >
       post
