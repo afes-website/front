@@ -140,7 +140,7 @@ header {
   flex-direction: column;
   justify-content: center;
   align-items: stretch;
-  z-index: 1000000007;
+  z-index: 1003;
   #top {
     flex-grow: 1;
     #hamburger,
@@ -274,7 +274,7 @@ header {
         display: block;
         color: #fff;
         transition: opacity 0.3s;
-        z-index: 1501;
+        z-index: 1002;
         opacity: 0;
         position: fixed;
         top: calc(0.5rem + 0.7rem);
@@ -303,9 +303,9 @@ header {
         &-fade {
           transition: opacity, left 0.3s;
         }
-        z-index: 1500;
+        z-index: 1001;
         &-fade {
-          z-index: 1499;
+          z-index: 1000;
           position: fixed;
           left: 0;
           top: 0;
