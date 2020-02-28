@@ -51,7 +51,7 @@ declare module "difflib" {
   //   // _fancyHelper(a, alo, ahi, b, blo, bhi);
   //   // _qformat(aline, bline, atags, btags);
   // }
-  function IS_LINE_JUNK(line: string, pat?: Regexp): Regexp.test;
+  function IS_LINE_JUNK(line: string, pat?: RegExp): boolean;
   function IS_CHARACTER_JUNK(ch: string, ws?: string): boolean;
   // function _formatRangeUnified(start, stop);
   function unifiedDiff(a: string[], b: string[], _arg?: Options): string[];
