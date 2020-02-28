@@ -47,39 +47,47 @@
 </template>
 
 <style lang="scss" scoped>
-.card-body {
+.card {
   height: 150px;
   width: 100%;
   color: #222;
-  .card-title {
-    margin-top: -8px;
-    margin-bottom: 12px;
-  }
-  .card-subtitle {
-    margin-bottom: 5px;
-    span {
-      margin-right: 0.5em;
+  .card-body {
+    .card-title {
+      margin-top: -8px;
+      margin-bottom: 12px;
     }
-  }
-  .card-text {
-    display: block;
-    height: 4.5em;
-    position: relative;
-    overflow: hidden;
-    &::before,
-    &::after {
-      position: absolute;
-      background: #fff;
+
+    .card-subtitle {
+      margin-bottom: 5px;
+
+      span {
+        margin-right: 0.5em;
+      }
     }
-    &::before {
-      content: "…";
-      bottom: 0;
-      right: 0;
-    }
-    &::after {
-      content: "";
-      width: 100%;
-      height: 100%;
+
+    .card-text {
+      display: block;
+      height: 4.5em;
+      position: relative;
+      overflow: hidden;
+
+      &::before,
+      &::after {
+        position: absolute;
+        background: #fff;
+      }
+
+      &::before {
+        content: "…";
+        bottom: 0;
+        right: 0;
+      }
+
+      &::after {
+        content: "";
+        width: 100%;
+        height: 100%;
+      }
     }
   }
 }
