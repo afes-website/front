@@ -55,6 +55,12 @@
   </div>
 </template>
 
+<style lang="scss" scoped>
+.btn {
+  margin-bottom: 0.5rem;
+}
+</style>
+
 <style lang="scss">
 #articles {
   display: flex;

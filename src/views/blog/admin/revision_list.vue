@@ -62,6 +62,12 @@
   </div>
 </template>
 
+<style lang="scss" scoped>
+.btn {
+  margin-bottom: 0.5rem;
+}
+</style>
+
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import api from "@/apis/$api";
