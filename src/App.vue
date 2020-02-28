@@ -60,7 +60,7 @@
               <b-link disabled>校内マップ</b-link>
             </li>
             <li>
-              <b-link to="/blog">ブログ</b-link>
+              <b-link to="/blog">近況</b-link>
               <ul class="menu-secondary">
                 <li>
                   <b-link
@@ -130,6 +130,7 @@
                 </li>
               </ul>
             </li>
+            <li><b-link to="document">文化祭資料</b-link></li>
           </ul>
         </nav>
         <div

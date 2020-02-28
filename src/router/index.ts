@@ -27,6 +27,12 @@ const routes = [
       import(/* webpackChunkName: "policy" */ "@/views/policy.vue")
   },
   {
+    path: "/document",
+    name: "document",
+    component: () =>
+      import(/* webpackChunkName: "document" */ "@/views/document.vue")
+  },
+  {
     path: "/blog",
     name: "blog_top",
     component: () =>
@@ -103,6 +109,11 @@ const routes = [
 const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) return savedPosition;
+    if (to.hash) return { selector: to.hash };
+    return { x: 0, y: 0 };
+  },
   routes
 });
 
