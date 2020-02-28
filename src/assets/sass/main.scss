@@ -1,0 +1,75 @@
+@import './variables';
+
+// Noto Sans JP [400, 500, 700] from Google Fonts
+@import url('https://fonts.googleapis.com/css?family=Noto+Sans+JP:400,500,700&display=swap&subset=japanese');
+
+$theme-colors: ( // color for bootstrap
+  "site-theme": $site-theme
+);
+@import "~bootstrap";
+@import "~bootstrap-vue";
+
+
+* {
+  font-family: "Noto Sans JP", sans-serif;
+}
+
+h1 {
+  font-size: 2.2rem;
+  font-weight: 500;
+  padding-bottom: .4rem;
+  border-bottom: solid 2px $site-theme;
+  margin-bottom: 1.2rem;
+}
+
+h2 {
+  font-size: 1.8rem;
+  font-weight: 500;
+  padding: 0 0 .2rem .6rem;
+  border-left: solid 0.8rem $site-theme;
+  margin-bottom: .8rem;
+}
+
+p {
+  line-height: 1.75rem;
+  margin-bottom: .75rem;
+}
+
+li,
+address,
+small {
+  line-height: 1.75rem;
+}
+
+a {
+  &:visited {
+    color: $site-theme;
+  }
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+section {
+  margin: 1.5rem 0;
+}
+
+*::selection {
+  background-color: $site-theme;
+  color: #fff;
+}
+
+
+.box {
+  background-color: rgba(#fff, 0.8);
+  border-radius: .3rem;
+  box-shadow: 0 .125rem .25rem rgba(#000, .1);
+  padding: 1rem 1.5rem;
+}
+
+@media screen and (max-width: 900px) {
+  .box {
+    box-shadow: none;
+    padding: 0;
+  }
+}
