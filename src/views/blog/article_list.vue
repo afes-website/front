@@ -29,7 +29,7 @@
                 {{ getStringTime(article.created_at) }}
               </span>
             </b-card-sub-title>
-            <b-card-text v-html="md.render(article.content)" />
+            <b-card-text v-html="rendered_md(article.content)" />
           </b-card>
         </b-link>
       </div>
@@ -108,27 +108,13 @@ import { Component, Vue, Watch } from "vue-property-decorator";
 import api from "@/apis/$api";
 import aspida from "@aspida/axios";
 import { BlogArticle, BlogArticleParameter } from "@/apis/blog/articles/@types";
+import Markdown from "@/libs/markdown";
 
 @Component
 export default class ArticleList extends Vue {
   title = "ブログ 記事一覧";
   articles: BlogArticle[] = [];
   client = aspida();
-  /* eslint-disable @typescript-eslint/no-var-requires */
-  md = require("markdown-it")({ linkify: true })
-    .use(require("markdown-it-sanitizer"))
-    .use(require("markdown-it-imsize"))
-    .use(require("markdown-it-checkbox"))
-    .use(require("markdown-it-mark"))
-    .use(require("markdown-it-emoji"))
-    .use(require("markdown-it-ins"))
-    .use(require("markdown-it-container"), "alert-success")
-    .use(require("markdown-it-container"), "alert-info")
-    .use(require("markdown-it-container"), "alert-warning")
-    .use(require("markdown-it-container"), "alert-danger")
-    .use(require("markdown-it-sub"))
-    .use(require("markdown-it-cjk-breaks"));
-  /* eslint-enable */
 
   perPage = 10;
   currentPage = 1;
@@ -172,6 +158,10 @@ export default class ArticleList extends Vue {
       (this.currentPage - 1) * this.perPage,
       this.currentPage * this.perPage
     );
+  }
+
+  rendered_md(md: string): string {
+    return Markdown.render(md);
   }
 }
 </script>

@@ -16,7 +16,7 @@
           {{ getStringTime(article.created_at) }}
         </span>
       </div>
-      <div class="main-content" v-html="md.render(article.content)" />
+      <div class="main-content" v-html="rendered_md" />
     </template>
     <template v-else>
       <p>{{ fetch_status }}</p>
@@ -77,6 +77,7 @@ import aspida from "@aspida/axios";
 import { BlogArticle } from "@/apis/blog/articles/@types";
 import is_axios_error from "@/libs/is_axios_error";
 import FetchStatus from "@/libs/fetch_status";
+import Markdown from "@/libs/markdown";
 
 @Component
 export default class ShowArticle extends Vue {
@@ -84,21 +85,6 @@ export default class ShowArticle extends Vue {
   article: BlogArticle | null = null;
   client = aspida();
   fetch_status: FetchStatus = "idle";
-  /* eslint-disable @typescript-eslint/no-var-requires */
-  md = require("markdown-it")({ linkify: true })
-    .use(require("markdown-it-sanitizer"))
-    .use(require("markdown-it-imsize"))
-    .use(require("markdown-it-checkbox"))
-    .use(require("markdown-it-mark"))
-    .use(require("markdown-it-emoji"))
-    .use(require("markdown-it-ins"))
-    .use(require("markdown-it-container"), "alert-success")
-    .use(require("markdown-it-container"), "alert-info")
-    .use(require("markdown-it-container"), "alert-warning")
-    .use(require("markdown-it-container"), "alert-danger")
-    .use(require("markdown-it-sub"))
-    .use(require("markdown-it-cjk-breaks"));
-  /* eslint-enable */
 
   mounted() {
     this.load();
@@ -143,6 +129,11 @@ export default class ShowArticle extends Vue {
         }
         this.fetch_status = "fail";
       });
+  }
+
+  get rendered_md(): string | null {
+    if (this.article == null) return null;
+    return Markdown.render(this.article.content);
   }
 }
 </script>
