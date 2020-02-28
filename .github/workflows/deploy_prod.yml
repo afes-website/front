@@ -32,7 +32,7 @@ jobs:
       - name: push with scp
         run: scp -r -o StrictHostKeyChecking=no -P $SSH_PORT -i .ssh/id_ed25519 ./dist/. $SSH_USER@$SSH_HOST:$DIR
         env:
-          DIR: ${{ secrets.DEST_DIR_PROD }}
+          DIR: ~/public_html/afes.info
           SSH_HOST: ${{ secrets.SERVER_HOST }}
           SSH_USER: ${{ secrets.SERVER_USER }}
           SSH_PORT: ${{ secrets.SERVER_PORT }}
