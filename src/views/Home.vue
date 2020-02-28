@@ -29,9 +29,10 @@
       <p>第73回麻布学園文化祭公式ウェブサイトです。</p>
       <p>当日の展示に関する情報や、日々の活動の様子などを発信しています。</p>
       <div id="lower-right">
-        <span id="date">2020/5/1(金)～5/3(日)</span>
-        <!-- TODO: logo -->
-        <img src="https://placehold.jp/450x125.png" alt="logo" />
+        <img src="../assets/logo.png" alt="logo" />
+        <p class="covid-19-warning">
+          ＊ 新型コロナウイルスの流行に伴い、日程が変更となる場合があります。
+        </p>
       </div>
     </div>
   </div>
@@ -73,12 +74,15 @@
       display: flex;
       flex-direction: column;
 
-      #date {
-        text-align: right;
+      img {
+        width: 640px;
+      }
+      .covid-19-warning {
+        text-align: center;
+        line-height: 1.1;
+        font-size: 1.1rem;
+        margin: -0.8rem 0 0 0;
         font-weight: 700;
-        font-size: 2.6rem;
-        margin-bottom: 0.5rem;
-        text-shadow: 0 0.125rem 0.25rem rgba(#000, 0.1);
       }
     }
   }
