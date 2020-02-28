@@ -175,8 +175,9 @@ export default class PathList extends Vue {
     const year = date.getFullYear();
     const month = date.getMonth() + 1;
     const day = date.getDate();
-    const hour = date.getHours();
-    const min = date.getMinutes();
+    const hour = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
+    const min =
+      date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
     return year + "/" + month + "/" + day + " " + hour + ":" + min;
   }
 }
