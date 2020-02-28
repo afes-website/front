@@ -46,4 +46,8 @@ function login(
     });
 }
 
-export default { getJWT, login, attempt_get_JWT };
+function logout() {
+  Cookie.remove("admin_token");
+}
+
+export default { getJWT, login, logout, attempt_get_JWT };
