@@ -30,6 +30,9 @@
       <p>当日の展示に関する情報や、日々の活動の様子などを発信しています。</p>
       <div id="lower-right">
         <img src="../assets/logo.png" alt="logo" />
+        <p class="covid-19-warning">
+          ＊ 新型コロナウイルスの流行に伴い、日程が変更となる場合があります。
+        </p>
       </div>
     </div>
   </div>
@@ -73,6 +76,13 @@
 
       img {
         width: 640px;
+      }
+      .covid-19-warning {
+        text-align: center;
+        line-height: 1.1;
+        font-size: 1.1rem;
+        margin: -0.8rem 0 0 0;
+        font-weight: 700;
       }
     }
   }
