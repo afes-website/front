@@ -71,6 +71,10 @@ export default class WriterChangePasswordModal extends Vue {
         this.status = "idle";
         this._value = false;
         EventHub.emitLoginSuccess();
+        this.$bvToast.toast("パスワードを変更しました。", {
+          title: "Change Password",
+          autoHideDelay: 5000
+        });
       })
       .catch(() => {
         this.status = "fail";
