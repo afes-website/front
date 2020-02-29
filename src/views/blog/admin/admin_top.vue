@@ -1,7 +1,8 @@
 <template>
   <div id="admin-top" class="box">
     <h1>{{ title }}</h1>
-    <p class="profile">
+    <section class="profile">
+      <h2>管理者ユーザ</h2>
       <font-awesome-icon icon="user-shield" class="fa-fw" />
       <template v-if="this.admin_user !== null">
         <span class="name">{{ this.admin_user.name }}</span>
@@ -22,8 +23,9 @@
         <font-awesome-icon :icon="'sign-in-alt'" class="fa-fw" />
         ログイン
       </b-button>
-    </p>
-    <p class="profile">
+    </section>
+    <section class="profile">
+      <h2>一般ユーザ</h2>
       <font-awesome-icon icon="user-edit" class="fa-fw" />
       <template v-if="this.writer_user !== null">
         <span class="name">{{ this.writer_user.name }}</span>
@@ -44,7 +46,7 @@
         <font-awesome-icon :icon="'sign-in-alt'" class="fa-fw" />
         ログイン
       </b-button>
-    </p>
+    </section>
     <template v-if="writer_logged_in">
       <section>
         <h2>新規リクエスト</h2>
