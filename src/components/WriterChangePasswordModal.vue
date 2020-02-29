@@ -69,7 +69,7 @@ export default class WriterChangePasswordModal extends Vue {
     Auth.WriterAuth.change_password(aspida(), this.password)
       .then(() => {
         this.status = "idle";
-        this.value = false;
+        this._value = false;
         EventHub.emitLoginSuccess();
       })
       .catch(() => {
