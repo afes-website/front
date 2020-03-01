@@ -1,5 +1,5 @@
 <template>
-  <div class="box">
+  <div id="path-list" class="box">
     <h1>{{ title }}</h1>
     <b-button @click="load">
       Reload
@@ -13,19 +13,29 @@
           <th>category</th>
           <th>created</th>
           <th>updated</th>
-          <th></th>
-          <th></th>
-          <th></th>
+          <th>show</th>
+          <th>manage</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="(path, route) in paths" :key="route">
-          <th>{{ route }}</th>
+          <th>
+            {{ route }}
+            <b-badge
+              variant="warning"
+              v-if="path.waiting_count != 0"
+              v-b-tooltip.hover
+              :title="'has ' + path.waiting_count + ' waiting revisions'"
+              class="ml-1"
+            >
+              {{ path.waiting_count }}
+            </b-badge>
+          </th>
           <td>{{ path.title || "-" }}</td>
           <td>{{ getCategory(path.category) || "-" }}</td>
-          <td>{{ getStringTime(path.created_at) || "-" }}</td>
-          <td>{{ getStringTime(path.updated_at) || "-" }}</td>
-          <td>
+          <td class="td-time">{{ getStringTime(path.created_at) || "-" }}</td>
+          <td class="td-time">{{ getStringTime(path.updated_at) || "-" }}</td>
+          <td class="td-icon">
             <b-link
               v-if="path.category"
               :to="{
@@ -33,23 +43,13 @@
                 params: { category: path.category, id: route }
               }"
             >
-              <font-awesome-icon :icon="'file'" />
+              <font-awesome-icon :icon="'file'" class="fa-fw fa-2x" />
             </b-link>
           </td>
-          <td>
+          <td class="td-icon">
             <b-link :to="{ name: 'manage_path', params: { id: route } }">
-              <font-awesome-icon :icon="'tools'" />
+              <font-awesome-icon :icon="'tools'" class="fa-fw fa-2x" />
             </b-link>
-          </td>
-          <td>
-            <b-badge
-              variant="info"
-              v-if="path.waiting_count != 0"
-              v-b-tooltip.hover
-              :title="'has ' + path.waiting_count + ' waiting revisions'"
-            >
-              {{ path.waiting_count }}
-            </b-badge>
           </td>
         </tr>
       </tbody>
@@ -60,6 +60,21 @@
 <style lang="scss" scoped>
 .btn {
   margin-bottom: 0.5rem;
+}
+
+.table {
+  display: block;
+  overflow-x: scroll;
+  white-space: nowrap;
+}
+
+.td-time {
+  white-space: pre-wrap;
+}
+
+.td-icon {
+  text-align: center;
+  vertical-align: middle;
 }
 </style>
 
@@ -89,12 +104,6 @@
       width: 10rem;
     }
   }
-}
-
-.table {
-  display: block;
-  overflow-x: scroll;
-  white-space: nowrap;
 }
 </style>
 

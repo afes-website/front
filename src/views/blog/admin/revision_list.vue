@@ -62,13 +62,15 @@
                 }
               }"
             >
-              <font-awesome-icon :icon="'file'" />
+              <font-awesome-icon :icon="'file'" class="fa-fw" />
+              show
             </b-link>
             <b-link
               v-else
               :to="{ name: 'revision_preview', params: { id: revision.id } }"
             >
-              <font-awesome-icon :icon="['far', 'file']" />
+              <font-awesome-icon :icon="['far', 'file']" class="fa-fw" />
+              preview
             </b-link>
           </td>
         </b-tr>
