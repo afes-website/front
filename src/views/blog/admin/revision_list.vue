@@ -9,10 +9,10 @@
       <thead>
         <tr>
           <th>id</th>
+          <th>stat</th>
           <th>title</th>
           <th>path</th>
           <th>time</th>
-          <th></th>
           <th></th>
         </tr>
       </thead>
@@ -29,18 +29,25 @@
           "
         >
           <th>{{ revision.id }}</th>
-          <td>{{ revision.title }}</td>
-          <td>{{ revision.article_id }}</td>
-          <td>{{ getStringTime(revision.timestamp) }}</td>
           <td>
             <font-awesome-icon
               :icon="
                 revision.status === 'accepted'
                   ? 'check-circle'
-                  : ['far', 'hand-paper']
+                  : revision.status === 'rejected'
+                  ? 'times-circle'
+                  : 'hourglass-half'
               "
+              :id="[revision.id + '-status-icon']"
+              class="fa-fw"
             />
+            <b-tooltip :target="revision.id + '-status-icon'" triggers="hover">
+              {{ revision.status }}
+            </b-tooltip>
           </td>
+          <td>{{ revision.title }}</td>
+          <td>{{ revision.article_id }}</td>
+          <td>{{ getStringTime(revision.timestamp) }}</td>
           <td>
             <b-link
               v-if="
