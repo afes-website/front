@@ -10,7 +10,7 @@
         <tr>
           <th>id</th>
           <th>title</th>
-          <th>path</th>
+          <th>id</th>
           <th>time</th>
           <th></th>
           <th></th>

@@ -8,7 +8,7 @@
     <table class="table">
       <thead>
         <tr>
-          <th>path</th>
+          <th>id</th>
           <th>title</th>
           <th>category</th>
           <th>created</th>

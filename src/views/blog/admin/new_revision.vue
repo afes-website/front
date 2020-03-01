@@ -1,7 +1,7 @@
 <template>
   <div class="box">
     <h1>{{ page_title }}</h1>
-    <p>path:<b-input v-model="article_path" /></p>
+    <p>id:<b-input v-model="article_path" /></p>
     <p>
       <b-button @click="load" :disabled="article_path === ''">
         記事情報を読みこむ
