@@ -28,6 +28,12 @@
       <h1>第73回 麻布中学校・高等学校 文化祭</h1>
       <p>第73回麻布学園文化祭公式ウェブサイトです。</p>
       <p>当日の展示に関する情報や、日々の活動の様子などを発信しています。</p>
+      <b-alert show variant="danger" class="top-page-alert mt-3">
+        新型コロナウイルス感染症の流行を考慮し、開催を<b>2020年6月12-14日に延期</b>いたします。
+        <b-link to="/blog/news/covid-19-reschedule" class="alert-link">
+          詳細はこちら
+        </b-link>
+      </b-alert>
       <div id="lower-right">
         <img src="../assets/logo.png" alt="logo" />
         <p class="covid-19-warning">
@@ -65,6 +71,10 @@
 
     #buttons {
       display: none;
+    }
+
+    .top-page-alert {
+      width: fit-content;
     }
 
     #lower-right {
