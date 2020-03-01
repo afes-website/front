@@ -99,7 +99,7 @@ import * as Diff2Html from "diff2html";
 
 @Component({ components: { FetchStatusIcon } })
 export default class NewRevision extends Vue {
-  page_title = "ブログ 記事投稿/編集";
+  readonly page_title = "ブログ 記事投稿/編集";
 
   article_title = "";
   article_path = "";

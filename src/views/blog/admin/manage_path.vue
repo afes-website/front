@@ -129,7 +129,7 @@ import * as Diff2Html from "diff2html";
 
 @Component({ components: { FetchStatusIcon } })
 export default class ManagePath extends Vue {
-  page_title = "ブログ 管理画面 記事管理";
+  readonly page_title = "ブログ 管理画面 記事管理";
   revisions: { [key: number]: BlogRevision } = {};
   client = aspida();
 

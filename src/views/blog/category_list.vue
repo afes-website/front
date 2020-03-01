@@ -12,6 +12,6 @@ import { Component, Vue } from "vue-property-decorator";
 
 @Component
 export default class CategoryList extends Vue {
-  page_title = "近況";
+  readonly page_title = "近況";
 }
 </script>

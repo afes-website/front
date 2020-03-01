@@ -113,7 +113,7 @@ interface Path {
 
 @Component({ components: { FetchStatusIcon } })
 export default class PathList extends Vue {
-  page_title = "ブログ 管理画面 記事情報";
+  readonly page_title = "ブログ 管理画面 記事情報";
   paths: { [key: string]: Path } = {};
   client = aspida();
   getCategory = getCategory;

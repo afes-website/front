@@ -93,7 +93,7 @@ interface BlogRevisionWithArticle extends BlogRevision {
 
 @Component({ components: { FetchStatusIcon } })
 export default class RevisionList extends Vue {
-  page_title = "ブログ あなたの記事リクエスト一覧";
+  readonly page_title = "ブログ あなたの記事リクエスト一覧";
   revisions: BlogRevisionWithArticle[] = [];
   client = aspida();
 

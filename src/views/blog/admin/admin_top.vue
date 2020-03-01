@@ -82,7 +82,7 @@ import { WriterUserInfo } from "@/apis/writer/user.ts";
 
 @Component
 export default class AdminTop extends Vue {
-  page_title = "ブログ管理ページ";
+  readonly page_title = "ブログ管理ページ";
 
   admin_user: AdminUserInfo | null = null;
   writer_user: WriterUserInfo | null = null;
