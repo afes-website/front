@@ -57,9 +57,15 @@
     color: #222;
 
     .card-body {
+      overflow: hidden;
+      width: 100%;
       .card-title {
         margin-top: -8px;
         margin-bottom: 12px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        max-height: 1.2em;
+        white-space: nowrap;
       }
 
       .card-subtitle {
@@ -71,28 +77,14 @@
       }
 
       .card-text {
-        display: block;
-        height: 4.5em;
+        display: block; // fallback
+        display: -webkit-box;
+        //max-height: 4.5em;
         position: relative;
         overflow: hidden;
-
-        &::before,
-        &::after {
-          position: absolute;
-          background: #fff;
-        }
-
-        &::before {
-          content: "…";
-          bottom: 0;
-          right: 0;
-        }
-
-        &::after {
-          content: "";
-          width: 100%;
-          height: 100%;
-        }
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2; // 2 lines
+        text-overflow: ellipsis;
       }
     }
   }
