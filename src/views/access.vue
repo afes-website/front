@@ -54,6 +54,6 @@
 import { Component, Vue } from "vue-property-decorator";
 @Component
 export default class About extends Vue {
-  readonly title: string = "アクセス";
+  readonly page_title = "アクセス";
 }
 </script>

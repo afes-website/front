@@ -61,6 +61,6 @@
 import { Component, Vue } from "vue-property-decorator";
 @Component
 export default class Policy extends Vue {
-  readonly title: string = "プライバシーポリシー";
+  readonly page_title = "プライバシーポリシー";
 }
 </script>

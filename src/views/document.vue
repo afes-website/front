@@ -52,6 +52,6 @@
 import { Component, Vue } from "vue-property-decorator";
 @Component
 export default class Document extends Vue {
-  readonly title: string = "資料庫";
+  readonly page_title = "資料庫";
 }
 </script>
