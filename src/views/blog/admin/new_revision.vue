@@ -147,6 +147,7 @@ export default class NewRevision extends Vue {
             title: "Create new revision",
             autoHideDelay: 5000
           });
+          this.$router.push({ name: "revision_list" });
         })
         .catch(() => {
           this.status = "fail";
