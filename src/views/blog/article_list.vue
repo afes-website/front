@@ -116,6 +116,7 @@ import aspida from "@aspida/axios";
 import { BlogArticle, BlogArticleParameter } from "@/apis/blog/articles/@types";
 import Markdown from "@/libs/markdown";
 import getCategory from "@/libs/categories";
+import Token from "markdown-it/lib/token";
 
 @Component
 export default class ArticleList extends Vue {
@@ -168,7 +169,21 @@ export default class ArticleList extends Vue {
   }
 
   rendered_md(md: string): string {
-    return Markdown.render(md);
+    const tokens = Markdown.parse(md, {});
+    const tokens2txt = (tokens: Token[]) => {
+      return tokens
+        .map((token: Token): string => {
+          if (token.block) {
+            if (token.children !== null)
+              // children may be null despite the type definition
+              return tokens2txt(token.children) + "<br>";
+            else return "";
+          }
+          return token.content;
+        })
+        .join("");
+    };
+    return tokens2txt(tokens);
   }
 }
 </script>
