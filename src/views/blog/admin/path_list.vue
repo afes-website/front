@@ -90,6 +90,12 @@
     }
   }
 }
+
+.table {
+  display: block;
+  overflow-x: scroll;
+  white-space: nowrap;
+}
 </style>
 
 <script lang="ts">

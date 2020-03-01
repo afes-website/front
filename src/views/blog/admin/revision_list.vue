@@ -74,6 +74,12 @@
 .btn {
   margin-bottom: 0.5rem;
 }
+
+.table {
+  display: block;
+  overflow-x: scroll;
+  white-space: nowrap;
+}
 </style>
 
 <script lang="ts">
