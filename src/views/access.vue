@@ -1,6 +1,6 @@
 <template>
   <article id="access" class="box">
-    <h1>{{ title }}</h1>
+    <h1>{{ page_title }}</h1>
     <section>
       <h2>学校所在地</h2>
       <address>

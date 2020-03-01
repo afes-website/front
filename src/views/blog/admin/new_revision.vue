@@ -1,6 +1,6 @@
 <template>
   <div class="box">
-    <h1>{{ title }}</h1>
+    <h1>{{ page_title }}</h1>
     <p>path:<b-input v-model="article_path" /></p>
     <p>
       <b-button @click="load" :disabled="article_path === ''">
@@ -99,7 +99,7 @@ import * as Diff2Html from "diff2html";
 
 @Component({ components: { FetchStatusIcon } })
 export default class NewRevision extends Vue {
-  title = "ブログ 記事投稿/編集";
+  page_title = "ブログ 記事投稿/編集";
 
   article_title = "";
   article_path = "";

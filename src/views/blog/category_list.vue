@@ -1,6 +1,6 @@
 <template>
   <div id="about" class="box">
-    <h1>{{ title }}</h1>
+    <h1>{{ page_title }}</h1>
     <p>文化祭実行委員会や各展示からの投稿を集めたブログです。</p>
   </div>
 </template>
@@ -12,6 +12,6 @@ import { Component, Vue } from "vue-property-decorator";
 
 @Component
 export default class CategoryList extends Vue {
-  title = "近況";
+  page_title = "近況";
 }
 </script>

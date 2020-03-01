@@ -1,6 +1,6 @@
 <template>
   <div id="admin-top" class="box">
-    <h1>{{ title }}</h1>
+    <h1>{{ page_title }}</h1>
     <p class="profile">
       <font-awesome-icon icon="user-shield" class="fa-fw" />
       <template v-if="this.admin_user !== null">
@@ -82,7 +82,7 @@ import { WriterUserInfo } from "@/apis/writer/user.ts";
 
 @Component
 export default class AdminTop extends Vue {
-  title = "ブログ管理ページ";
+  page_title = "ブログ管理ページ";
 
   admin_user: AdminUserInfo | null = null;
   writer_user: WriterUserInfo | null = null;
