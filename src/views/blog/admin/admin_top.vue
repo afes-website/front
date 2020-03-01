@@ -92,7 +92,7 @@ export default class AdminTop extends Vue {
   }
 
   load() {
-    if (this.admin_logged_in) {
+    if (this.admin_logged_in()) {
       AdminAuth.attempt_get_JWT()
         .then(token => {
           return api(aspida()).admin.user.$get({
@@ -103,7 +103,7 @@ export default class AdminTop extends Vue {
           this.admin_user = user_info;
         });
     }
-    if (this.writer_logged_in) {
+    if (this.writer_logged_in()) {
       WriterAuth.attempt_get_JWT()
         .then(token => {
           return api(aspida()).writer.user.$get({
@@ -138,11 +138,13 @@ export default class AdminTop extends Vue {
     this.writer_user = null;
   }
 
-  get admin_logged_in() {
+  admin_logged_in() {
+    // to disable cache, this isn't getter
     return AdminAuth.getJWT() !== null;
   }
 
-  get writer_logged_in() {
+  writer_logged_in() {
+    // same as below
     return WriterAuth.getJWT() !== null;
   }
 }
