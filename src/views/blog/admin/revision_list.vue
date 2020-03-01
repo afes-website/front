@@ -18,7 +18,7 @@
       </thead>
       <tbody>
         <b-tr
-          v-for="revision in sorted(revisions)"
+          v-for="revision in sorted_revisions"
           :key="revision.id"
           :variant="
             revision.status == 'accepted'
@@ -161,10 +161,12 @@ export default class RevisionList extends Vue {
       });
   }
 
-  sorted(revisions: BlogRevisionWithArticle[]) {
-    return revisions.sort((a, b) => {
+  get sorted_revisions() {
+    let ret_revisions = this.revisions.concat(); // copy
+    ret_revisions = ret_revisions.sort((a, b) => {
       return a.id - b.id;
     });
+    return ret_revisions;
   }
 
   getStringTime(laravel_time: string): string {
