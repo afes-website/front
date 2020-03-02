@@ -1,6 +1,6 @@
 <template>
   <div id="article-list" class="box">
-    <h1>{{ title }}</h1>
+    <h1>{{ page_title }}</h1>
     <div id="articles">
       <b-link
         :to="{
@@ -127,7 +127,7 @@ import getCategory from "@/libs/categories";
 
 @Component
 export default class ArticleList extends Vue {
-  title = "ブログ 記事一覧";
+  page_title = "ブログ 記事一覧";
   articles: BlogArticle[] = [];
   client = aspida();
 
@@ -142,7 +142,7 @@ export default class ArticleList extends Vue {
   }
   load() {
     if (this.$route.params.category)
-      this.title = getCategory(this.$route.params.category) + " 記事一覧";
+      this.page_title = getCategory(this.$route.params.category) + " 記事一覧";
     api(this.client)
       .blog.articles.$get({ query: this.filter_query })
       .then(data => {
