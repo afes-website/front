@@ -13,7 +13,7 @@
           <b-th>title</b-th>
           <b-th>path</b-th>
           <b-th>time</b-th>
-          <b-th></b-th>
+          <b-th>show</b-th>
         </b-tr>
       </b-thead>
       <b-tbody>
@@ -63,7 +63,7 @@
               }"
             >
               <font-awesome-icon :icon="'file'" class="fa-fw" />
-              show
+              published
             </b-link>
             <b-link
               v-else
