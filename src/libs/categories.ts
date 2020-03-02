@@ -8,7 +8,8 @@ const categories: { [key: string]: string } = {
 
 function getCategory(key: string) {
   if (!key) return "";
-  return categories[key];
+  if (key in categories) return categories[key];
+  return key;
 }
 
 export default getCategory;
