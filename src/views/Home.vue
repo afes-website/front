@@ -130,6 +130,6 @@ import TopPageButton from "@/components/TopPageButton.vue";
   }
 })
 export default class Home extends Vue {
-  readonly title: string = "";
+  readonly page_title = "";
 }
 </script>
