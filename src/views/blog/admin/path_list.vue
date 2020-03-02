@@ -5,21 +5,21 @@
       Reload
       <fetch-status-icon :status="fetch_status" small />
     </b-button>
-    <table class="table">
-      <thead>
-        <tr>
-          <th>path</th>
-          <th>title</th>
-          <th>category</th>
-          <th>created</th>
-          <th>updated</th>
-          <th>show</th>
-          <th>manage</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(path, route) in paths" :key="route">
-          <th>
+    <b-table-simple responsive hover class="table">
+      <b-thead>
+        <b-tr>
+          <b-th>path</b-th>
+          <b-th>title</b-th>
+          <b-th>category</b-th>
+          <b-th>created</b-th>
+          <b-th>updated</b-th>
+          <b-th>show</b-th>
+          <b-th>manage</b-th>
+        </b-tr>
+      </b-thead>
+      <b-tbody>
+        <b-tr v-for="(path, route) in paths" :key="route">
+          <b-th>
             {{ route }}
             <b-badge
               variant="warning"
@@ -30,12 +30,16 @@
             >
               {{ path.waiting_count }}
             </b-badge>
-          </th>
-          <td>{{ path.title || "-" }}</td>
-          <td>{{ getCategory(path.category) || "-" }}</td>
-          <td class="td-time">{{ getStringTime(path.created_at) || "-" }}</td>
-          <td class="td-time">{{ getStringTime(path.updated_at) || "-" }}</td>
-          <td class="td-icon">
+          </b-th>
+          <b-td>{{ path.title || "-" }}</b-td>
+          <b-td>{{ getCategory(path.category) || "-" }}</b-td>
+          <b-td class="td-time">
+            {{ getStringTime(path.created_at) || "-" }}
+          </b-td>
+          <b-td class="td-time">
+            {{ getStringTime(path.updated_at) || "-" }}
+          </b-td>
+          <b-td class="td-icon">
             <b-link
               v-if="path.category"
               :to="{
@@ -45,15 +49,15 @@
             >
               <font-awesome-icon :icon="'file'" class="fa-fw fa-2x" />
             </b-link>
-          </td>
-          <td class="td-icon">
+          </b-td>
+          <b-td class="td-icon">
             <b-link :to="{ name: 'manage_path', params: { id: route } }">
               <font-awesome-icon :icon="'tools'" class="fa-fw fa-2x" />
             </b-link>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+          </b-td>
+        </b-tr>
+      </b-tbody>
+    </b-table-simple>
   </div>
 </template>
 
@@ -63,9 +67,12 @@
 }
 
 .table {
-  display: block;
-  overflow-x: scroll;
   white-space: nowrap;
+
+  td,
+  th {
+    vertical-align: middle;
+  }
 }
 
 .td-time {
@@ -74,7 +81,6 @@
 
 .td-icon {
   text-align: center;
-  vertical-align: middle;
 }
 </style>
 
