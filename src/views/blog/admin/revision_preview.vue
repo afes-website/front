@@ -1,25 +1,26 @@
 <template>
   <article id="show-revision" class="box">
     <template v-if="revision !== null">
+      <b-alert show variant="info">
+        この投稿はプレビューです。<br />
+        <b-badge
+          :variant="
+            revision.status === 'accepted'
+              ? 'success'
+              : revision.status === 'waiting'
+              ? 'secondary'
+              : 'danger'
+          "
+        >
+          {{ revision.status }}
+        </b-badge>
+        <span>
+          <font-awesome-icon icon="file" class="fa-fw" />
+          {{ revision.article_id }}
+        </span>
+      </b-alert>
       <h1>{{ title }}</h1>
       <div class="under-title">
-        <p>
-          <b-badge
-            :variant="
-              revision.status == 'accepted'
-                ? 'success'
-                : revision.status == 'waiting'
-                ? 'secondary'
-                : 'danger'
-            "
-          >
-            {{ revision.status }}
-          </b-badge>
-          <span>
-            <font-awesome-icon icon="file-alt" class="fa-fw" />
-            {{ revision.article_id }}
-          </span>
-        </p>
         <p>
           <span>
             <font-awesome-icon :icon="'user'" class="fa-fw" />
@@ -27,7 +28,7 @@
           </span>
           <span>
             <font-awesome-icon :icon="'clock'" class="fa-fw" />
-            {{ revision.timestamp }}
+            {{ getStringTime(revision.timestamp) }}
           </span>
         </p>
       </div>
@@ -48,10 +49,14 @@ article {
     color: #6c757d;
     font-weight: 500;
 
-    span {
-      margin-right: 0.5em;
+    p {
+      margin-bottom: 0;
     }
   }
+}
+span {
+  margin-right: 0.5em;
+  white-space: nowrap;
 }
 </style>
 
@@ -125,7 +130,7 @@ export default class ShowRevision extends Vue {
       })
       .then(data => {
         this.revision = data;
-        this.title = "記事プレビュー: " + data.title;
+        this.title = data.title;
         this.fetch_status = "idle";
       })
       .catch((e: unknown) => {
@@ -139,6 +144,18 @@ export default class ShowRevision extends Vue {
   get rendered_md(): string | null {
     if (this.revision == null) return null;
     return Markdown.render(this.revision.content);
+  }
+
+  getStringTime(laravel_time: string): string {
+    if (!laravel_time) return "";
+    const date = new Date(Date.parse(laravel_time));
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    const hour = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
+    const min =
+      date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
+    return year + "/" + month + "/" + day + " " + hour + ":" + min;
   }
 }
 </script>
