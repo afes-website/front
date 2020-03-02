@@ -57,9 +57,15 @@
     color: #222;
 
     .card-body {
+      overflow: hidden;
+      width: 100%;
       .card-title {
         margin-top: -8px;
         margin-bottom: 12px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        max-height: 1.2em;
+        white-space: nowrap;
       }
 
       .card-subtitle {
@@ -71,28 +77,14 @@
       }
 
       .card-text {
-        display: block;
-        height: 4.5em;
+        display: block; // fallback
+        display: -webkit-box;
+        //max-height: 4.5em;
         position: relative;
         overflow: hidden;
-
-        &::before,
-        &::after {
-          position: absolute;
-          background: #fff;
-        }
-
-        &::before {
-          content: "…";
-          bottom: 0;
-          right: 0;
-        }
-
-        &::after {
-          content: "";
-          width: 100%;
-          height: 100%;
-        }
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2; // 2 lines
+        text-overflow: ellipsis;
       }
     }
   }
@@ -124,6 +116,7 @@ import aspida from "@aspida/axios";
 import { BlogArticle, BlogArticleParameter } from "@/apis/blog/articles/@types";
 import Markdown from "@/libs/markdown";
 import getCategory from "@/libs/categories";
+import Token from "markdown-it/lib/token";
 
 @Component
 export default class ArticleList extends Vue {
@@ -176,7 +169,21 @@ export default class ArticleList extends Vue {
   }
 
   rendered_md(md: string): string {
-    return Markdown.render(md);
+    const tokens = Markdown.parse(md, {});
+    const tokens2txt = (tokens: Token[]) => {
+      return tokens
+        .map((token: Token): string => {
+          if (token.block) {
+            if (token.children !== null)
+              // children may be null despite the type definition
+              return tokens2txt(token.children) + "<br>";
+            else return "";
+          }
+          return token.content;
+        })
+        .join("");
+    };
+    return tokens2txt(tokens);
   }
 }
 </script>
