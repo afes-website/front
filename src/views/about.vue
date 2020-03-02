@@ -1,6 +1,6 @@
 <template>
   <article id="about" class="box">
-    <h1>{{ title }}</h1>
+    <h1>{{ page_title }}</h1>
     <div id="pair_picture">
       <img src="../assets/about.jpg" alt="two-shot" />
     </div>
@@ -71,6 +71,6 @@
 import { Component, Vue } from "vue-property-decorator";
 @Component
 export default class About extends Vue {
-  readonly title: string = "学校長・委員長挨拶";
+  readonly page_title = "学校長・委員長挨拶";
 }
 </script>

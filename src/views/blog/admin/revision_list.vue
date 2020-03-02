@@ -1,6 +1,6 @@
 <template>
   <div class="box">
-    <h1>{{ title }}</h1>
+    <h1>{{ page_title }}</h1>
     <b-button @click="load">
       Reload
       <fetch-status-icon :status="fetch_status" small />
@@ -10,7 +10,7 @@
         <tr>
           <th>id</th>
           <th>title</th>
-          <th>path</th>
+          <th>id</th>
           <th>time</th>
           <th></th>
           <th></th>
@@ -93,7 +93,7 @@ interface BlogRevisionWithArticle extends BlogRevision {
 
 @Component({ components: { FetchStatusIcon } })
 export default class RevisionList extends Vue {
-  title = "ブログ あなたの記事リクエスト一覧";
+  readonly page_title = "ブログ あなたの記事リクエスト一覧";
   revisions: BlogRevisionWithArticle[] = [];
   client = aspida();
 
