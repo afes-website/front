@@ -19,7 +19,7 @@
           {{ revision.article_id }}
         </span>
       </b-alert>
-      <h1>{{ title }}</h1>
+      <h1>{{ page_title }}</h1>
       <div class="under-title">
         <p>
           <span>
@@ -99,7 +99,7 @@ import { AdminAuthToken, WriterAuthToken } from "../../../apis/@types";
 
 @Component
 export default class ShowRevision extends Vue {
-  title = "";
+  page_title = "";
   revision: BlogRevision | null = null;
   client = aspida();
   fetch_status: FetchStatus = "idle";
@@ -130,7 +130,7 @@ export default class ShowRevision extends Vue {
       })
       .then(data => {
         this.revision = data;
-        this.title = data.title;
+        this.page_title = data.title;
         this.fetch_status = "idle";
       })
       .catch((e: unknown) => {
