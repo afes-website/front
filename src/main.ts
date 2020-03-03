@@ -25,11 +25,11 @@ import Axios from "axios";
 Axios.defaults.baseURL = process.env.VUE_APP_API_BASE_URL;
 
 import VueGtag from "vue-gtag";
-if (process.env.GOOGLE_ANALYTICS_ID) {
+if (process.env.VUE_APP_GA_ID) {
   Vue.use(
     VueGtag,
     {
-      config: { id: process.env.GOOGLE_ANALYTICS_ID }
+      config: { id: process.env.VUE_APP_GA_ID }
     },
     router
   );
