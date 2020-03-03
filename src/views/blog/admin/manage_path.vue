@@ -17,19 +17,19 @@
         :state="category != ''"
       />
       <output>this category has {{ category_article_count }} articles</output>
-      <table class="table">
-        <thead>
-          <tr>
-            <th></th>
-            <th>title</th>
-            <th>author</th>
-            <th>created</th>
-            <th>status</th>
-            <th>operations</th>
-            <th>preview</th>
-          </tr>
-        </thead>
-        <tbody>
+      <b-table-simple responsive hover small class="table">
+        <b-thead>
+          <b-tr>
+            <b-th></b-th>
+            <b-th>title</b-th>
+            <b-th>author</b-th>
+            <b-th>created</b-th>
+            <b-th>stat</b-th>
+            <b-th>operations</b-th>
+            <b-th>preview</b-th>
+          </b-tr>
+        </b-thead>
+        <b-tbody>
           <b-tr
             v-for="(revision, id) in revisions"
             :key="id"
@@ -41,7 +41,7 @@
                 : ''
             "
           >
-            <th>
+            <b-th>
               <b-form-radio
                 v-model.number="revision_selection"
                 name="revision-selector"
@@ -49,53 +49,99 @@
                 :value="id"
                 >{{ id }}</b-form-radio
               >
-            </th>
-            <td>{{ revision.title }}</td>
-            <td>{{ revision.user_id }}</td>
-            <td>{{ revision.timestamp }}</td>
-            <td>{{ revision.status }}</td>
-            <td>
-              <b-button
-                @click="accept_revision(id)"
-                v-if="revision.status == 'waiting'"
-                >Accept</b-button
+            </b-th>
+            <b-td>{{ revision.title }}</b-td>
+            <b-td>{{ revision.user_id }}</b-td>
+            <b-td>{{ getStringTime(revision.timestamp) }}</b-td>
+            <b-td>
+              <font-awesome-icon
+                :icon="
+                  revision.status === 'accepted'
+                    ? 'check-circle'
+                    : revision.status === 'rejected'
+                    ? 'times-circle'
+                    : 'hourglass-half'
+                "
+                :id="[revision.id + '-status-icon']"
+                class="fa-fw"
+              />
+              <b-tooltip
+                :target="revision.id + '-status-icon'"
+                triggers="hover"
               >
-              <b-button
-                @click="reject_revision(id)"
-                v-if="revision.status == 'waiting'"
-                >Reject</b-button
-              >
-            </td>
-            <td>
+                {{ revision.status }}
+              </b-tooltip>
+            </b-td>
+            <b-td>
+              <b-button-group>
+                <b-button
+                  @click="accept_revision(id)"
+                  v-if="revision.status === 'waiting'"
+                  variant="success"
+                >
+                  Accept
+                </b-button>
+                <b-button
+                  @click="reject_revision(id)"
+                  v-if="revision.status === 'waiting'"
+                  variant="danger"
+                >
+                  Reject
+                </b-button>
+              </b-button-group>
+            </b-td>
+            <b-td>
               <b-link :to="{ name: 'revision_preview', params: { id: id } }">
+                <font-awesome-icon :icon="['far', 'file']" class="fa-fw" />
                 preview
               </b-link>
-            </td>
+            </b-td>
           </b-tr>
-        </tbody>
-      </table>
+        </b-tbody>
+      </b-table-simple>
     </section>
     <section>
       <h2>差分</h2>
       <div id="diff-view" v-html="diff_from_original"></div>
     </section>
-    <b-button @click="apply_changes" variant="primary" :disabled="!can_apply">
-      apply
-      <fetch-status-icon :status="post_status" small />
-    </b-button>
-    <b-button
-      v-b-modal="'delete-confirm-modal'"
-      variant="danger"
-      :disabled="!article_exists"
-    >
-      delete
-      <fetch-status-icon :status="delete_status" small />
-    </b-button>
+    <b-button-group>
+      <b-button @click="apply_changes" variant="primary" :disabled="!can_apply">
+        apply
+        <fetch-status-icon :status="post_status" small />
+      </b-button>
+      <b-button
+        v-b-modal="'delete-confirm-modal'"
+        variant="danger"
+        :disabled="!article_exists"
+      >
+        delete
+        <fetch-status-icon :status="delete_status" small />
+      </b-button>
+    </b-button-group>
     <b-modal id="delete-confirm-modal" @ok="delete_article">
       <p>削除してもよろしいですか?</p>
     </b-modal>
   </div>
 </template>
+
+<style lang="scss" scoped>
+.table {
+  white-space: nowrap;
+
+  td,
+  th {
+    vertical-align: middle;
+  }
+}
+
+.td-time {
+  white-space: pre-wrap;
+}
+
+.td-icon {
+  text-align: center;
+}
+</style>
 
 <style lang="scss">
 @import "~diff2html/bundles/css/diff2html.min.css";
@@ -307,6 +353,18 @@ export default class ManagePath extends Vue {
       matching: "lines",
       outputFormat: "side-by-side"
     });
+  }
+
+  getStringTime(laravel_time: string): string {
+    if (!laravel_time) return "";
+    const date = new Date(Date.parse(laravel_time));
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    const hour = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
+    const min =
+      date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
+    return year + "/" + month + "/" + day + " " + hour + ":" + min;
   }
 }
 </script>

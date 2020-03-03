@@ -5,18 +5,18 @@
       Reload
       <fetch-status-icon :status="fetch_status" small />
     </b-button>
-    <table class="table">
-      <thead>
-        <tr>
-          <th>id</th>
-          <th>title</th>
-          <th>id</th>
-          <th>time</th>
-          <th></th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
+    <b-table-simple responsive hover class="table">
+      <b-thead>
+        <b-tr>
+          <b-th>id</b-th>
+          <b-th>stat</b-th>
+          <b-th>title</b-th>
+          <b-th>path</b-th>
+          <b-th>time</b-th>
+          <b-th>show</b-th>
+        </b-tr>
+      </b-thead>
+      <b-tbody>
         <b-tr
           v-for="revision in sorted_revisions"
           :key="revision.id"
@@ -28,20 +28,27 @@
               : ''
           "
         >
-          <th>{{ revision.id }}</th>
-          <td>{{ revision.title }}</td>
-          <td>{{ revision.article_id }}</td>
-          <td>{{ getStringTime(revision.timestamp) }}</td>
-          <td>
+          <b-th>{{ revision.id }}</b-th>
+          <b-td>
             <font-awesome-icon
               :icon="
                 revision.status === 'accepted'
                   ? 'check-circle'
-                  : ['far', 'hand-paper']
+                  : revision.status === 'rejected'
+                  ? 'times-circle'
+                  : 'hourglass-half'
               "
+              :id="[revision.id + '-status-icon']"
+              class="fa-fw"
             />
-          </td>
-          <td>
+            <b-tooltip :target="revision.id + '-status-icon'" triggers="hover">
+              {{ revision.status }}
+            </b-tooltip>
+          </b-td>
+          <b-td>{{ revision.title }}</b-td>
+          <b-td>{{ revision.article_id }}</b-td>
+          <b-td class="td-time">{{ getStringTime(revision.timestamp) }}</b-td>
+          <b-td>
             <b-link
               v-if="
                 revision.article !== null &&
@@ -55,24 +62,43 @@
                 }
               }"
             >
-              <font-awesome-icon :icon="'file'" />
+              <font-awesome-icon :icon="'file'" class="fa-fw" />
+              published
             </b-link>
             <b-link
               v-else
               :to="{ name: 'revision_preview', params: { id: revision.id } }"
             >
-              <font-awesome-icon :icon="['far', 'file']" />
+              <font-awesome-icon :icon="['far', 'file']" class="fa-fw" />
+              preview
             </b-link>
-          </td>
+          </b-td>
         </b-tr>
-      </tbody>
-    </table>
+      </b-tbody>
+    </b-table-simple>
   </div>
 </template>
 
 <style lang="scss" scoped>
 .btn {
   margin-bottom: 0.5rem;
+}
+
+.table {
+  white-space: nowrap;
+
+  td,
+  th {
+    vertical-align: middle;
+  }
+}
+
+.td-time {
+  white-space: pre-wrap;
+}
+
+.td-icon {
+  text-align: center;
 }
 </style>
 
