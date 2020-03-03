@@ -1,6 +1,6 @@
 <template>
   <div class="box">
-    <h1>{{ title }}</h1>
+    <h1>{{ page_title }}</h1>
     <b-button @click="load">
       Reload
       <fetch-status-icon :status="fetch_status" small />
@@ -8,7 +8,7 @@
     <table class="table">
       <thead>
         <tr>
-          <th>path</th>
+          <th>id</th>
           <th>title</th>
           <th>category</th>
           <th>created</th>
@@ -113,7 +113,7 @@ interface Path {
 
 @Component({ components: { FetchStatusIcon } })
 export default class PathList extends Vue {
-  title = "ブログ 管理画面 記事情報";
+  readonly page_title = "ブログ 管理画面 記事情報";
   paths: { [key: string]: Path } = {};
   client = aspida();
   getCategory = getCategory;

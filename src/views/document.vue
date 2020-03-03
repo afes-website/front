@@ -1,6 +1,6 @@
 <template>
   <article id="policy" class="box">
-    <h1>{{ title }}</h1>
+    <h1>{{ page_title }}</h1>
     <p>
       第73回文化祭実行委員会では、会議の議事録や広報を始めとした各種資料をネット上に公開しています。
     </p>
@@ -52,6 +52,6 @@
 import { Component, Vue } from "vue-property-decorator";
 @Component
 export default class Document extends Vue {
-  readonly title: string = "資料庫";
+  readonly page_title = "資料庫";
 }
 </script>

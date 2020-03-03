@@ -1,6 +1,6 @@
 <template>
   <div class="box">
-    <h1>{{ title }}</h1>
+    <h1>{{ page_title }}</h1>
     <b-button @click="load">
       Reload
       <fetch-status-icon :status="fetch_status" small />
@@ -10,7 +10,7 @@
         <tr>
           <th>id</th>
           <th>title</th>
-          <th>path</th>
+          <th>id</th>
           <th>time</th>
           <th></th>
           <th></th>
@@ -18,7 +18,7 @@
       </thead>
       <tbody>
         <b-tr
-          v-for="revision in sorted(revisions)"
+          v-for="revision in sorted_revisions"
           :key="revision.id"
           :variant="
             revision.status == 'accepted'
@@ -93,7 +93,7 @@ interface BlogRevisionWithArticle extends BlogRevision {
 
 @Component({ components: { FetchStatusIcon } })
 export default class RevisionList extends Vue {
-  title = "ブログ あなたの記事リクエスト一覧";
+  readonly page_title = "ブログ あなたの記事リクエスト一覧";
   revisions: BlogRevisionWithArticle[] = [];
   client = aspida();
 
@@ -161,10 +161,12 @@ export default class RevisionList extends Vue {
       });
   }
 
-  sorted(revisions: BlogRevisionWithArticle[]) {
-    return revisions.sort((a, b) => {
+  get sorted_revisions() {
+    let ret_revisions = this.revisions.concat(); // copy
+    ret_revisions = ret_revisions.sort((a, b) => {
       return a.id - b.id;
     });
+    return ret_revisions;
   }
 
   getStringTime(laravel_time: string): string {

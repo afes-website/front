@@ -1,7 +1,7 @@
 <template>
   <article id="show-article" class="box">
     <template v-if="article !== null">
-      <h1>{{ title }}</h1>
+      <h1>{{ page_title }}</h1>
       <div class="under-title">
         <span>
           <font-awesome-icon :icon="'user'" class="fa-fw" />
@@ -82,7 +82,7 @@ import getCategory from "@/libs/categories";
 
 @Component
 export default class ShowArticle extends Vue {
-  title = "";
+  page_title = "";
   article: BlogArticle | null = null;
   client = aspida();
   fetch_status: FetchStatus = "idle";
@@ -123,7 +123,7 @@ export default class ShowArticle extends Vue {
               id: this.$route.params.id
             }
           });
-        this.title = data.title;
+        this.page_title = data.title;
         this.fetch_status = "idle";
       })
       .catch((e: unknown) => {
