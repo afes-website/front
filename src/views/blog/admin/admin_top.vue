@@ -2,7 +2,7 @@
   <div id="admin-top" class="box">
     <h1>{{ title }}</h1>
     <section class="profile">
-      <h2>管理者ユーザ</h2>
+      <h3>管理者ユーザ</h3>
       <font-awesome-icon icon="user-shield" class="fa-fw" />
       <template v-if="this.admin_user !== null">
         <span class="name">{{ this.admin_user.name }}</span>
@@ -25,7 +25,7 @@
       </b-button>
     </section>
     <section class="profile">
-      <h2>一般ユーザ</h2>
+      <h3>一般ユーザ</h3>
       <font-awesome-icon icon="user-edit" class="fa-fw" />
       <template v-if="this.writer_user !== null">
         <span class="name">{{ this.writer_user.name }}</span>
