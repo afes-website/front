@@ -442,7 +442,7 @@ import { Component, Vue } from "vue-property-decorator";
 import Vue2TouchEvents from "vue2-touch-events";
 import AdminLoginModal from "./components/AdminLoginModal.vue";
 import WriterLoginModal from "./components/WriterLoginModal.vue";
-import getCategory from "@/libs/categories";
+import { getCategory } from "@/libs/categories";
 
 Vue.use(Vue2TouchEvents);
 
