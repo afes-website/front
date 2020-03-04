@@ -32,7 +32,7 @@
             </b-badge>
           </b-th>
           <b-td>{{ path.title || "-" }}</b-td>
-          <b-td>{{ getCategory(path.category) || "-" }}</b-td>
+          <b-td>{{ path.category ? getCategory(path.category) : "-" }}</b-td>
           <b-td class="td-time">
             {{ getStringTime(path.created_at) || "-" }}
           </b-td>
@@ -137,7 +137,7 @@ export default class PathList extends Vue {
   readonly page_title = "ブログ 管理画面 記事情報";
   paths: { [key: string]: Path } = {};
   client = aspida();
-  getCategory = getCategory;
+  readonly getCategory = getCategory;
 
   fetch_status: FetchStatus = "idle";
 

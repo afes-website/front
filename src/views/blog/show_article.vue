@@ -86,7 +86,7 @@ export default class ShowArticle extends Vue {
   article: BlogArticle | null = null;
   client = aspida();
   fetch_status: FetchStatus = "idle";
-  getCategory = getCategory;
+  readonly getCategory = getCategory;
 
   mounted() {
     this.load();
