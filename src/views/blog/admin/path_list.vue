@@ -122,7 +122,7 @@ import AdminAuth from "@/libs/auth/admin_auth";
 import { BlogRevision } from "@/apis/blog/revisions/@types";
 import FetchStatus from "@/libs/fetch_status";
 import FetchStatusIcon from "@/components/FetchStatusIcon.vue";
-import getCategory from "@/libs/categories";
+import { getCategory } from "@/libs/categories";
 
 interface Path {
   category?: string;

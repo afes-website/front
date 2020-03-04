@@ -1,4 +1,4 @@
-const categories: { [key: string]: string } = {
+export const categories: { [key: string]: string } = {
   news: "お知らせ",
   general: "文実全体",
   workTeam: "分科局",
@@ -6,10 +6,10 @@ const categories: { [key: string]: string } = {
   contrib: "個人･寄稿"
 };
 
-function getCategory(key: string) {
+export function getCategory(key: string) {
   if (!key) return "";
   if (key in categories) return categories[key];
   return key;
 }
 
-export default getCategory;
+export default categories;

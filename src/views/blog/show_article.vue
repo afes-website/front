@@ -78,7 +78,7 @@ import { BlogArticle } from "@/apis/blog/articles/@types";
 import is_axios_error from "@/libs/is_axios_error";
 import FetchStatus from "@/libs/fetch_status";
 import Markdown from "@/libs/markdown";
-import getCategory from "@/libs/categories";
+import { getCategory } from "@/libs/categories";
 
 @Component
 export default class ShowArticle extends Vue {
