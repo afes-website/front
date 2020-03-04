@@ -32,7 +32,7 @@
             </b-badge>
           </b-th>
           <b-td>{{ path.title || "-" }}</b-td>
-          <b-td>{{ getCategory(path.category) || "-" }}</b-td>
+          <b-td>{{ path.category ? getCategory(path.category) : "-" }}</b-td>
           <b-td class="td-time">
             {{ getStringTime(path.created_at) || "-" }}
           </b-td>
