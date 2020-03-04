@@ -26,7 +26,7 @@
               <font-awesome-icon :icon="'user'" class="fa-fw" />
               {{ article.author.name }}
             </span>
-            <span v-if="!isCategory">
+            <span v-if="!isCategorySpecified">
               <font-awesome-icon :icon="'folder'" class="fa-fw" />
               {{ getCategory(article.category) }}
             </span>
@@ -186,8 +186,8 @@ export default class ArticleList extends Vue {
     );
   }
 
-  get isCategory(): boolean {
-    return Boolean(this.$route.params.category);
+  get isCategorySpecified(): boolean {
+    return !!this.$route.params.category;
   }
 
   rendered_md(md: string): string {
