@@ -26,6 +26,10 @@
               <font-awesome-icon :icon="'user'" class="fa-fw" />
               {{ article.author.name }}
             </span>
+            <span v-if="!isCategory">
+              <font-awesome-icon :icon="'folder'" class="fa-fw" />
+              {{ getCategory(article.category) }}
+            </span>
             <span>
               <font-awesome-icon :icon="'clock'" class="fa-fw" />
               {{ getStringTime(article.created_at) }}
@@ -123,6 +127,7 @@ export default class ArticleList extends Vue {
   page_title = "ブログ 記事一覧";
   articles: BlogArticle[] = [];
   client = aspida();
+  readonly getCategory = getCategory;
 
   perPage = 10;
   currentPage = 1;
@@ -179,6 +184,10 @@ export default class ArticleList extends Vue {
       (this.currentPage - 1) * this.perPage,
       this.currentPage * this.perPage
     );
+  }
+
+  get isCategory(): boolean {
+    return Boolean(this.$route.params.category);
   }
 
   rendered_md(md: string): string {
