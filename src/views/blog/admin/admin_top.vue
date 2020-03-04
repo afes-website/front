@@ -1,11 +1,19 @@
 <template>
   <div id="admin-top" class="box">
     <h1>{{ page_title }}</h1>
-    <p class="profile">
+    <section class="profile">
+      <h3>管理者ユーザ</h3>
       <font-awesome-icon icon="user-shield" class="fa-fw" />
       <template v-if="this.admin_user !== null">
         <span class="name">{{ this.admin_user.name }}</span>
         <span class="id">@{{ this.admin_user.id }}</span>
+        <b-button
+          @click="admin_password_modal_shown = true"
+          size="sm"
+          variant="outline-info"
+        >
+          パスワード変更
+        </b-button>
         <b-button @click="admin_logout" size="sm" variant="outline-danger">
           <font-awesome-icon :icon="'sign-out-alt'" class="fa-fw" />
           ログアウト
@@ -15,12 +23,20 @@
         <font-awesome-icon :icon="'sign-in-alt'" class="fa-fw" />
         ログイン
       </b-button>
-    </p>
-    <p class="profile">
+    </section>
+    <section class="profile">
+      <h3>一般ユーザ</h3>
       <font-awesome-icon icon="user-edit" class="fa-fw" />
       <template v-if="this.writer_user !== null">
         <span class="name">{{ this.writer_user.name }}</span>
         <span class="id">@{{ this.writer_user.id }}</span>
+        <b-button
+          @click="writer_password_modal_shown = true"
+          size="sm"
+          variant="outline-info"
+        >
+          パスワード変更
+        </b-button>
         <b-button @click="writer_logout" size="sm" variant="outline-danger">
           <font-awesome-icon :icon="'sign-out-alt'" class="fa-fw" />
           ログアウト
@@ -30,7 +46,7 @@
         <font-awesome-icon :icon="'sign-in-alt'" class="fa-fw" />
         ログイン
       </b-button>
-    </p>
+    </section>
     <template v-if="writer_logged_in">
       <section>
         <h2>新規リクエスト</h2>
@@ -54,6 +70,8 @@
         >リクエスト一覧</b-button
       >
     </section>
+    <admin-change-password-modal v-model="admin_password_modal_shown" />
+    <writer-change-password-modal v-model="writer_password_modal_shown" />
   </div>
 </template>
 
@@ -79,13 +97,23 @@ import AdminAuth from "@/libs/auth/admin_auth";
 import WriterAuth from "@/libs/auth/writer_auth";
 import { AdminUserInfo } from "@/apis/admin/user.ts";
 import { WriterUserInfo } from "@/apis/writer/user.ts";
+import AdminChangePasswordModal from "@/components/AdminChangePasswordModal.vue";
+import WriterChangePasswordModal from "@/components/WriterChangePasswordModal.vue";
 
-@Component
+@Component({
+  components: {
+    AdminChangePasswordModal,
+    WriterChangePasswordModal
+  }
+})
 export default class AdminTop extends Vue {
   readonly page_title = "ブログ管理ページ";
 
   admin_user: AdminUserInfo | null = null;
   writer_user: WriterUserInfo | null = null;
+
+  admin_password_modal_shown = false;
+  writer_password_modal_shown = false;
 
   mounted() {
     this.load();

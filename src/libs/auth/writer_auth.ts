@@ -50,4 +50,20 @@ function logout() {
   Cookie.remove("writer_token");
 }
 
-export default { getJWT, login, logout, attempt_get_JWT };
+function change_password(
+  client: AspidaClient<AxiosRequestConfig>,
+  password: string
+): Promise<void> {
+  const token = getJWT();
+  if (token == null) return Promise.reject();
+  return api(client)
+    .writer.change_password.$post({
+      headers: { "X-BLOG-WRITER-TOKEN": token.content },
+      data: { password }
+    })
+    .then(() => {
+      return;
+    });
+}
+
+export default { getJWT, login, logout, change_password, attempt_get_JWT };

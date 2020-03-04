@@ -50,4 +50,20 @@ function logout() {
   Cookie.remove("admin_token");
 }
 
-export default { getJWT, login, logout, attempt_get_JWT };
+function change_password(
+  client: AspidaClient<AxiosRequestConfig>,
+  password: string
+): Promise<void> {
+  const token = getJWT();
+  if (token == null) return Promise.reject();
+  return api(client)
+    .admin.change_password.$post({
+      headers: { "X-ADMIN-TOKEN": token.content },
+      data: { password }
+    })
+    .then(() => {
+      return;
+    });
+}
+
+export default { getJWT, login, logout, change_password, attempt_get_JWT };
