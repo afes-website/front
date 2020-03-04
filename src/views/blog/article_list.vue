@@ -115,7 +115,7 @@ import api from "@/apis/$api";
 import aspida from "@aspida/axios";
 import { BlogArticle, BlogArticleParameter } from "@/apis/blog/articles/@types";
 import Markdown from "@/libs/markdown";
-import getCategory from "@/libs/categories";
+import { getCategory } from "@/libs/categories";
 import Token from "markdown-it/lib/token";
 
 @Component

@@ -64,51 +64,17 @@
             <li>
               <b-link :to="{ name: 'blog_top' }">近況</b-link>
               <ul class="menu-secondary">
-                <li>
-                  <b-link
-                    :to="{ name: 'article_list', params: { category: 'news' } }"
-                  >
-                    {{ getCategory("news") }}
-                  </b-link>
-                </li>
-                <li>
+                <li
+                  v-for="(cat_display_name, cat_id) of categories"
+                  :key="cat_id"
+                >
                   <b-link
                     :to="{
                       name: 'article_list',
-                      params: { category: 'general' }
+                      params: { category: cat_id }
                     }"
                   >
-                    {{ getCategory("general") }}
-                  </b-link>
-                </li>
-                <li>
-                  <b-link
-                    :to="{
-                      name: 'article_list',
-                      params: { category: 'workTeam' }
-                    }"
-                  >
-                    {{ getCategory("workTeam") }}
-                  </b-link>
-                </li>
-                <li>
-                  <b-link
-                    :to="{
-                      name: 'article_list',
-                      params: { category: 'exh' }
-                    }"
-                  >
-                    {{ getCategory("exh") }}
-                  </b-link>
-                </li>
-                <li>
-                  <b-link
-                    :to="{
-                      name: 'article_list',
-                      params: { category: 'contrib' }
-                    }"
-                  >
-                    {{ getCategory("contrib") }}
+                    {{ cat_display_name }}
                   </b-link>
                 </li>
               </ul>
@@ -442,14 +408,14 @@ import { Component, Vue } from "vue-property-decorator";
 import Vue2TouchEvents from "vue2-touch-events";
 import AdminLoginModal from "./components/AdminLoginModal.vue";
 import WriterLoginModal from "./components/WriterLoginModal.vue";
-import getCategory from "@/libs/categories";
+import categories from "@/libs/categories";
 
 Vue.use(Vue2TouchEvents);
 
 @Component({ components: { AdminLoginModal, WriterLoginModal } })
 export default class Layout extends Vue {
   sidebar_shown = false;
-  getCategory = getCategory;
+  readonly categories = categories;
 
   show() {
     this.sidebar_shown = true;

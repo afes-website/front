@@ -7,16 +7,15 @@
     </b-button>
     <section id="form">
       Category
-      <p>
-        <code>news</code>, <code>general</code>, <code>workTeam</code>,
-        <code>exh</code>, <code>contrib</code> のうちどれか
-      </p>
-      <b-input
-        v-model="category"
-        @input="get_category_articles"
-        :state="category != ''"
-      />
-      <output>this category has {{ category_article_count }} articles</output>
+      <b-form-select v-model="category" :state="category in categories">
+        <b-form-select-option
+          v-for="(cat_display_name, cat_id) in categories"
+          :key="cat_id"
+          :value="cat_id"
+        >
+          {{ cat_display_name }}
+        </b-form-select-option>
+      </b-form-select>
       <b-table-simple responsive hover small class="table">
         <b-thead>
           <b-tr>
@@ -172,17 +171,18 @@ import FetchStatus from "@/libs/fetch_status";
 import FetchStatusIcon from "@/components/FetchStatusIcon.vue";
 import DiffLib from "difflib";
 import * as Diff2Html from "diff2html";
+import categories from "@/libs/categories";
 
 @Component({ components: { FetchStatusIcon } })
 export default class ManagePath extends Vue {
   readonly page_title = "ブログ 管理画面 記事管理";
   revisions: { [key: number]: BlogRevision } = {};
   client = aspida();
+  readonly categories = categories;
 
   revision_selection = 0;
   original_selection = 0;
   category = "";
-  category_article_count = -1;
 
   fetch_status: FetchStatus = "idle";
   post_status: FetchStatus = "idle";
@@ -211,7 +211,6 @@ export default class ManagePath extends Vue {
               this.revision_selection = data.revision_id;
               this.article_exists = true;
             })
-            .then(this.get_category_articles)
             .catch((e: unknown) => {
               if (is_axios_error(e) && e.response && e.response.status == 404) {
                 // article may not to exist
@@ -274,14 +273,6 @@ export default class ManagePath extends Vue {
           this.$set(this.revisions, id, data);
         });
     });
-  }
-
-  get_category_articles() {
-    api(this.client)
-      .blog.articles.$get({ query: { category: this.category } })
-      .then((data: BlogArticle[]) => {
-        this.category_article_count = data.length;
-      });
   }
 
   apply_changes() {
