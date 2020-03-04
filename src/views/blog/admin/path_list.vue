@@ -137,7 +137,7 @@ export default class PathList extends Vue {
   readonly page_title = "ブログ 管理画面 記事情報";
   paths: { [key: string]: Path } = {};
   client = aspida();
-  getCategory = getCategory;
+  readonly getCategory = getCategory;
 
   fetch_status: FetchStatus = "idle";
 
