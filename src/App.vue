@@ -65,7 +65,7 @@
               <b-link :to="{ name: 'blog_top' }">近況</b-link>
               <ul class="menu-secondary">
                 <li
-                  v-for="(cat_display_name, cat_id) of categories"
+                  v-for="(cat_name, cat_id) of visible_categories"
                   :key="cat_id"
                 >
                   <b-link
@@ -74,7 +74,7 @@
                       params: { category: cat_id }
                     }"
                   >
-                    {{ cat_display_name }}
+                    {{ cat_name }}
                   </b-link>
                 </li>
               </ul>
@@ -415,7 +415,6 @@ Vue.use(Vue2TouchEvents);
 @Component({ components: { AdminLoginModal, WriterLoginModal } })
 export default class Layout extends Vue {
   sidebar_shown = false;
-  readonly categories = categories;
 
   show() {
     this.sidebar_shown = true;
@@ -427,6 +426,14 @@ export default class Layout extends Vue {
 
   toggle_sidebar() {
     this.sidebar_shown = !this.sidebar_shown;
+  }
+
+  get visible_categories() {
+    const ret: { [key: string]: string } = {};
+    for (const k in categories) {
+      if (categories[k].visible) ret[k] = categories[k].name;
+    }
+    return ret;
   }
 }
 </script>
