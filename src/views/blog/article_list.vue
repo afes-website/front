@@ -115,7 +115,7 @@ import api from "@/apis/$api";
 import aspida from "@aspida/axios";
 import { BlogArticle, BlogArticleParameter } from "@/apis/blog/articles/@types";
 import Markdown from "@/libs/markdown";
-import { getCategory } from "@/libs/categories";
+import { getCategory, categories } from "@/libs/categories";
 import Token from "markdown-it/lib/token";
 
 @Component
@@ -140,6 +140,19 @@ export default class ArticleList extends Vue {
       .blog.articles.$get({ query: this.filter_query })
       .then(data => {
         this.articles = data;
+        if (!this.$route.params.category) {
+          this.articles = this.articles.reduce(
+            (v: BlogArticle[], article: BlogArticle) => {
+              if (
+                !(article.category in categories) ||
+                categories[article.category].visible
+              )
+                v.push(article);
+              return v;
+            },
+            []
+          );
+        }
       });
   }
 
