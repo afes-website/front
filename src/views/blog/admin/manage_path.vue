@@ -9,11 +9,11 @@
       Category
       <b-form-select v-model="category" :state="category in categories">
         <b-form-select-option
-          v-for="(cat_display_name, cat_id) in categories"
+          v-for="(cat_obj, cat_id) in categories"
           :key="cat_id"
           :value="cat_id"
         >
-          {{ cat_display_name }}
+          {{ cat_obj.name }}
         </b-form-select-option>
       </b-form-select>
       <b-table-simple responsive hover small class="table">
