@@ -20,7 +20,7 @@ jobs:
         run: |
           cat<<EOF > .env.local.production
           VUE_APP_API_BASE_URL=https://api.dev.afes.info
-          GOOGLE_ANALYTICS_ID=UA-159405392-2
+          VUE_APP_GA_ID=UA-159405392-2
           EOF
       - name: Cache yarn packages
         uses: actions/cache@v1
