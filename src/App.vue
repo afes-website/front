@@ -65,7 +65,7 @@
                 <b-link disabled>校内マップ</b-link>
               </li>
               <li>
-                <b-link :to="{ name: 'blog_top' }">近況</b-link>
+                <b-link :to="{ name: 'article_list' }">近況</b-link>
                 <ul class="menu-secondary">
                   <li
                     v-for="(cat_name, cat_id) of visible_categories"
