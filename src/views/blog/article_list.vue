@@ -26,6 +26,10 @@
               <font-awesome-icon :icon="'user'" class="fa-fw" />
               {{ article.author.name }}
             </span>
+            <span v-if="!isCategorySpecified">
+              <font-awesome-icon :icon="'folder'" class="fa-fw" />
+              {{ getCategory(article.category) }}
+            </span>
             <span>
               <font-awesome-icon :icon="'clock'" class="fa-fw" />
               {{ getStringTime(article.created_at) }}
@@ -115,7 +119,7 @@ import api from "@/apis/$api";
 import aspida from "@aspida/axios";
 import { BlogArticle, BlogArticleParameter } from "@/apis/blog/articles/@types";
 import Markdown from "@/libs/markdown";
-import { getCategory } from "@/libs/categories";
+import { getCategory, categories } from "@/libs/categories";
 import Token from "markdown-it/lib/token";
 
 @Component
@@ -123,6 +127,7 @@ export default class ArticleList extends Vue {
   page_title = "ブログ 記事一覧";
   articles: BlogArticle[] = [];
   client = aspida();
+  readonly getCategory = getCategory;
 
   perPage = 10;
   currentPage = 1;
@@ -140,6 +145,19 @@ export default class ArticleList extends Vue {
       .blog.articles.$get({ query: this.filter_query })
       .then(data => {
         this.articles = data;
+        if (!this.$route.params.category) {
+          this.articles = this.articles.reduce(
+            (v: BlogArticle[], article: BlogArticle) => {
+              if (
+                !(article.category in categories) ||
+                categories[article.category].visible
+              )
+                v.push(article);
+              return v;
+            },
+            []
+          );
+        }
       });
   }
 
@@ -166,6 +184,10 @@ export default class ArticleList extends Vue {
       (this.currentPage - 1) * this.perPage,
       this.currentPage * this.perPage
     );
+  }
+
+  get isCategorySpecified(): boolean {
+    return !!this.$route.params.category;
   }
 
   rendered_md(md: string): string {
