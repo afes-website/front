@@ -21,86 +21,92 @@
         <b-link id="brand" :to="{ name: 'Home' }">
           <img src="./assets/logo.png" alt="logo" />
         </b-link>
-        <div id="icons">
-          <b-link
-            target="_blank"
-            title="Twitter"
-            href="https://twitter.com/73_Afes"
-          >
-            <img src="@/assets/sns/twitter.svg" alt="Twitter Icon" />
-          </b-link>
-          <b-link
-            target="_blank"
-            title="Instagram"
-            href="https://www.instagram.com/73_afes/"
-          >
-            <img src="@/assets/sns/instagram.png" alt="Instagram Icon" />
-          </b-link>
-          <b-link
-            target="_blank"
-            title="School Website"
-            href="https://www.azabu-jh.ed.jp/"
-          >
-            <img src="@/assets/sns/azabu.svg" alt="School Icon" />
-          </b-link>
-        </div>
-        <nav id="menu" :class="{ shown: sidebar_shown }">
-          <ul>
-            <li>
-              <b-link :to="{ name: 'about' }">ごあいさつ</b-link>
-            </li>
-            <li>
-              <b-link :to="{ name: 'access' }">アクセス</b-link>
-            </li>
-            <li>
-              <b-link disabled>展示一覧</b-link>
-            </li>
-            <li>
-              <b-link disabled>タイムテーブル</b-link>
-            </li>
-            <li>
-              <b-link disabled>校内マップ</b-link>
-            </li>
-            <li>
-              <b-link :to="{ name: 'article_list' }">近況</b-link>
-              <ul class="menu-secondary">
-                <li
-                  v-for="(cat_name, cat_id) of visible_categories"
-                  :key="cat_id"
+        <div id="menu" :class="{ shown: sidebar_shown }">
+          <hr />
+          <div id="menu-icons">
+            <b-link
+              target="_blank"
+              title="Twitter"
+              href="https://twitter.com/73_Afes"
+            >
+              <img src="@/assets/sns/twitter.svg" alt="Twitter Icon" />
+            </b-link>
+            <b-link
+              target="_blank"
+              title="Instagram"
+              href="https://www.instagram.com/73_afes/"
+            >
+              <img src="@/assets/sns/instagram.png" alt="Instagram Icon" />
+            </b-link>
+            <b-link
+              target="_blank"
+              title="School Website"
+              href="https://www.azabu-jh.ed.jp/"
+            >
+              <img src="@/assets/sns/azabu.svg" alt="School Icon" />
+            </b-link>
+          </div>
+          <hr />
+          <nav id="menu-nav">
+            <ul>
+              <li>
+                <b-link :to="{ name: 'about' }">ごあいさつ</b-link>
+              </li>
+              <li>
+                <b-link :to="{ name: 'access' }">アクセス</b-link>
+              </li>
+              <li>
+                <b-link disabled>展示一覧</b-link>
+              </li>
+              <li>
+                <b-link disabled>タイムテーブル</b-link>
+              </li>
+              <li>
+                <b-link disabled>校内マップ</b-link>
+              </li>
+              <li>
+                <b-link :to="{ name: 'article_list' }">近況</b-link>
+                <ul class="menu-secondary">
+                  <li
+                    v-for="(cat_name, cat_id) of visible_categories"
+                    :key="cat_id"
+                  >
+                    <b-link
+                      :to="{
+                        name: 'article_list',
+                        params: { category: cat_id }
+                      }"
+                    >
+                      {{ cat_name }}
+                    </b-link>
+                  </li>
+                </ul>
+              </li>
+              <li>
+                <b-link :to="{ name: 'admin_top' }">ブログ管理</b-link>
+                <ul
+                  class="menu-secondary"
+                  v-if="this.$route.path.startsWith('/blog/admin')"
                 >
-                  <b-link
-                    :to="{
-                      name: 'article_list',
-                      params: { category: cat_id }
-                    }"
-                  >
-                    {{ cat_name }}
-                  </b-link>
-                </li>
-              </ul>
-            </li>
-            <li>
-              <b-link :to="{ name: 'admin_top' }">ブログ管理</b-link>
-              <ul
-                class="menu-secondary"
-                v-if="this.$route.path.startsWith('/blog/admin')"
-              >
-                <li>
-                  <b-link :to="{ name: 'new_revision' }">新規リクエスト</b-link>
-                </li>
-                <li>
-                  <b-link :to="{ name: 'revision_list' }"
-                    >リクエスト一覧</b-link
-                  >
-                </li>
-                <li>
-                  <b-link :to="{ name: 'path_list' }">記事一覧</b-link>
-                </li>
-              </ul>
-            </li>
-            <li><b-link :to="{ name: 'document' }">文化祭資料</b-link></li>
-          </ul>
-        </nav>
+                  <li>
+                    <b-link :to="{ name: 'new_revision' }"
+                      >新規リクエスト</b-link
+                    >
+                  </li>
+                  <li>
+                    <b-link :to="{ name: 'revision_list' }"
+                      >リクエスト一覧</b-link
+                    >
+                  </li>
+                  <li>
+                    <b-link :to="{ name: 'path_list' }">記事一覧</b-link>
+                  </li>
+                </ul>
+              </li>
+              <li><b-link :to="{ name: 'document' }">文化祭資料</b-link></li>
+            </ul>
+          </nav>
+        </div>
         <div
           id="menu-fade"
           :class="{ shown: sidebar_shown }"
@@ -182,52 +188,70 @@ header {
     }
     #brand {
       img {
-        margin-left: -16px;
+        margin-left: -1rem;
         width: calc(100% + 30px);
       }
     }
-
     #menu {
-      pointer-events: auto;
-      background: $site-theme;
-      color: #fff;
-      font-size: 1.1rem;
-      width: 14rem;
-
-      box-shadow: 0 0 1em rgba(0, 0, 0, 0.3);
-
-      text-align: left;
-      padding: 1rem 2rem;
-      //border: 1px solid #eee;
-      border-radius: 1rem;
-      & > ul {
-        padding-left: 0;
-        line-height: 2;
+      hr {
+        display: none;
       }
-      li {
-        margin: 0;
-        list-style-type: none;
-        margin-bottom: 0.5rem;
+
+      #menu-icons {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        margin-bottom: 8px;
+
+        img {
+          margin: 8px;
+          width: 32px;
+          height: 32px;
+        }
+      }
+
+      #menu-nav {
+        pointer-events: auto;
+        background: $site-theme;
+        color: #fff;
+        font-weight: 500;
+        font-size: 1.1rem;
+        width: 14rem;
+
+        box-shadow: 0 0 1em rgba(0, 0, 0, 0.3);
+
+        text-align: left;
+        padding: 1rem 2rem;
+        //border: 1px solid #eee;
+        border-radius: 1rem;
+
         & > ul {
-          padding-left: 2rem;
+          padding-left: 0;
+          line-height: 2;
         }
-      }
-      .menu-secondary {
-        margin-top: 0.5rem;
-      }
-      a {
-        color: inherit;
-        text-decoration: none;
-        &.disabled {
-          opacity: 0.65;
+
+        li {
+          margin: 0;
+          list-style-type: none;
+          margin-bottom: 0.5rem;
+
+          & > ul {
+            padding-left: 2rem;
+          }
         }
-      }
-    }
-    #icons {
-      img {
-        margin: 8px 16px 16px 0;
-        width: 32px;
-        height: 32px;
+
+        .menu-secondary {
+          margin-top: 0.5rem;
+        }
+
+        a {
+          color: inherit;
+          text-decoration: none;
+
+          &.disabled {
+            opacity: 0.65;
+          }
+        }
       }
     }
   }
@@ -301,38 +325,35 @@ header {
       padding: 0.5rem;
       #hamburger {
         display: inline-block;
+        position: absolute;
+        top: 0.7rem;
+        left: 1rem;
         color: $site-theme;
-        margin: 0.7rem;
+        height: 2.5rem;
       }
       #hamburger-closer {
         display: block;
-        color: #fff;
+        color: $site-theme;
         transition: opacity 0.3s;
         z-index: 1002;
         opacity: 0;
-        position: fixed;
-        top: calc(0.5rem + 0.7rem);
-        left: calc(0.5rem + 0.7rem);
+        position: absolute;
+        top: 0.7rem;
+        left: 1rem;
+        height: 2.5rem;
         &.open {
           opacity: 1;
         }
       }
       #brand {
+        display: block;
+        text-align: center;
+        width: 100%;
         img {
+          margin: 0;
           margin-top: 5px;
-          width: auto;
           height: 64px;
-        }
-      }
-      #icons {
-        display: flex;
-        flex-grow: 1;
-        justify-content: flex-end;
-        align-items: center;
-        margin: 0;
-        padding: 0;
-        img {
-          margin-bottom: 8px;
+          width: auto;
         }
       }
       #menu {
@@ -356,8 +377,27 @@ header {
             opacity: 0.3;
           }
         }
-        //display: none;
-        padding: 4rem 1.6rem !important;
+        #menu-icons {
+          margin: 0;
+          padding: 0;
+          img {
+            margin-bottom: 8px;
+          }
+        }
+        #menu-nav {
+          background-color: inherit;
+          color: inherit;
+          font-weight: inherit;
+          font-size: inherit;
+          width: unset;
+          margin: 0;
+          padding: 0;
+          box-shadow: none;
+        }
+        background-color: #fff;
+        color: $site-theme;
+        font-weight: 700;
+        padding: calc(3.5rem - 1px) 1.6rem 0 1.6rem !important;
         font-size: 1.3rem;
         position: fixed;
         width: 60%;
@@ -368,6 +408,19 @@ header {
         overflow-y: auto;
         top: 0;
         box-shadow: none;
+
+        hr {
+          display: block;
+          position: relative;
+          width: 60vw;
+          left: -1.6rem;
+          margin: 0.5rem 0;
+          border: none;
+          border-top: 1px solid #87acce;
+        }
+        ul > li {
+          line-height: 1.5;
+        }
         &.shown {
           left: 0;
           box-shadow: 0 0 1em rgba(0, 0, 0, 0.3);
