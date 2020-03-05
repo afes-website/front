@@ -1,6 +1,6 @@
 <template>
   <div id="article-list" class="box">
-    <h1>{{ title }}</h1>
+    <h1>{{ page_title }}</h1>
     <div id="articles">
       <b-link
         :to="{
@@ -25,6 +25,10 @@
             <span>
               <font-awesome-icon :icon="'user'" class="fa-fw" />
               {{ article.author.name }}
+            </span>
+            <span v-if="!isCategorySpecified">
+              <font-awesome-icon :icon="'folder'" class="fa-fw" />
+              {{ getCategory(article.category) }}
             </span>
             <span>
               <font-awesome-icon :icon="'clock'" class="fa-fw" />
@@ -57,9 +61,15 @@
     color: #222;
 
     .card-body {
+      overflow: hidden;
+      width: 100%;
       .card-title {
         margin-top: -8px;
         margin-bottom: 12px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        max-height: 1.2em;
+        white-space: nowrap;
       }
 
       .card-subtitle {
@@ -71,28 +81,14 @@
       }
 
       .card-text {
-        display: block;
-        height: 4.5em;
+        display: block; // fallback
+        display: -webkit-box;
+        //max-height: 4.5em;
         position: relative;
         overflow: hidden;
-
-        &::before,
-        &::after {
-          position: absolute;
-          background: #fff;
-        }
-
-        &::before {
-          content: "…";
-          bottom: 0;
-          right: 0;
-        }
-
-        &::after {
-          content: "";
-          width: 100%;
-          height: 100%;
-        }
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2; // 2 lines
+        text-overflow: ellipsis;
       }
     }
   }
@@ -123,13 +119,15 @@ import api from "@/apis/$api";
 import aspida from "@aspida/axios";
 import { BlogArticle, BlogArticleParameter } from "@/apis/blog/articles/@types";
 import Markdown from "@/libs/markdown";
-import getCategory from "@/libs/categories";
+import { getCategory, categories } from "@/libs/categories";
+import Token from "markdown-it/lib/token";
 
 @Component
 export default class ArticleList extends Vue {
-  title = "ブログ 記事一覧";
+  page_title = "ブログ 記事一覧";
   articles: BlogArticle[] = [];
   client = aspida();
+  readonly getCategory = getCategory;
 
   perPage = 10;
   currentPage = 1;
@@ -142,11 +140,24 @@ export default class ArticleList extends Vue {
   }
   load() {
     if (this.$route.params.category)
-      this.title = getCategory(this.$route.params.category) + " 記事一覧";
+      this.page_title = getCategory(this.$route.params.category) + " 記事一覧";
     api(this.client)
       .blog.articles.$get({ query: this.filter_query })
       .then(data => {
         this.articles = data;
+        if (!this.$route.params.category) {
+          this.articles = this.articles.reduce(
+            (v: BlogArticle[], article: BlogArticle) => {
+              if (
+                !(article.category in categories) ||
+                categories[article.category].visible
+              )
+                v.push(article);
+              return v;
+            },
+            []
+          );
+        }
       });
   }
 
@@ -175,8 +186,26 @@ export default class ArticleList extends Vue {
     );
   }
 
+  get isCategorySpecified(): boolean {
+    return !!this.$route.params.category;
+  }
+
   rendered_md(md: string): string {
-    return Markdown.render(md);
+    const tokens = Markdown.parse(md, {});
+    const tokens2txt = (tokens: Token[]) => {
+      return tokens
+        .map((token: Token): string => {
+          if (token.block) {
+            if (token.children !== null)
+              // children may be null despite the type definition
+              return tokens2txt(token.children) + "<br>";
+            else return "";
+          }
+          return token.content;
+        })
+        .join("");
+    };
+    return tokens2txt(tokens);
   }
 }
 </script>

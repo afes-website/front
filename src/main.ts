@@ -1,6 +1,6 @@
 import Vue from "vue";
 import App from "./App.vue";
-import "./registerServiceWorker";
+//import "./registerServiceWorker";
 import router from "./router";
 
 import BootstrapVue from "bootstrap-vue";
@@ -23,6 +23,17 @@ Vue.config.productionTip = false;
 
 import Axios from "axios";
 Axios.defaults.baseURL = process.env.VUE_APP_API_BASE_URL;
+
+import VueGtag from "vue-gtag";
+if (process.env.VUE_APP_GA_ID) {
+  Vue.use(
+    VueGtag,
+    {
+      config: { id: process.env.VUE_APP_GA_ID }
+    },
+    router
+  );
+}
 
 new Vue({
   router,

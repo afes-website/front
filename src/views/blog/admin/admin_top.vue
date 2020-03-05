@@ -1,8 +1,8 @@
 <template>
   <div id="admin-top" class="box">
-    <h1>{{ title }}</h1>
+    <h1>{{ page_title }}</h1>
     <section class="profile">
-      <h2>管理者ユーザ</h2>
+      <h3>管理者ユーザ</h3>
       <font-awesome-icon icon="user-shield" class="fa-fw" />
       <template v-if="this.admin_user !== null">
         <span class="name">{{ this.admin_user.name }}</span>
@@ -25,7 +25,7 @@
       </b-button>
     </section>
     <section class="profile">
-      <h2>一般ユーザ</h2>
+      <h3>一般ユーザ</h3>
       <font-awesome-icon icon="user-edit" class="fa-fw" />
       <template v-if="this.writer_user !== null">
         <span class="name">{{ this.writer_user.name }}</span>
@@ -107,7 +107,7 @@ import WriterChangePasswordModal from "@/components/WriterChangePasswordModal.vu
   }
 })
 export default class AdminTop extends Vue {
-  title = "ブログ管理ページ";
+  readonly page_title = "ブログ管理ページ";
 
   admin_user: AdminUserInfo | null = null;
   writer_user: WriterUserInfo | null = null;
@@ -120,7 +120,7 @@ export default class AdminTop extends Vue {
   }
 
   load() {
-    if (this.admin_logged_in) {
+    if (this.admin_logged_in()) {
       AdminAuth.attempt_get_JWT()
         .then(token => {
           return api(aspida()).admin.user.$get({
@@ -131,7 +131,7 @@ export default class AdminTop extends Vue {
           this.admin_user = user_info;
         });
     }
-    if (this.writer_logged_in) {
+    if (this.writer_logged_in()) {
       WriterAuth.attempt_get_JWT()
         .then(token => {
           return api(aspida()).writer.user.$get({
@@ -166,11 +166,13 @@ export default class AdminTop extends Vue {
     this.writer_user = null;
   }
 
-  get admin_logged_in() {
+  admin_logged_in() {
+    // to disable cache, this isn't getter
     return AdminAuth.getJWT() !== null;
   }
 
-  get writer_logged_in() {
+  writer_logged_in() {
+    // same as below
     return WriterAuth.getJWT() !== null;
   }
 }
