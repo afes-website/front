@@ -466,6 +466,8 @@ import WriterLoginModal from "./components/WriterLoginModal.vue";
 import categories from "@/libs/categories";
 import AdminAuth from "@/libs/auth/admin_auth";
 import WriterAuth from "@/libs/auth/writer_auth";
+import admin_auth_eventhub from "@/libs/auth/admin_auth_eventhub";
+import writer_auth_eventhub from "@/libs/auth/writer_auth_eventhub";
 
 Vue.use(Vue2TouchEvents);
 
@@ -475,6 +477,10 @@ export default class Layout extends Vue {
   admin_logged_in = false;
   writer_logged_in = false;
 
+  created() {
+    admin_auth_eventhub.onLoginSuccess(this.reload_login_status);
+    writer_auth_eventhub.onLoginSuccess(this.reload_login_status);
+  }
   mounted() {
     this.reload_login_status();
   }
