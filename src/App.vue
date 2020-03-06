@@ -88,17 +88,19 @@
                   class="menu-secondary"
                   v-if="this.$route.path.startsWith('/blog/admin')"
                 >
-                  <li>
-                    <b-link :to="{ name: 'new_revision' }"
-                      >新規リクエスト</b-link
-                    >
-                  </li>
-                  <li>
-                    <b-link :to="{ name: 'revision_list' }"
-                      >リクエスト一覧</b-link
-                    >
-                  </li>
-                  <li>
+                  <template v-if="writer_logged_in">
+                    <li>
+                      <b-link :to="{ name: 'new_revision' }"
+                        >新規リクエスト</b-link
+                      >
+                    </li>
+                    <li>
+                      <b-link :to="{ name: 'revision_list' }"
+                        >リクエスト一覧</b-link
+                      >
+                    </li>
+                  </template>
+                  <li v-if="admin_logged_in">
                     <b-link :to="{ name: 'path_list' }">記事一覧</b-link>
                   </li>
                 </ul>
@@ -462,12 +464,20 @@ import Vue2TouchEvents from "vue2-touch-events";
 import AdminLoginModal from "./components/AdminLoginModal.vue";
 import WriterLoginModal from "./components/WriterLoginModal.vue";
 import categories from "@/libs/categories";
+import AdminAuth from "@/libs/auth/admin_auth";
+import WriterAuth from "@/libs/auth/writer_auth";
 
 Vue.use(Vue2TouchEvents);
 
 @Component({ components: { AdminLoginModal, WriterLoginModal } })
 export default class Layout extends Vue {
   sidebar_shown = false;
+  admin_logged_in = false;
+  writer_logged_in = false;
+
+  mounted() {
+    this.reload_login_status();
+  }
 
   @Watch("$route")
   route_changed() {
@@ -492,6 +502,11 @@ export default class Layout extends Vue {
       if (categories[k].visible) ret[k] = categories[k].name;
     }
     return ret;
+  }
+
+  reload_login_status() {
+    this.admin_logged_in = AdminAuth.getJWT() !== null;
+    this.writer_logged_in = WriterAuth.getJWT() !== null;
   }
 }
 </script>
