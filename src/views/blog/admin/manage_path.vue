@@ -160,7 +160,7 @@
 </style>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
 import api from "@/apis/$api";
 import aspida from "@aspida/axios";
 import AdminAuth from "@/libs/auth/admin_auth";
@@ -191,6 +191,11 @@ export default class ManagePath extends Vue {
   article_exists = false;
 
   mounted() {
+    this.load();
+  }
+
+  @Watch("$route")
+  route_changed() {
     this.load();
   }
 
