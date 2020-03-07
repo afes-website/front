@@ -116,7 +116,11 @@
     </header>
     <div id="main-wrapper">
       <main>
-        <router-view></router-view>
+        <router-view
+          v-if="!show_404"
+          @not_found="show_404 = true"
+        ></router-view>
+        <not-found v-else></not-found>
       </main>
       <footer class="box">
         <nav>
@@ -462,16 +466,19 @@ import Vue2TouchEvents from "vue2-touch-events";
 import AdminLoginModal from "./components/AdminLoginModal.vue";
 import WriterLoginModal from "./components/WriterLoginModal.vue";
 import categories from "@/libs/categories";
+import NotFound from "@/views/NotFound.vue";
 
 Vue.use(Vue2TouchEvents);
 
-@Component({ components: { AdminLoginModal, WriterLoginModal } })
+@Component({ components: { AdminLoginModal, WriterLoginModal, NotFound } })
 export default class Layout extends Vue {
   sidebar_shown = false;
+  show_404 = false;
 
   @Watch("$route")
   route_changed() {
     this.sidebar_shown = false;
+    this.show_404 = false;
   }
 
   show() {
