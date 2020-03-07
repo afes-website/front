@@ -95,6 +95,13 @@ const routes = [
       import(
         /* webpackChunkName: "show_article" */ "@/views/blog/show_article.vue"
       )
+  },
+  {
+    // fallback
+    path: "*",
+    name: "not_found",
+    component: () =>
+      import(/* webpackChunkName: "not_found" */ "@/views/NotFound.vue")
   }
 ];
 
