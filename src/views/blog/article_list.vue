@@ -143,7 +143,7 @@ export default class ArticleList extends Vue {
   articles: BlogArticle[] = [];
   client = aspida();
   readonly getCategory = getCategory;
-  noImage = require("@/assets/no-image.svg");
+  readonly noImage = require("@/assets/no-image.svg");
 
   perPage = 10;
   currentPage = 1;
