@@ -11,12 +11,7 @@
         v-for="article in shown_articles"
         :key="article.id"
       >
-        <b-card
-          img-src="https://placehold.jp/30/cccccc/888888/150x150.jpg?text=no%20image"
-          img-alt="eye catch"
-          img-left
-          class="mb-3"
-        >
+        <b-card :img-src="noImage" img-alt="eye catch" img-left class="mb-3">
           <!-- TODO:add image -->
           <b-card-title>
             {{ article.title }}
@@ -128,6 +123,7 @@ export default class ArticleList extends Vue {
   articles: BlogArticle[] = [];
   client = aspida();
   readonly getCategory = getCategory;
+  noImage = require("@/assets/no-image.svg");
 
   perPage = 10;
   currentPage = 1;
