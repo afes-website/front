@@ -11,7 +11,12 @@
         v-for="article in shown_articles"
         :key="article.id"
       >
-        <b-card :img-src="noImage" img-alt="eye catch" img-left class="mb-3">
+        <b-card
+          :img-src="get_article_image(article.content)"
+          img-alt="eye catch"
+          img-left
+          class="mb-3"
+        >
           <!-- TODO:add image -->
           <b-card-title>
             {{ article.title }}
@@ -212,6 +217,31 @@ export default class ArticleList extends Vue {
         .join("");
     };
     return tokens2txt(tokens);
+  }
+
+  get_article_image(md: string) {
+    const tokens = Markdown.parse(md, {});
+    const get_first_img = (tokens: Token[]): string | null => {
+      return tokens.reduce((cur: string | null, token: Token):
+        | string
+        | null => {
+        if (cur !== null) return cur;
+        if (token.type === "image") {
+          return token.attrs.reduce((cur: string | null, attr: string[]) => {
+            if (cur !== null) return cur;
+            if (attr[0] == "src") return attr[1];
+            return null;
+          }, null);
+        }
+        if (token.children !== null) return get_first_img(token.children);
+        return null;
+      }, null);
+    };
+    const first_img_uri = get_first_img(tokens);
+    if (first_img_uri === null) return this.noImage;
+    if (first_img_uri.startsWith(process.env.VUE_APP_API_BASE_URL + "/images"))
+      return first_img_uri + "?h=150&w=150"; // out images support server-side-resizing
+    return first_img_uri;
   }
 }
 </script>
