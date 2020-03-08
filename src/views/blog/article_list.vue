@@ -96,6 +96,7 @@
         -webkit-box-orient: vertical;
         -webkit-line-clamp: 2; // 2 lines
         text-overflow: ellipsis;
+        line-height: 1.5;
       }
     }
   }
@@ -106,24 +107,6 @@
 @media screen and (max-width: 900px) {
   .card .card-img-left {
     display: none;
-  }
-}
-</style>
-
-<style lang="scss">
-#article-list {
-  #articles {
-    .card-text {
-      * {
-        line-height: 1.5;
-        margin: 0;
-        padding: 0;
-        font-size: 1em;
-        height: auto;
-        text-decoration: none;
-        border: none;
-      }
-    }
   }
 }
 </style>
