@@ -11,6 +11,11 @@
     <p>title:<b-input v-model="article_title" /></p>
     <b-tabs>
       <b-tab title="編集" active>
+        <div class="toolbar">
+          <b-button @click="image_upload_modal_shown = true">
+            画像を追加
+          </b-button>
+        </div>
         <b-textarea v-model="content" class="edit-area"></b-textarea>
       </b-tab>
       <b-tab title="プレビュー">
@@ -29,6 +34,10 @@
       post
       <fetch-status-icon :status="status" small />
     </b-button>
+    <image-upload-modal
+      v-model="image_upload_modal_shown"
+      @uploaded="image_uploaded"
+    />
   </div>
 </template>
 
@@ -96,8 +105,10 @@ import FetchStatusIcon from "@/components/FetchStatusIcon.vue";
 import Markdown from "@/libs/markdown";
 import DiffLib from "difflib";
 import * as Diff2Html from "diff2html";
+import ImageUploadModal from "@/components/ImageUploadModal.vue";
+import { get_image_url } from "@/apis/images/@utils";
 
-@Component({ components: { FetchStatusIcon } })
+@Component({ components: { FetchStatusIcon, ImageUploadModal } })
 export default class NewRevision extends Vue {
   readonly page_title = "ブログ 記事投稿/編集";
 
@@ -108,6 +119,12 @@ export default class NewRevision extends Vue {
 
   status: FetchStatus = "idle";
   fetch_status: FetchStatus = "idle";
+
+  image_upload_modal_shown = false;
+
+  image_uploaded(id: string) {
+    this.content += `![image alt](${get_image_url(id)})\n`;
+  }
 
   load() {
     this.fetch_status = "pending";

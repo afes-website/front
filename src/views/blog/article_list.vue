@@ -141,6 +141,8 @@ export default class ArticleList extends Vue {
   load() {
     if (this.$route.params.category)
       this.page_title = getCategory(this.$route.params.category) + " 記事一覧";
+    else this.page_title = "ブログ 記事一覧";
+
     api(this.client)
       .blog.articles.$get({ query: this.filter_query })
       .then(data => {
