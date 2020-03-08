@@ -75,8 +75,8 @@ blockquote {
 
 blockquote p {
   padding: 0;
-  margin: .5rem 0;
-  line-height: 1.7;
+  margin: .5rem 0 !important;
+  line-height: 1.7 !important;
 }
 
 blockquote cite {
