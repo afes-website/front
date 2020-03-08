@@ -90,6 +90,14 @@
 }
 </style>
 
+<style lang="scss" scoped>
+@media screen and (max-width: 900px) {
+  .card .card-img-left {
+    display: none;
+  }
+}
+</style>
+
 <style lang="scss">
 #article-list {
   #articles {
