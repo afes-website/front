@@ -66,6 +66,26 @@ section {
   color: #fff;
 }
 
+blockquote {
+  padding: .2rem 1rem .3rem 1rem;
+  font-style: italic;
+  color: #555;
+  border-left: .8rem solid rgba($site-theme, .3);
+}
+
+blockquote p {
+  padding: 0;
+  margin: .5rem 0 !important;
+  line-height: 1.7 !important;
+}
+
+blockquote cite {
+  display: block;
+  text-align: right;
+  color: #666;
+  font-size: 0.9rem;
+}
+
 
 table {
   @extend .table;
