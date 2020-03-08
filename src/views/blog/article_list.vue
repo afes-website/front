@@ -59,6 +59,13 @@
     height: 150px;
     width: 100%;
     color: #222;
+    .card-img-left {
+      max-width: 148px; // 150px(height) - 1px(border) * 2
+      min-width: 148px; // tricky solution for image collapsing
+      display: block;
+      width: auto;
+      height: auto;
+    }
 
     .card-body {
       overflow: hidden;
