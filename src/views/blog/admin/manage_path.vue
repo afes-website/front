@@ -39,6 +39,7 @@
                 ? 'secondary'
                 : ''
             "
+            @click="select_revision(id)"
           >
             <b-th>
               <b-form-radio
@@ -362,6 +363,10 @@ export default class ManagePath extends Vue {
     const min =
       date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
     return year + "/" + month + "/" + day + " " + hour + ":" + min;
+  }
+
+  select_revision(id: number) {
+    if (this.revisions[id].status == "accepted") this.revision_selection = id;
   }
 }
 </script>
