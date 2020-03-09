@@ -12,7 +12,7 @@
         :key="article.id"
       >
         <b-card
-          img-src="https://placehold.jp/30/cccccc/888888/150x150.jpg?text=no%20image"
+          :img-src="get_article_image(article.content)"
           img-alt="eye catch"
           img-left
           class="mb-3"
@@ -59,6 +59,13 @@
     height: 150px;
     width: 100%;
     color: #222;
+    .card-img-left {
+      max-width: 148px; // 150px(height) - 1px(border) * 2
+      min-width: 148px; // tricky solution for image collapsing
+      display: block;
+      width: auto;
+      height: auto;
+    }
 
     .card-body {
       overflow: hidden;
@@ -89,26 +96,17 @@
         -webkit-box-orient: vertical;
         -webkit-line-clamp: 2; // 2 lines
         text-overflow: ellipsis;
+        line-height: 1.5;
       }
     }
   }
 }
 </style>
 
-<style lang="scss">
-#article-list {
-  #articles {
-    .card-text {
-      * {
-        line-height: 1.5;
-        margin: 0;
-        padding: 0;
-        font-size: 1em;
-        height: auto;
-        text-decoration: none;
-        border: none;
-      }
-    }
+<style lang="scss" scoped>
+@media screen and (max-width: 900px) {
+  .card-wrap-link .card .card-img-left {
+    display: none;
   }
 }
 </style>
@@ -128,6 +126,7 @@ export default class ArticleList extends Vue {
   articles: BlogArticle[] = [];
   client = aspida();
   readonly getCategory = getCategory;
+  readonly noImage = require("@/assets/no-image.svg");
 
   perPage = 10;
   currentPage = 1;
@@ -208,6 +207,31 @@ export default class ArticleList extends Vue {
         .join("");
     };
     return tokens2txt(tokens);
+  }
+
+  get_article_image(md: string) {
+    const tokens = Markdown.parse(md, {});
+    const get_first_img = (tokens: Token[]): string | null => {
+      return tokens.reduce((cur: string | null, token: Token):
+        | string
+        | null => {
+        if (cur !== null) return cur;
+        if (token.type === "image") {
+          return token.attrs.reduce((cur: string | null, attr: string[]) => {
+            if (cur !== null) return cur;
+            if (attr[0] == "src") return attr[1];
+            return null;
+          }, null);
+        }
+        if (token.children !== null) return get_first_img(token.children);
+        return null;
+      }, null);
+    };
+    const first_img_uri = get_first_img(tokens);
+    if (first_img_uri === null) return this.noImage;
+    if (first_img_uri.startsWith(process.env.VUE_APP_API_BASE_URL + "/images"))
+      return first_img_uri + "?h=150&w=150"; // out images support server-side-resizing
+    return first_img_uri;
   }
 }
 </script>
