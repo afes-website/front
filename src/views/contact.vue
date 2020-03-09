@@ -3,17 +3,40 @@
     <h1>{{ page_title }}</h1>
     <b-form @submit="send" v-show="!submitted">
       <b-form-group label="該当するものを選択してください:">
-        <b-form-select v-model="data.type" :options="typeOptions" required />
+        <b-form-select
+          v-model="data.type"
+          :options="typeOptions"
+          required
+          :state="!!data.type.length"
+          aria-describedby="input-type-feedback"
+        />
+        <b-form-invalid-feedback id="input-type-feedback">
+          当てはまるものを選択してください。当てはまるものが無い場合は、「その他」を選択してください。
+        </b-form-invalid-feedback>
       </b-form-group>
       <b-form-group description="返信が必要な場合はご記入ください">
         <b-form-input
           type="email"
           v-model="data.email"
           placeholder="email (example@afes.info)"
+          :state="data.email ? regEx.email.test(data.email) : 'none'"
+          aria-describedby="input-email-feedback"
         />
+        <b-form-invalid-feedback id="input-email-feedback">
+          メールアドレスの形式が間違っています。ご確認ください。
+        </b-form-invalid-feedback>
       </b-form-group>
       <b-form-group>
-        <b-form-input v-model="data.title" placeholder="件名" required />
+        <b-form-input
+          v-model="data.title"
+          placeholder="件名"
+          required
+          :state="!!data.title.length"
+          aria-describedby="input-title-feedback"
+        />
+        <b-form-invalid-feedback id="input-title-feedback">
+          必須です。簡潔にご記入ください。
+        </b-form-invalid-feedback>
       </b-form-group>
       <b-form-group>
         <b-form-textarea
@@ -21,7 +44,12 @@
           placeholder="お問い合わせ内容"
           rows="3"
           required
+          :state="!!data.message.length"
+          aria-describedby="input-message-feedback"
         />
+        <b-form-invalid-feedback id="input-message-feedback">
+          必須です。
+        </b-form-invalid-feedback>
       </b-form-group>
       <b-button type="submit" variant="primary">送信</b-button>
     </b-form>
@@ -57,6 +85,11 @@ export default class Contact extends Vue {
     "麻布生",
     "その他"
   ];
+
+  readonly regEx = {
+    // eslint-disable-next-line no-control-regex
+    email: /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/
+  };
 
   send() {
     const form = document.createElement("form");
