@@ -7,7 +7,7 @@
           v-model="data.type"
           :options="typeOptions"
           required
-          :state="isValid.type()"
+          :state="isTypeValid"
           aria-describedby="input-type-feedback"
         />
         <b-form-invalid-feedback id="input-type-feedback">
@@ -19,7 +19,7 @@
           type="email"
           v-model="data.email"
           placeholder="email (example@afes.info)"
-          :state="isValid.email()"
+          :state="isEmailValid"
           aria-describedby="input-email-feedback"
         />
         <b-form-invalid-feedback id="input-email-feedback">
@@ -31,7 +31,7 @@
           v-model="data.title"
           placeholder="件名"
           required
-          :state="isValid.title()"
+          :state="isTitleValid"
           aria-describedby="input-title-feedback"
         />
         <b-form-invalid-feedback id="input-title-feedback">
@@ -44,7 +44,7 @@
           placeholder="お問い合わせ内容"
           rows="3"
           required
-          :state="isValid.message()"
+          :state="isMessageValid"
           aria-describedby="input-message-feedback"
         />
         <b-form-invalid-feedback id="input-message-feedback">
@@ -55,15 +55,11 @@
         type="submit"
         variant="primary"
         :disabled="
-          !(
-            isValid.type() &&
-            isValid.email() &&
-            isValid.title() &&
-            isValid.message()
-          )
+          !(isTypeValid && isEmailValid && isTypeValid && isMessageValid)
         "
-        >送信</b-button
       >
+        送信
+      </b-button>
     </b-form>
     <div v-show="submitted">
       <p>送信しました。</p>
@@ -89,21 +85,6 @@ export default class Contact extends Vue {
     message: ""
   };
 
-  isValid = {
-    type: () => {
-      return !!this.data.type.length;
-    },
-    email: () => {
-      return this.data.email ? this.regEx.email.test(this.data.email) : "none";
-    },
-    title: () => {
-      return !!this.data.title.length;
-    },
-    message: () => {
-      return !!this.data.message.length;
-    }
-  };
-
   readonly typeOptions = [
     "麻布に受験する事を考えている小学生とそのご家族",
     "麻布生でない中学生・高校生・高専生",
@@ -112,6 +93,19 @@ export default class Contact extends Vue {
     "麻布生",
     "その他"
   ];
+
+  get isTypeValid() {
+    return !!this.data.type.length;
+  }
+  get isEmailValid() {
+    return this.data.email ? this.regEx.email.test(this.data.email) : "none";
+  }
+  get isTitleValid() {
+    return !!this.data.title.length;
+  }
+  get isMessageValid() {
+    return !!this.data.message.length;
+  }
 
   readonly regEx = {
     // eslint-disable-next-line no-control-regex
