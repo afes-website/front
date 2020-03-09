@@ -105,7 +105,7 @@
 
 <style lang="scss" scoped>
 @media screen and (max-width: 900px) {
-  .card .card-img-left {
+  .card-wrap-link .card .card-img-left {
     display: none;
   }
 }
