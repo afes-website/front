@@ -7,11 +7,11 @@
           v-model="data.type"
           :options="typeOptions"
           required
-          :state="!!data.type.length"
+          :state="isValid.type()"
           aria-describedby="input-type-feedback"
         />
         <b-form-invalid-feedback id="input-type-feedback">
-          当てはまるものを選択してください。当てはまるものが無い場合は、「その他」を選択してください。
+          当てはまるものを選択してください。当てはまるものが無い場合は「その他」を選択してください。
         </b-form-invalid-feedback>
       </b-form-group>
       <b-form-group description="返信が必要な場合はご記入ください">
@@ -19,7 +19,7 @@
           type="email"
           v-model="data.email"
           placeholder="email (example@afes.info)"
-          :state="data.email ? regEx.email.test(data.email) : 'none'"
+          :state="isValid.email()"
           aria-describedby="input-email-feedback"
         />
         <b-form-invalid-feedback id="input-email-feedback">
@@ -31,7 +31,7 @@
           v-model="data.title"
           placeholder="件名"
           required
-          :state="!!data.title.length"
+          :state="isValid.title()"
           aria-describedby="input-title-feedback"
         />
         <b-form-invalid-feedback id="input-title-feedback">
@@ -44,14 +44,26 @@
           placeholder="お問い合わせ内容"
           rows="3"
           required
-          :state="!!data.message.length"
+          :state="isValid.message()"
           aria-describedby="input-message-feedback"
         />
         <b-form-invalid-feedback id="input-message-feedback">
           必須です。
         </b-form-invalid-feedback>
       </b-form-group>
-      <b-button type="submit" variant="primary">送信</b-button>
+      <b-button
+        type="submit"
+        variant="primary"
+        :disabled="
+          !(
+            isValid.type() &&
+            isValid.email() &&
+            isValid.title() &&
+            isValid.message()
+          )
+        "
+        >送信</b-button
+      >
     </b-form>
     <div v-show="submitted">
       <p>送信しました。</p>
@@ -75,6 +87,21 @@ export default class Contact extends Vue {
     email: "",
     title: "",
     message: ""
+  };
+
+  isValid = {
+    type: () => {
+      return !!this.data.type.length;
+    },
+    email: () => {
+      return this.data.email ? this.regEx.email.test(this.data.email) : "none";
+    },
+    title: () => {
+      return !!this.data.title.length;
+    },
+    message: () => {
+      return !!this.data.message.length;
+    }
   };
 
   readonly typeOptions = [
