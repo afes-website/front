@@ -32,7 +32,7 @@
             </span>
             <span>
               <font-awesome-icon :icon="'clock'" class="fa-fw" />
-              {{ getStringTime(article.created_at) }}
+              {{ getStringTime(article.updated_at) }}
             </span>
           </b-card-sub-title>
           <b-card-text v-html="rendered_md(article.content)" />
