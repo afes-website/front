@@ -124,7 +124,7 @@
         <nav>
           <ul>
             <li>
-              <b-link disabled>お問い合わせ</b-link>
+              <b-link :to="{ name: 'contact' }">お問い合わせ</b-link>
             </li>
             <li>
               <b-link :to="{ name: 'policy' }">プライバシーポリシー</b-link>
