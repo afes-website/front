@@ -88,17 +88,19 @@
                   class="menu-secondary"
                   v-if="this.$route.path.startsWith('/blog/admin')"
                 >
-                  <li>
-                    <b-link :to="{ name: 'new_revision' }"
-                      >新規リクエスト</b-link
-                    >
-                  </li>
-                  <li>
-                    <b-link :to="{ name: 'revision_list' }"
-                      >リクエスト一覧</b-link
-                    >
-                  </li>
-                  <li>
+                  <template v-if="writer_logged_in">
+                    <li>
+                      <b-link :to="{ name: 'new_revision' }"
+                        >新規リクエスト</b-link
+                      >
+                    </li>
+                    <li>
+                      <b-link :to="{ name: 'revision_list' }"
+                        >リクエスト一覧</b-link
+                      >
+                    </li>
+                  </template>
+                  <li v-if="admin_logged_in">
                     <b-link :to="{ name: 'path_list' }">記事一覧</b-link>
                   </li>
                 </ul>
@@ -126,7 +128,7 @@
         <nav>
           <ul>
             <li>
-              <b-link disabled>お問い合わせ</b-link>
+              <b-link :to="{ name: 'contact' }">お問い合わせ</b-link>
             </li>
             <li>
               <b-link :to="{ name: 'policy' }">プライバシーポリシー</b-link>
@@ -467,6 +469,10 @@ import AdminLoginModal from "./components/AdminLoginModal.vue";
 import WriterLoginModal from "./components/WriterLoginModal.vue";
 import categories from "@/libs/categories";
 import NotFound from "@/views/NotFound.vue";
+import AdminAuth from "@/libs/auth/admin_auth";
+import WriterAuth from "@/libs/auth/writer_auth";
+import admin_auth_eventhub from "@/libs/auth/admin_auth_eventhub";
+import writer_auth_eventhub from "@/libs/auth/writer_auth_eventhub";
 
 Vue.use(Vue2TouchEvents);
 
@@ -474,6 +480,16 @@ Vue.use(Vue2TouchEvents);
 export default class Layout extends Vue {
   sidebar_shown = false;
   show_404 = false;
+  admin_logged_in = false;
+  writer_logged_in = false;
+
+  created() {
+    admin_auth_eventhub.onLoginSuccess(this.reload_login_status);
+    writer_auth_eventhub.onLoginSuccess(this.reload_login_status);
+  }
+  mounted() {
+    this.reload_login_status();
+  }
 
   @Watch("$route")
   route_changed() {
@@ -499,6 +515,11 @@ export default class Layout extends Vue {
       if (categories[k].visible) ret[k] = categories[k].name;
     }
     return ret;
+  }
+
+  reload_login_status() {
+    this.admin_logged_in = AdminAuth.getJWT() !== null;
+    this.writer_logged_in = WriterAuth.getJWT() !== null;
   }
 }
 </script>
