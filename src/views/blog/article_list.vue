@@ -32,7 +32,7 @@
             </span>
             <span>
               <font-awesome-icon :icon="'clock'" class="fa-fw" />
-              {{ getStringTime(article.created_at) }}
+              {{ getStringTime(article.updated_at) }}
             </span>
           </b-card-sub-title>
           <b-card-text v-html="rendered_md(article.content)" />
@@ -180,8 +180,16 @@ export default class ArticleList extends Vue {
     return this.articles.length;
   }
 
+  get sorted_articles(): BlogArticle[] {
+    let ret_articles = this.articles.concat(); // copy
+    ret_articles = ret_articles.sort((a, b) => {
+      return a.updated_at < b.updated_at ? 1 : -1; // compare in string
+    });
+    return ret_articles;
+  }
+
   get shown_articles(): BlogArticle[] {
-    return this.articles.slice(
+    return this.sorted_articles.slice(
       (this.currentPage - 1) * this.perPage,
       this.currentPage * this.perPage
     );
