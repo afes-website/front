@@ -27,6 +27,7 @@
               ? 'secondary'
               : ''
           "
+          @click="open_revision(revision)"
         >
           <b-th>{{ revision.id }}</b-th>
           <b-td>
@@ -204,6 +205,25 @@ export default class RevisionList extends Vue {
     const min =
       date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
     return year + "/" + month + "/" + day + " " + hour + ":" + min;
+  }
+
+  open_revision(revision: BlogRevisionWithArticle) {
+    if (
+      revision.article !== null &&
+      revision.article.revision_id == revision.id
+    )
+      this.$router.push({
+        name: "show_article",
+        params: {
+          category: revision.article.category,
+          id: revision.article_id
+        }
+      });
+    else
+      this.$router.push({
+        name: "revision_preview",
+        params: { id: revision.id.toString() }
+      });
   }
 }
 </script>

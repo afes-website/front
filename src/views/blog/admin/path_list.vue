@@ -18,7 +18,11 @@
         </b-tr>
       </b-thead>
       <b-tbody>
-        <b-tr v-for="(path, route) in paths" :key="route">
+        <b-tr
+          v-for="(path, route) in paths"
+          :key="route"
+          @click="open_manage_path(route)"
+        >
           <b-th>
             {{ route }}
             <b-badge
@@ -204,6 +208,13 @@ export default class PathList extends Vue {
     const min =
       date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
     return year + "/" + month + "/" + day + " " + hour + ":" + min;
+  }
+
+  open_manage_path(route: string) {
+    this.$router.push({
+      name: "manage_path",
+      params: { id: route }
+    });
   }
 }
 </script>
