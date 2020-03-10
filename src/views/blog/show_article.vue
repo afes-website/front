@@ -13,7 +13,7 @@
         </span>
         <span>
           <font-awesome-icon :icon="'clock'" class="fa-fw" />
-          {{ getStringTime(article.created_at) }}
+          {{ getStringTime(article.updated_at) }}
         </span>
       </div>
       <div class="main-content" v-html="rendered_md" />
