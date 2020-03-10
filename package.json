@@ -1,6 +1,6 @@
 {
   "name": "front",
-  "version": "0.1.0",
+  "version": "1.2.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -36,12 +36,10 @@
     "markdown-it-checkbox": "^1.1.0",
     "markdown-it-cjk-breaks": "^1.1.3",
     "markdown-it-container": "^2.0.0",
-    "markdown-it-emoji": "^1.4.0",
     "markdown-it-imsize": "^2.0.1",
     "markdown-it-ins": "^3.0.0",
     "markdown-it-mark": "^3.0.0",
     "markdown-it-sanitizer": "^0.4.3",
-    "markdown-it-sub": "^1.0.0",
     "vue": "^2.6.10",
     "vue-class-component": "^7.0.2",
     "vue-gtag": "^1.6.2",

@@ -39,6 +39,7 @@
                 ? 'secondary'
                 : ''
             "
+            @click="select_revision(id)"
           >
             <b-th>
               <b-form-radio
@@ -160,7 +161,7 @@
 </style>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
 import api from "@/apis/$api";
 import aspida from "@aspida/axios";
 import AdminAuth from "@/libs/auth/admin_auth";
@@ -175,7 +176,7 @@ import categories from "@/libs/categories";
 
 @Component({ components: { FetchStatusIcon } })
 export default class ManagePath extends Vue {
-  readonly page_title = "ブログ 管理画面 記事管理";
+  page_title = "ブログ 記事管理";
   revisions: { [key: number]: BlogRevision } = {};
   client = aspida();
   readonly categories = categories;
@@ -194,11 +195,17 @@ export default class ManagePath extends Vue {
     this.load();
   }
 
+  @Watch("$route")
+  route_changed() {
+    this.load();
+  }
+
   load() {
     this.fetch_status = "pending";
     this.article_exists = false;
     this.revision_selection = 0;
     this.original_selection = 0;
+    this.page_title = "ブログ 記事管理: " + this.$route.params.id;
     AdminAuth.attempt_get_JWT()
       .then(token => {
         Promise.all([
@@ -356,6 +363,10 @@ export default class ManagePath extends Vue {
     const min =
       date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
     return year + "/" + month + "/" + day + " " + hour + ":" + min;
+  }
+
+  select_revision(id: number) {
+    if (this.revisions[id].status == "accepted") this.revision_selection = id;
   }
 }
 </script>

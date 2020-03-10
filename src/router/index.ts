@@ -21,6 +21,12 @@ const routes = [
       import(/* webpackChunkName: "access" */ "@/views/access.vue")
   },
   {
+    path: "/contact",
+    name: "contact",
+    component: () =>
+      import(/* webpackChunkName: "contact" */ "@/views/contact.vue")
+  },
+  {
     path: "/policy",
     name: "policy",
     component: () =>
@@ -95,6 +101,13 @@ const routes = [
       import(
         /* webpackChunkName: "show_article" */ "@/views/blog/show_article.vue"
       )
+  },
+  {
+    // fallback
+    path: "*",
+    name: "not_found",
+    component: () =>
+      import(/* webpackChunkName: "not_found" */ "@/views/NotFound.vue")
   }
 ];
 
