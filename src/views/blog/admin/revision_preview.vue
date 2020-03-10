@@ -135,7 +135,7 @@ export default class ShowRevision extends Vue {
       })
       .catch((e: unknown) => {
         if (is_axios_error(e)) {
-          //if (e.response && e.response.status == 404) console.log("404");
+          if (e.response && e.response.status == 404) this.$emit("not_found");
         }
         this.fetch_status = "fail";
       });
