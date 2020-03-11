@@ -81,6 +81,8 @@
 </template>
 
 <style lang="scss" scoped>
+@import "@/assets/sass/wide_main_box.scss";
+
 .btn {
   margin-bottom: 0.5rem;
 }
