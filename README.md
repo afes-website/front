@@ -1,29 +1,17 @@
-# front
+# AzabuFes 73 official website front-end
 
 ## Project setup
 ```
-npm install
+yarn install
+yarn api:build
 ```
 
-### Compiles and hot-reloads for development
+### Start development server
 ```
-npm run serve
+yarn serve
 ```
 
 ### Compiles and minifies for production
 ```
-npm run build
+yarn build
 ```
-
-### Run your unit tests
-```
-npm run test:unit
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
