@@ -42,6 +42,8 @@
 </template>
 
 <style lang="scss" scoped>
+@import "@/assets/sass/wide_main_box.scss";
+
 .edit-area,
 div.preview,
 div.diff {

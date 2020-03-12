@@ -125,6 +125,8 @@
 </template>
 
 <style lang="scss" scoped>
+@import "@/assets/sass/wide_main_box.scss";
+
 .table {
   white-space: nowrap;
 
