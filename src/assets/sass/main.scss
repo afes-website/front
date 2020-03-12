@@ -89,6 +89,9 @@ blockquote cite {
 
 table {
   @extend .table;
+  tr,th {
+    white-space: normal;
+  }
 }
 code {
   padding: .15em .25em .1em .25em;

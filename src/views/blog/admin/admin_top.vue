@@ -76,6 +76,8 @@
 </template>
 
 <style lang="scss" scoped>
+@import "@/assets/sass/wide_main_box.scss";
+
 #admin-top {
   .profile {
     span {
