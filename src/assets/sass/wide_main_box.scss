@@ -3,7 +3,7 @@
     width: calc(
       100vw
       - 16rem /* sidebar width*/
-      - 2rem * 2 /* main padding*/
+      - 2rem - 1rem /* main padding*/
       );
   }
 }
