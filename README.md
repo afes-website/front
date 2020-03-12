@@ -1,4 +1,4 @@
-# AzabuFes 73 official website front-end
+# 73rd AzabuFes official website front-end
 ![ver](https://img.shields.io/github/package-json/v/afes-website/front?style=for-the-badge)
 ![build](https://img.shields.io/github/workflow/status/afes-website/front/Deploy%20into%20production%20server/master?label=Deploy&style=for-the-badge)
 
