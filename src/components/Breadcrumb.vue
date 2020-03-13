@@ -40,15 +40,17 @@ export default class Breadcrumb extends Vue {
 
     const paths = this.$route.path.split("/");
 
-    for (const i in paths) {
+    for (let i = 0; i < paths.length; i++) {
       if (paths[i]) {
-        if (paths[i] in this.names) {
-          items.push(this.names[paths[i]]);
-        } else {
+        if (paths.length - 1 === i) {
           items.push({
             text: this.text,
             to: { name: this.$route.name, params: this.$route.params }
           });
+        } else if (paths[i] in this.names) {
+          items.push(this.names[paths[i]]);
+        } else {
+          items.push({ text: "", to: { name: "" } });
         }
       }
     }
