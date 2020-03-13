@@ -19,11 +19,20 @@ import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
 interface Item {
   text: string;
-  href: string;
+  to: {
+    name: string | undefined;
+    params?: {};
+  };
 }
 
-interface Titles {
-  [key: string]: string;
+interface Names {
+  [key: string]: {
+    text: string;
+    to: {
+      name: string;
+      params?: {};
+    };
+  };
 }
 
 @Component
@@ -35,17 +44,20 @@ export default class Breadcrumb extends Vue {
 
   private prepareItems() {
     this.items = [];
-    this.items.push({ text: "Top", href: "/" });
+    this.items.push(this.names["top"]);
 
     const paths = this.$route.path.split("/");
-    let path = "";
 
     for (const i in paths) {
       if (paths[i]) {
-        let text = "";
-        text = this.titles[paths[i]] || this.text;
-        path += "/" + paths[i];
-        this.items.push({ text: text, href: path });
+        if (paths[i] in this.names) {
+          this.items.push(this.names[paths[i]]);
+        } else {
+          this.items.push({
+            text: this.text,
+            to: { name: this.$route.name, params: this.$route.params }
+          });
+        }
       }
     }
   }
@@ -58,16 +70,32 @@ export default class Breadcrumb extends Vue {
     this.prepareItems();
   }
 
-  readonly titles = {
-    blog: "近況",
-    news: "お知らせ",
-    general: "文実全体",
-    workTeam: "分科局",
-    exh: "展示団体",
-    contrib: "個人･寄稿",
-    admin: "管理",
-    revisions: "リクエスト一覧",
-    paths: "記事一覧"
-  } as Titles;
+  readonly names = {
+    top: { text: "Top", to: { name: "Home" } },
+    blog: { text: "近況", to: { name: "article_list" } },
+    news: {
+      text: "お知らせ",
+      to: { name: "article_list", params: { category: "news" } }
+    },
+    general: {
+      text: "文実全体",
+      to: { name: "article_list", params: { category: "general" } }
+    },
+    workTeam: {
+      text: "分科局",
+      to: { name: "article_list", params: { category: "workTeam" } }
+    },
+    exh: {
+      text: "展示団体",
+      to: { name: "article_list", params: { category: "exh" } }
+    },
+    contrib: {
+      text: "個人･寄稿",
+      to: { name: "article_list", params: { category: "contrib" } }
+    },
+    admin: { text: "管理", to: { name: "admin_top" } },
+    revisions: { text: "リクエスト一覧", to: { name: "revision_list" } },
+    paths: { text: "記事一覧", to: { name: "path_list" } }
+  } as Names;
 }
 </script>
