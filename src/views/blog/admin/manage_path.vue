@@ -180,7 +180,7 @@ import Breadcrumb from "@/components/Breadcrumb.vue";
 
 @Component({ components: { FetchStatusIcon, Breadcrumb } })
 export default class ManagePath extends Vue {
-  page_title = "ブログ 記事管理";
+  page_title = "記事管理";
   revisions: { [key: number]: BlogRevision } = {};
   client = aspida();
   readonly categories = categories;
@@ -209,7 +209,7 @@ export default class ManagePath extends Vue {
     this.article_exists = false;
     this.revision_selection = 0;
     this.original_selection = 0;
-    this.page_title = "ブログ 記事管理: " + this.$route.params.id;
+    this.page_title = "記事管理: " + this.$route.params.id;
     AdminAuth.attempt_get_JWT()
       .then(token => {
         Promise.all([

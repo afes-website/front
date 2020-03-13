@@ -112,7 +112,7 @@ import Breadcrumb from "@/components/Breadcrumb.vue";
   }
 })
 export default class AdminTop extends Vue {
-  readonly page_title = "ブログ管理ページ";
+  readonly page_title = "ブログ管理";
 
   admin_user: AdminUserInfo | null = null;
   writer_user: WriterUserInfo | null = null;
