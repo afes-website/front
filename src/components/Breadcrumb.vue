@@ -26,13 +26,7 @@ interface Item {
 }
 
 interface Names {
-  [key: string]: {
-    text: string;
-    to: {
-      name: string;
-      params?: {};
-    };
-  };
+  [key: string]: Item;
 }
 
 @Component
