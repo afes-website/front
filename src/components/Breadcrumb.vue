@@ -16,13 +16,11 @@ ol {
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
+import { Location } from "vue-router";
 
 interface Item {
   text: string;
-  to: {
-    name: string | undefined;
-    params?: {};
-  };
+  to: Location;
 }
 
 interface Names {
