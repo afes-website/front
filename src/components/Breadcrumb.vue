@@ -2,7 +2,17 @@
   <b-breadcrumb :items="items" />
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+ol {
+  background: none;
+  padding: 0;
+  margin-bottom: 0.5rem;
+
+  .breadcrumb-item + .breadcrumb-item::before {
+    content: ">";
+  }
+}
+</style>
 
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
