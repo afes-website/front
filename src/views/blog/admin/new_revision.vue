@@ -1,5 +1,6 @@
 <template>
   <div class="box">
+    <breadcrumb :text="page_title" />
     <h1>{{ page_title }}</h1>
     <p>id:<b-input v-model="article_path" /></p>
     <p>
@@ -109,8 +110,9 @@ import DiffLib from "difflib";
 import * as Diff2Html from "diff2html";
 import ImageUploadModal from "@/components/ImageUploadModal.vue";
 import { get_image_url } from "@/apis/images/@utils";
+import Breadcrumb from "@/components/Breadcrumb.vue";
 
-@Component({ components: { FetchStatusIcon, ImageUploadModal } })
+@Component({ components: { FetchStatusIcon, ImageUploadModal, Breadcrumb } })
 export default class NewRevision extends Vue {
   readonly page_title = "ブログ 記事投稿/編集";
 

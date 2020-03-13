@@ -1,5 +1,6 @@
 <template>
   <article id="policy" class="box">
+    <breadcrumb :text="page_title" />
     <h1>{{ page_title }}</h1>
     <p>
       第73回文化祭実行委員会では、会議の議事録や広報を始めとした各種資料をネット上に公開しています。
@@ -50,7 +51,12 @@
 </template>
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-@Component
+import Breadcrumb from "@/components/Breadcrumb.vue";
+@Component({
+  components: {
+    Breadcrumb
+  }
+})
 export default class Document extends Vue {
   readonly page_title = "資料庫";
 }

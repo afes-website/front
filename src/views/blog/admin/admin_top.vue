@@ -1,5 +1,6 @@
 <template>
   <div id="admin-top" class="box">
+    <breadcrumb :text="page_title" />
     <h1>{{ page_title }}</h1>
     <section class="profile">
       <h3>管理者ユーザ</h3>
@@ -101,11 +102,13 @@ import { AdminUserInfo } from "@/apis/admin/user.ts";
 import { WriterUserInfo } from "@/apis/writer/user.ts";
 import AdminChangePasswordModal from "@/components/AdminChangePasswordModal.vue";
 import WriterChangePasswordModal from "@/components/WriterChangePasswordModal.vue";
+import Breadcrumb from "@/components/Breadcrumb.vue";
 
 @Component({
   components: {
     AdminChangePasswordModal,
-    WriterChangePasswordModal
+    WriterChangePasswordModal,
+    Breadcrumb
   }
 })
 export default class AdminTop extends Vue {

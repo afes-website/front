@@ -1,5 +1,6 @@
 <template>
   <div class="box">
+    <breadcrumb :text="page_title" />
     <h1>{{ page_title }}</h1>
     <b-button @click="load">
       reload
@@ -175,8 +176,9 @@ import FetchStatusIcon from "@/components/FetchStatusIcon.vue";
 import DiffLib from "difflib";
 import * as Diff2Html from "diff2html";
 import categories from "@/libs/categories";
+import Breadcrumb from "@/components/Breadcrumb.vue";
 
-@Component({ components: { FetchStatusIcon } })
+@Component({ components: { FetchStatusIcon, Breadcrumb } })
 export default class ManagePath extends Vue {
   page_title = "ブログ 記事管理";
   revisions: { [key: number]: BlogRevision } = {};

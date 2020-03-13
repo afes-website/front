@@ -1,5 +1,6 @@
 <template>
   <div id="article-list" class="box">
+    <breadcrumb :text="page_title" />
     <h1>{{ page_title }}</h1>
     <div id="articles">
       <b-link
@@ -119,8 +120,9 @@ import { BlogArticle, BlogArticleParameter } from "@/apis/blog/articles/@types";
 import Markdown from "@/libs/markdown";
 import { getCategory, categories } from "@/libs/categories";
 import Token from "markdown-it/lib/token";
+import Breadcrumb from "@/components/Breadcrumb.vue";
 
-@Component
+@Component({ components: { Breadcrumb } })
 export default class ArticleList extends Vue {
   page_title = "ブログ 記事一覧";
   articles: BlogArticle[] = [];
