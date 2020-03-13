@@ -1,5 +1,5 @@
 <template>
-  <b-breadcrumb :items="items" />
+  <b-breadcrumb :items="getItems" />
 </template>
 
 <style lang="scss" scoped>
@@ -37,37 +37,29 @@ interface Names {
 
 @Component
 export default class Breadcrumb extends Vue {
-  private items: Item[] = [];
-
   @Prop({ required: true })
   readonly text!: string;
 
-  private prepareItems() {
-    this.items = [];
-    this.items.push(this.names["top"]);
+  get getItems() {
+    const items = [];
+    items.push(this.names["top"]);
 
     const paths = this.$route.path.split("/");
 
     for (const i in paths) {
       if (paths[i]) {
         if (paths[i] in this.names) {
-          this.items.push(this.names[paths[i]]);
+          items.push(this.names[paths[i]]);
         } else {
-          this.items.push({
+          items.push({
             text: this.text,
             to: { name: this.$route.name, params: this.$route.params }
           });
         }
       }
     }
-  }
 
-  mounted() {
-    this.prepareItems();
-  }
-  @Watch("$route")
-  route_changed() {
-    this.prepareItems();
+    return items;
   }
 
   readonly names = {
