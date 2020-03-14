@@ -23,65 +23,53 @@ interface Item {
   to: Location;
 }
 
-interface Names {
-  [key: string]: Item;
-}
-
 @Component
 export default class Breadcrumb extends Vue {
   @Prop({ required: true })
   readonly text!: string;
 
   get getItems() {
-    const items = [];
-    items.push(this.names["top"]);
-
-    const paths = this.$route.path.split("/");
-
-    for (let i = 0; i < paths.length; i++) {
-      if (paths[i]) {
-        if (paths.length - 1 === i) {
-          items.push({
-            text: this.text,
-            to: { name: this.$route.name, params: this.$route.params }
-          });
-        } else if (paths[i] in this.names) {
-          items.push(this.names[paths[i]]);
-        } else {
-          items.push({ text: "", to: { name: "" } });
-        }
+    const items = this.names.reduce((arr, cur) => {
+      const path = this.$router.resolve(cur.to).resolved.path;
+      if (this.$route.path.startsWith(path) && this.$route.path !== path) {
+        arr.push(cur);
       }
-    }
-
+      return arr;
+    }, [] as Item[]);
+    items.push({
+      // current
+      text: this.text,
+      to: { name: this.$route.name, params: this.$route.params }
+    });
     return items;
   }
 
-  readonly names = {
-    top: { text: "Top", to: { name: "Home" } },
-    blog: { text: "近況", to: { name: "article_list" } },
-    news: {
+  readonly names: Item[] = [
+    { text: "Top", to: { name: "Home" } },
+    { text: "近況", to: { name: "article_list" } },
+    {
       text: "お知らせ",
       to: { name: "article_list", params: { category: "news" } }
     },
-    general: {
+    {
       text: "文実全体",
       to: { name: "article_list", params: { category: "general" } }
     },
-    workTeam: {
+    {
       text: "分科局",
       to: { name: "article_list", params: { category: "workTeam" } }
     },
-    exh: {
+    {
       text: "展示団体",
       to: { name: "article_list", params: { category: "exh" } }
     },
-    contrib: {
+    {
       text: "個人･寄稿",
       to: { name: "article_list", params: { category: "contrib" } }
     },
-    admin: { text: "管理", to: { name: "admin_top" } },
-    revisions: { text: "リクエスト一覧", to: { name: "revision_list" } },
-    paths: { text: "記事一覧", to: { name: "path_list" } }
-  } as Names;
+    { text: "管理", to: { name: "admin_top" } },
+    { text: "リクエスト一覧", to: { name: "revision_list" } },
+    { text: "記事一覧", to: { name: "path_list" } }
+  ];
 }
 </script>
