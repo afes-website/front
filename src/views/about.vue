@@ -1,5 +1,6 @@
 <template>
   <article id="about" class="box">
+    <breadcrumb :text="page_title" />
     <h1>{{ page_title }}</h1>
     <div id="pair_picture">
       <img src="../assets/about.jpg" alt="two-shot" />
@@ -69,7 +70,12 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-@Component
+import Breadcrumb from "@/components/Breadcrumb.vue";
+@Component({
+  components: {
+    Breadcrumb
+  }
+})
 export default class About extends Vue {
   readonly page_title = "学校長・委員長挨拶";
 }

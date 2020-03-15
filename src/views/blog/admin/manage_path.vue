@@ -1,5 +1,6 @@
 <template>
   <div class="box">
+    <breadcrumb :text="page_title" />
     <h1>{{ page_title }}</h1>
     <b-button @click="load">
       reload
@@ -175,10 +176,11 @@ import FetchStatusIcon from "@/components/FetchStatusIcon.vue";
 import DiffLib from "difflib";
 import * as Diff2Html from "diff2html";
 import categories from "@/libs/categories";
+import Breadcrumb from "@/components/Breadcrumb.vue";
 
-@Component({ components: { FetchStatusIcon } })
+@Component({ components: { FetchStatusIcon, Breadcrumb } })
 export default class ManagePath extends Vue {
-  page_title = "ブログ 記事管理";
+  page_title = "記事管理";
   revisions: { [key: number]: BlogRevision } = {};
   client = aspida();
   readonly categories = categories;
@@ -207,7 +209,7 @@ export default class ManagePath extends Vue {
     this.article_exists = false;
     this.revision_selection = 0;
     this.original_selection = 0;
-    this.page_title = "ブログ 記事管理: " + this.$route.params.id;
+    this.page_title = "記事管理: " + this.$route.params.id;
     AdminAuth.attempt_get_JWT()
       .then(token => {
         Promise.all([

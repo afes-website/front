@@ -1,6 +1,7 @@
 <template>
   <article id="show-article" class="box">
     <template v-if="article !== null">
+      <breadcrumb :text="page_title" />
       <h1>{{ page_title }}</h1>
       <div class="under-title">
         <span>
@@ -79,8 +80,13 @@ import is_axios_error from "@/libs/is_axios_error";
 import FetchStatus from "@/libs/fetch_status";
 import Markdown from "@/libs/markdown";
 import { getCategory } from "@/libs/categories";
+import Breadcrumb from "@/components/Breadcrumb.vue";
 
-@Component
+@Component({
+  components: {
+    Breadcrumb
+  }
+})
 export default class ShowArticle extends Vue {
   page_title = "";
   article: BlogArticle | null = null;
