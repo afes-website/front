@@ -1,5 +1,6 @@
 <template>
   <article id="policy" class="box">
+    <breadcrumb :text="page_title" />
     <h1>{{ page_title }}</h1>
     <p>
       第73回麻布中学校･高等学校文化祭ウェブサイト（以下当サイトとする）では、以下のポリシーのもとで情報を提供しています。
@@ -59,7 +60,12 @@
 </template>
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-@Component
+import Breadcrumb from "@/components/Breadcrumb.vue";
+@Component({
+  components: {
+    Breadcrumb
+  }
+})
 export default class Policy extends Vue {
   readonly page_title = "プライバシーポリシー";
 }

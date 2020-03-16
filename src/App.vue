@@ -448,6 +448,7 @@ header {
     footer {
       //z-index: 0;
       width: 100vw;
+      max-width: unset;
       border-top: 1px solid $site-theme;
       border-radius: 0;
       margin: 0;

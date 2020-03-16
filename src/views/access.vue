@@ -1,5 +1,6 @@
 <template>
   <article id="access" class="box">
+    <breadcrumb :text="page_title" />
     <h1>{{ page_title }}</h1>
     <section>
       <h2>学校所在地</h2>
@@ -52,7 +53,12 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-@Component
+import Breadcrumb from "@/components/Breadcrumb.vue";
+@Component({
+  components: {
+    Breadcrumb
+  }
+})
 export default class About extends Vue {
   readonly page_title = "アクセス";
 }

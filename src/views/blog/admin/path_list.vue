@@ -1,5 +1,6 @@
 <template>
   <div id="path-list" class="box">
+    <breadcrumb :text="page_title" />
     <h1>{{ page_title }}</h1>
     <b-button @click="load">
       Reload
@@ -66,6 +67,8 @@
 </template>
 
 <style lang="scss" scoped>
+@import "@/assets/sass/wide_main_box.scss";
+
 .btn {
   margin-bottom: 0.5rem;
 }
@@ -127,6 +130,7 @@ import { BlogRevision } from "@/apis/blog/revisions/@types";
 import FetchStatus from "@/libs/fetch_status";
 import FetchStatusIcon from "@/components/FetchStatusIcon.vue";
 import { getCategory } from "@/libs/categories";
+import Breadcrumb from "@/components/Breadcrumb.vue";
 
 interface Path {
   category?: string;
@@ -136,9 +140,9 @@ interface Path {
   waiting_count: number;
 }
 
-@Component({ components: { FetchStatusIcon } })
+@Component({ components: { FetchStatusIcon, Breadcrumb } })
 export default class PathList extends Vue {
-  readonly page_title = "ブログ 管理画面 記事情報";
+  readonly page_title = "記事一覧";
   paths: { [key: string]: Path } = {};
   client = aspida();
   readonly getCategory = getCategory;

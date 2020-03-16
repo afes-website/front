@@ -1,5 +1,6 @@
 <template>
   <div class="box">
+    <breadcrumb :text="page_title" />
     <h1>{{ page_title }}</h1>
     <b-button @click="load">
       Reload
@@ -81,6 +82,8 @@
 </template>
 
 <style lang="scss" scoped>
+@import "@/assets/sass/wide_main_box.scss";
+
 .btn {
   margin-bottom: 0.5rem;
 }
@@ -113,14 +116,15 @@ import { BlogArticle } from "@/apis/blog/articles/@types";
 import is_axios_error from "@/libs/is_axios_error";
 import FetchStatus from "@/libs/fetch_status";
 import FetchStatusIcon from "@/components/FetchStatusIcon.vue";
+import Breadcrumb from "@/components/Breadcrumb.vue";
 
 interface BlogRevisionWithArticle extends BlogRevision {
   article: BlogArticle | null;
 }
 
-@Component({ components: { FetchStatusIcon } })
+@Component({ components: { FetchStatusIcon, Breadcrumb } })
 export default class RevisionList extends Vue {
-  readonly page_title = "ブログ あなたの記事リクエスト一覧";
+  readonly page_title = "あなたの記事リクエスト一覧";
   revisions: BlogRevisionWithArticle[] = [];
   client = aspida();
 

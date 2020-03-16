@@ -1,6 +1,7 @@
 <template>
   <article id="show-revision" class="box">
     <template v-if="revision !== null">
+      <breadcrumb :text="page_title" />
       <b-alert show variant="info">
         この投稿はプレビューです。<br />
         <b-badge
@@ -96,8 +97,13 @@ import Markdown from "@/libs/markdown";
 import AdminAuth from "@/libs/auth/admin_auth";
 import WriterAuth from "@/libs/auth/writer_auth";
 import { AdminAuthToken, WriterAuthToken } from "../../../apis/@types";
+import Breadcrumb from "@/components/Breadcrumb.vue";
 
-@Component
+@Component({
+  components: {
+    Breadcrumb
+  }
+})
 export default class ShowRevision extends Vue {
   page_title = "";
   revision: BlogRevision | null = null;

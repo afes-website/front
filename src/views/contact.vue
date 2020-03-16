@@ -1,5 +1,6 @@
 <template>
   <div id="contact" class="box">
+    <breadcrumb :text="page_title" />
     <h1>{{ page_title }}</h1>
     <b-form @submit="send" v-show="!submitted">
       <b-form-group label="該当するものを選択してください:">
@@ -72,8 +73,13 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
+import Breadcrumb from "@/components/Breadcrumb.vue";
 
-@Component
+@Component({
+  components: {
+    Breadcrumb
+  }
+})
 export default class Contact extends Vue {
   readonly page_title = "お問い合わせ";
   submitted = false;
