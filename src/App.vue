@@ -442,7 +442,7 @@ header {
     max-width: unset;
 
     main {
-      padding: 0.8rem 1rem 0 1rem;
+      padding: 0.8rem 1rem 1rem 1rem;
     }
 
     footer {
