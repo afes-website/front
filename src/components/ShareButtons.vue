@@ -3,7 +3,7 @@
     <div class="share-btn twitter">
       <b-link
         :href="
-          `https://twitter.com/share?url=https://afes.info${$route.fullPath}&text=${title}&hashtags=73AFes&related=@73_AFes`
+          `https://twitter.com/share?url=${encodedUrl}&text=${encodedTitle}&hashtags=${hashTag}&related=${account}`
         "
         rel="nofollow"
         target="_blank"
@@ -13,9 +13,7 @@
     </div>
     <div class="share-btn line">
       <b-link
-        :href="
-          `https://social-plugins.line.me/lineit/share?url=https://afes.info${$route.fullPath}`
-        "
+        :href="`https://social-plugins.line.me/lineit/share?url=${encodedUrl}`"
         rel="nofollow"
         target="_blank"
       >
@@ -34,9 +32,7 @@
     </div>
     <div class="share-btn facebook">
       <b-link
-        :href="
-          `http://www.facebook.com/share.php?u=https://afes.info${$route.fullPath}`
-        "
+        :href="`http://www.facebook.com/share.php?u=${encodedUrl}`"
         rel="nofollow"
         target="_blank"
       >
@@ -50,7 +46,7 @@
     <div class="share-btn pocket">
       <b-link
         :href="
-          `http://getpocket.com/edit?url=https://afes.info${$route.fullPath}&title=${title}`
+          `http://getpocket.com/edit?url=${encodedUrl}&title=${encodedTitle}`
         "
         rel="nofollow"
         target="_blank"
@@ -65,7 +61,7 @@
     <div class="share-btn hatebu">
       <b-link
         :href="
-          `http://b.hatena.ne.jp/add?mode=confirm&url=https://afes.info${$route.fullPath}&title=${title}`
+          `http://b.hatena.ne.jp/add?mode=confirm&url=${encodedUrl}&title=${encodedTitle}`
         "
         rel="nofollow"
         target="_blank"
@@ -155,6 +151,16 @@ interface Navigator {
 export default class ShareButtons extends Vue {
   @Prop({ required: true })
   private title!: string;
+
+  readonly hashTag = "73AFes";
+  readonly account = "@73_AFes";
+
+  get encodedUrl() {
+    return "https://afes.info" + this.$route.path;
+  }
+  get encodedTitle() {
+    return this.title;
+  }
 
   private webShare() {
     const navigator_ = navigator as Navigator;
