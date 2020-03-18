@@ -18,6 +18,7 @@
         </span>
       </div>
       <div class="main-content" v-html="rendered_md" />
+      <share-buttons :title="page_title + ' - 第73回麻布学園文化祭'" />
     </template>
     <template v-else>
       <p>{{ fetch_status }}</p>
@@ -81,10 +82,12 @@ import FetchStatus from "@/libs/fetch_status";
 import Markdown from "@/libs/markdown";
 import { getCategory } from "@/libs/categories";
 import Breadcrumb from "@/components/Breadcrumb.vue";
+import ShareButtons from "@/components/ShareButtons.vue";
 
 @Component({
   components: {
-    Breadcrumb
+    Breadcrumb,
+    ShareButtons
   }
 })
 export default class ShowArticle extends Vue {
