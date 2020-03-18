@@ -70,7 +70,12 @@ article#show-article {
     }
 
     img {
-      width: 100%;
+      display: block;
+      width: 60%;
+      margin: 0 auto;
+      @media screen and (max-width: 900px) {
+        width: 100%;
+      }
     }
 
     .alert-success,
