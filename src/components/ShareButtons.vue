@@ -97,13 +97,16 @@
   width: 100%;
   table-layout: fixed;
   background: #fff;
+  margin: 1rem 0 0.5rem 0;
   .share-btn {
     display: table-cell;
+    opacity: 0.95;
     a {
       display: block;
       padding: 0.5em 0 0.5em;
       text-align: center;
       color: #fff;
+      opacity: 1;
       svg {
         height: 22px;
       }
@@ -119,7 +122,7 @@
   background: #55acee;
 }
 .line {
-  background: #25b825;
+  background: #08ba59;
 }
 .facebook {
   background: #3b5998;
