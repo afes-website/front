@@ -16,9 +16,9 @@
           <font-awesome-icon :icon="'clock'" class="fa-fw" />
           {{ getStringTime(article.updated_at) }}
         </span>
+        <share-buttons :title="page_title + ' - 第73回麻布学園文化祭'" />
       </div>
       <div class="main-content" v-html="rendered_md" />
-      <hr />
       <share-buttons :title="page_title + ' - 第73回麻布学園文化祭'" />
     </template>
     <template v-else>
