@@ -58,7 +58,7 @@
         />
       </b-link>
     </div>
-    <div class="share-btn hatebu">
+    <div class="share-btn hatena">
       <b-link
         :href="
           `http://b.hatena.ne.jp/add?mode=confirm&url=${encodedUrl}&title=${encodedTitle}`
@@ -126,7 +126,7 @@
 .pocket {
   background: #d35a5b;
 }
-.hatebu {
+.hatena {
   background: #00a4de;
 }
 .share {
