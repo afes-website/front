@@ -130,7 +130,7 @@
   background: #00a4de;
 }
 .share {
-  background: #aaa;
+  background: #888;
 }
 </style>
 
