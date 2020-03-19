@@ -27,7 +27,7 @@ h2 {
   font-weight: 500;
   padding: 0 0 .2rem .6rem;
   border-left: solid 0.8rem $site-theme;
-  margin-bottom: .8rem;
+  margin: 2rem 0 1rem 0;
 }
 
 h3 {
@@ -40,6 +40,15 @@ h3 {
 p {
   line-height: 1.75rem;
   margin-bottom: .75rem;
+}
+
+img {
+  display: block;
+  width: 60%;
+  margin: 0 auto;
+  @media screen and (max-width: 900px) {
+    width: 100%;
+  }
 }
 
 li,
@@ -86,6 +95,15 @@ blockquote cite {
   font-size: 0.9rem;
 }
 
+.alert-success,
+.alert-info,
+.alert-warning,
+.alert-danger {
+  @extend .alert;
+  p {
+    margin: 0;
+  }
+}
 
 table {
   @extend .table;

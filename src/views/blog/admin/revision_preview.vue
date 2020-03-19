@@ -61,36 +61,6 @@ span {
 }
 </style>
 
-<style lang="scss">
-article#show-article {
-  .main-content {
-    @import "~bootstrap";
-    h2 {
-      margin: 2rem 0 1rem 0;
-    }
-
-    img {
-      display: block;
-      width: 60%;
-      margin: 0 auto;
-      @media screen and (max-width: 900px) {
-        width: 100%;
-      }
-    }
-
-    .alert-success,
-    .alert-info,
-    .alert-warning,
-    .alert-danger {
-      @extend .alert;
-      p {
-        margin: 0;
-      }
-    }
-  }
-}
-</style>
-
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
 import api from "@/apis/$api";

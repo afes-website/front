@@ -59,32 +59,6 @@ div.preview {
 </style>
 
 <style lang="scss">
-#preview {
-  @import "~bootstrap";
-  h2 {
-    margin: 2rem 0 1rem 0;
-  }
-
-  img {
-    display: block;
-    width: 60%;
-    margin: 0 auto;
-    @media screen and (max-width: 900px) {
-      width: 100%;
-    }
-  }
-
-  .alert-success,
-  .alert-info,
-  .alert-warning,
-  .alert-danger {
-    @extend .alert;
-    p {
-      margin: 0;
-    }
-  }
-}
-
 @import "~diff2html/bundles/css/diff2html.min.css";
 #diff-view {
   .d2h-file-list-wrapper {
