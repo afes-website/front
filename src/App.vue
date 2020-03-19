@@ -19,7 +19,7 @@
           @click="toggle_sidebar"
         />
         <b-link id="brand" :to="{ name: 'Home' }">
-          <img src="@/assets/logo.png" alt="logo" />
+          <img src="./assets/logo.svg" alt="logo" />
         </b-link>
         <div id="menu" :class="{ shown: sidebar_shown }">
           <hr />
