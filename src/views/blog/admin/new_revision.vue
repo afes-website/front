@@ -19,8 +19,23 @@
         </div>
         <b-textarea v-model="content" class="edit-area"></b-textarea>
       </b-tab>
-      <b-tab title="プレビュー">
-        <div v-html="rendered_content" id="preview"></div>
+      <b-tab title="プレビュー" id="preview">
+        <h1>{{ article_title }}</h1>
+        <div class="under-title">
+          <span>
+            <font-awesome-icon :icon="'user'" class="fa-fw" />
+            author
+          </span>
+          <span>
+            <font-awesome-icon :icon="'folder'" class="fa-fw" />
+            category
+          </span>
+          <span>
+            <font-awesome-icon :icon="'clock'" class="fa-fw" />
+            yyyy/mm/dd
+          </span>
+        </div>
+        <div v-html="rendered_content"></div>
       </b-tab>
       <b-tab title="現在との差分">
         <div id="diff-view" v-html="diff_from_current" class="diff"></div>
@@ -53,12 +68,26 @@ div.diff {
   border: 1px solid #ced4da;
   border-radius: 4px;
 }
-div.preview {
-  padding: 6px 12px;
+div#preview {
+  padding-top: 1rem;
+  max-width: 804px;
 }
 </style>
 
 <style lang="scss">
+#preview {
+  .under-title {
+    margin-top: -14px;
+    margin-bottom: 16px;
+    text-align: right;
+    color: #6c757d;
+    font-weight: 500;
+
+    span {
+      margin-right: 0.5em;
+    }
+  }
+}
 @import "~diff2html/bundles/css/diff2html.min.css";
 #diff-view {
   .d2h-file-list-wrapper {
