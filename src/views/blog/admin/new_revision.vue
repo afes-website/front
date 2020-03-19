@@ -20,7 +20,7 @@
         <b-textarea v-model="content" class="edit-area"></b-textarea>
       </b-tab>
       <b-tab title="プレビュー">
-        <div v-html="rendered_content" class="preview"></div>
+        <div v-html="rendered_content" id="preview"></div>
       </b-tab>
       <b-tab title="現在との差分">
         <div id="diff-view" v-html="diff_from_current" class="diff"></div>
@@ -59,27 +59,6 @@ div.preview {
 </style>
 
 <style lang="scss">
-.preview {
-  @import "~bootstrap";
-  h2 {
-    margin: 2rem 0 1rem 0;
-  }
-
-  img {
-    width: 100%;
-  }
-
-  .alert-success,
-  .alert-info,
-  .alert-warning,
-  .alert-danger {
-    @extend .alert;
-    p {
-      margin: 0;
-    }
-  }
-}
-
 @import "~diff2html/bundles/css/diff2html.min.css";
 #diff-view {
   .d2h-file-list-wrapper {

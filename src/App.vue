@@ -356,7 +356,7 @@ header {
         text-align: center;
         width: 100%;
         img {
-          margin: 0;
+          margin: 0 auto;
           margin-top: 5px;
           height: 64px;
           width: auto;
