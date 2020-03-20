@@ -10,7 +10,7 @@ import EventHub from "./writer_auth_eventhub";
 function getJWT(): JWT | null {
   const writer_token = Cookie.get("writer_token");
   if (!writer_token) return null;
-  const jwt = new JWT(writer_token);
+  const jwt = new JWT(writer_token, "writer_uid");
   if (!jwt.isValidAt(new Date())) return null;
   return jwt;
 }
