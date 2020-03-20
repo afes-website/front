@@ -41,7 +41,7 @@
         </b-link>
       </b-alert>
       <div id="lower-right">
-        <img src="../assets/logo.png" alt="logo" />
+        <img src="../assets/logo.svg" alt="logo" />
         <p class="covid-19-warning">
           ＊ 新型コロナウイルスの流行に伴い、日程が変更となる場合があります。
         </p>
