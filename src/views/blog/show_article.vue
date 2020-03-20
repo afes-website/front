@@ -16,6 +16,14 @@
           <font-awesome-icon :icon="'clock'" class="fa-fw" />
           {{ getStringTime(article.updated_at) }}
         </span>
+        <b-button
+          variant="secondary"
+          v-if="can_edit"
+          :to="{ name: 'new_revision', query: { path: article.id } }"
+        >
+          <font-awesome-icon icon="edit" class="fa-fw" />
+          編集
+        </b-button>
       </div>
       <div class="main-content" v-html="rendered_md" />
       <share-buttons :title="page_title + ' - 第73回麻布学園文化祭'" />
@@ -53,6 +61,7 @@ import Markdown from "@/libs/markdown";
 import { getCategory } from "@/libs/categories";
 import Breadcrumb from "@/components/Breadcrumb.vue";
 import ShareButtons from "@/components/ShareButtons.vue";
+import WriterAuth from "@/libs/auth/writer_auth";
 
 @Component({
   components: {
@@ -116,6 +125,13 @@ export default class ShowArticle extends Vue {
   get rendered_md(): string | null {
     if (this.article == null) return null;
     return Markdown.render(this.article.content);
+  }
+
+  get can_edit() {
+    const jwt = WriterAuth.getJWT();
+    if (jwt === null) return false;
+    if (this.article === null) return false;
+    return this.article.author.id === jwt.userId;
   }
 }
 </script>
