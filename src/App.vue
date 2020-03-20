@@ -36,72 +36,24 @@
               title="Instagram"
               href="https://www.instagram.com/73_afes/"
             >
-              <svg
-                style="enable-background:new 0 0 512 512;"
-                version="1.1"
-                viewBox="0 0 512 512"
-                xml:space="preserve"
-                xmlns="http://www.w3.org/2000/svg"
-                role="img"
-              >
-                <g id="Symbol">
-                  <g>
-                    <radialGradient
-                      cx="56.3501"
-                      cy="19.2179"
-                      gradientTransform="matrix(0.9986 -5.233596e-02 4.448556e-02 0.8488 -36.9742 443.8014)"
-                      gradientUnits="userSpaceOnUse"
-                      id="Instagram-Color-1"
-                      r="711.335"
-                    >
-                      <stop offset="0" style="stop-color:#FED576" />
-                      <stop offset="0.2634" style="stop-color:#F47133" />
-                      <stop offset="0.6091" style="stop-color:#BC3081" />
-                      <stop offset="1" style="stop-color:#4C63D2" />
-                    </radialGradient>
-                    <path
-                      fill="url(#Instagram-Color-1)"
-                      d="M96.1,23.2c-16.2,6.3-29.9,14.7-43.6,28.4C38.8,65.2,30.4,79,24.1,95.1c-6.1,15.6-10.2,33.5-11.4,59.7    c-1.2,26.2-1.5,34.6-1.5,101.4s0.3,75.2,1.5,101.4c1.2,26.2,5.4,44.1,11.4,59.7c6.3,16.2,14.7,29.9,28.4,43.6    c13.7,13.7,27.4,22.1,43.6,28.4c15.6,6.1,33.5,10.2,59.7,11.4c26.2,1.2,34.6,1.5,101.4,1.5c66.8,0,75.2-0.3,101.4-1.5    c26.2-1.2,44.1-5.4,59.7-11.4c16.2-6.3,29.9-14.7,43.6-28.4c13.7-13.7,22.1-27.4,28.4-43.6c6.1-15.6,10.2-33.5,11.4-59.7    c1.2-26.2,1.5-34.6,1.5-101.4s-0.3-75.2-1.5-101.4c-1.2-26.2-5.4-44.1-11.4-59.7C484,79,475.6,65.2,462,51.6    c-13.7-13.7-27.4-22.1-43.6-28.4c-15.6-6.1-33.5-10.2-59.7-11.4c-26.2-1.2-34.6-1.5-101.4-1.5s-75.2,0.3-101.4,1.5    C129.6,12.9,111.7,17.1,96.1,23.2z M356.6,56c24,1.1,37,5.1,45.7,8.5c11.5,4.5,19.7,9.8,28.3,18.4c8.6,8.6,13.9,16.8,18.4,28.3    c3.4,8.7,7.4,21.7,8.5,45.7c1.2,25.9,1.4,33.7,1.4,99.4s-0.3,73.5-1.4,99.4c-1.1,24-5.1,37-8.5,45.7c-4.5,11.5-9.8,19.7-18.4,28.3    c-8.6,8.6-16.8,13.9-28.3,18.4c-8.7,3.4-21.7,7.4-45.7,8.5c-25.9,1.2-33.7,1.4-99.4,1.4s-73.5-0.3-99.4-1.4    c-24-1.1-37-5.1-45.7-8.5c-11.5-4.5-19.7-9.8-28.3-18.4c-8.6-8.6-13.9-16.8-18.4-28.3c-3.4-8.7-7.4-21.7-8.5-45.7    c-1.2-25.9-1.4-33.7-1.4-99.4s0.3-73.5,1.4-99.4c1.1-24,5.1-37,8.5-45.7c4.5-11.5,9.8-19.7,18.4-28.3c8.6-8.6,16.8-13.9,28.3-18.4    c8.7-3.4,21.7-7.4,45.7-8.5c25.9-1.2,33.7-1.4,99.4-1.4S330.7,54.8,356.6,56z"
-                    />
-                    <radialGradient
-                      cx="154.0732"
-                      cy="134.5501"
-                      gradientTransform="matrix(0.9986 -5.233596e-02 4.448556e-02 0.8488 -24.3617 253.2946)"
-                      gradientUnits="userSpaceOnUse"
-                      id="Instagram-Color-2"
-                      r="365.2801"
-                    >
-                      <stop offset="0" style="stop-color:#FED576" />
-                      <stop offset="0.2634" style="stop-color:#F47133" />
-                      <stop offset="0.6091" style="stop-color:#BC3081" />
-                      <stop offset="1" style="stop-color:#4C63D2" />
-                    </radialGradient>
-                    <path
-                      fill="url(#Instagram-Color-2)"
-                      d="M130.9,256.3c0,69.8,56.6,126.3,126.3,126.3s126.3-56.6,126.3-126.3S327,130,257.2,130    S130.9,186.5,130.9,256.3z M339.2,256.3c0,45.3-36.7,82-82,82s-82-36.7-82-82c0-45.3,36.7-82,82-82S339.2,211,339.2,256.3z"
-                    />
-                    <circle fill="#654c9f" cx="388.6" cy="125" r="29.5" />
-                  </g>
-                </g>
-              </svg>
+              <object
+                :data="instagramIcon"
+                type="image/svg+xml"
+                width="32"
+                height="32"
+              />
             </b-link>
             <b-link
               target="_blank"
               title="School Website"
               href="https://www.azabu-jh.ed.jp/"
             >
-              <svg
-                version="1.1"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 32 32"
-                role="img"
-                class="fa-azabu"
-              >
-                <path
-                  fill="currentColor"
-                  d="M11.4,25.1l4-6.9V32L11.4,25.1z M16.6,18.3l4,6.9l-4,6.9V18.3z M21.6,24.5l-3.9-6.9l11.9,6.9H21.6z M2.5,24.5 l11.9-6.9l-4,6.9H2.5z M18.3,16.6h7.9l4,6.9L18.3,16.6z M5.8,16.6l7.9,0L1.8,23.5L5.8,16.6z M18.3,15.4l11.9-6.9l-4,6.9H18.3z M5.8,15.4l-4-6.8l11.9,6.8H5.8z M2.5,7.5h7.9l4,6.9L2.5,7.5z M21.7,7.4l7.9,0l-11.9,6.8L21.7,7.4z M11.4,6.9l4-6.9v13.7L11.4,6.9z M16.6,0l4,6.9l-4,6.9V0z"
-                />
-              </svg>
+              <object
+                :data="azabuIcon"
+                type="image/svg+xml"
+                width="32"
+                height="32"
+              />
             </b-link>
           </div>
           <hr />
@@ -267,17 +219,20 @@ header {
         justify-content: space-around;
         margin-bottom: 8px;
 
-        svg {
+        a {
+          display: block;
           margin: 8px;
+          height: min-content;
+          width: min-content;
+        }
+
+        svg {
           width: 32px;
           height: 32px;
         }
 
         .fa-twitter {
           color: #1da1f2;
-        }
-        .fa-azabu {
-          color: #877523;
         }
       }
 
@@ -548,6 +503,9 @@ export default class Layout extends Vue {
   show_404 = false;
   admin_logged_in = false;
   writer_logged_in = false;
+
+  readonly instagramIcon = require("@/assets/sns/instagram.svg");
+  readonly azabuIcon = require("@/assets/sns/azabu.svg");
 
   created() {
     admin_auth_eventhub.onLoginSuccess(this.reload_login_status);
