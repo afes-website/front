@@ -35,6 +35,7 @@
               target="_blank"
               title="Instagram"
               href="https://www.instagram.com/73_afes/"
+              id="tooltip-target-instagram"
             >
               <object
                 :data="instagramIcon"
@@ -43,6 +44,19 @@
                 height="32"
               />
             </b-link>
+            <b-tooltip
+              target="tooltip-target-instagram"
+              triggers="hover"
+              placement="bottom"
+            >
+              © Alexo88 2017
+              <b-link
+                href="https://commons.wikimedia.org/wiki/File:Instagram.svg"
+                target="_blank"
+              >
+                source
+              </b-link>
+            </b-tooltip>
             <b-link
               target="_blank"
               title="School Website"
