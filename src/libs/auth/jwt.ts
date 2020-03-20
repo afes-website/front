@@ -1,7 +1,9 @@
 export default class JWT {
   content: string;
-  constructor(_content: string) {
+  uid_key: string;
+  constructor(_content: string, uid_key = "uid") {
     this.content = _content;
+    this.uid_key = uid_key;
   }
 
   get header(): { [key: string]: string } {
@@ -19,6 +21,6 @@ export default class JWT {
   }
 
   get userId() {
-    return this.payload["uid"];
+    return this.payload[this.uid_key];
   }
 }
