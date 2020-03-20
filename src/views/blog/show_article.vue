@@ -16,22 +16,24 @@
           <font-awesome-icon :icon="'clock'" class="fa-fw" />
           {{ getStringTime(article.updated_at) }}
         </span>
-        <b-button
-          variant="secondary"
-          v-if="can_edit"
-          :to="{ name: 'new_revision', query: { path: article.id } }"
-        >
-          <font-awesome-icon icon="edit" class="fa-fw" />
-          編集
-        </b-button>
-        <b-button
-          variant="secondary"
-          v-if="can_manage"
-          :to="{ name: 'manage_path', params: { id: article.id } }"
-        >
-          <font-awesome-icon icon="wrench" class="fa-fw" />
-          管理
-        </b-button>
+        <b-button-group>
+          <b-button
+            variant="secondary"
+            v-if="can_edit"
+            :to="{ name: 'new_revision', query: { path: article.id } }"
+          >
+            <font-awesome-icon icon="edit" class="fa-fw" />
+            編集
+          </b-button>
+          <b-button
+            variant="secondary"
+            v-if="can_manage"
+            :to="{ name: 'manage_path', params: { id: article.id } }"
+          >
+            <font-awesome-icon icon="wrench" class="fa-fw" />
+            管理
+          </b-button>
+        </b-button-group>
       </div>
       <div class="main-content" v-html="rendered_md" />
       <share-buttons :title="page_title + ' - 第73回麻布学園文化祭'" />
