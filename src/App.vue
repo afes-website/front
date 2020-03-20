@@ -49,7 +49,7 @@
               triggers="hover"
               placement="bottom"
             >
-              © Alexo88 2017
+              &copy; Alexo88 2017
               <b-link
                 href="https://commons.wikimedia.org/wiki/File:Instagram.svg"
                 target="_blank"
