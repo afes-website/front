@@ -36,6 +36,33 @@
           </span>
         </div>
         <div v-html="rendered_content"></div>
+        <hr />
+        <h3>card preview</h3>
+        <b-card
+          :img-src="get_article_image(content)"
+          img-alt="eye catch"
+          img-left
+          class="mb-3"
+        >
+          <b-card-title>
+            {{ article_title }}
+          </b-card-title>
+          <b-card-sub-title>
+            <span>
+              <font-awesome-icon :icon="'user'" class="fa-fw" />
+              author
+            </span>
+            <span>
+              <font-awesome-icon :icon="'folder'" class="fa-fw" />
+              category
+            </span>
+            <span>
+              <font-awesome-icon :icon="'clock'" class="fa-fw" />
+              yyyy/mm/dd
+            </span>
+          </b-card-sub-title>
+          <b-card-text v-html="rendered_md(content)" />
+        </b-card>
       </b-tab>
       <b-tab title="現在との差分">
         <div id="diff-view" v-html="diff_from_current" class="diff"></div>
@@ -71,6 +98,52 @@ div.diff {
 div#preview {
   padding-top: 1rem;
   max-width: 804px;
+}
+
+.card {
+  height: 150px;
+  width: 100%;
+  color: #222;
+  .card-img-left {
+    max-width: 148px; // 150px(height) - 1px(border) * 2
+    min-width: 148px; // tricky solution for image collapsing
+    display: block;
+    width: auto;
+    height: auto;
+  }
+
+  .card-body {
+    overflow: hidden;
+    width: 100%;
+    .card-title {
+      margin-top: -8px;
+      margin-bottom: 12px;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      max-height: 1.2em;
+      white-space: nowrap;
+    }
+
+    .card-subtitle {
+      margin-bottom: 5px;
+
+      span {
+        margin-right: 0.5em;
+      }
+    }
+
+    .card-text {
+      display: block; // fallback
+      display: -webkit-box;
+      //max-height: 4.5em;
+      position: relative;
+      overflow: hidden;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2; // 2 lines
+      text-overflow: ellipsis;
+      line-height: 1.5;
+    }
+  }
 }
 </style>
 
@@ -119,6 +192,7 @@ import * as Diff2Html from "diff2html";
 import ImageUploadModal from "@/components/ImageUploadModal.vue";
 import { get_image_url } from "@/apis/images/@utils";
 import Breadcrumb from "@/components/Breadcrumb.vue";
+import Token from "markdown-it/lib/token";
 
 @Component({ components: { FetchStatusIcon, ImageUploadModal, Breadcrumb } })
 export default class NewRevision extends Vue {
@@ -133,6 +207,8 @@ export default class NewRevision extends Vue {
   fetch_status: FetchStatus = "idle";
 
   image_upload_modal_shown = false;
+
+  readonly noImage = require("@/assets/no-image.svg");
 
   image_uploaded(id: string) {
     this.content += `![image alt](${get_image_url(id)})\n`;
@@ -203,6 +279,49 @@ export default class NewRevision extends Vue {
       matching: "lines",
       outputFormat: "side-by-side"
     });
+  }
+
+  rendered_md(md: string): string {
+    const tokens = Markdown.parse(md, {});
+    const tokens2txt = (tokens: Token[]) => {
+      return tokens
+        .map((token: Token): string => {
+          if (token.block) {
+            if (token.children !== null)
+              // children may be null despite the type definition
+              return tokens2txt(token.children) + "<br>";
+            else return "";
+          }
+          return token.content;
+        })
+        .join("");
+    };
+    return tokens2txt(tokens);
+  }
+
+  get_article_image(md: string) {
+    const tokens = Markdown.parse(md, {});
+    const get_first_img = (tokens: Token[]): string | null => {
+      return tokens.reduce((cur: string | null, token: Token):
+        | string
+        | null => {
+        if (cur !== null) return cur;
+        if (token.type === "image") {
+          return token.attrs.reduce((cur: string | null, attr: string[]) => {
+            if (cur !== null) return cur;
+            if (attr[0] == "src") return attr[1];
+            return null;
+          }, null);
+        }
+        if (token.children !== null) return get_first_img(token.children);
+        return null;
+      }, null);
+    };
+    const first_img_uri = get_first_img(tokens);
+    if (first_img_uri === null) return this.noImage;
+    if (first_img_uri.startsWith(process.env.VUE_APP_API_BASE_URL + "/images"))
+      return first_img_uri + "?h=150&w=150"; // out images support server-side-resizing
+    return first_img_uri;
   }
 }
 </script>
