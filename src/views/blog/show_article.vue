@@ -24,6 +24,14 @@
           <font-awesome-icon icon="edit" class="fa-fw" />
           編集
         </b-button>
+        <b-button
+          variant="secondary"
+          v-if="can_manage"
+          :to="{ name: 'manage_path', params: { id: article.id } }"
+        >
+          <font-awesome-icon icon="wrench" class="fa-fw" />
+          管理
+        </b-button>
       </div>
       <div class="main-content" v-html="rendered_md" />
       <share-buttons :title="page_title + ' - 第73回麻布学園文化祭'" />
@@ -61,6 +69,7 @@ import Markdown from "@/libs/markdown";
 import { getCategory } from "@/libs/categories";
 import Breadcrumb from "@/components/Breadcrumb.vue";
 import ShareButtons from "@/components/ShareButtons.vue";
+import AdminAuth from "@/libs/auth/admin_auth";
 import WriterAuth from "@/libs/auth/writer_auth";
 
 @Component({
@@ -132,6 +141,10 @@ export default class ShowArticle extends Vue {
     if (jwt === null) return false;
     if (this.article === null) return false;
     return this.article.author.id === jwt.userId;
+  }
+
+  get can_manage() {
+    return AdminAuth.getJWT() !== null;
   }
 }
 </script>
