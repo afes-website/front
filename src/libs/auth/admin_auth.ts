@@ -10,7 +10,7 @@ import EventHub from "./admin_auth_eventhub";
 function getJWT(): JWT | null {
   const admin_token = Cookie.get("admin_token");
   if (!admin_token) return null;
-  const jwt = new JWT(admin_token);
+  const jwt = new JWT(admin_token, "admin_uid");
   if (!jwt.isValidAt(new Date())) return null;
   return jwt;
 }

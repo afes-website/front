@@ -18,6 +18,7 @@
         </span>
       </div>
       <div class="main-content" v-html="rendered_md" />
+      <share-buttons :title="page_title + ' - 第73回麻布学園文化祭'" />
     </template>
     <template v-else>
       <p>{{ fetch_status }}</p>
@@ -41,36 +42,6 @@ article {
 }
 </style>
 
-<style lang="scss">
-article#show-article {
-  .main-content {
-    @import "~bootstrap";
-    h2 {
-      margin: 2rem 0 1rem 0;
-    }
-
-    img {
-      width: 100%;
-    }
-
-    .alert-success,
-    .alert-info,
-    .alert-warning,
-    .alert-danger {
-      @extend .alert;
-      p {
-        margin: 0;
-      }
-    }
-  }
-}
-</style>
-
-<style lang="scss">
-article#show-article {
-}
-</style>
-
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
 import api from "@/apis/$api";
@@ -81,10 +52,12 @@ import FetchStatus from "@/libs/fetch_status";
 import Markdown from "@/libs/markdown";
 import { getCategory } from "@/libs/categories";
 import Breadcrumb from "@/components/Breadcrumb.vue";
+import ShareButtons from "@/components/ShareButtons.vue";
 
 @Component({
   components: {
-    Breadcrumb
+    Breadcrumb,
+    ShareButtons
   }
 })
 export default class ShowArticle extends Vue {

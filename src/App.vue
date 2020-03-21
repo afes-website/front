@@ -19,7 +19,7 @@
           @click="toggle_sidebar"
         />
         <b-link id="brand" :to="{ name: 'Home' }">
-          <img src="./assets/logo.png" alt="logo" />
+          <img src="./assets/logo.svg" alt="logo" />
         </b-link>
         <div id="menu" :class="{ shown: sidebar_shown }">
           <hr />
@@ -29,21 +29,45 @@
               title="Twitter"
               href="https://twitter.com/73_Afes"
             >
-              <img src="@/assets/sns/twitter.svg" alt="Twitter Icon" />
+              <font-awesome-icon :icon="['fab', 'twitter']" size="2x" />
             </b-link>
             <b-link
               target="_blank"
               title="Instagram"
               href="https://www.instagram.com/73_afes/"
+              id="tooltip-target-instagram"
             >
-              <img src="@/assets/sns/instagram.png" alt="Instagram Icon" />
+              <object
+                :data="instagramIcon"
+                type="image/svg+xml"
+                width="32"
+                height="32"
+              />
             </b-link>
+            <b-tooltip
+              target="tooltip-target-instagram"
+              triggers="hover"
+              placement="bottom"
+            >
+              &copy; Alexo88 2017
+              <b-link
+                href="https://commons.wikimedia.org/wiki/File:Instagram.svg"
+                target="_blank"
+              >
+                source
+              </b-link>
+            </b-tooltip>
             <b-link
               target="_blank"
               title="School Website"
               href="https://www.azabu-jh.ed.jp/"
             >
-              <img src="@/assets/sns/azabu.svg" alt="School Icon" />
+              <object
+                :data="azabuIcon"
+                type="image/svg+xml"
+                width="32"
+                height="32"
+              />
             </b-link>
           </div>
           <hr />
@@ -209,10 +233,20 @@ header {
         justify-content: space-around;
         margin-bottom: 8px;
 
-        img {
+        a {
+          display: block;
           margin: 8px;
+          height: min-content;
+          width: min-content;
+        }
+
+        svg {
           width: 32px;
           height: 32px;
+        }
+
+        .fa-twitter {
+          color: #1da1f2;
         }
       }
 
@@ -356,7 +390,7 @@ header {
         text-align: center;
         width: 100%;
         img {
-          margin: 0;
+          margin: 0 auto;
           margin-top: 5px;
           height: 64px;
           width: auto;
@@ -442,7 +476,7 @@ header {
     max-width: unset;
 
     main {
-      padding: 0.8rem 1rem 0 1rem;
+      padding: 0.8rem 1rem 1rem 1rem;
     }
 
     footer {
@@ -483,6 +517,9 @@ export default class Layout extends Vue {
   show_404 = false;
   admin_logged_in = false;
   writer_logged_in = false;
+
+  readonly instagramIcon = require("@/assets/sns/instagram.svg");
+  readonly azabuIcon = require("@/assets/sns/azabu.svg");
 
   created() {
     admin_auth_eventhub.onLoginSuccess(this.reload_login_status);

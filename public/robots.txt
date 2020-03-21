@@ -2,3 +2,7 @@ User-agent: *
 Disallow: /blog/admin/
 Disallow: /blog/*/*
 Sitemap: https://afes.info/sitemap.xml
+
+User-agent: Twitterbot
+Disallow: /blog/admin/
+Allow: /blog/*/*
