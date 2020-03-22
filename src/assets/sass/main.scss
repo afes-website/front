@@ -6,9 +6,6 @@
 $theme-colors: ( // color for bootstrap
   "site-theme": $site-theme
 );
-@import "~bootstrap";
-@import "~bootstrap-vue";
-
 
 * {
   font-family: "Noto Sans JP", sans-serif;
@@ -150,4 +147,9 @@ pre {
     box-shadow: none;
     padding: 0;
   }
+}
+
+html {
+  @import "~bootstrap";
+  @import "~bootstrap-vue";
 }
