@@ -168,8 +168,6 @@
 </template>
 
 <style lang="scss" scoped>
-html,
-body,
 #app {
   height: 100vh;
   margin: 0;

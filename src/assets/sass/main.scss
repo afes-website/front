@@ -11,6 +11,12 @@ $theme-colors: ( // color for bootstrap
   font-family: "Noto Sans JP", sans-serif;
 }
 
+html,
+body {
+  height: 100vh;
+  margin: 0;
+}
+
 h1 {
   font-size: 2.2rem;
   font-weight: 500;
