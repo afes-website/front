@@ -49,7 +49,7 @@
               v-if="path.category"
               :to="{
                 name: 'show_article',
-                params: { category: path.category, id: route }
+                params: { category: path.category, id: route },
               }"
             >
               <font-awesome-icon :icon="'file'" class="fa-fw fa-2x" />
@@ -158,7 +158,7 @@ export default class PathList extends Vue {
     this.fetch_status = "pending";
     this.paths = {};
     AdminAuth.attempt_get_JWT()
-      .then(token => {
+      .then((token) => {
         api(this.client)
           .blog.articles.$get()
           .then((data: BlogArticle[]) => {
@@ -168,18 +168,18 @@ export default class PathList extends Vue {
                 title: article.title,
                 created_at: article.created_at,
                 updated_at: article.updated_at,
-                waiting_count: 0
+                waiting_count: 0,
               });
             }
           });
         return token;
       })
-      .then(token => {
+      .then((token) => {
         api(this.client)
           .blog.revisions.$get({
             headers: {
-              "X-ADMIN-TOKEN": token.content
-            }
+              "X-ADMIN-TOKEN": token.content,
+            },
           })
           .then((data: BlogRevision[]) => {
             for (const revision of data) {
@@ -187,7 +187,7 @@ export default class PathList extends Vue {
                 // does not exist
                 this.$set(this.paths, revision.article_id, {
                   title: revision.title,
-                  waiting_count: 0
+                  waiting_count: 0,
                 });
               }
               if (revision.status === "waiting") {
@@ -217,7 +217,7 @@ export default class PathList extends Vue {
   open_manage_path(route: string) {
     this.$router.push({
       name: "manage_path",
-      params: { id: route }
+      params: { id: route },
     });
   }
 }

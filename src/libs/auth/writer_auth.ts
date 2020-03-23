@@ -59,7 +59,7 @@ function change_password(
   return api(client)
     .writer.change_password.$post({
       headers: { "X-BLOG-WRITER-TOKEN": token.content },
-      data: { password }
+      data: { password },
     })
     .then(() => {
       return;

@@ -32,7 +32,7 @@
         show
         variant="danger"
         class="top-page-alert mt-3"
-        style="line-height: 1.8"
+        style="line-height: 1.8;"
       >
         新型コロナウイルス感染症の流行を考慮し、開催を<b>2020年6月12-14日に延期</b>いたします。<br />
         なお、状況によりさらなる変更の可能性があります。予めご了承ください。
@@ -142,8 +142,8 @@ import TopPageButton from "@/components/TopPageButton.vue";
 
 @Component({
   components: {
-    TopPageButton
-  }
+    TopPageButton,
+  },
 })
 export default class Home extends Vue {
   readonly page_title = "";

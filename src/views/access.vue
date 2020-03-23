@@ -56,8 +56,8 @@ import { Component, Vue } from "vue-property-decorator";
 import Breadcrumb from "@/components/Breadcrumb.vue";
 @Component({
   components: {
-    Breadcrumb
-  }
+    Breadcrumb,
+  },
 })
 export default class About extends Vue {
   readonly page_title = "アクセス";

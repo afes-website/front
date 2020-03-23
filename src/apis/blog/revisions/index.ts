@@ -1,7 +1,7 @@
 import {
   BlogRevision,
   BlogRevisionFilterParameter,
-  NewBlogRevision
+  NewBlogRevision,
 } from "./@types";
 import { AdminAuthToken, WriterAuthToken } from "@/apis/@types";
 

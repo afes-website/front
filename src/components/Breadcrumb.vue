@@ -40,7 +40,7 @@ export default class Breadcrumb extends Vue {
     items.push({
       // current
       text: this.text,
-      to: { name: this.$route.name, params: this.$route.params }
+      to: { name: this.$route.name, params: this.$route.params },
     });
     return items;
   }
@@ -52,12 +52,12 @@ export default class Breadcrumb extends Vue {
       { text: "近況", to: { name: "article_list" } },
       { text: "管理", to: { name: "admin_top" } },
       { text: "リクエスト一覧", to: { name: "revision_list" } },
-      { text: "記事一覧", to: { name: "path_list" } }
+      { text: "記事一覧", to: { name: "path_list" } },
     ];
     names = names.concat(
-      Object.keys(categories).map(category_id => ({
+      Object.keys(categories).map((category_id) => ({
         text: categories[category_id].name,
-        to: { name: "article_list", params: { category: category_id } }
+        to: { name: "article_list", params: { category: category_id } },
       }))
     );
     return names.sort(
