@@ -40,7 +40,7 @@ export default class Breadcrumb extends Vue {
     items.push({
       // current
       text: this.text,
-      to: { name: this.$route.name, params: this.$route.params },
+      to: { path: this.$route.fullPath },
     });
     return items;
   }
