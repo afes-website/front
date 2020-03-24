@@ -219,7 +219,7 @@ export default class NewRevision extends Vue {
     api(aspida())
       .blog.articles._id(this.article_path)
       .$get()
-      .then(article => {
+      .then((article) => {
         this.article_title = article.title;
         this.latest_content = article.content;
         this.content = article.content;
@@ -233,24 +233,24 @@ export default class NewRevision extends Vue {
   post() {
     this.status = "pending";
 
-    WriterAuth.attempt_get_JWT().then(token => {
+    WriterAuth.attempt_get_JWT().then((token) => {
       api(aspida())
         .blog.revisions.$post({
           data: {
             title: this.article_title,
             article_id: this.article_path,
-            content: this.content
+            content: this.content,
           },
           headers: {
-            "X-BLOG-WRITER-TOKEN": token.content
-          }
+            "X-BLOG-WRITER-TOKEN": token.content,
+          },
         })
         .then((data: BlogRevision) => {
           this.status = "idle";
           this.$bvToast.toast("Revision created: " + data.id, {
             // TODO: toast won't shows (main.scss causes?)
             title: "Create new revision",
-            autoHideDelay: 5000
+            autoHideDelay: 5000,
           });
           this.$router.push({ name: "revision_list" });
         })
@@ -271,13 +271,13 @@ export default class NewRevision extends Vue {
       {
         fromfile: "Original",
         tofile: "Current",
-        lineterm: ""
+        lineterm: "",
       }
     ).join("\n");
     return Diff2Html.html(diff, {
       drawFileList: true,
       matching: "lines",
-      outputFormat: "side-by-side"
+      outputFormat: "side-by-side",
     });
   }
 

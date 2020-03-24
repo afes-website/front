@@ -2,9 +2,7 @@
   <div id="share-buttons">
     <div class="share-btn twitter">
       <b-link
-        :href="
-          `https://twitter.com/share?url=${encodedUrl}&text=${encodedTitle}&hashtags=${hashTag}&related=${account}`
-        "
+        :href="`https://twitter.com/share?url=${encodedUrl}&text=${encodedTitle}&hashtags=${hashTag}&related=${account}`"
         rel="nofollow"
         target="_blank"
       >
@@ -21,7 +19,7 @@
           role="img"
           viewBox="0 0 24 24"
           xmlns="http://www.w3.org/2000/svg"
-          style="vertical-align: -0.2em"
+          style="vertical-align: -0.2em;"
         >
           <path
             fill="currentColor"
@@ -45,9 +43,7 @@
     </div>
     <div class="share-btn pocket">
       <b-link
-        :href="
-          `http://getpocket.com/edit?url=${encodedUrl}&title=${encodedTitle}`
-        "
+        :href="`http://getpocket.com/edit?url=${encodedUrl}&title=${encodedTitle}`"
         rel="nofollow"
         target="_blank"
       >
@@ -60,9 +56,7 @@
     </div>
     <div class="share-btn hatena">
       <b-link
-        :href="
-          `http://b.hatena.ne.jp/add?mode=confirm&url=${encodedUrl}&title=${encodedTitle}`
-        "
+        :href="`http://b.hatena.ne.jp/add?mode=confirm&url=${encodedUrl}&title=${encodedTitle}`"
         rel="nofollow"
         target="_blank"
       >
@@ -70,7 +64,7 @@
           role="img"
           viewBox="0 0 24 24"
           xmlns="http://www.w3.org/2000/svg"
-          style="vertical-align: -0.2em"
+          style="vertical-align: -0.2em;"
         >
           <path
             fill="currentColor"
@@ -167,7 +161,7 @@ export default class ShareButtons extends Vue {
     if (navigator_.share) {
       navigator_.share({
         text: this.title,
-        url: "https://afes.info" + this.$route.fullPath
+        url: "https://afes.info" + this.$route.fullPath,
       });
     } else {
       alert("お使いのブラウザは Web Share API に対応していません.");

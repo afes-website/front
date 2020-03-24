@@ -1,3 +1,3 @@
 module.exports = {
-  input: "src/apis"
+  input: "src/apis",
 };

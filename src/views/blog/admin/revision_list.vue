@@ -54,14 +54,14 @@
             <b-link
               v-if="
                 revision.article !== null &&
-                  revision.article.revision_id == revision.id
+                revision.article.revision_id == revision.id
               "
               :to="{
                 name: 'show_article',
                 params: {
                   category: revision.article.category,
-                  id: revision.article_id
-                }
+                  id: revision.article_id,
+                },
               }"
             >
               <font-awesome-icon :icon="'file'" class="fa-fw" />
@@ -139,12 +139,12 @@ export default class RevisionList extends Vue {
     this.fetch_status = "pending";
     this.revisions = [];
     WriterAuth.attempt_get_JWT()
-      .then(token => {
+      .then((token) => {
         api(this.client)
           .blog.revisions.$get({
             headers: {
-              "X-BLOG-WRITER-TOKEN": token.content
-            }
+              "X-BLOG-WRITER-TOKEN": token.content,
+            },
           })
           .then((data: BlogRevision[]) => {
             const promises: Promise<void>[] = [];
@@ -156,7 +156,7 @@ export default class RevisionList extends Vue {
                   .then((article: BlogArticle) => {
                     this.revisions.push({
                       ...revision,
-                      article: article
+                      article: article,
                     });
                   })
                   .catch((e: unknown) => {
@@ -167,7 +167,7 @@ export default class RevisionList extends Vue {
                     ) {
                       this.revisions.push({
                         ...revision,
-                        article: null
+                        article: null,
                       });
                       return;
                     }
@@ -220,13 +220,13 @@ export default class RevisionList extends Vue {
         name: "show_article",
         params: {
           category: revision.article.category,
-          id: revision.article_id
-        }
+          id: revision.article_id,
+        },
       });
     else
       this.$router.push({
         name: "revision_preview",
-        params: { id: revision.id.toString() }
+        params: { id: revision.id.toString() },
       });
   }
 }

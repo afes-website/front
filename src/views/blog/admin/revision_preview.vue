@@ -76,8 +76,8 @@ import Breadcrumb from "@/components/Breadcrumb.vue";
 
 @Component({
   components: {
-    Breadcrumb
-  }
+    Breadcrumb,
+  },
 })
 export default class ShowRevision extends Vue {
   page_title = "";
@@ -104,12 +104,12 @@ export default class ShowRevision extends Vue {
         s({ "X-BLOG-WRITER-TOKEN": writer_token.content });
       r("not logged in");
     })
-      .then(header => {
+      .then((header) => {
         return api(this.client)
           .blog.revisions._id(Number(this.$route.params.id))
           .$get({ headers: header });
       })
-      .then(data => {
+      .then((data) => {
         this.revision = data;
         this.page_title = data.title;
         this.fetch_status = "idle";
