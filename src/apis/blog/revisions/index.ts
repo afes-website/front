@@ -1,7 +1,7 @@
 import {
   BlogRevision,
   BlogRevisionFilterParameter,
-  NewBlogRevision
+  NewBlogRevision,
 } from "./@types";
 import { AdminAuthToken, WriterAuthToken } from "@/apis/@types";
 
@@ -9,11 +9,11 @@ export interface Methods {
   get: {
     reqHeaders: WriterAuthToken | AdminAuthToken;
     query?: BlogRevisionFilterParameter;
-    resData: BlogRevision[];
+    resBody: BlogRevision[];
   };
   post: {
     reqHeaders: WriterAuthToken;
-    reqData: NewBlogRevision;
-    resData: BlogRevision;
+    reqBody: NewBlogRevision;
+    resBody: BlogRevision;
   };
 }

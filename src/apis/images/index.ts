@@ -4,11 +4,11 @@ export interface Methods {
     reqHeaders: WriterAuthToken;
 
     reqType: FormData;
-    reqData: {
+    reqBody: {
       content: File;
     };
 
-    resData: {
+    resBody: {
       id: string;
     };
   };

@@ -108,8 +108,8 @@ import Breadcrumb from "@/components/Breadcrumb.vue";
   components: {
     AdminChangePasswordModal,
     WriterChangePasswordModal,
-    Breadcrumb
-  }
+    Breadcrumb,
+  },
 })
 export default class AdminTop extends Vue {
   readonly page_title = "ブログ管理";
@@ -127,23 +127,23 @@ export default class AdminTop extends Vue {
   load() {
     if (this.admin_logged_in()) {
       AdminAuth.attempt_get_JWT()
-        .then(token => {
+        .then((token) => {
           return api(aspida()).admin.user.$get({
-            headers: { "X-ADMIN-TOKEN": token.content }
+            headers: { "X-ADMIN-TOKEN": token.content },
           });
         })
-        .then(user_info => {
+        .then((user_info) => {
           this.admin_user = user_info;
         });
     }
     if (this.writer_logged_in()) {
       WriterAuth.attempt_get_JWT()
-        .then(token => {
+        .then((token) => {
           return api(aspida()).writer.user.$get({
-            headers: { "X-BLOG-WRITER-TOKEN": token.content }
+            headers: { "X-BLOG-WRITER-TOKEN": token.content },
           });
         })
-        .then(user_info => {
+        .then((user_info) => {
           this.writer_user = user_info;
         });
     }

@@ -77,8 +77,8 @@ import WriterAuth from "@/libs/auth/writer_auth";
 @Component({
   components: {
     Breadcrumb,
-    ShareButtons
-  }
+    ShareButtons,
+  },
 })
 export default class ShowArticle extends Vue {
   page_title = "";
@@ -112,15 +112,15 @@ export default class ShowArticle extends Vue {
     api(this.client)
       .blog.articles._id(this.$route.params.id)
       .$get()
-      .then(data => {
+      .then((data) => {
         this.article = data;
         if (data.category !== this.$route.params.category)
           this.$router.push({
             name: "show_article",
             params: {
               category: data.category,
-              id: this.$route.params.id
-            }
+              id: this.$route.params.id,
+            },
           });
         this.page_title = data.title;
         this.fetch_status = "idle";

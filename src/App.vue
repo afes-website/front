@@ -98,7 +98,7 @@
                     <b-link
                       :to="{
                         name: 'article_list',
-                        params: { category: cat_id }
+                        params: { category: cat_id },
                       }"
                     >
                       {{ cat_name }}
@@ -168,8 +168,6 @@
 </template>
 
 <style lang="scss" scoped>
-html,
-body,
 #app {
   height: 100vh;
   margin: 0;
@@ -437,14 +435,14 @@ header {
         background-color: #fff;
         color: $site-theme;
         font-weight: 700;
-        padding: calc(3.5rem - 1px) 1.6rem 0 1.6rem !important;
+        padding: calc(3.5rem - 1px) 1.6rem 0 1.6rem;
         font-size: 1.3rem;
         position: fixed;
         width: 60%;
         max-width: 300px;
         left: -60%;
         height: 100vh;
-        border-radius: 0 !important;
+        border-radius: 0;
         overflow-y: auto;
         top: 0;
         box-shadow: none;

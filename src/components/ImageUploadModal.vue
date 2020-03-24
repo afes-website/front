@@ -50,15 +50,15 @@ export default class ImageUploadModal extends Vue {
     e.preventDefault();
     this.status = "pending";
     WriterAuth.attempt_get_JWT()
-      .then(token => {
+      .then((token) => {
         if (this.file === null) throw "file not selected";
         return api(this.client).images.$post({
           data: {
-            content: this.file
+            content: this.file,
           },
           headers: {
-            "X-BLOG-WRITER-TOKEN": token.content
-          }
+            "X-BLOG-WRITER-TOKEN": token.content,
+          },
         });
       })
       .then((data: { id: string }) => {

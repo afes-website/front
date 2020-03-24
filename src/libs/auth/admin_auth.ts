@@ -59,7 +59,7 @@ function change_password(
   return api(client)
     .admin.change_password.$post({
       headers: { "X-ADMIN-TOKEN": token.content },
-      data: { password }
+      data: { password },
     })
     .then(() => {
       return;

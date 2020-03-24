@@ -7,36 +7,37 @@ const routes = [
   {
     path: "/",
     name: "Home",
-    component: () => import(/* webpackChunkName: "Home" */ "@/views/Home.vue")
+    component: () => import(/* webpackChunkName: "Home" */ "@/views/Home.vue"),
   },
   {
     path: "/about",
     name: "about",
-    component: () => import(/* webpackChunkName: "about" */ "@/views/about.vue")
+    component: () =>
+      import(/* webpackChunkName: "about" */ "@/views/about.vue"),
   },
   {
     path: "/access",
     name: "access",
     component: () =>
-      import(/* webpackChunkName: "access" */ "@/views/access.vue")
+      import(/* webpackChunkName: "access" */ "@/views/access.vue"),
   },
   {
     path: "/contact",
     name: "contact",
     component: () =>
-      import(/* webpackChunkName: "contact" */ "@/views/contact.vue")
+      import(/* webpackChunkName: "contact" */ "@/views/contact.vue"),
   },
   {
     path: "/policy",
     name: "policy",
     component: () =>
-      import(/* webpackChunkName: "policy" */ "@/views/policy.vue")
+      import(/* webpackChunkName: "policy" */ "@/views/policy.vue"),
   },
   {
     path: "/document",
     name: "document",
     component: () =>
-      import(/* webpackChunkName: "document" */ "@/views/document.vue")
+      import(/* webpackChunkName: "document" */ "@/views/document.vue"),
   },
   {
     path: "/blog/admin",
@@ -44,7 +45,7 @@ const routes = [
     component: () =>
       import(
         /* webpackChunkName: "admin_top" */ "@/views/blog/admin/admin_top.vue"
-      )
+      ),
   },
   {
     path: "/blog/admin/post",
@@ -52,7 +53,7 @@ const routes = [
     component: () =>
       import(
         /* webpackChunkName: "new_revision" */ "@/views/blog/admin/new_revision.vue"
-      )
+      ),
   },
   {
     path: "/blog/admin/paths",
@@ -60,7 +61,7 @@ const routes = [
     component: () =>
       import(
         /* webpackChunkName: "path_list" */ "@/views/blog/admin/path_list.vue"
-      )
+      ),
   },
   {
     path: "/blog/admin/paths/:id",
@@ -68,7 +69,7 @@ const routes = [
     component: () =>
       import(
         /* webpackChunkName: "manage_path" */ "@/views/blog/admin/manage_path.vue"
-      )
+      ),
   },
   {
     path: "/blog/admin/revisions",
@@ -76,7 +77,7 @@ const routes = [
     component: () =>
       import(
         /* webpackChunkName: "revision_list" */ "@/views/blog/admin/revision_list.vue"
-      )
+      ),
   },
   {
     path: "/blog/admin/revisions/:id(\\d+)",
@@ -84,7 +85,7 @@ const routes = [
     component: () =>
       import(
         /* webpackChunkName: "revision_preview" */ "@/views/blog/admin/revision_preview.vue"
-      )
+      ),
   },
   {
     path: "/blog/:category?",
@@ -92,7 +93,7 @@ const routes = [
     component: () =>
       import(
         /* webpackChunkName: "article_list" */ "@/views/blog/article_list.vue"
-      )
+      ),
   },
   {
     path: "/blog/:category/:id",
@@ -100,15 +101,15 @@ const routes = [
     component: () =>
       import(
         /* webpackChunkName: "show_article" */ "@/views/blog/show_article.vue"
-      )
+      ),
   },
   {
     // fallback
     path: "*",
     name: "not_found",
     component: () =>
-      import(/* webpackChunkName: "not_found" */ "@/views/NotFound.vue")
-  }
+      import(/* webpackChunkName: "not_found" */ "@/views/NotFound.vue"),
+  },
 ];
 
 const router = new VueRouter({
@@ -119,7 +120,7 @@ const router = new VueRouter({
     if (to.hash) return { selector: to.hash };
     return { x: 0, y: 0 };
   },
-  routes
+  routes,
 });
 
 export default router;

@@ -5,8 +5,8 @@ interface AdminUserCredentials {
 
 export interface Methods {
   post: {
-    reqData: AdminUserCredentials;
-    resData: {
+    reqBody: AdminUserCredentials;
+    resBody: {
       token: string;
     };
   };

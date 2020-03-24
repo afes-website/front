@@ -211,7 +211,7 @@ export default class ManagePath extends Vue {
     this.original_selection = 0;
     this.page_title = "記事管理: " + this.$route.params.id;
     AdminAuth.attempt_get_JWT()
-      .then(token => {
+      .then((token) => {
         Promise.all([
           api(this.client)
             .blog.articles._id(this.$route.params.id)
@@ -232,17 +232,17 @@ export default class ManagePath extends Vue {
           api(this.client)
             .blog.revisions.$get({
               query: {
-                article_id: this.$route.params.id
+                article_id: this.$route.params.id,
               },
               headers: {
-                "X-ADMIN-TOKEN": token.content
-              }
+                "X-ADMIN-TOKEN": token.content,
+              },
             })
             .then((data: BlogRevision[]) => {
               for (const revision of data) {
                 this.$set(this.revisions, revision.id, revision);
               }
-            })
+            }),
         ])
           .then(() => {
             this.fetch_status = "idle";
@@ -257,13 +257,13 @@ export default class ManagePath extends Vue {
   }
 
   accept_revision(id: number) {
-    AdminAuth.attempt_get_JWT().then(token => {
+    AdminAuth.attempt_get_JWT().then((token) => {
       api(this.client)
         .blog.revisions._id(id)
         .accept.$patch({
           headers: {
-            "X-ADMIN-TOKEN": token.content
-          }
+            "X-ADMIN-TOKEN": token.content,
+          },
         })
         .then((data: BlogRevision) => {
           this.$set(this.revisions, id, data);
@@ -272,13 +272,13 @@ export default class ManagePath extends Vue {
   }
 
   reject_revision(id: number) {
-    AdminAuth.attempt_get_JWT().then(token => {
+    AdminAuth.attempt_get_JWT().then((token) => {
       api(this.client)
         .blog.revisions._id(id)
         .reject.$patch({
           headers: {
-            "X-ADMIN-TOKEN": token.content
-          }
+            "X-ADMIN-TOKEN": token.content,
+          },
         })
         .then((data: BlogRevision) => {
           this.$set(this.revisions, id, data);
@@ -289,17 +289,17 @@ export default class ManagePath extends Vue {
   apply_changes() {
     this.post_status = "pending";
     AdminAuth.attempt_get_JWT()
-      .then(token => {
+      .then((token) => {
         return api(this.client)
           .blog.articles._id(this.$route.params.id)
           .$patch({
             data: {
               category: this.category,
-              revision_id: this.revision_selection
+              revision_id: this.revision_selection,
             },
             headers: {
-              "X-ADMIN-TOKEN": token.content
-            }
+              "X-ADMIN-TOKEN": token.content,
+            },
           });
       })
       .then(() => {
@@ -318,11 +318,11 @@ export default class ManagePath extends Vue {
   delete_article() {
     this.delete_status = "pending";
     AdminAuth.attempt_get_JWT()
-      .then(token => {
+      .then((token) => {
         return api(this.client)
           .blog.articles._id(this.$route.params.id)
           .delete({
-            headers: { "X-ADMIN-TOKEN": token.content }
+            headers: { "X-ADMIN-TOKEN": token.content },
           });
       })
       .then(() => {
@@ -347,13 +347,13 @@ export default class ManagePath extends Vue {
     const diff = DiffLib.unifiedDiff(original_content, current_content, {
       fromfile: "Original",
       tofile: "Current",
-      lineterm: ""
+      lineterm: "",
     }).join("\n");
 
     return Diff2Html.html(diff, {
       drawFileList: true,
       matching: "lines",
-      outputFormat: "side-by-side"
+      outputFormat: "side-by-side",
     });
   }
 

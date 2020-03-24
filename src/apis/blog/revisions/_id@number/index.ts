@@ -4,6 +4,6 @@ import { AdminAuthToken, WriterAuthToken } from "@/apis/@types";
 export interface Methods {
   get: {
     reqHeaders: WriterAuthToken | AdminAuthToken;
-    resData: BlogRevision;
+    resBody: BlogRevision;
   };
 }
