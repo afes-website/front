@@ -179,7 +179,7 @@ div#preview {
 </style>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
 import api from "@/apis/$api";
 import aspida from "@aspida/axios";
 import WriterAuth from "@/libs/auth/writer_auth";
@@ -212,6 +212,18 @@ export default class NewRevision extends Vue {
 
   image_uploaded(id: string) {
     this.content += `![image alt](${get_image_url(id)})\n`;
+  }
+
+  mounted() {
+    if ("path" in this.$route.query && !Array.isArray(this.$route.query.path)) {
+      this.article_path = this.$route.query.path;
+      this.load();
+    }
+  }
+
+  @Watch("$route")
+  on_route_changed() {
+    this.mounted();
   }
 
   load() {

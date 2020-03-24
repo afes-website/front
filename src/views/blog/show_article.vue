@@ -16,6 +16,24 @@
           <font-awesome-icon :icon="'clock'" class="fa-fw" />
           {{ getStringTime(article.updated_at) }}
         </span>
+        <b-button-group>
+          <b-button
+            variant="secondary"
+            v-if="can_edit"
+            :to="{ name: 'new_revision', query: { path: article.id } }"
+          >
+            <font-awesome-icon icon="edit" class="fa-fw" />
+            編集
+          </b-button>
+          <b-button
+            variant="secondary"
+            v-if="can_manage"
+            :to="{ name: 'manage_path', params: { id: article.id } }"
+          >
+            <font-awesome-icon icon="wrench" class="fa-fw" />
+            管理
+          </b-button>
+        </b-button-group>
       </div>
       <div class="main-content" v-html="rendered_md" />
       <share-buttons :title="page_title + ' - 第73回麻布学園文化祭'" />
@@ -53,6 +71,8 @@ import Markdown from "@/libs/markdown";
 import { getCategory } from "@/libs/categories";
 import Breadcrumb from "@/components/Breadcrumb.vue";
 import ShareButtons from "@/components/ShareButtons.vue";
+import AdminAuth from "@/libs/auth/admin_auth";
+import WriterAuth from "@/libs/auth/writer_auth";
 
 @Component({
   components: {
@@ -116,6 +136,17 @@ export default class ShowArticle extends Vue {
   get rendered_md(): string | null {
     if (this.article == null) return null;
     return Markdown.render(this.article.content);
+  }
+
+  get can_edit() {
+    const jwt = WriterAuth.getJWT();
+    if (jwt === null) return false;
+    if (this.article === null) return false;
+    return this.article.author.id === jwt.userId;
+  }
+
+  get can_manage() {
+    return AdminAuth.getJWT() !== null;
   }
 }
 </script>
