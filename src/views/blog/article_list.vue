@@ -6,7 +6,7 @@
       <b-link
         :to="{
           name: 'show_article',
-          params: { category: article.category, id: article.id }
+          params: { category: article.category, id: article.id },
         }"
         class="card-wrap-link"
         v-for="article in shown_articles"
@@ -146,7 +146,7 @@ export default class ArticleList extends Vue {
 
     api(this.client)
       .blog.articles.$get({ query: this.filter_query })
-      .then(data => {
+      .then((data) => {
         this.articles = data;
         if (!this.$route.params.category) {
           this.articles = this.articles.reduce(

@@ -98,7 +98,7 @@
                     <b-link
                       :to="{
                         name: 'article_list',
-                        params: { category: cat_id }
+                        params: { category: cat_id },
                       }"
                     >
                       {{ cat_name }}

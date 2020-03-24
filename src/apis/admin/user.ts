@@ -7,6 +7,6 @@ export interface AdminUserInfo {
 export interface Methods {
   get: {
     reqHeaders: AdminAuthToken;
-    resData: AdminUserInfo;
+    resBody: AdminUserInfo;
   };
 }
