@@ -5,6 +5,8 @@ function main() {
 
   $title = get_title($_SERVER["REQUEST_URI"]);
   echo "<title>{$title}</title>";
+
+  if (!should_support_ogp()) return;
   print_meta('og:title', $title);
   print_meta('og:type', $type);
 
