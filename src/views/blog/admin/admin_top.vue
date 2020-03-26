@@ -1,5 +1,5 @@
 <template>
-  <div id="admin-top" class="box">
+  <div id="admin-top" class="box wide-box">
     <breadcrumb :text="page_title" />
     <h1>{{ page_title }}</h1>
     <section class="profile">
@@ -77,8 +77,6 @@
 </template>
 
 <style lang="scss" scoped>
-@import "@/assets/sass/wide_main_box.scss";
-
 #admin-top {
   .profile {
     span {
@@ -93,7 +91,7 @@
 </style>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Emit, Vue } from "vue-property-decorator";
 import api from "@/apis/$api";
 import aspida from "@aspida/axios";
 import AdminAuth from "@/libs/auth/admin_auth";
@@ -119,6 +117,11 @@ export default class AdminTop extends Vue {
 
   admin_password_modal_shown = false;
   writer_password_modal_shown = false;
+
+  @Emit()
+  wide() {
+    return true;
+  }
 
   mounted() {
     this.load();

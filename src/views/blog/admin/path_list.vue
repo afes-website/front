@@ -1,5 +1,5 @@
 <template>
-  <div id="path-list" class="box">
+  <div id="path-list" class="box wide-box">
     <breadcrumb :text="page_title" />
     <h1>{{ page_title }}</h1>
     <b-button @click="load">
@@ -67,8 +67,6 @@
 </template>
 
 <style lang="scss" scoped>
-@import "@/assets/sass/wide_main_box.scss";
-
 .btn {
   margin-bottom: 0.5rem;
 }
@@ -121,7 +119,7 @@
 </style>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Emit, Vue } from "vue-property-decorator";
 import api from "@/apis/$api";
 import aspida from "@aspida/axios";
 import { BlogArticle } from "@/apis/blog/articles/@types";
@@ -148,6 +146,11 @@ export default class PathList extends Vue {
   readonly getCategory = getCategory;
 
   fetch_status: FetchStatus = "idle";
+
+  @Emit()
+  wide() {
+    return true;
+  }
 
   mounted() {
     this.load();

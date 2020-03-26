@@ -52,6 +52,7 @@
 
 <style lang="scss" scoped>
 #home {
+  padding: 1.5rem 0 0.5rem 0;
   #top-image {
     display: none;
   }
@@ -108,6 +109,7 @@
 <style lang="scss" scoped>
 @media screen and (max-width: 900px) {
   #home {
+    padding: 0;
     #top-image {
       display: block;
       margin-left: calc(((100vw - 100%) / 2) * -1);

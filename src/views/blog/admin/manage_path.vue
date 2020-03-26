@@ -1,5 +1,5 @@
 <template>
-  <div class="box">
+  <div class="box wide-box">
     <breadcrumb :text="page_title" />
     <h1>{{ page_title }}</h1>
     <b-button @click="load">
@@ -126,8 +126,6 @@
 </template>
 
 <style lang="scss" scoped>
-@import "@/assets/sass/wide_main_box.scss";
-
 .table {
   white-space: nowrap;
 
@@ -164,7 +162,7 @@
 </style>
 
 <script lang="ts">
-import { Component, Vue, Watch } from "vue-property-decorator";
+import { Component, Emit, Vue, Watch } from "vue-property-decorator";
 import api from "@/apis/$api";
 import aspida from "@aspida/axios";
 import AdminAuth from "@/libs/auth/admin_auth";
@@ -194,6 +192,11 @@ export default class ManagePath extends Vue {
   delete_status: FetchStatus = "idle";
 
   article_exists = false;
+
+  @Emit()
+  wide() {
+    return true;
+  }
 
   mounted() {
     this.load();

@@ -1,5 +1,5 @@
 <template>
-  <div class="box">
+  <div class="box wide-box">
     <breadcrumb :text="page_title" />
     <h1>{{ page_title }}</h1>
     <b-button @click="load">
@@ -82,8 +82,6 @@
 </template>
 
 <style lang="scss" scoped>
-@import "@/assets/sass/wide_main_box.scss";
-
 .btn {
   margin-bottom: 0.5rem;
 }
@@ -107,7 +105,7 @@
 </style>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Emit, Vue } from "vue-property-decorator";
 import api from "@/apis/$api";
 import aspida from "@aspida/axios";
 import WriterAuth from "@/libs/auth/writer_auth";
@@ -129,6 +127,11 @@ export default class RevisionList extends Vue {
   client = aspida();
 
   fetch_status: FetchStatus = "idle";
+
+  @Emit()
+  wide() {
+    return true;
+  }
 
   mounted() {
     this.load();

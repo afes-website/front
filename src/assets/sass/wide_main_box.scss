@@ -1,9 +1,0 @@
-@media screen and (min-width: 900.1px) { // larger than 900
-  .box {
-    width: calc(
-      100vw
-      - 16rem /* sidebar width*/
-      - 2rem - 1rem /* main padding*/
-      );
-  }
-}
