@@ -19,7 +19,9 @@
         <div id="center-box">
           <img id="logo" src="../assets/logo_white.svg" alt="logo" />
         </div>
-        <font-awesome-icon id="down-angle" icon="chevron-down" size="3x" />
+        <b-link v-scroll-to="'#main-content'">
+          <font-awesome-icon id="down-angle" icon="chevron-down" size="3x" />
+        </b-link>
       </div>
     </div>
     <div id="smartphone">
@@ -130,7 +132,6 @@
 
       #main-content {
         padding: 2rem 1.5rem 1rem 1.5rem;
-        width: 1000px;
 
         * {
           color: #fff;
@@ -189,12 +190,15 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import TopPageButton from "@/components/TopPageButton.vue";
-import ArticleList from "@/views/blog/article_list.vue";
+
+import VueScrollTo from "vue-scrollto";
+Vue.use(VueScrollTo, {
+  container: "#main-wrapper",
+});
 
 @Component({
   components: {
     TopPageButton,
-    ArticleList,
   },
 })
 export default class Home extends Vue {
