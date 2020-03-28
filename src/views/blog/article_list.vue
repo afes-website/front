@@ -201,6 +201,8 @@ export default class ArticleList extends Vue {
   }
 
   get rows(): number {
+    if (this.fetch_status == "pending")
+      return Math.max(this.articles.length, this.currentPage);
     return this.articles.length;
   }
 
