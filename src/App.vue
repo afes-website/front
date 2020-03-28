@@ -329,11 +329,15 @@ header {
     }
     &.main-box-hide {
       max-width: unset;
-      width: calc(100% - 3rem - 1.5rem);
+      width: calc(100% - 3rem);
       background: none;
       padding: 0;
       @media screen and (max-width: 900px) {
         width: 100%;
+      }
+      hr,
+      footer {
+        display: none;
       }
     }
 
