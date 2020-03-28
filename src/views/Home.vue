@@ -172,6 +172,7 @@
 
       #main-content {
         padding: 2rem 1.5rem 1rem 1.5rem;
+        max-width: 1000px;
 
         * {
           color: #fff;

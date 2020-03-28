@@ -208,7 +208,8 @@
 }
 
 header {
-  width: 16rem;
+  width: 17rem;
+  min-width: 17rem;
   padding: 1.5rem 0 0 3rem;
   height: 100vh;
   display: flex;
@@ -269,27 +270,33 @@ header {
         box-shadow: 0 0 1em rgba(0, 0, 0, 0.3);
 
         text-align: left;
-        padding: 1rem 1.5rem;
+        padding: 1rem 0;
         //border: 1px solid #eee;
         border-radius: 0.5rem;
 
         & > ul {
           padding-left: 0;
           line-height: 2;
-        }
-
-        li {
           margin: 0;
-          list-style-type: none;
-          margin-bottom: 0.5rem;
 
-          & > ul {
-            padding-left: 2rem;
+          li {
+            margin: 0;
+            list-style-type: none;
+            padding: 0.25rem 2rem;
+            width: 100%;
+
+            &:hover {
+              background: rgba(#def, 0.075);
+            }
+
+            & > ul {
+              padding: 0;
+              & > li {
+                padding: 0.25rem 0;
+                padding-left: 2rem;
+              }
+            }
           }
-        }
-
-        .menu-secondary {
-          margin-top: 0.5rem;
         }
 
         a {
@@ -467,6 +474,10 @@ header {
           margin: 0;
           padding: 0;
           box-shadow: none;
+          ul > li {
+            line-height: 1.5;
+            padding: 0.25rem 0;
+          }
         }
         background-color: #fff;
         color: $site-theme;
@@ -492,9 +503,7 @@ header {
           border: none;
           border-top: 1px solid #87acce;
         }
-        ul > li {
-          line-height: 1.5;
-        }
+
         &.shown {
           left: 0;
           box-shadow: 0 0 1em rgba(0, 0, 0, 0.3);
