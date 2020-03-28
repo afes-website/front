@@ -131,7 +131,22 @@ export default class ArticleList extends Vue {
   readonly noImage = require("@/assets/no-image.svg");
 
   perPage = 10;
-  currentPage = 1;
+
+  get currentPage() {
+    const query = this.$route.query;
+    if ("page" in query) {
+      return Number(query.page);
+    } else {
+      return 1;
+    }
+  }
+  set currentPage(val: number) {
+    const query: { [key: string]: string | (string | null)[] } = {};
+    Object.assign(query, this.$route.query);
+    query["page"] = val.toString();
+    this.$router.push({ query });
+  }
+
   mounted() {
     this.load();
   }
