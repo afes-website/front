@@ -100,6 +100,19 @@
         <b-link :to="{ name: 'article_list' }">近況 記事一覧</b-link>
       </div>
     </div>
+    <div id="footer">
+      <nav>
+        <ul>
+          <li>
+            <b-link :to="{ name: 'contact' }">お問い合わせ</b-link>
+          </li>
+          <li>
+            <b-link :to="{ name: 'policy' }">プライバシーポリシー</b-link>
+          </li>
+        </ul>
+      </nav>
+      <small>&copy; 第73回麻布学園文化祭実行委員会 2020</small>
+    </div>
   </div>
 </template>
 
@@ -173,6 +186,35 @@
         }
       }
     }
+    #footer {
+      text-align: center;
+      background: rgba($site-theme, 0.6);
+      border-top: 2px solid rgba(#bdf, 0.6);
+      padding: 0.5rem 0 1rem 0;
+
+      * {
+        color: #fff;
+      }
+      a {
+        color: #def;
+        text-decoration: underline;
+      }
+      & > nav > ul {
+        margin: 0.25rem 0;
+        padding: 0;
+        li {
+          list-style-type: none;
+          display: inline;
+
+          &:not(:last-of-type)::after {
+            content: " ･ ";
+          }
+        }
+      }
+      small {
+        font-size: 1rem;
+      }
+    }
   }
 }
 </style>
@@ -208,6 +250,7 @@
     #main-box {
       #main-content {
         width: 100%;
+        padding-bottom: 1rem;
 
         table {
           .table-nowrap {
@@ -217,6 +260,30 @@
             display: none;
           }
         }
+      }
+    }
+    #footer {
+      text-align: center;
+      border-top: 1px solid $site-theme;
+      padding: 0.5rem 0 1rem 0;
+      width: 100vw;
+      margin-left: calc((100vw - 100%) / 2 * -1);
+      margin-bottom: -2rem;
+
+      & > nav > ul {
+        margin: 0.25rem 0;
+        padding: 0;
+        li {
+          list-style-type: none;
+          display: inline;
+
+          &:not(:last-of-type)::after {
+            content: " ･ ";
+          }
+        }
+      }
+      small {
+        font-size: 1rem;
       }
     }
   }
