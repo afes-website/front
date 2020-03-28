@@ -71,6 +71,33 @@
           よりお問い合わせください。
         </p>
         <h2>更新情報</h2>
+        <b-table-simple small hover>
+          <b-tbody>
+            <b-tr
+              v-for="article in sorted_articles.slice(0, 10)"
+              :key="article.id"
+              @click="linkToArticle(article.category, article.id)"
+            >
+              <b-td class="mobile-none">
+                <font-awesome-icon :icon="'clock'" class="fa-fw" />
+                {{ getStringTime(article.updated_at) }}
+              </b-td>
+              <b-td class="table-nowrap">
+                <font-awesome-icon :icon="'folder'" class="fa-fw" />
+                {{ getCategory(article.category) }}
+              </b-td>
+              <b-td class="mobile-none">
+                <font-awesome-icon :icon="'user'" class="fa-fw" />
+                {{ article.author.name }}
+              </b-td>
+              <b-td>
+                {{ article.title }}
+              </b-td>
+            </b-tr>
+          </b-tbody>
+        </b-table-simple>
+        <font-awesome-icon icon="angle-right" class="fa-fw" />
+        <b-link :to="{ name: 'article_list' }">近況 記事一覧</b-link>
       </div>
     </div>
   </div>
@@ -181,6 +208,15 @@
     #main-box {
       #main-content {
         width: 100%;
+
+        table {
+          .table-nowrap {
+            white-space: nowrap;
+          }
+          .mobile-none {
+            display: none;
+          }
+        }
       }
     }
   }
@@ -188,7 +224,11 @@
 </style>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
+import api from "@/apis/$api";
+import aspida from "@aspida/axios";
+import { BlogArticle } from "@/apis/blog/articles/@types";
+import { categories, getCategory } from "@/libs/categories";
 import TopPageButton from "@/components/TopPageButton.vue";
 
 import VueScrollTo from "vue-scrollto";
@@ -203,5 +243,59 @@ Vue.use(VueScrollTo, {
 })
 export default class Home extends Vue {
   readonly page_title = "";
+  articles: BlogArticle[] = [];
+  client = aspida();
+  readonly getCategory = getCategory;
+
+  mounted() {
+    this.load();
+  }
+  @Watch("$route")
+  route_changed() {
+    this.load();
+  }
+  load() {
+    api(this.client)
+      .blog.articles.$get()
+      .then((data) => {
+        this.articles = data;
+        if (!this.$route.params.category) {
+          this.articles = this.articles.reduce(
+            (v: BlogArticle[], article: BlogArticle) => {
+              if (
+                !(article.category in categories) ||
+                categories[article.category].visible
+              )
+                v.push(article);
+              return v;
+            },
+            []
+          );
+        }
+      });
+  }
+
+  getStringTime(laravel_time: string): string {
+    const date = new Date(Date.parse(laravel_time));
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    return year + "/" + month + "/" + day;
+  }
+
+  get sorted_articles(): BlogArticle[] {
+    let ret_articles = this.articles.concat(); // copy
+    ret_articles = ret_articles.sort((a, b) => {
+      return a.updated_at < b.updated_at ? 1 : -1; // compare in string
+    });
+    return ret_articles;
+  }
+
+  linkToArticle(category: string, id: string) {
+    this.$router.push({
+      name: "show_article",
+      params: { category: category, id: id },
+    });
+  }
 }
 </script>
