@@ -278,14 +278,18 @@ header {
 
         & > ul {
           padding-left: 0;
-          line-height: 2;
           margin: 0;
 
           li {
             margin: 0;
             list-style-type: none;
-            padding: 0.25rem 2rem;
             width: 100%;
+
+            a {
+              display: block;
+              padding: 0.25rem 2rem;
+              width: 100%;
+            }
 
             &:hover {
               background: rgba(#def, 0.075);
@@ -293,9 +297,9 @@ header {
 
             & > ul {
               padding: 0;
-              & > li {
+              & > li > a {
                 padding: 0.25rem 0;
-                padding-left: 2rem;
+                padding-left: 3rem;
               }
             }
           }
