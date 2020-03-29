@@ -480,9 +480,15 @@ header {
           margin: 0;
           padding: 0;
           box-shadow: none;
-          ul > li {
-            line-height: 1.5;
-            padding: 0.25rem 0;
+          ul li {
+            a {
+              line-height: 1.5;
+              padding: 0.25rem 0;
+            }
+
+            ul li a {
+              padding-left: 1em;
+            }
           }
         }
         background-color: #fff;
