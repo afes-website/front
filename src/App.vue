@@ -339,6 +339,9 @@ header {
       max-width: unset;
       width: calc(100% - 3rem);
       background: rgba(#fafafa, 0.9);
+      @media screen and (max-width: 900px) {
+        width: 100%;
+      }
     }
     &.main-box-hide {
       max-width: unset;
