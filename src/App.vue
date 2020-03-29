@@ -227,7 +227,8 @@ header {
       img {
         margin-left: -1rem;
         width: calc(100% + 30px);
-        filter: drop-shadow(0 0 6px #fff);
+        filter: drop-shadow(2px 2px 1px #fff) drop-shadow(-2px 2px 1px #fff)
+          drop-shadow(2px -2px 1px #fff) drop-shadow(-2px -2px 1px #fff);
       }
     }
     #menu {
@@ -240,7 +241,8 @@ header {
         flex-direction: row;
         justify-content: space-around;
         margin-bottom: 8px;
-        filter: drop-shadow(0 0 6px #fff);
+        filter: drop-shadow(2px 2px 1px #fff) drop-shadow(-2px 2px 1px #fff)
+          drop-shadow(2px -2px 1px #fff) drop-shadow(-2px -2px 1px #fff);
 
         a {
           display: block;
