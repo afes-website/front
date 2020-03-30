@@ -155,7 +155,8 @@
 
         #down-angle {
           margin-bottom: 1rem;
-          color: $theme-light;
+          color: #beffff;
+          filter: drop-shadow(0 4px 3px rgba(#222, 0.6));
         }
       }
     }
