@@ -292,7 +292,7 @@
 </style>
 
 <script lang="ts">
-import { Component, Vue, Watch } from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
 import api from "@/apis/$api";
 import aspida from "@aspida/axios";
 import { BlogArticle } from "@/apis/blog/articles/@types";
@@ -316,10 +316,6 @@ export default class Home extends Vue {
   readonly getCategory = getCategory;
 
   mounted() {
-    this.load();
-  }
-  @Watch("$route")
-  route_changed() {
     this.load();
   }
   load() {
