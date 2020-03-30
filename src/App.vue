@@ -579,7 +579,6 @@ Vue.use(Vue2TouchEvents);
 export default class Layout extends Vue {
   sidebar_shown = false;
   show_404 = false;
-  wide_box = false;
   admin_logged_in = false;
   writer_logged_in = false;
 
@@ -610,10 +609,6 @@ export default class Layout extends Vue {
 
   toggle_sidebar() {
     this.sidebar_shown = !this.sidebar_shown;
-  }
-
-  boxIsWide(f: boolean | undefined) {
-    this.wide_box = !!f;
   }
 
   get visible_categories() {
