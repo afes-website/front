@@ -263,7 +263,7 @@ header {
 
       #menu-nav {
         pointer-events: auto;
-        background: $site-theme;
+        background: $theme-dark;
         color: #fff;
         font-weight: 500;
         font-size: 1.1rem;
@@ -408,7 +408,7 @@ header {
     #top {
       height: 4rem;
       width: 100vw;
-      border-bottom: 1px solid $site-theme;
+      border-bottom: 1px solid $theme-dark;
       background-color: #fff;
       display: flex;
       align-items: center;
@@ -418,12 +418,12 @@ header {
         position: absolute;
         top: 0.7rem;
         left: 1rem;
-        color: $site-theme;
+        color: $theme-dark;
         height: 2.5rem;
       }
       #hamburger-closer {
         display: block;
-        color: $site-theme;
+        color: $theme-dark;
         transition: opacity 0.3s;
         z-index: 1002;
         opacity: 0;
@@ -495,7 +495,7 @@ header {
           }
         }
         background-color: #fff;
-        color: $site-theme;
+        color: $theme-dark;
         font-weight: 700;
         padding: calc(3.5rem - 1px) 1.6rem 0 1.6rem;
         font-size: 1.3rem;
@@ -546,7 +546,7 @@ header {
         //z-index: 0;
         width: 100vw;
         max-width: unset;
-        border-top: 1px solid $site-theme;
+        border-top: 1px solid $theme-dark;
         border-radius: 0;
         padding: 0 0 0.25rem 0;
 

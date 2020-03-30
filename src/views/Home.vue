@@ -138,7 +138,7 @@
           width: max-content;
           padding: 0.5rem;
 
-          background: rgba($site-theme, 0.8);
+          background: rgba($theme-dark, 0.8);
 
           #logo {
             width: 600px;
@@ -155,7 +155,7 @@
 
         #down-angle {
           margin-bottom: 1rem;
-          color: #def;
+          color: $theme-light;
         }
       }
     }
@@ -165,7 +165,7 @@
     }
 
     #main-box {
-      background: rgba($site-theme, 0.8);
+      background: rgba($theme-dark, 0.8);
       width: 100%;
       display: flex;
       justify-content: center;
@@ -179,17 +179,17 @@
         }
         h1,
         h2 {
-          border-color: #bdf;
+          border-color: darken($theme-light, 10%);
         }
         a {
-          color: #def;
+          color: $theme-light;
           text-decoration: underline;
         }
       }
     }
     #footer {
       text-align: center;
-      background: rgba($site-theme, 0.8);
+      background: rgba($theme-dark, 0.8);
       border-top: 2px solid rgba(#bdf, 0.8);
       padding: 0.5rem 0 1rem 0;
 
@@ -197,7 +197,7 @@
         color: #fff;
       }
       a {
-        color: #def;
+        color: $theme-light;
         text-decoration: underline;
       }
       & > nav > ul {
@@ -265,7 +265,7 @@
     }
     #footer {
       text-align: center;
-      border-top: 1px solid $site-theme;
+      border-top: 1px solid $theme-dark;
       padding: 0.5rem 0 1rem 0;
       width: 100vw;
       margin-left: calc((100vw - 100%) / 2 * -1);
