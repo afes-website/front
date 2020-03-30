@@ -156,7 +156,7 @@
           <not-found v-else></not-found>
         </main>
         <hr />
-        <footer class="box">
+        <footer>
           <nav>
             <ul>
               <li>

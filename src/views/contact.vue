@@ -1,5 +1,5 @@
 <template>
-  <div id="contact" class="box">
+  <div id="contact">
     <breadcrumb :text="page_title" />
     <h1>{{ page_title }}</h1>
     <b-form @submit="send" v-show="!submitted">

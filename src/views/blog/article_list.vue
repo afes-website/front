@@ -1,5 +1,5 @@
 <template>
-  <div id="article-list" class="box">
+  <div id="article-list">
     <breadcrumb :text="page_title" />
     <h1>{{ page_title }}</h1>
     <div id="articles">

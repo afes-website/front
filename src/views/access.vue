@@ -1,5 +1,5 @@
 <template>
-  <article id="access" class="box">
+  <article id="access">
     <breadcrumb :text="page_title" />
     <h1>{{ page_title }}</h1>
     <section>

@@ -1,5 +1,5 @@
 <template>
-  <div class="box">
+  <div>
     <h1>{{ page_title }}</h1>
     <section>
       <img src="@/assets/404.svg" alt="404" />

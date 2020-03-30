@@ -1,5 +1,5 @@
 <template>
-  <article id="show-article" class="box">
+  <article id="show-article">
     <template v-if="article !== null">
       <breadcrumb :text="page_title" />
       <h1>{{ page_title }}</h1>

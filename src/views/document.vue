@@ -1,5 +1,5 @@
 <template>
-  <article id="policy" class="box">
+  <article id="policy">
     <breadcrumb :text="page_title" />
     <h1>{{ page_title }}</h1>
     <p>
