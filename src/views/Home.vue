@@ -138,7 +138,7 @@
           width: max-content;
           padding: 0.5rem;
 
-          background: rgba($site-theme, 0.6);
+          background: rgba($site-theme, 0.8);
 
           #logo {
             width: 600px;
@@ -165,7 +165,7 @@
     }
 
     #main-box {
-      background: rgba($site-theme, 0.6);
+      background: rgba($site-theme, 0.8);
       width: 100%;
       display: flex;
       justify-content: center;
@@ -189,8 +189,8 @@
     }
     #footer {
       text-align: center;
-      background: rgba($site-theme, 0.6);
-      border-top: 2px solid rgba(#bdf, 0.6);
+      background: rgba($site-theme, 0.8);
+      border-top: 2px solid rgba(#bdf, 0.8);
       padding: 0.5rem 0 1rem 0;
 
       * {
