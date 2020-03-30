@@ -186,6 +186,9 @@
           color: $theme-light;
           text-decoration: underline;
         }
+        tr {
+          cursor: pointer;
+        }
       }
     }
     #footer {
