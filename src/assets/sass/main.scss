@@ -11,140 +11,140 @@ $theme-colors: ( // color for bootstrap
   font-family: "Noto Sans JP", sans-serif;
 }
 
-html body {
+html,
+body {
   height: 100vh;
   margin: 0;
+}
 
-  h1 {
-    font-size: 2.2rem;
-    font-weight: 500;
-    padding-bottom: .4rem;
-    border-bottom: solid 2px $site-theme;
-    margin-bottom: 1.2rem;
+h1 {
+  font-size: 2.2rem;
+  font-weight: 500;
+  padding-bottom: .4rem;
+  border-bottom: solid 2px $site-theme;
+  margin-bottom: 1.2rem;
+}
+
+h2 {
+  font-size: 1.8rem;
+  font-weight: 500;
+  padding: 0 0 .2rem .6rem;
+  border-left: solid 0.8rem $site-theme;
+  margin: 2rem 0 1rem 0;
+}
+
+h3 {
+  font-size: 1.5rem;
+  font-weight: 500;
+  padding: 0;
+  margin-bottom: .8rem;
+}
+
+p {
+  line-height: 1.75rem;
+  margin-bottom: .75rem;
+}
+
+img {
+  display: block;
+  width: 60%;
+  margin: 0 auto;
+  @media screen and (max-width: 900px) {
+    width: 100%;
   }
+}
 
-  h2 {
-    font-size: 1.8rem;
-    font-weight: 500;
-    padding: 0 0 .2rem .6rem;
-    border-left: solid 0.8rem $site-theme;
-    margin: 2rem 0 1rem 0;
+li,
+address,
+small {
+  line-height: 1.75rem;
+}
+
+a {
+  &:visited {
+    color: $site-theme;
   }
-
-  h3 {
-    font-size: 1.5rem;
-    font-weight: 500;
-    padding: 0;
-    margin-bottom: .8rem;
+  &:hover {
+    text-decoration: underline;
   }
+}
 
+section {
+  margin: 1.5rem 0;
+}
+
+*::selection {
+  background-color: $site-theme;
+  color: #fff;
+}
+
+blockquote {
+  padding: .2rem 1rem .3rem 1rem;
+  font-style: italic;
+  color: #555;
+  border-left: .8rem solid rgba($site-theme, .3);
+}
+
+blockquote p {
+  padding: 0;
+  margin: .5rem 0;
+  line-height: 1.7;
+}
+
+blockquote cite {
+  display: block;
+  text-align: right;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.alert-success,
+.alert-info,
+.alert-warning,
+.alert-danger {
+  @extend .alert;
   p {
-    line-height: 1.75rem;
-    margin-bottom: .75rem;
+    margin: 0;
   }
+}
 
-  img {
-    display: block;
-    width: 60%;
-    margin: 0 auto;
-    @media screen and (max-width: 900px) {
-      width: 100%;
-    }
+table {
+  @extend .table;
+  tr,th {
+    white-space: normal;
   }
-
-  li,
-  address,
-  small {
-    line-height: 1.75rem;
-  }
-
-  a {
-    &:visited {
-      color: $site-theme;
-    }
-    &:hover {
-      text-decoration: underline;
-    }
-  }
-
-  section {
-    margin: 1.5rem 0;
-  }
-
-  *::selection {
-    background-color: $site-theme;
-    color: #fff;
-  }
-
-  blockquote {
-    padding: .2rem 1rem .3rem 1rem;
-    font-style: italic;
-    color: #555;
-    border-left: .8rem solid rgba($site-theme, .3);
-  }
-
-  blockquote p {
-    padding: 0;
-    margin: .5rem 0;
-    line-height: 1.7;
-  }
-
-  blockquote cite {
-    display: block;
-    text-align: right;
-    color: #666;
-    font-size: 0.9rem;
-  }
-
-  .alert-success,
-  .alert-info,
-  .alert-warning,
-  .alert-danger {
-    @extend .alert;
-    p {
-      margin: 0;
-    }
-  }
-
-  table {
-    @extend .table;
-    tr,th {
-      white-space: normal;
-    }
+}
+code {
+  padding: .15em .25em .1em .25em;
+  margin: 0 .25em 0 .25em;
+  border-radius: 0.2rem;
+  border: 1px solid #aaa;
+  background-color: #f8f9fa;
+}
+pre {
+  width: 100%;
+  color: black;
+  padding: 1rem;
+  margin: 1rem 0 1rem 0;
+  font-size: 0.9rem;
+  background-color: #f8f9fa;
+  border-radius: 0.2rem;
+  &:before,
+  &:after {
+    content: none;
   }
   code {
-    padding: .15em .25em .1em .25em;
-    margin: 0 .25em 0 .25em;
-    border-radius: 0.2rem;
-    border: 1px solid #aaa;
-    background-color: #f8f9fa;
+    padding: 0;
+    margin: 0;
+    border: none;
   }
-  pre {
-    width: 100%;
-    color: black;
-    padding: 1rem;
-    margin: 1rem 0 1rem 0;
-    font-size: 0.9rem;
-    background-color: #f8f9fa;
-    border-radius: 0.2rem;
-    &:before,
-    &:after {
-      content: none;
-    }
-    code {
-      padding: 0;
-      margin: 0;
-      border: none;
-    }
-  }
+}
 
-  hr {
-    height: 1px;
-    width: 100%;
-    border-top: 1px solid $site-theme;
-    margin: 0.5rem 0;
-  }
-
+hr {
+  height: 1px;
+  width: 100%;
+  border-top: 1px solid $site-theme;
+  margin: 0.5rem 0;
 }
 
 .box {
