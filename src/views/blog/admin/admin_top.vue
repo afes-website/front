@@ -91,7 +91,7 @@
 </style>
 
 <script lang="ts">
-import { Component, Emit, Vue } from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
 import api from "@/apis/$api";
 import aspida from "@aspida/axios";
 import AdminAuth from "@/libs/auth/admin_auth";
@@ -117,11 +117,6 @@ export default class AdminTop extends Vue {
 
   admin_password_modal_shown = false;
   writer_password_modal_shown = false;
-
-  @Emit()
-  wide() {
-    return true;
-  }
 
   mounted() {
     this.load();

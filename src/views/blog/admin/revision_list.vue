@@ -105,7 +105,7 @@
 </style>
 
 <script lang="ts">
-import { Component, Emit, Vue } from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
 import api from "@/apis/$api";
 import aspida from "@aspida/axios";
 import WriterAuth from "@/libs/auth/writer_auth";
@@ -127,11 +127,6 @@ export default class RevisionList extends Vue {
   client = aspida();
 
   fetch_status: FetchStatus = "idle";
-
-  @Emit()
-  wide() {
-    return true;
-  }
 
   mounted() {
     this.load();

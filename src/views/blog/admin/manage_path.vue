@@ -162,7 +162,7 @@
 </style>
 
 <script lang="ts">
-import { Component, Emit, Vue, Watch } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
 import api from "@/apis/$api";
 import aspida from "@aspida/axios";
 import AdminAuth from "@/libs/auth/admin_auth";
@@ -192,11 +192,6 @@ export default class ManagePath extends Vue {
   delete_status: FetchStatus = "idle";
 
   article_exists = false;
-
-  @Emit()
-  wide() {
-    return true;
-  }
 
   mounted() {
     this.load();
