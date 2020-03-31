@@ -121,6 +121,7 @@ import Markdown from "@/libs/markdown";
 import { getCategory, categories } from "@/libs/categories";
 import Token from "markdown-it/lib/token";
 import Breadcrumb from "@/components/Breadcrumb.vue";
+import FetchStatus from "@/libs/fetch_status";
 
 @Component({ components: { Breadcrumb } })
 export default class ArticleList extends Vue {
@@ -129,9 +130,25 @@ export default class ArticleList extends Vue {
   client = aspida();
   readonly getCategory = getCategory;
   readonly noImage = require("@/assets/no-image.svg");
+  fetch_status: FetchStatus = "idle";
 
   perPage = 10;
-  currentPage = 1;
+
+  get currentPage() {
+    const query = this.$route.query;
+    if ("page" in query) {
+      return Number(query.page);
+    } else {
+      return 1;
+    }
+  }
+  set currentPage(val: number) {
+    const query: { [key: string]: string | (string | null)[] } = {};
+    Object.assign(query, this.$route.query);
+    query["page"] = val.toString();
+    this.$router.push({ query });
+  }
+
   mounted() {
     this.load();
   }
@@ -140,6 +157,7 @@ export default class ArticleList extends Vue {
     this.load();
   }
   load() {
+    this.fetch_status = "pending";
     if (this.$route.params.category)
       this.page_title = getCategory(this.$route.params.category) + " 記事一覧";
     else this.page_title = "近況 記事一覧";
@@ -161,6 +179,10 @@ export default class ArticleList extends Vue {
             []
           );
         }
+        this.fetch_status = "idle";
+      })
+      .catch(() => {
+        this.fetch_status = "fail";
       });
   }
 
@@ -179,6 +201,8 @@ export default class ArticleList extends Vue {
   }
 
   get rows(): number {
+    if (this.fetch_status == "pending")
+      return Math.max(this.articles.length, this.currentPage);
     return this.articles.length;
   }
 
