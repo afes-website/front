@@ -1,5 +1,5 @@
 <template>
-  <div id="admin-top" class="box">
+  <div id="admin-top" class="box wide-box">
     <breadcrumb :text="page_title" />
     <h1>{{ page_title }}</h1>
     <section class="profile">
@@ -77,8 +77,6 @@
 </template>
 
 <style lang="scss" scoped>
-@import "@/assets/sass/wide_main_box.scss";
-
 #admin-top {
   .profile {
     span {

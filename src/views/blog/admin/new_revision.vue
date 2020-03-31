@@ -1,5 +1,5 @@
 <template>
-  <div class="box">
+  <div class="box wide-box">
     <breadcrumb :text="page_title" />
     <h1>{{ page_title }}</h1>
     <p>id:<b-input v-model="article_path" /></p>
@@ -85,8 +85,6 @@
 </template>
 
 <style lang="scss" scoped>
-@import "@/assets/sass/wide_main_box.scss";
-
 .edit-area,
 div.preview,
 div.diff {
@@ -97,7 +95,7 @@ div.diff {
 }
 div#preview {
   padding-top: 1rem;
-  max-width: 804px;
+  max-width: 952px;
 }
 
 .card {

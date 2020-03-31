@@ -141,26 +141,35 @@
       </div>
     </header>
     <div id="main-wrapper">
-      <main>
-        <router-view
-          v-if="!show_404"
-          @not_found="show_404 = true"
-        ></router-view>
-        <not-found v-else></not-found>
-      </main>
-      <footer class="box">
-        <nav>
-          <ul>
-            <li>
-              <b-link :to="{ name: 'contact' }">お問い合わせ</b-link>
-            </li>
-            <li>
-              <b-link :to="{ name: 'policy' }">プライバシーポリシー</b-link>
-            </li>
-          </ul>
-        </nav>
-        <small>&copy; 第73回文化祭実行委員会 2020</small>
-      </footer>
+      <div
+        id="main-box"
+        :class="{
+          'main-box-wide': $route.path.startsWith('/blog/admin'),
+          'main-box-hide': $route.path === '/',
+        }"
+      >
+        <main>
+          <router-view
+            v-if="!show_404"
+            @not_found="show_404 = true"
+          ></router-view>
+          <not-found v-else></not-found>
+        </main>
+        <hr />
+        <footer>
+          <nav>
+            <ul>
+              <li>
+                <b-link :to="{ name: 'contact' }">お問い合わせ</b-link>
+              </li>
+              <li>
+                <b-link :to="{ name: 'policy' }">プライバシーポリシー</b-link>
+              </li>
+            </ul>
+          </nav>
+          <small>&copy; 第73回麻布学園文化祭実行委員会 2020</small>
+        </footer>
+      </div>
     </div>
     <admin-login-modal />
     <writer-login-modal />
@@ -179,7 +188,6 @@
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
-  filter: blur(2px);
   height: 120vh;
   position: fixed;
   top: 0;
@@ -189,7 +197,7 @@
 
   &::before {
     content: "";
-    background-color: rgba(#fff, 0.7);
+    background-color: rgba(#fff, 0.1);
     position: fixed;
     top: 0;
     right: 0;
@@ -200,8 +208,9 @@
 }
 
 header {
-  width: 16rem;
-  padding: 2rem 0 0 2rem;
+  width: 17rem;
+  min-width: 17rem;
+  padding: 1.5rem 0 0 3rem;
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -218,6 +227,8 @@ header {
       img {
         margin-left: -1rem;
         width: calc(100% + 30px);
+        filter: drop-shadow(2px 2px 1px #fff) drop-shadow(-2px 2px 1px #fff)
+          drop-shadow(2px -2px 1px #fff) drop-shadow(-2px -2px 1px #fff);
       }
     }
     #menu {
@@ -230,6 +241,8 @@ header {
         flex-direction: row;
         justify-content: space-around;
         margin-bottom: 8px;
+        filter: drop-shadow(2px 2px 1px #fff) drop-shadow(-2px 2px 1px #fff)
+          drop-shadow(2px -2px 1px #fff) drop-shadow(-2px -2px 1px #fff);
 
         a {
           display: block;
@@ -250,36 +263,46 @@ header {
 
       #menu-nav {
         pointer-events: auto;
-        background: $site-theme;
+        background: $theme-dark;
         color: #fff;
         font-weight: 500;
         font-size: 1.1rem;
-        width: 14rem;
+        width: 100%;
 
         box-shadow: 0 0 1em rgba(0, 0, 0, 0.3);
 
         text-align: left;
-        padding: 1rem 2rem;
+        padding: 1rem 0;
         //border: 1px solid #eee;
-        border-radius: 1rem;
+        border-radius: 0.5rem;
 
         & > ul {
           padding-left: 0;
-          line-height: 2;
-        }
-
-        li {
           margin: 0;
-          list-style-type: none;
-          margin-bottom: 0.5rem;
 
-          & > ul {
-            padding-left: 2rem;
+          li {
+            margin: 0;
+            list-style-type: none;
+            width: 100%;
+
+            a {
+              display: block;
+              padding: 0.25rem 2rem;
+              width: 100%;
+            }
+
+            &:hover {
+              background: rgba(#def, 0.075);
+            }
+
+            & > ul {
+              padding: 0;
+              & > li > a {
+                padding: 0.25rem 0;
+                padding-left: 3rem;
+              }
+            }
           }
-        }
-
-        .menu-secondary {
-          margin-top: 0.5rem;
         }
 
         a {
@@ -298,38 +321,67 @@ header {
 #main-wrapper {
   flex-grow: 1;
   height: 100vh;
-  overflow-y: auto;
-  padding-top: 2rem;
+  overflow: auto;
+  padding: 0;
 
-  display: flex;
-  flex-direction: column;
+  #main-box {
+    max-width: 1000px;
+    padding: 1rem 1.5rem;
+    margin: 0 auto 0 3rem;
+    background: rgba(#fff, 0.9);
+    min-height: 100vh;
+    height: max-content;
 
-  main {
-    flex-grow: 1;
-    max-width: 900px;
-    padding: 0 1rem 0 2rem;
-  }
-  footer {
-    text-align: center;
-    padding: 0;
-    padding-bottom: 0.25rem;
-    max-width: calc(900px - 3rem);
-    margin: 1rem 1rem 1rem 2rem;
+    display: flex;
+    flex-direction: column;
 
-    & > nav > ul {
-      margin: 0.25rem 0;
-      padding: 0;
-      li {
-        list-style-type: none;
-        display: inline;
-
-        &:not(:last-of-type)::after {
-          content: " ･ ";
-        }
+    &.main-box-wide {
+      max-width: unset;
+      width: calc(100% - 3rem);
+      background: rgba(#fafafa, 0.9);
+      @media screen and (max-width: 900px) {
+        width: 100%;
       }
     }
-    small {
-      font-size: 1rem;
+    &.main-box-hide {
+      max-width: unset;
+      width: calc(100% - 3rem);
+      background: none;
+      padding: 0;
+      @media screen and (max-width: 900px) {
+        width: 100%;
+      }
+      hr,
+      footer {
+        display: none;
+      }
+    }
+
+    main {
+      flex-grow: 1;
+    }
+    hr {
+      width: calc(100% + 3rem);
+      margin-left: -1.5rem;
+    }
+    footer {
+      text-align: center;
+
+      & > nav > ul {
+        margin: 0.25rem 0;
+        padding: 0;
+        li {
+          list-style-type: none;
+          display: inline;
+
+          &:not(:last-of-type)::after {
+            content: " ･ ";
+          }
+        }
+      }
+      small {
+        font-size: 1rem;
+      }
     }
   }
 }
@@ -356,7 +408,7 @@ header {
     #top {
       height: 4rem;
       width: 100vw;
-      border-bottom: 1px solid $site-theme;
+      border-bottom: 1px solid $theme-dark;
       background-color: #fff;
       display: flex;
       align-items: center;
@@ -366,12 +418,12 @@ header {
         position: absolute;
         top: 0.7rem;
         left: 1rem;
-        color: $site-theme;
+        color: $theme-dark;
         height: 2.5rem;
       }
       #hamburger-closer {
         display: block;
-        color: $site-theme;
+        color: $theme-dark;
         transition: opacity 0.3s;
         z-index: 1002;
         opacity: 0;
@@ -431,9 +483,19 @@ header {
           margin: 0;
           padding: 0;
           box-shadow: none;
+          ul li {
+            a {
+              line-height: 1.5;
+              padding: 0.25rem 0;
+            }
+
+            ul li a {
+              padding-left: 1em;
+            }
+          }
         }
         background-color: #fff;
-        color: $site-theme;
+        color: $theme-dark;
         font-weight: 700;
         padding: calc(3.5rem - 1px) 1.6rem 0 1.6rem;
         font-size: 1.3rem;
@@ -456,9 +518,7 @@ header {
           border: none;
           border-top: 1px solid #87acce;
         }
-        ul > li {
-          line-height: 1.5;
-        }
+
         &.shown {
           left: 0;
           box-shadow: 0 0 1em rgba(0, 0, 0, 0.3);
@@ -467,28 +527,34 @@ header {
     }
   }
   #main-wrapper {
-    margin-top: 4rem;
-    padding-top: 0;
-    overflow-y: visible;
-    height: auto;
-    max-width: unset;
-
-    main {
-      padding: 0.8rem 1rem 1rem 1rem;
-    }
-
-    footer {
-      //z-index: 0;
-      width: 100vw;
+    #main-box {
+      margin: 4rem 0 0 0;
+      overflow-y: visible;
+      height: auto;
       max-width: unset;
-      border-top: 1px solid $site-theme;
-      border-radius: 0;
-      margin: 0;
+      padding: 0;
 
-      small {
-        display: inline-block;
-        margin: 0.25rem 0;
-        padding: 0;
+      main {
+        padding: 0.8rem 1rem 1rem 1rem;
+      }
+
+      hr {
+        display: none;
+      }
+
+      footer {
+        //z-index: 0;
+        width: 100vw;
+        max-width: unset;
+        border-top: 1px solid $theme-dark;
+        border-radius: 0;
+        padding: 0 0 0.25rem 0;
+
+        small {
+          display: inline-block;
+          margin: 0.25rem 0;
+          padding: 0;
+        }
       }
     }
   }

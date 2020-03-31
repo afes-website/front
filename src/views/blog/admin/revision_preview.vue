@@ -1,5 +1,5 @@
 <template>
-  <article id="show-revision" class="box">
+  <article id="show-revision">
     <template v-if="revision !== null">
       <breadcrumb :text="page_title" />
       <b-alert show variant="info">
