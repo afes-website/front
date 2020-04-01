@@ -52,14 +52,14 @@
       <section>
         <h2>新規リクエスト</h2>
         <p>投稿の新規リクエストはこちらから。</p>
-        <b-button :to="{ name: 'new_revision' }" variant="outline-site-theme"
+        <b-button :to="{ name: 'new_revision' }" variant="outline-theme-dark"
           >新規リクエスト</b-button
         >
       </section>
       <section>
         <h2>投稿リクエスト一覧</h2>
         <p>自分がリクエストした投稿一覧はこっち。</p>
-        <b-button :to="{ name: 'revision_list' }" variant="outline-site-theme"
+        <b-button :to="{ name: 'revision_list' }" variant="outline-theme-dark"
           >リクエスト一覧</b-button
         >
       </section>
@@ -67,7 +67,7 @@
     <section v-if="admin_logged_in">
       <h2>記事一覧･管理</h2>
       <p>Writerからの投稿リクエストの承認･却下や、記事削除はここ。</p>
-      <b-button :to="{ name: 'path_list' }" variant="outline-site-theme"
+      <b-button :to="{ name: 'path_list' }" variant="outline-theme-dark"
         >リクエスト一覧</b-button
       >
     </section>
