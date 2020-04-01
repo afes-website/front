@@ -73,6 +73,7 @@ import Breadcrumb from "@/components/Breadcrumb.vue";
 import ShareButtons from "@/components/ShareButtons.vue";
 import AdminAuth from "@/libs/auth/admin_auth";
 import WriterAuth from "@/libs/auth/writer_auth";
+import { getStringTime } from "@/libs/string_date";
 
 @Component({
   components: {
@@ -86,6 +87,7 @@ export default class ShowArticle extends Vue {
   client = aspida();
   fetch_status: FetchStatus = "idle";
   readonly getCategory = getCategory;
+  readonly getStringTime = getStringTime;
 
   mounted() {
     this.load();
@@ -93,17 +95,6 @@ export default class ShowArticle extends Vue {
   @Watch("$route")
   route_changed() {
     this.load();
-  }
-
-  getStringTime(laravel_time: string): string {
-    const date = new Date(Date.parse(laravel_time));
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
-    const hour = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
-    const min =
-      date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
-    return year + "/" + month + "/" + day + " " + hour + ":" + min;
   }
 
   load() {

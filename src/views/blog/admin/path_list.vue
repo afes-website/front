@@ -129,6 +129,7 @@ import FetchStatus from "@/libs/fetch_status";
 import FetchStatusIcon from "@/components/FetchStatusIcon.vue";
 import { getCategory } from "@/libs/categories";
 import Breadcrumb from "@/components/Breadcrumb.vue";
+import { getStringTime } from "@/libs/string_date";
 
 interface Path {
   category?: string;
@@ -144,6 +145,7 @@ export default class PathList extends Vue {
   paths: { [key: string]: Path } = {};
   client = aspida();
   readonly getCategory = getCategory;
+  readonly getStringTime = getStringTime;
 
   fetch_status: FetchStatus = "idle";
 
@@ -198,18 +200,6 @@ export default class PathList extends Vue {
             this.fetch_status = "fail";
           });
       });
-  }
-
-  getStringTime(laravel_time: string): string {
-    if (!laravel_time) return "";
-    const date = new Date(Date.parse(laravel_time));
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
-    const hour = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
-    const min =
-      date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
-    return year + "/" + month + "/" + day + " " + hour + ":" + min;
   }
 
   open_manage_path(route: string) {

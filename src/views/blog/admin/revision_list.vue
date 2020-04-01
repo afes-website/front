@@ -115,6 +115,7 @@ import is_axios_error from "@/libs/is_axios_error";
 import FetchStatus from "@/libs/fetch_status";
 import FetchStatusIcon from "@/components/FetchStatusIcon.vue";
 import Breadcrumb from "@/components/Breadcrumb.vue";
+import { getStringTime } from "@/libs/string_date";
 
 interface BlogRevisionWithArticle extends BlogRevision {
   article: BlogArticle | null;
@@ -125,6 +126,7 @@ export default class RevisionList extends Vue {
   readonly page_title = "あなたの記事リクエスト一覧";
   revisions: BlogRevisionWithArticle[] = [];
   client = aspida();
+  readonly getStringTime = getStringTime;
 
   fetch_status: FetchStatus = "idle";
 
@@ -196,17 +198,6 @@ export default class RevisionList extends Vue {
       return a.id - b.id;
     });
     return ret_revisions;
-  }
-
-  getStringTime(laravel_time: string): string {
-    const date = new Date(Date.parse(laravel_time));
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
-    const hour = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
-    const min =
-      date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
-    return year + "/" + month + "/" + day + " " + hour + ":" + min;
   }
 
   open_revision(revision: BlogRevisionWithArticle) {

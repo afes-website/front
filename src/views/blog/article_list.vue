@@ -33,7 +33,7 @@
             </span>
             <span>
               <font-awesome-icon :icon="'clock'" class="fa-fw" />
-              {{ getStringTime(article.updated_at) }}
+              {{ getStringDate(article.updated_at) }}
             </span>
           </b-card-sub-title>
           <b-card-text v-html="rendered_md(article.content)" />
@@ -122,6 +122,7 @@ import { getCategory, categories } from "@/libs/categories";
 import Token from "markdown-it/lib/token";
 import Breadcrumb from "@/components/Breadcrumb.vue";
 import FetchStatus from "@/libs/fetch_status";
+import { getStringDate } from "@/libs/string_date";
 
 @Component({ components: { Breadcrumb } })
 export default class ArticleList extends Vue {
@@ -131,6 +132,7 @@ export default class ArticleList extends Vue {
   readonly getCategory = getCategory;
   readonly noImage = require("@/assets/no-image.svg");
   fetch_status: FetchStatus = "idle";
+  readonly getStringDate = getStringDate;
 
   perPage = 10;
 
@@ -184,14 +186,6 @@ export default class ArticleList extends Vue {
       .catch(() => {
         this.fetch_status = "fail";
       });
-  }
-
-  getStringTime(laravel_time: string): string {
-    const date = new Date(Date.parse(laravel_time));
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
-    return year + "/" + month + "/" + day;
   }
 
   get filter_query(): BlogArticleParameter {
