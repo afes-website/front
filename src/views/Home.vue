@@ -80,7 +80,7 @@
             >
               <b-td class="mobile-none">
                 <font-awesome-icon :icon="'clock'" class="fa-fw" />
-                {{ getStringTime(article.updated_at) }}
+                {{ getStringDate(article.updated_at) }}
               </b-td>
               <b-td class="table-nowrap">
                 <font-awesome-icon :icon="'folder'" class="fa-fw" />
@@ -302,6 +302,7 @@ import aspida from "@aspida/axios";
 import { BlogArticle } from "@/apis/blog/articles/@types";
 import { categories, getCategory } from "@/libs/categories";
 import TopPageButton from "@/components/TopPageButton.vue";
+import { getStringDate } from "@/libs/string_date";
 
 import VueScrollTo from "vue-scrollto";
 Vue.use(VueScrollTo, {
@@ -318,6 +319,7 @@ export default class Home extends Vue {
   articles: BlogArticle[] = [];
   client = aspida();
   readonly getCategory = getCategory;
+  readonly getStringDate = getStringDate;
 
   mounted() {
     this.load();
@@ -341,14 +343,6 @@ export default class Home extends Vue {
           );
         }
       });
-  }
-
-  getStringTime(laravel_time: string): string {
-    const date = new Date(Date.parse(laravel_time));
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
-    return year + "/" + month + "/" + day;
   }
 
   get sorted_articles(): BlogArticle[] {

@@ -175,6 +175,7 @@ import DiffLib from "difflib";
 import * as Diff2Html from "diff2html";
 import categories from "@/libs/categories";
 import Breadcrumb from "@/components/Breadcrumb.vue";
+import { getStringTime } from "@/libs/string_date";
 
 @Component({ components: { FetchStatusIcon, Breadcrumb } })
 export default class ManagePath extends Vue {
@@ -182,6 +183,7 @@ export default class ManagePath extends Vue {
   revisions: { [key: number]: BlogRevision } = {};
   client = aspida();
   readonly categories = categories;
+  readonly getStringTime = getStringTime;
 
   revision_selection = 0;
   original_selection = 0;
@@ -353,18 +355,6 @@ export default class ManagePath extends Vue {
       matching: "lines",
       outputFormat: "side-by-side",
     });
-  }
-
-  getStringTime(laravel_time: string): string {
-    if (!laravel_time) return "";
-    const date = new Date(Date.parse(laravel_time));
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
-    const hour = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
-    const min =
-      date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
-    return year + "/" + month + "/" + day + " " + hour + ":" + min;
   }
 
   select_revision(id: number) {
