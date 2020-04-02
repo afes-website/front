@@ -2,7 +2,12 @@
   <div class="box wide-box">
     <breadcrumb :text="page_title" />
     <h1>{{ page_title }}</h1>
-    <p>id:<b-input v-model="article_path" /></p>
+    <p>
+      id:<b-input v-model="article_path" :state="is_valid_path" />
+      <b-form-invalid-feedback v-if="!is_valid_path">
+        idには英数、アンダーバー(<code>_</code>)、ハイフン(<code>-</code>)のみ使用することができます。
+      </b-form-invalid-feedback>
+    </p>
     <p>
       <b-button @click="load" :disabled="article_path === ''">
         記事情報を読みこむ
@@ -332,6 +337,11 @@ export default class NewRevision extends Vue {
     if (first_img_uri.startsWith(process.env.VUE_APP_API_BASE_URL + "/images"))
       return first_img_uri + "?h=150&w=150"; // out images support server-side-resizing
     return first_img_uri;
+  }
+
+  readonly path_rule = /^[A-Za-z0-9_-]+$/;
+  get is_valid_path() {
+    return this.path_rule.test(this.article_path);
   }
 }
 </script>
