@@ -60,10 +60,11 @@ html body {
   }
 }
 
+:visited {
+  color: $theme-dark;
+}
+
 a {
-  &:visited {
-    color: $theme-dark;
-  }
   &:hover {
     text-decoration: underline;
   }
