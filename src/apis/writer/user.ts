@@ -6,7 +6,7 @@ export interface WriterUserInfo {
 
 export interface Methods {
   get: {
-    resData: WriterUserInfo;
+    resBody: WriterUserInfo;
     reqHeaders: WriterAuthToken;
   };
 }

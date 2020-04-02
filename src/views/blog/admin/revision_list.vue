@@ -1,5 +1,5 @@
 <template>
-  <div class="box">
+  <div class="box wide-box">
     <breadcrumb :text="page_title" />
     <h1>{{ page_title }}</h1>
     <b-button @click="load">
@@ -54,14 +54,14 @@
             <b-link
               v-if="
                 revision.article !== null &&
-                  revision.article.revision_id == revision.id
+                revision.article.revision_id == revision.id
               "
               :to="{
                 name: 'show_article',
                 params: {
                   category: revision.article.category,
-                  id: revision.article_id
-                }
+                  id: revision.article_id,
+                },
               }"
             >
               <font-awesome-icon :icon="'file'" class="fa-fw" />
@@ -82,8 +82,6 @@
 </template>
 
 <style lang="scss" scoped>
-@import "@/assets/sass/wide_main_box.scss";
-
 .btn {
   margin-bottom: 0.5rem;
 }
@@ -117,6 +115,7 @@ import is_axios_error from "@/libs/is_axios_error";
 import FetchStatus from "@/libs/fetch_status";
 import FetchStatusIcon from "@/components/FetchStatusIcon.vue";
 import Breadcrumb from "@/components/Breadcrumb.vue";
+import { getStringTime } from "@/libs/string_date";
 
 interface BlogRevisionWithArticle extends BlogRevision {
   article: BlogArticle | null;
@@ -127,6 +126,7 @@ export default class RevisionList extends Vue {
   readonly page_title = "あなたの記事リクエスト一覧";
   revisions: BlogRevisionWithArticle[] = [];
   client = aspida();
+  readonly getStringTime = getStringTime;
 
   fetch_status: FetchStatus = "idle";
 
@@ -139,12 +139,12 @@ export default class RevisionList extends Vue {
     this.fetch_status = "pending";
     this.revisions = [];
     WriterAuth.attempt_get_JWT()
-      .then(token => {
+      .then((token) => {
         api(this.client)
           .blog.revisions.$get({
             headers: {
-              "X-BLOG-WRITER-TOKEN": token.content
-            }
+              "X-BLOG-WRITER-TOKEN": token.content,
+            },
           })
           .then((data: BlogRevision[]) => {
             const promises: Promise<void>[] = [];
@@ -156,7 +156,7 @@ export default class RevisionList extends Vue {
                   .then((article: BlogArticle) => {
                     this.revisions.push({
                       ...revision,
-                      article: article
+                      article: article,
                     });
                   })
                   .catch((e: unknown) => {
@@ -167,7 +167,7 @@ export default class RevisionList extends Vue {
                     ) {
                       this.revisions.push({
                         ...revision,
-                        article: null
+                        article: null,
                       });
                       return;
                     }
@@ -200,17 +200,6 @@ export default class RevisionList extends Vue {
     return ret_revisions;
   }
 
-  getStringTime(laravel_time: string): string {
-    const date = new Date(Date.parse(laravel_time));
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
-    const hour = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
-    const min =
-      date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
-    return year + "/" + month + "/" + day + " " + hour + ":" + min;
-  }
-
   open_revision(revision: BlogRevisionWithArticle) {
     if (
       revision.article !== null &&
@@ -220,13 +209,13 @@ export default class RevisionList extends Vue {
         name: "show_article",
         params: {
           category: revision.article.category,
-          id: revision.article_id
-        }
+          id: revision.article_id,
+        },
       });
     else
       this.$router.push({
         name: "revision_preview",
-        params: { id: revision.id.toString() }
+        params: { id: revision.id.toString() },
       });
   }
 }

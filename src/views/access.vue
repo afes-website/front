@@ -1,5 +1,5 @@
 <template>
-  <article id="access" class="box">
+  <article id="access">
     <breadcrumb :text="page_title" />
     <h1>{{ page_title }}</h1>
     <section>
@@ -56,8 +56,8 @@ import { Component, Vue } from "vue-property-decorator";
 import Breadcrumb from "@/components/Breadcrumb.vue";
 @Component({
   components: {
-    Breadcrumb
-  }
+    Breadcrumb,
+  },
 })
 export default class About extends Vue {
   readonly page_title = "アクセス";

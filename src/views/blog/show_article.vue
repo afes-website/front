@@ -1,5 +1,5 @@
 <template>
-  <article id="show-article" class="box">
+  <article id="show-article">
     <template v-if="article !== null">
       <breadcrumb :text="page_title" />
       <h1>{{ page_title }}</h1>
@@ -16,6 +16,24 @@
           <font-awesome-icon :icon="'clock'" class="fa-fw" />
           {{ getStringTime(article.updated_at) }}
         </span>
+        <b-button-group>
+          <b-button
+            variant="secondary"
+            v-if="can_edit"
+            :to="{ name: 'new_revision', query: { path: article.id } }"
+          >
+            <font-awesome-icon icon="edit" class="fa-fw" />
+            編集
+          </b-button>
+          <b-button
+            variant="secondary"
+            v-if="can_manage"
+            :to="{ name: 'manage_path', params: { id: article.id } }"
+          >
+            <font-awesome-icon icon="wrench" class="fa-fw" />
+            管理
+          </b-button>
+        </b-button-group>
       </div>
       <div class="main-content" v-html="rendered_md" />
       <share-buttons :title="page_title + ' - 第73回麻布学園文化祭'" />
@@ -53,12 +71,15 @@ import Markdown from "@/libs/markdown";
 import { getCategory } from "@/libs/categories";
 import Breadcrumb from "@/components/Breadcrumb.vue";
 import ShareButtons from "@/components/ShareButtons.vue";
+import AdminAuth from "@/libs/auth/admin_auth";
+import WriterAuth from "@/libs/auth/writer_auth";
+import { getStringTime } from "@/libs/string_date";
 
 @Component({
   components: {
     Breadcrumb,
-    ShareButtons
-  }
+    ShareButtons,
+  },
 })
 export default class ShowArticle extends Vue {
   page_title = "";
@@ -66,6 +87,7 @@ export default class ShowArticle extends Vue {
   client = aspida();
   fetch_status: FetchStatus = "idle";
   readonly getCategory = getCategory;
+  readonly getStringTime = getStringTime;
 
   mounted() {
     this.load();
@@ -75,32 +97,21 @@ export default class ShowArticle extends Vue {
     this.load();
   }
 
-  getStringTime(laravel_time: string): string {
-    const date = new Date(Date.parse(laravel_time));
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
-    const hour = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
-    const min =
-      date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
-    return year + "/" + month + "/" + day + " " + hour + ":" + min;
-  }
-
   load() {
     this.article = null;
     this.fetch_status = "pending";
     api(this.client)
       .blog.articles._id(this.$route.params.id)
       .$get()
-      .then(data => {
+      .then((data) => {
         this.article = data;
         if (data.category !== this.$route.params.category)
           this.$router.push({
             name: "show_article",
             params: {
               category: data.category,
-              id: this.$route.params.id
-            }
+              id: this.$route.params.id,
+            },
           });
         this.page_title = data.title;
         this.fetch_status = "idle";
@@ -116,6 +127,17 @@ export default class ShowArticle extends Vue {
   get rendered_md(): string | null {
     if (this.article == null) return null;
     return Markdown.render(this.article.content);
+  }
+
+  get can_edit() {
+    const jwt = WriterAuth.getJWT();
+    if (jwt === null) return false;
+    if (this.article === null) return false;
+    return this.article.author.id === jwt.userId;
+  }
+
+  get can_manage() {
+    return AdminAuth.getJWT() !== null;
   }
 }
 </script>

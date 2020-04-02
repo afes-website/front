@@ -73,7 +73,7 @@ export default class AdminChangePasswordModal extends Vue {
         EventHub.emitLoginSuccess();
         this.$bvToast.toast("パスワードを変更しました。", {
           title: "Change Password",
-          autoHideDelay: 5000
+          autoHideDelay: 5000,
         });
       })
       .catch(() => {

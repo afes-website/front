@@ -1,5 +1,5 @@
 <template>
-  <div id="admin-top" class="box">
+  <div id="admin-top" class="box wide-box">
     <breadcrumb :text="page_title" />
     <h1>{{ page_title }}</h1>
     <section class="profile">
@@ -52,14 +52,14 @@
       <section>
         <h2>新規リクエスト</h2>
         <p>投稿の新規リクエストはこちらから。</p>
-        <b-button :to="{ name: 'new_revision' }" variant="outline-site-theme"
+        <b-button :to="{ name: 'new_revision' }" variant="outline-theme-dark"
           >新規リクエスト</b-button
         >
       </section>
       <section>
         <h2>投稿リクエスト一覧</h2>
         <p>自分がリクエストした投稿一覧はこっち。</p>
-        <b-button :to="{ name: 'revision_list' }" variant="outline-site-theme"
+        <b-button :to="{ name: 'revision_list' }" variant="outline-theme-dark"
           >リクエスト一覧</b-button
         >
       </section>
@@ -67,7 +67,7 @@
     <section v-if="admin_logged_in">
       <h2>記事一覧･管理</h2>
       <p>Writerからの投稿リクエストの承認･却下や、記事削除はここ。</p>
-      <b-button :to="{ name: 'path_list' }" variant="outline-site-theme"
+      <b-button :to="{ name: 'path_list' }" variant="outline-theme-dark"
         >リクエスト一覧</b-button
       >
     </section>
@@ -77,8 +77,6 @@
 </template>
 
 <style lang="scss" scoped>
-@import "@/assets/sass/wide_main_box.scss";
-
 #admin-top {
   .profile {
     span {
@@ -108,8 +106,8 @@ import Breadcrumb from "@/components/Breadcrumb.vue";
   components: {
     AdminChangePasswordModal,
     WriterChangePasswordModal,
-    Breadcrumb
-  }
+    Breadcrumb,
+  },
 })
 export default class AdminTop extends Vue {
   readonly page_title = "ブログ管理";
@@ -127,23 +125,23 @@ export default class AdminTop extends Vue {
   load() {
     if (this.admin_logged_in()) {
       AdminAuth.attempt_get_JWT()
-        .then(token => {
+        .then((token) => {
           return api(aspida()).admin.user.$get({
-            headers: { "X-ADMIN-TOKEN": token.content }
+            headers: { "X-ADMIN-TOKEN": token.content },
           });
         })
-        .then(user_info => {
+        .then((user_info) => {
           this.admin_user = user_info;
         });
     }
     if (this.writer_logged_in()) {
       WriterAuth.attempt_get_JWT()
-        .then(token => {
+        .then((token) => {
           return api(aspida()).writer.user.$get({
-            headers: { "X-BLOG-WRITER-TOKEN": token.content }
+            headers: { "X-BLOG-WRITER-TOKEN": token.content },
           });
         })
-        .then(user_info => {
+        .then((user_info) => {
           this.writer_user = user_info;
         });
     }

@@ -1,5 +1,5 @@
 <template>
-  <div class="box">
+  <div class="box wide-box">
     <breadcrumb :text="page_title" />
     <h1>{{ page_title }}</h1>
     <b-button @click="load">
@@ -126,8 +126,6 @@
 </template>
 
 <style lang="scss" scoped>
-@import "@/assets/sass/wide_main_box.scss";
-
 .table {
   white-space: nowrap;
 
@@ -177,6 +175,7 @@ import DiffLib from "difflib";
 import * as Diff2Html from "diff2html";
 import categories from "@/libs/categories";
 import Breadcrumb from "@/components/Breadcrumb.vue";
+import { getStringTime } from "@/libs/string_date";
 
 @Component({ components: { FetchStatusIcon, Breadcrumb } })
 export default class ManagePath extends Vue {
@@ -184,6 +183,7 @@ export default class ManagePath extends Vue {
   revisions: { [key: number]: BlogRevision } = {};
   client = aspida();
   readonly categories = categories;
+  readonly getStringTime = getStringTime;
 
   revision_selection = 0;
   original_selection = 0;
@@ -211,7 +211,7 @@ export default class ManagePath extends Vue {
     this.original_selection = 0;
     this.page_title = "記事管理: " + this.$route.params.id;
     AdminAuth.attempt_get_JWT()
-      .then(token => {
+      .then((token) => {
         Promise.all([
           api(this.client)
             .blog.articles._id(this.$route.params.id)
@@ -232,17 +232,17 @@ export default class ManagePath extends Vue {
           api(this.client)
             .blog.revisions.$get({
               query: {
-                article_id: this.$route.params.id
+                article_id: this.$route.params.id,
               },
               headers: {
-                "X-ADMIN-TOKEN": token.content
-              }
+                "X-ADMIN-TOKEN": token.content,
+              },
             })
             .then((data: BlogRevision[]) => {
               for (const revision of data) {
                 this.$set(this.revisions, revision.id, revision);
               }
-            })
+            }),
         ])
           .then(() => {
             this.fetch_status = "idle";
@@ -257,13 +257,13 @@ export default class ManagePath extends Vue {
   }
 
   accept_revision(id: number) {
-    AdminAuth.attempt_get_JWT().then(token => {
+    AdminAuth.attempt_get_JWT().then((token) => {
       api(this.client)
         .blog.revisions._id(id)
         .accept.$patch({
           headers: {
-            "X-ADMIN-TOKEN": token.content
-          }
+            "X-ADMIN-TOKEN": token.content,
+          },
         })
         .then((data: BlogRevision) => {
           this.$set(this.revisions, id, data);
@@ -272,13 +272,13 @@ export default class ManagePath extends Vue {
   }
 
   reject_revision(id: number) {
-    AdminAuth.attempt_get_JWT().then(token => {
+    AdminAuth.attempt_get_JWT().then((token) => {
       api(this.client)
         .blog.revisions._id(id)
         .reject.$patch({
           headers: {
-            "X-ADMIN-TOKEN": token.content
-          }
+            "X-ADMIN-TOKEN": token.content,
+          },
         })
         .then((data: BlogRevision) => {
           this.$set(this.revisions, id, data);
@@ -289,17 +289,17 @@ export default class ManagePath extends Vue {
   apply_changes() {
     this.post_status = "pending";
     AdminAuth.attempt_get_JWT()
-      .then(token => {
+      .then((token) => {
         return api(this.client)
           .blog.articles._id(this.$route.params.id)
           .$patch({
             data: {
               category: this.category,
-              revision_id: this.revision_selection
+              revision_id: this.revision_selection,
             },
             headers: {
-              "X-ADMIN-TOKEN": token.content
-            }
+              "X-ADMIN-TOKEN": token.content,
+            },
           });
       })
       .then(() => {
@@ -318,11 +318,11 @@ export default class ManagePath extends Vue {
   delete_article() {
     this.delete_status = "pending";
     AdminAuth.attempt_get_JWT()
-      .then(token => {
+      .then((token) => {
         return api(this.client)
           .blog.articles._id(this.$route.params.id)
           .delete({
-            headers: { "X-ADMIN-TOKEN": token.content }
+            headers: { "X-ADMIN-TOKEN": token.content },
           });
       })
       .then(() => {
@@ -347,26 +347,14 @@ export default class ManagePath extends Vue {
     const diff = DiffLib.unifiedDiff(original_content, current_content, {
       fromfile: "Original",
       tofile: "Current",
-      lineterm: ""
+      lineterm: "",
     }).join("\n");
 
     return Diff2Html.html(diff, {
       drawFileList: true,
       matching: "lines",
-      outputFormat: "side-by-side"
+      outputFormat: "side-by-side",
     });
-  }
-
-  getStringTime(laravel_time: string): string {
-    if (!laravel_time) return "";
-    const date = new Date(Date.parse(laravel_time));
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
-    const hour = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
-    const min =
-      date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
-    return year + "/" + month + "/" + day + " " + hour + ":" + min;
   }
 
   select_revision(id: number) {

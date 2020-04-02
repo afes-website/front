@@ -1,5 +1,5 @@
 <template>
-  <article id="show-revision" class="box">
+  <article id="show-revision">
     <template v-if="revision !== null">
       <breadcrumb :text="page_title" />
       <b-alert show variant="info">
@@ -73,17 +73,19 @@ import AdminAuth from "@/libs/auth/admin_auth";
 import WriterAuth from "@/libs/auth/writer_auth";
 import { AdminAuthToken, WriterAuthToken } from "../../../apis/@types";
 import Breadcrumb from "@/components/Breadcrumb.vue";
+import { getStringTime } from "@/libs/string_date";
 
 @Component({
   components: {
-    Breadcrumb
-  }
+    Breadcrumb,
+  },
 })
 export default class ShowRevision extends Vue {
   page_title = "";
   revision: BlogRevision | null = null;
   client = aspida();
   fetch_status: FetchStatus = "idle";
+  readonly getStringTime = getStringTime;
 
   mounted() {
     this.load();
@@ -104,12 +106,12 @@ export default class ShowRevision extends Vue {
         s({ "X-BLOG-WRITER-TOKEN": writer_token.content });
       r("not logged in");
     })
-      .then(header => {
+      .then((header) => {
         return api(this.client)
           .blog.revisions._id(Number(this.$route.params.id))
           .$get({ headers: header });
       })
-      .then(data => {
+      .then((data) => {
         this.revision = data;
         this.page_title = data.title;
         this.fetch_status = "idle";
@@ -125,18 +127,6 @@ export default class ShowRevision extends Vue {
   get rendered_md(): string | null {
     if (this.revision == null) return null;
     return Markdown.render(this.revision.content);
-  }
-
-  getStringTime(laravel_time: string): string {
-    if (!laravel_time) return "";
-    const date = new Date(Date.parse(laravel_time));
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
-    const hour = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
-    const min =
-      date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
-    return year + "/" + month + "/" + day + " " + hour + ":" + min;
   }
 }
 </script>

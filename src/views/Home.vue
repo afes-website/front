@@ -1,7 +1,31 @@
 <template>
   <div id="home">
-    <img id="top-image" src="../assets/back.jpg" alt="中庭" />
-    <div id="first-view">
+    <div id="pc">
+      <div id="first-view">
+        <div>
+          <b-alert
+            show
+            variant="danger"
+            class="top-page-alert mt-3"
+            style="line-height: 1.7; font-size: 0.95rem;"
+          >
+            新型コロナウイルス感染症の流行を考慮し、開催を<b>2020年6月12-14日に延期</b>いたします。<br />
+            なお、状況によりさらなる変更の可能性があります。予めご了承ください。
+            <b-link to="/blog/news/covid-19-reschedule" class="alert-link">
+              詳細はこちら
+            </b-link>
+          </b-alert>
+        </div>
+        <div id="center-box">
+          <img id="logo" src="../assets/logo_white.svg" alt="logo" />
+        </div>
+        <b-link v-scroll-to="'#main-content'">
+          <font-awesome-icon id="down-angle" icon="chevron-down" size="3x" />
+        </b-link>
+      </div>
+    </div>
+    <div id="smartphone">
+      <img id="top-img" src="../assets/back.jpg" alt="img" />
       <div id="buttons">
         <top-page-button
           icon-name="map-marker-alt"
@@ -25,80 +49,175 @@
           link-address="article_list"
         />
       </div>
-      <h1>第73回 麻布中学校・高等学校 文化祭</h1>
-      <p>第73回麻布学園文化祭公式ウェブサイトです。</p>
-      <p>当日の展示に関する情報や、日々の活動の様子などを発信しています。</p>
-      <b-alert
-        show
-        variant="danger"
-        class="top-page-alert mt-3"
-        style="line-height: 1.8"
-      >
-        新型コロナウイルス感染症の流行を考慮し、開催を<b>2020年6月12-14日に延期</b>いたします。<br />
-        なお、状況によりさらなる変更の可能性があります。予めご了承ください。
-        <b-link to="/blog/news/covid-19-reschedule" class="alert-link">
-          詳細はこちら
-        </b-link>
-      </b-alert>
-      <div id="lower-right">
-        <img src="../assets/logo.svg" alt="logo" />
-        <p class="covid-19-warning">
-          ＊ 新型コロナウイルスの流行に伴い、日程が変更となる場合があります。
+    </div>
+    <div id="main-box">
+      <div id="main-content">
+        <h1>第73回 麻布中学校･高等学校 文化祭</h1>
+        <p>第73回 麻布学園文化祭 公式ウェブサイトです。</p>
+        <p>
+          <time datetime="2020-06-12">2020年6月12日</time>
+          から
+          <time datetime="2020-06-14">14日</time>
+          での開催を予定していますが、新型コロナウイルス感染症（COVID-19）の流行状況により、さらなる変更の可能性もあります。
+          予めご了承ください。
         </p>
+        <p>
+          当日の展示に関する情報や、日々の活動の様子（近況）などを掲載しています。
+        </p>
+        <p>
+          このウェブサイトは生徒自治団体である文化祭実行委員会が製作したものであり、教職員は関係していません。
+          なにかございましたら
+          <b-link :to="{ name: 'contact' }">お問い合わせフォーム</b-link>
+          よりお問い合わせください。
+        </p>
+        <h2>更新情報</h2>
+        <b-table-simple small hover>
+          <b-tbody>
+            <b-tr
+              v-for="article in sorted_articles.slice(0, 10)"
+              :key="article.id"
+              @click="linkToArticle(article.category, article.id)"
+            >
+              <b-td class="mobile-none">
+                <font-awesome-icon :icon="'clock'" class="fa-fw" />
+                {{ getStringDate(article.updated_at) }}
+              </b-td>
+              <b-td class="table-nowrap">
+                <font-awesome-icon :icon="'folder'" class="fa-fw" />
+                {{ getCategory(article.category) }}
+              </b-td>
+              <b-td class="mobile-none">
+                <font-awesome-icon :icon="'user'" class="fa-fw" />
+                {{ article.author.name }}
+              </b-td>
+              <b-td>
+                {{ article.title }}
+              </b-td>
+            </b-tr>
+          </b-tbody>
+        </b-table-simple>
+        <font-awesome-icon icon="angle-right" class="fa-fw" />
+        <b-link :to="{ name: 'article_list' }">近況 記事一覧</b-link>
       </div>
+    </div>
+    <div id="footer">
+      <nav>
+        <ul>
+          <li>
+            <b-link :to="{ name: 'contact' }">お問い合わせ</b-link>
+          </li>
+          <li>
+            <b-link :to="{ name: 'policy' }">プライバシーポリシー</b-link>
+          </li>
+        </ul>
+      </nav>
+      <small>&copy; 第73回麻布学園文化祭実行委員会 2020</small>
     </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
-#home {
-  #top-image {
-    display: none;
-  }
-  #first-view {
-    height: calc(100vh - 2rem);
-    width: calc(100vw - 32rem);
-    min-width: min(calc(900px - 3rem), 100vw - 20rem);
-    padding: 0;
-    position: relative;
+@media screen and (min-width: 900.1px) {
+  #home {
+    #pc {
+      width: 100%;
 
-    h1 {
-      margin-bottom: 1.5rem;
-      font-weight: 700;
-      border: none;
-      text-shadow: 0 0.125rem 0.25rem rgba(#000, 0.1);
+      #first-view {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+
+        height: 100vh;
+
+        #center-box {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+
+          width: max-content;
+          padding: 0.5rem;
+
+          background: rgba($theme-dark, 0.8);
+
+          #logo {
+            width: 600px;
+            margin-top: 10px;
+          }
+
+          #date-warning {
+            font-weight: 400;
+            font-size: 0.9rem;
+            margin: 0 1.5rem;
+            color: #fff;
+          }
+        }
+
+        #down-angle {
+          margin-bottom: 1rem;
+          color: #beffff;
+          filter: drop-shadow(0 4px 3px rgba(#222, 0.6));
+        }
+      }
     }
 
-    p {
-      font-size: 1.2rem;
-      margin-bottom: 0.5rem;
-      text-shadow: 0 0.125rem 0.25rem rgba(#000, 0.1);
-    }
-
-    #buttons {
+    #smartphone {
       display: none;
     }
 
-    .top-page-alert {
-      width: fit-content;
-    }
-
-    #lower-right {
-      position: absolute;
-      bottom: 4rem;
-      right: 0;
+    #main-box {
+      background: rgba($theme-dark, 0.8);
+      width: 100%;
       display: flex;
-      flex-direction: column;
+      justify-content: center;
 
-      img {
-        width: 640px;
+      #main-content {
+        padding: 2rem 1.5rem 1rem 1.5rem;
+        max-width: 1000px;
+
+        * {
+          color: #fff;
+        }
+        h1,
+        h2 {
+          border-color: darken($theme-light, 10%);
+        }
+        a {
+          color: $theme-light;
+          text-decoration: underline;
+        }
+        tr {
+          cursor: pointer;
+        }
       }
-      .covid-19-warning {
-        text-align: center;
-        line-height: 1.1;
-        font-size: 1.1rem;
-        margin: -0.8rem 0 0 0;
-        font-weight: 700;
+    }
+    #footer {
+      text-align: center;
+      background: rgba($theme-dark, 0.8);
+      border-top: 2px solid rgba(#bdf, 0.8);
+      padding: 0.5rem 0 1rem 0;
+
+      * {
+        color: #fff;
+      }
+      a {
+        color: $theme-light;
+        text-decoration: underline;
+      }
+      & > nav > ul {
+        margin: 0.25rem 0;
+        padding: 0;
+        li {
+          list-style-type: none;
+          display: inline;
+
+          &:not(:last-of-type)::after {
+            content: " ･ ";
+          }
+        }
+      }
+      small {
+        font-size: 1rem;
       }
     }
   }
@@ -108,28 +227,68 @@
 <style lang="scss" scoped>
 @media screen and (max-width: 900px) {
   #home {
-    #top-image {
-      display: block;
-      margin-left: calc(((100vw - 100%) / 2) * -1);
-      margin-top: -0.8rem;
-      width: 100vw;
-      height: calc(100vw / 3 * 2);
+    #pc {
+      display: none;
     }
-    #first-view {
-      height: unset;
-      width: unset;
+
+    #smartphone {
+      display: unset;
+      font-size: 1.1rem;
+
+      #top-img {
+        width: 100vw;
+        margin-left: calc((100vw - 100%) / 2 * -1);
+        margin-top: -12.8px;
+      }
       #buttons {
+        width: 100vw;
+        margin-left: calc((100vw - 100%) / 2 * -1);
         display: flex;
         flex-wrap: wrap;
-        $margin: 0.25rem;
-        margin: $margin;
-        margin-left: -1rem + $margin;
-        width: calc(100vw - #{$margin} * 2);
+        margin-bottom: 8px;
+        .top-page-button {
+          width: calc((100% - 1.5rem) / 2);
+        }
       }
+    }
 
-      h1,
-      #lower-right {
-        display: none;
+    #main-box {
+      #main-content {
+        width: 100%;
+        padding-bottom: 1rem;
+
+        table {
+          .table-nowrap {
+            white-space: nowrap;
+          }
+          .mobile-none {
+            display: none;
+          }
+        }
+      }
+    }
+    #footer {
+      text-align: center;
+      border-top: 1px solid $theme-dark;
+      padding: 0.5rem 0 1rem 0;
+      width: 100vw;
+      margin-left: calc((100vw - 100%) / 2 * -1);
+      margin-bottom: -2rem;
+
+      & > nav > ul {
+        margin: 0.25rem 0;
+        padding: 0;
+        li {
+          list-style-type: none;
+          display: inline;
+
+          &:not(:last-of-type)::after {
+            content: " ･ ";
+          }
+        }
+      }
+      small {
+        font-size: 1rem;
       }
     }
   }
@@ -138,14 +297,67 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
+import api from "@/apis/$api";
+import aspida from "@aspida/axios";
+import { BlogArticle } from "@/apis/blog/articles/@types";
+import { categories, getCategory } from "@/libs/categories";
 import TopPageButton from "@/components/TopPageButton.vue";
+import { getStringDate } from "@/libs/string_date";
+
+import VueScrollTo from "vue-scrollto";
+Vue.use(VueScrollTo, {
+  container: "#main-wrapper",
+});
 
 @Component({
   components: {
-    TopPageButton
-  }
+    TopPageButton,
+  },
 })
 export default class Home extends Vue {
   readonly page_title = "";
+  articles: BlogArticle[] = [];
+  client = aspida();
+  readonly getCategory = getCategory;
+  readonly getStringDate = getStringDate;
+
+  mounted() {
+    this.load();
+  }
+  load() {
+    api(this.client)
+      .blog.articles.$get()
+      .then((data) => {
+        this.articles = data;
+        if (!this.$route.params.category) {
+          this.articles = this.articles.reduce(
+            (v: BlogArticle[], article: BlogArticle) => {
+              if (
+                !(article.category in categories) ||
+                categories[article.category].visible
+              )
+                v.push(article);
+              return v;
+            },
+            []
+          );
+        }
+      });
+  }
+
+  get sorted_articles(): BlogArticle[] {
+    let ret_articles = this.articles.concat(); // copy
+    ret_articles = ret_articles.sort((a, b) => {
+      return a.updated_at < b.updated_at ? 1 : -1; // compare in string
+    });
+    return ret_articles;
+  }
+
+  linkToArticle(category: string, id: string) {
+    this.$router.push({
+      name: "show_article",
+      params: { category: category, id: id },
+    });
+  }
 }
 </script>

@@ -1,12 +1,12 @@
 <template>
-  <div id="article-list" class="box">
+  <div id="article-list">
     <breadcrumb :text="page_title" />
     <h1>{{ page_title }}</h1>
     <div id="articles">
       <b-link
         :to="{
           name: 'show_article',
-          params: { category: article.category, id: article.id }
+          params: { category: article.category, id: article.id },
         }"
         class="card-wrap-link"
         v-for="article in shown_articles"
@@ -33,7 +33,7 @@
             </span>
             <span>
               <font-awesome-icon :icon="'clock'" class="fa-fw" />
-              {{ getStringTime(article.updated_at) }}
+              {{ getStringDate(article.updated_at) }}
             </span>
           </b-card-sub-title>
           <b-card-text v-html="rendered_md(article.content)" />
@@ -121,6 +121,8 @@ import Markdown from "@/libs/markdown";
 import { getCategory, categories } from "@/libs/categories";
 import Token from "markdown-it/lib/token";
 import Breadcrumb from "@/components/Breadcrumb.vue";
+import FetchStatus from "@/libs/fetch_status";
+import { getStringDate } from "@/libs/string_date";
 
 @Component({ components: { Breadcrumb } })
 export default class ArticleList extends Vue {
@@ -129,9 +131,26 @@ export default class ArticleList extends Vue {
   client = aspida();
   readonly getCategory = getCategory;
   readonly noImage = require("@/assets/no-image.svg");
+  fetch_status: FetchStatus = "idle";
+  readonly getStringDate = getStringDate;
 
   perPage = 10;
-  currentPage = 1;
+
+  get currentPage() {
+    const query = this.$route.query;
+    if ("page" in query) {
+      return Number(query.page);
+    } else {
+      return 1;
+    }
+  }
+  set currentPage(val: number) {
+    const query: { [key: string]: string | (string | null)[] } = {};
+    Object.assign(query, this.$route.query);
+    query["page"] = val.toString();
+    this.$router.push({ query });
+  }
+
   mounted() {
     this.load();
   }
@@ -140,13 +159,14 @@ export default class ArticleList extends Vue {
     this.load();
   }
   load() {
+    this.fetch_status = "pending";
     if (this.$route.params.category)
       this.page_title = getCategory(this.$route.params.category) + " 記事一覧";
     else this.page_title = "近況 記事一覧";
 
     api(this.client)
       .blog.articles.$get({ query: this.filter_query })
-      .then(data => {
+      .then((data) => {
         this.articles = data;
         if (!this.$route.params.category) {
           this.articles = this.articles.reduce(
@@ -161,15 +181,11 @@ export default class ArticleList extends Vue {
             []
           );
         }
+        this.fetch_status = "idle";
+      })
+      .catch(() => {
+        this.fetch_status = "fail";
       });
-  }
-
-  getStringTime(laravel_time: string): string {
-    const date = new Date(Date.parse(laravel_time));
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
-    return year + "/" + month + "/" + day;
   }
 
   get filter_query(): BlogArticleParameter {
@@ -179,6 +195,8 @@ export default class ArticleList extends Vue {
   }
 
   get rows(): number {
+    if (this.fetch_status == "pending")
+      return Math.max(this.articles.length, this.currentPage);
     return this.articles.length;
   }
 

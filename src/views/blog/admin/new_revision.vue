@@ -1,5 +1,5 @@
 <template>
-  <div class="box">
+  <div class="box wide-box">
     <breadcrumb :text="page_title" />
     <h1>{{ page_title }}</h1>
     <p>id:<b-input v-model="article_path" /></p>
@@ -85,8 +85,6 @@
 </template>
 
 <style lang="scss" scoped>
-@import "@/assets/sass/wide_main_box.scss";
-
 .edit-area,
 div.preview,
 div.diff {
@@ -97,7 +95,7 @@ div.diff {
 }
 div#preview {
   padding-top: 1rem;
-  max-width: 804px;
+  max-width: 952px;
 }
 
 .card {
@@ -179,7 +177,7 @@ div#preview {
 </style>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
 import api from "@/apis/$api";
 import aspida from "@aspida/axios";
 import WriterAuth from "@/libs/auth/writer_auth";
@@ -214,12 +212,24 @@ export default class NewRevision extends Vue {
     this.content += `![image alt](${get_image_url(id)})\n`;
   }
 
+  mounted() {
+    if ("path" in this.$route.query && !Array.isArray(this.$route.query.path)) {
+      this.article_path = this.$route.query.path;
+      this.load();
+    }
+  }
+
+  @Watch("$route")
+  on_route_changed() {
+    this.mounted();
+  }
+
   load() {
     this.fetch_status = "pending";
     api(aspida())
       .blog.articles._id(this.article_path)
       .$get()
-      .then(article => {
+      .then((article) => {
         this.article_title = article.title;
         this.latest_content = article.content;
         this.content = article.content;
@@ -233,24 +243,24 @@ export default class NewRevision extends Vue {
   post() {
     this.status = "pending";
 
-    WriterAuth.attempt_get_JWT().then(token => {
+    WriterAuth.attempt_get_JWT().then((token) => {
       api(aspida())
         .blog.revisions.$post({
           data: {
             title: this.article_title,
             article_id: this.article_path,
-            content: this.content
+            content: this.content,
           },
           headers: {
-            "X-BLOG-WRITER-TOKEN": token.content
-          }
+            "X-BLOG-WRITER-TOKEN": token.content,
+          },
         })
         .then((data: BlogRevision) => {
           this.status = "idle";
           this.$bvToast.toast("Revision created: " + data.id, {
             // TODO: toast won't shows (main.scss causes?)
             title: "Create new revision",
-            autoHideDelay: 5000
+            autoHideDelay: 5000,
           });
           this.$router.push({ name: "revision_list" });
         })
@@ -271,13 +281,13 @@ export default class NewRevision extends Vue {
       {
         fromfile: "Original",
         tofile: "Current",
-        lineterm: ""
+        lineterm: "",
       }
     ).join("\n");
     return Diff2Html.html(diff, {
       drawFileList: true,
       matching: "lines",
-      outputFormat: "side-by-side"
+      outputFormat: "side-by-side",
     });
   }
 

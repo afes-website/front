@@ -1,5 +1,5 @@
 <template>
-  <article id="policy" class="box">
+  <article id="policy">
     <breadcrumb :text="page_title" />
     <h1>{{ page_title }}</h1>
     <p>
@@ -63,8 +63,8 @@ import { Component, Vue } from "vue-property-decorator";
 import Breadcrumb from "@/components/Breadcrumb.vue";
 @Component({
   components: {
-    Breadcrumb
-  }
+    Breadcrumb,
+  },
 })
 export default class Policy extends Vue {
   readonly page_title = "プライバシーポリシー";

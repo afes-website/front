@@ -29,7 +29,7 @@ if (process.env.VUE_APP_GA_ID) {
   Vue.use(
     VueGtag,
     {
-      config: { id: process.env.VUE_APP_GA_ID }
+      config: { id: process.env.VUE_APP_GA_ID },
     },
     router
   );
@@ -37,5 +37,5 @@ if (process.env.VUE_APP_GA_ID) {
 
 new Vue({
   router,
-  render: h => h(App)
+  render: (h) => h(App),
 }).$mount("#app");

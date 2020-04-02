@@ -1,5 +1,5 @@
 <template>
-  <div id="path-list" class="box">
+  <div id="path-list" class="box wide-box">
     <breadcrumb :text="page_title" />
     <h1>{{ page_title }}</h1>
     <b-button @click="load">
@@ -49,7 +49,7 @@
               v-if="path.category"
               :to="{
                 name: 'show_article',
-                params: { category: path.category, id: route }
+                params: { category: path.category, id: route },
               }"
             >
               <font-awesome-icon :icon="'file'" class="fa-fw fa-2x" />
@@ -67,8 +67,6 @@
 </template>
 
 <style lang="scss" scoped>
-@import "@/assets/sass/wide_main_box.scss";
-
 .btn {
   margin-bottom: 0.5rem;
 }
@@ -131,6 +129,7 @@ import FetchStatus from "@/libs/fetch_status";
 import FetchStatusIcon from "@/components/FetchStatusIcon.vue";
 import { getCategory } from "@/libs/categories";
 import Breadcrumb from "@/components/Breadcrumb.vue";
+import { getStringTime } from "@/libs/string_date";
 
 interface Path {
   category?: string;
@@ -146,6 +145,7 @@ export default class PathList extends Vue {
   paths: { [key: string]: Path } = {};
   client = aspida();
   readonly getCategory = getCategory;
+  readonly getStringTime = getStringTime;
 
   fetch_status: FetchStatus = "idle";
 
@@ -158,7 +158,7 @@ export default class PathList extends Vue {
     this.fetch_status = "pending";
     this.paths = {};
     AdminAuth.attempt_get_JWT()
-      .then(token => {
+      .then((token) => {
         api(this.client)
           .blog.articles.$get()
           .then((data: BlogArticle[]) => {
@@ -168,18 +168,18 @@ export default class PathList extends Vue {
                 title: article.title,
                 created_at: article.created_at,
                 updated_at: article.updated_at,
-                waiting_count: 0
+                waiting_count: 0,
               });
             }
           });
         return token;
       })
-      .then(token => {
+      .then((token) => {
         api(this.client)
           .blog.revisions.$get({
             headers: {
-              "X-ADMIN-TOKEN": token.content
-            }
+              "X-ADMIN-TOKEN": token.content,
+            },
           })
           .then((data: BlogRevision[]) => {
             for (const revision of data) {
@@ -187,7 +187,7 @@ export default class PathList extends Vue {
                 // does not exist
                 this.$set(this.paths, revision.article_id, {
                   title: revision.title,
-                  waiting_count: 0
+                  waiting_count: 0,
                 });
               }
               if (revision.status === "waiting") {
@@ -202,22 +202,10 @@ export default class PathList extends Vue {
       });
   }
 
-  getStringTime(laravel_time: string): string {
-    if (!laravel_time) return "";
-    const date = new Date(Date.parse(laravel_time));
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
-    const hour = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
-    const min =
-      date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
-    return year + "/" + month + "/" + day + " " + hour + ":" + min;
-  }
-
   open_manage_path(route: string) {
     this.$router.push({
       name: "manage_path",
-      params: { id: route }
+      params: { id: route },
     });
   }
 }

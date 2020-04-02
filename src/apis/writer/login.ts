@@ -5,8 +5,8 @@ interface WriterUserCredentials {
 
 export interface Methods {
   post: {
-    reqData: WriterUserCredentials;
-    resData: {
+    reqBody: WriterUserCredentials;
+    resBody: {
       token: string;
     };
   };

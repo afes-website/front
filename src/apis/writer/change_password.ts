@@ -2,7 +2,7 @@ import { WriterAuthToken } from "@/apis/@types";
 
 export interface Methods {
   post: {
-    reqData: {
+    reqBody: {
       password: string;
     };
     reqHeaders: WriterAuthToken;

@@ -3,12 +3,12 @@ import { AdminAuthToken } from "@/apis/@types";
 
 export interface Methods {
   get: {
-    resData: BlogArticle;
+    resBody: BlogArticle;
   };
   patch: {
     reqHeaders: AdminAuthToken;
-    reqData: BlogArticleParameter;
-    resData: BlogArticle;
+    reqBody: BlogArticleParameter;
+    resBody: BlogArticle;
   };
   delete: {
     reqHeaders: AdminAuthToken;

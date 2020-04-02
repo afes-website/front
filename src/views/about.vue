@@ -1,5 +1,5 @@
 <template>
-  <article id="about" class="box">
+  <article id="about">
     <breadcrumb :text="page_title" />
     <h1>{{ page_title }}</h1>
     <div id="pair_picture">
@@ -54,7 +54,7 @@
     font-weight: 500;
     position: relative;
     top: -0.5rem;
-    border-bottom: solid 1px $site-theme;
+    border-bottom: solid 1px $theme-dark;
   }
 }
 </style>
@@ -73,8 +73,8 @@ import { Component, Vue } from "vue-property-decorator";
 import Breadcrumb from "@/components/Breadcrumb.vue";
 @Component({
   components: {
-    Breadcrumb
-  }
+    Breadcrumb,
+  },
 })
 export default class About extends Vue {
   readonly page_title = "学校長・委員長挨拶";
