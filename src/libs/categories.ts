@@ -9,6 +9,7 @@ export const categories: { [key: string]: Category } = {
   workTeam: { name: "分科局", visible: true },
   exh: { name: "展示団体", visible: true },
   contrib: { name: "個人･寄稿", visible: true },
+  update: { name: "更新情報", visible: true },
   internal: { name: "内部生向け", visible: false },
 };
 
