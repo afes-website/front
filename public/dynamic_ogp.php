@@ -71,6 +71,7 @@ function get_blog_category_name($id) {
     "workTeam" => "分科局",
     "exh" => "展示団体",
     "contrib" => "個人･寄稿",
+    "update" => "更新情報",
     "internal" => "内部生向け",
   ];
   return $categories[$id];

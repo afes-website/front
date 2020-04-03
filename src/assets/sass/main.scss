@@ -60,10 +60,11 @@ html body {
   }
 }
 
+:visited {
+  color: $theme-dark;
+}
+
 a {
-  &:visited {
-    color: $theme-dark;
-  }
   &:hover {
     text-decoration: underline;
   }
@@ -154,7 +155,5 @@ hr {
   }
 }
 
-html {
-  @import "~bootstrap";
-  @import "~bootstrap-vue";
-}
+@import "~bootstrap";
+@import "~bootstrap-vue";
