@@ -1,7 +1,7 @@
 <template>
   <b-button
     class="top-page-button"
-    variant="outline-site-theme"
+    variant="outline-theme-dark"
     @click="onClick"
   >
     <font-awesome-icon :icon="iconName" class="button-icon fa-fw" />
