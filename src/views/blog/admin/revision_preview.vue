@@ -43,6 +43,7 @@
 
 <style lang="scss" scoped>
 article {
+  max-width: 952px;
   .under-title {
     margin-top: -14px;
     margin-bottom: 16px;
