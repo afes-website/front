@@ -3,7 +3,7 @@ export interface Methods {
   post: {
     reqHeaders: WriterAuthToken;
 
-    reqType: FormData;
+    reqFormat: FormData;
     reqBody: {
       content: File;
     };
