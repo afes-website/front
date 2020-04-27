@@ -29,7 +29,7 @@
             </span>
             <span v-if="!isCategorySpecified">
               <font-awesome-icon :icon="'folder'" class="fa-fw" />
-              {{ getCategory(article.category) }}
+              {{ categories[article.category].name }}
             </span>
             <span>
               <font-awesome-icon :icon="'clock'" class="fa-fw" />
@@ -118,7 +118,8 @@ import api from "@/apis/$api";
 import aspida from "@aspida/axios";
 import { BlogArticle, BlogArticleParameter } from "@/apis/blog/articles/@types";
 import Markdown from "@/libs/markdown";
-import { getCategory, categories } from "@/libs/categories";
+import { Categories } from "@/apis/blog/categories/@types";
+import getCategories from "@/libs/categories";
 import Token from "markdown-it/lib/token";
 import Breadcrumb from "@/components/Breadcrumb.vue";
 import FetchStatus from "@/libs/fetch_status";
@@ -129,7 +130,7 @@ export default class ArticleList extends Vue {
   page_title = "近況 記事一覧";
   articles: BlogArticle[] = [];
   client = aspida();
-  readonly getCategory = getCategory;
+  categories: Categories = {};
   readonly noImage = require("@/assets/no-image.svg");
   fetch_status: FetchStatus = "idle";
   readonly getStringDate = getStringDate;
@@ -153,6 +154,9 @@ export default class ArticleList extends Vue {
 
   mounted() {
     this.load();
+    getCategories().then((data) => {
+      this.categories = data;
+    });
   }
   @Watch("$route")
   route_changed() {
@@ -161,7 +165,8 @@ export default class ArticleList extends Vue {
   load() {
     this.fetch_status = "pending";
     if (this.$route.params.category)
-      this.page_title = getCategory(this.$route.params.category) + " 記事一覧";
+      this.page_title =
+        this.categories[this.$route.params.category].name + " 記事一覧";
     else this.page_title = "近況 記事一覧";
 
     api(this.client)
@@ -172,8 +177,8 @@ export default class ArticleList extends Vue {
           this.articles = this.articles.reduce(
             (v: BlogArticle[], article: BlogArticle) => {
               if (
-                !(article.category in categories) ||
-                categories[article.category].visible
+                !(article.category in this.categories) ||
+                this.categories[article.category].visible
               )
                 v.push(article);
               return v;

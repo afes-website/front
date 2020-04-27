@@ -1,10 +1,4 @@
-interface Category {
-  name: string;
-  visible: boolean;
-}
-interface Categories {
-  [key: string]: Category;
-}
+import { Categories } from "@/apis/blog/categories/@types";
 
 export interface Methods {
   get: {

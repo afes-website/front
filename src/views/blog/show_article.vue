@@ -10,7 +10,7 @@
         </span>
         <span>
           <font-awesome-icon :icon="'folder'" class="fa-fw" />
-          {{ getCategory(article.category) }}
+          {{ categories[article.category].name }}
         </span>
         <span>
           <font-awesome-icon :icon="'clock'" class="fa-fw" />
@@ -68,7 +68,8 @@ import { BlogArticle } from "@/apis/blog/articles/@types";
 import is_axios_error from "@/libs/is_axios_error";
 import FetchStatus from "@/libs/fetch_status";
 import Markdown from "@/libs/markdown";
-import { getCategory } from "@/libs/categories";
+import { Categories } from "@/apis/blog/categories/@types";
+import getCategories from "@/libs/categories";
 import Breadcrumb from "@/components/Breadcrumb.vue";
 import ShareButtons from "@/components/ShareButtons.vue";
 import AdminAuth from "@/libs/auth/admin_auth";
@@ -86,11 +87,14 @@ export default class ShowArticle extends Vue {
   article: BlogArticle | null = null;
   client = aspida();
   fetch_status: FetchStatus = "idle";
-  readonly getCategory = getCategory;
+  categories: Categories = {};
   readonly getStringTime = getStringTime;
 
   mounted() {
     this.load();
+    getCategories().then((data) => {
+      this.categories = data;
+    });
   }
   @Watch("$route")
   route_changed() {
