@@ -14,7 +14,12 @@
         <fetch-status-icon :status="fetch_status" />
       </b-button>
     </p>
-    <p>title:<b-input v-model="article_title" /></p>
+    <p>
+      title:<b-input
+        v-model="article_title"
+        @change="ogimage_title = article_title || 'title'"
+      />
+    </p>
     <b-tabs>
       <b-tab title="編集" active>
         <div class="toolbar">
@@ -68,6 +73,11 @@
           </b-card-sub-title>
           <b-card-text v-html="rendered_md(content)" />
         </b-card>
+        <h3>og:image preview</h3>
+        <img
+          :src="`https://api.dev.afes.info/ogimage/preview?title=${ogimage_title}&author=author&category=category`"
+          alt=""
+        />
       </b-tab>
       <b-tab title="現在との差分">
         <div id="diff-view" v-html="diff_from_current" class="diff"></div>
@@ -202,6 +212,7 @@ export default class NewRevision extends Vue {
   readonly page_title = "記事投稿/編集";
 
   article_title = "";
+  ogimage_title = "title";
   article_path = "";
   content = "";
   latest_content = "";
