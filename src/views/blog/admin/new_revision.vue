@@ -86,8 +86,10 @@
           :src="`https://api.afes.info/ogimage/preview?title=${ogimage_title}&author=author&category=category`"
           alt=""
         />
-        <div style="color: var(--red); font-size: 0.8rem;" v-else>
-          タイトルを指定してください。
+        <div v-else>
+          <small class="text-danger">
+            タイトルを指定してください。
+          </small>
         </div>
       </b-tab>
       <b-tab title="現在との差分">
