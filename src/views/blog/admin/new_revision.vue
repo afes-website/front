@@ -75,7 +75,7 @@
         </b-card>
         <h3>og:image preview</h3>
         <img
-          :src="`https://api.dev.afes.info/ogimage/preview?title=${ogimage_title}&author=author&category=category`"
+          :src="`https://api.afes.info/ogimage/preview?title=${ogimage_title}&author=author&category=category`"
           alt=""
         />
       </b-tab>
