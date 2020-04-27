@@ -78,6 +78,9 @@
           <b-card-text v-html="rendered_md(content)" />
         </b-card>
         <h3>og:image preview</h3>
+        <small class="text-muted">
+          SNSで共有されたときのサムネイルのプレビュー
+        </small>
         <img
           v-if="!!ogimage_title"
           :src="`https://api.afes.info/ogimage/preview?title=${ogimage_title}&author=author&category=category`"
