@@ -17,8 +17,12 @@
     <p>
       title:<b-input
         v-model="article_title"
-        @change="ogimage_title = article_title || 'title'"
+        @change="ogimage_title = article_title"
+        :state="!!article_title"
       />
+      <b-form-invalid-feedback v-if="!article_title">
+        タイトルを指定してください。
+      </b-form-invalid-feedback>
     </p>
     <b-tabs>
       <b-tab title="編集" active>
@@ -75,9 +79,13 @@
         </b-card>
         <h3>og:image preview</h3>
         <img
+          v-if="!!ogimage_title"
           :src="`https://api.afes.info/ogimage/preview?title=${ogimage_title}&author=author&category=category`"
           alt=""
         />
+        <div style="color: var(--red); font-size: 0.8rem;" v-else>
+          タイトルを指定してください。
+        </div>
       </b-tab>
       <b-tab title="現在との差分">
         <div id="diff-view" v-html="diff_from_current" class="diff"></div>
@@ -212,7 +220,7 @@ export default class NewRevision extends Vue {
   readonly page_title = "記事投稿/編集";
 
   article_title = "";
-  ogimage_title = "title";
+  ogimage_title = "";
   article_path = "";
   content = "";
   latest_content = "";
