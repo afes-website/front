@@ -14,8 +14,8 @@ function main() {
 
   print_meta('og:url', 'https://afes.info' . $_SERVER["REQUEST_URI"]);
 
-  $image = 'https://afes.info/img/thumbnail.jpg';
-  if ($overwrite_image !== null)$image = $overwrite_image;
+  $image = get_og_image($_SERVER["REQUEST_URI"]);
+  if ($overwrite_image !== null) $image = $overwrite_image;
   print_meta('og:image', $image);
 
   // below are static ogp tags
@@ -147,6 +147,25 @@ function get_img($filename) {
     }
   }
   return null;
+}
+
+function get_og_image($uri) {
+  $static_img = 'https://afes.info/img/thumbnail.jpg';
+  if (!$uri || $uri == '/') // トップページ
+    return $static_img;
+  if (starts_with($uri, '/blog/admin')) // admin
+    return $static_img;
+
+  $api_base_url = 'https://api.afes.info';
+  if (starts_with($uri, '/blog/')) {
+    $parts = explode('/', $uri);
+    if(count($parts) == 4) { // article
+      return "$api_base_url/ogimage/articles/$parts[3]";
+    }
+  }
+  $title = _get_title($uri);
+  $encoded_title = urlencode($title);
+  return "$api_base_url/ogimage?title=$encoded_title";
 }
 
 main();
