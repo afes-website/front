@@ -1,7 +1,5 @@
 <?php
-$overwrite_image = null;
 function main() {
-  global $overwrite_image;
   $type = $_SERVER["REQUEST_URI"]==='/' ? 'website' : 'article';
   echo "<head prefix=\"og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# {$type}: http://ogp.me/ns/{$type}#\">";
 
@@ -14,8 +12,7 @@ function main() {
 
   print_meta('og:url', 'https://afes.info' . $_SERVER["REQUEST_URI"]);
 
-  $image = 'https://afes.info/img/thumbnail.jpg';
-  if ($overwrite_image !== null)$image = $overwrite_image;
+  $image = get_og_image($_SERVER["REQUEST_URI"]);
   print_meta('og:image', $image);
 
   // below are static ogp tags
@@ -91,14 +88,12 @@ function starts_with($str, $needle) {
 }
 
 function _get_title($uri) {
-  global $overwrite_image;
   if(substr($uri, -1)==='/') // cut trailing '/'
     $uri = substr($uri, 0, -1);
   switch ($uri) {
     case '': // trailing '/' is cut
       return '';
     case '/about':
-      $overwrite_image = get_img('about.jpg');
       return '学校長・委員長挨拶';
     case '/access':
       return 'アクセス';
@@ -137,16 +132,23 @@ function _get_title($uri) {
   return '';
 }
 
-function get_img($filename) {
-  $dpos = strrpos($filename, '.');
-  $fn = substr($filename, 0, $dpos);
-  $ext = substr($filename, $dpos+1);
-  foreach(glob(__DIR__ . '/img/' . "{$fn}.*.{$ext}") as $file){
-    if(is_file($file)){
-        return 'https://afes.info/img/' . basename($file);
+function get_og_image($uri) {
+  $static_img = 'https://afes.info/img/thumbnail.png';
+  if (!$uri || $uri == '/') // トップページ
+    return $static_img;
+  if (starts_with($uri, '/blog/admin')) // admin
+    return $static_img;
+
+  $api_base_url = 'https://api.afes.info';
+  if (starts_with($uri, '/blog/')) {
+    $parts = explode('/', $uri);
+    if(count($parts) == 4) { // article
+      return "$api_base_url/ogimage/articles/$parts[3]";
     }
   }
-  return null;
+  $title = _get_title($uri);
+  $encoded_title = urlencode($title);
+  return "$api_base_url/ogimage?title=$encoded_title";
 }
 
 main();

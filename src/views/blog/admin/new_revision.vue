@@ -14,7 +14,16 @@
         <fetch-status-icon :status="fetch_status" />
       </b-button>
     </p>
-    <p>title:<b-input v-model="article_title" /></p>
+    <p>
+      title:<b-input
+        v-model="article_title"
+        @change="ogimage_title = article_title"
+        :state="!!article_title"
+      />
+      <b-form-invalid-feedback v-if="!article_title">
+        タイトルを指定してください。
+      </b-form-invalid-feedback>
+    </p>
     <b-tabs>
       <b-tab title="編集" active>
         <div class="toolbar">
@@ -68,6 +77,20 @@
           </b-card-sub-title>
           <b-card-text v-html="rendered_md(content)" />
         </b-card>
+        <h3>og:image preview</h3>
+        <small class="text-muted">
+          SNSで共有されたときのサムネイルのプレビュー
+        </small>
+        <img
+          v-if="!!ogimage_title"
+          :src="`https://api.afes.info/ogimage/preview?title=${ogimage_title}&author=author&category=category`"
+          alt=""
+        />
+        <div v-else>
+          <small class="text-danger">
+            タイトルを指定してください。
+          </small>
+        </div>
       </b-tab>
       <b-tab title="現在との差分">
         <div id="diff-view" v-html="diff_from_current" class="diff"></div>
@@ -202,6 +225,7 @@ export default class NewRevision extends Vue {
   readonly page_title = "記事投稿/編集";
 
   article_title = "";
+  ogimage_title = "";
   article_path = "";
   content = "";
   latest_content = "";
