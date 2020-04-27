@@ -153,10 +153,13 @@ export default class PathList extends Vue {
   fetch_status: FetchStatus = "idle";
 
   mounted() {
-    this.load();
-    getCategories().then((data) => {
-      this.categories = data;
-    });
+    getCategories()
+      .then((data) => {
+        this.categories = data;
+      })
+      .then(() => {
+        this.load();
+      });
   }
 
   load() {

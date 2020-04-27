@@ -197,10 +197,13 @@ export default class ManagePath extends Vue {
   article_exists = false;
 
   mounted() {
-    this.load();
-    getCategories().then((data) => {
-      this.categories = data;
-    });
+    getCategories()
+      .then((data) => {
+        this.categories = data;
+      })
+      .then(() => {
+        this.load();
+      });
   }
 
   @Watch("$route")

@@ -153,10 +153,13 @@ export default class ArticleList extends Vue {
   }
 
   mounted() {
-    this.load();
-    getCategories().then((data) => {
-      this.categories = data;
-    });
+    getCategories()
+      .then((data) => {
+        this.categories = data;
+      })
+      .then(() => {
+        this.load();
+      });
   }
   @Watch("$route")
   route_changed() {

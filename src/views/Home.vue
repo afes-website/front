@@ -323,10 +323,13 @@ export default class Home extends Vue {
   readonly getStringDate = getStringDate;
 
   mounted() {
-    this.load();
-    getCategories().then((data) => {
-      this.categories = data;
-    });
+    getCategories()
+      .then((data) => {
+        this.categories = data;
+      })
+      .then(() => {
+        this.load();
+      });
   }
   load() {
     api(this.client)

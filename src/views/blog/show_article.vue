@@ -91,10 +91,13 @@ export default class ShowArticle extends Vue {
   readonly getStringTime = getStringTime;
 
   mounted() {
-    this.load();
-    getCategories().then((data) => {
-      this.categories = data;
-    });
+    getCategories()
+      .then((data) => {
+        this.categories = data;
+      })
+      .then(() => {
+        this.load();
+      });
   }
   @Watch("$route")
   route_changed() {
