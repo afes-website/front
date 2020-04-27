@@ -150,7 +150,7 @@ function get_img($filename) {
 }
 
 function get_og_image($uri) {
-  $static_img = 'https://afes.info/img/thumbnail.jpg';
+  $static_img = 'https://afes.info/img/thumbnail.png';
   if (!$uri || $uri == '/') // トップページ
     return $static_img;
   if (starts_with($uri, '/blog/admin')) // admin
