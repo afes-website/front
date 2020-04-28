@@ -1,3 +1,6 @@
+const rulesDirPlugin = require("eslint-plugin-rulesdir");
+rulesDirPlugin.RULES_DIR = "rules";
+
 module.exports = {
   root: true,
   env: {
@@ -24,6 +27,7 @@ module.exports = {
     },
     {
       files: ["**/*.ts", "**/*.vue"],
+      plugins: ["rulesdir"],
       extends: [
         "@vue/typescript/recommended",
         "@vue/prettier/@typescript-eslint",
@@ -32,6 +36,7 @@ module.exports = {
       rules: {
         "@typescript-eslint/camelcase": "off",
         "@typescript-eslint/no-explicit-any": "error",
+        "rulesdir/disallow-directive-expr": "error",
       },
     },
   ],
