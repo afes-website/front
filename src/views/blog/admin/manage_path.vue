@@ -52,7 +52,7 @@
               >
             </b-th>
             <b-td>{{ revision.title }}</b-td>
-            <b-td>{{ revision.user_id }}</b-td>
+            <b-td>{{ revision.author.name }}</b-td>
             <b-td>{{ getStringTime(revision.timestamp) }}</b-td>
             <b-td>
               <font-awesome-icon
