@@ -244,6 +244,7 @@ export default class RevisionList extends Vue {
   }
 
   get_article_category(revision: BlogRevisionWithArticle) {
+    if (revision.article === null) return null;
     return revision.article.category;
   }
 
