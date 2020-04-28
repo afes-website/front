@@ -1,8 +1,9 @@
+import { WriterUserInfo } from "../../writer/user";
 export interface BlogRevision {
   id: number;
   title: string;
   article_id: string;
-  user_id: string;
+  author: WriterUserInfo;
   timestamp: string;
   content: string;
   status: "waiting" | "accepted" | "rejected";
@@ -10,9 +11,10 @@ export interface BlogRevision {
 
 export type NewBlogRevision = Omit<
   BlogRevision,
-  "id" | "timestamp" | "user_id" | "status"
+  "id" | "timestamp" | "author" | "status"
 >;
 
-export type BlogRevisionFilterParameter = Partial<
-  Omit<BlogRevision, "id" | "timestamp">
->;
+export interface BlogRevisionFilterParameter
+  extends Partial<Omit<BlogRevision, "id" | "timestamp" | "author">> {
+  user_id?: string;
+}
