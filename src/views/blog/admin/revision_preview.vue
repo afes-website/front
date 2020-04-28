@@ -1,18 +1,10 @@
 <template>
   <article id="show-revision">
-    <template v-if="revision !== null">
+    <template v-if="found_revision">
       <breadcrumb :text="page_title" />
       <b-alert show variant="info">
         この投稿はプレビューです。<br />
-        <b-badge
-          :variant="
-            revision.status === 'accepted'
-              ? 'success'
-              : revision.status === 'waiting'
-              ? 'secondary'
-              : 'danger'
-          "
-        >
+        <b-badge :variant="status_color">
           {{ revision.status }}
         </b-badge>
         <span>
@@ -128,6 +120,23 @@ export default class ShowRevision extends Vue {
   get rendered_md(): string | null {
     if (this.revision == null) return null;
     return Markdown.render(this.revision.content);
+  }
+
+  get found_revision() {
+    return this.revision !== null;
+  }
+
+  get status_color() {
+    if (this.revision === null) return "";
+    switch (this.revision.status) {
+      case "accepted":
+        return "success";
+      case "rejected":
+        return "secondary";
+      case "waiting":
+        return "";
+    }
+    return "";
   }
 }
 </script>

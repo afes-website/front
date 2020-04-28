@@ -1,20 +1,12 @@
 <template>
   <div id="share-buttons">
     <div class="share-btn twitter">
-      <b-link
-        :href="`https://twitter.com/share?url=${encodedUrl}&text=${encodedTitle}&hashtags=${hashTag}&related=${account}`"
-        rel="nofollow"
-        target="_blank"
-      >
+      <b-link :href="twitter_share_url" rel="nofollow" target="_blank">
         <font-awesome-icon :icon="['fab', 'twitter']" size="2x" class="fa-fw" />
       </b-link>
     </div>
     <div class="share-btn line">
-      <b-link
-        :href="`https://social-plugins.line.me/lineit/share?url=${encodedUrl}`"
-        rel="nofollow"
-        target="_blank"
-      >
+      <b-link :href="line_share_url" rel="nofollow" target="_blank">
         <svg
           role="img"
           viewBox="0 0 24 24"
@@ -29,11 +21,7 @@
       </b-link>
     </div>
     <div class="share-btn facebook">
-      <b-link
-        :href="`http://www.facebook.com/share.php?u=${encodedUrl}`"
-        rel="nofollow"
-        target="_blank"
-      >
+      <b-link :href="facebook_share_url" rel="nofollow" target="_blank">
         <font-awesome-icon
           :icon="['fab', 'facebook-f']"
           size="2x"
@@ -42,11 +30,7 @@
       </b-link>
     </div>
     <div class="share-btn pocket">
-      <b-link
-        :href="`http://getpocket.com/edit?url=${encodedUrl}&title=${encodedTitle}`"
-        rel="nofollow"
-        target="_blank"
-      >
+      <b-link :href="pocket_share_url" rel="nofollow" target="_blank">
         <font-awesome-icon
           :icon="['fab', 'get-pocket']"
           size="2x"
@@ -55,11 +39,7 @@
       </b-link>
     </div>
     <div class="share-btn hatena">
-      <b-link
-        :href="`http://b.hatena.ne.jp/add?mode=confirm&url=${encodedUrl}&title=${encodedTitle}`"
-        rel="nofollow"
-        target="_blank"
-      >
+      <b-link :href="hatena_share_url" rel="nofollow" target="_blank">
         <svg
           role="img"
           viewBox="0 0 24 24"
@@ -171,6 +151,26 @@ export default class ShareButtons extends Vue {
   get canUseWebShare(): boolean {
     const navigator_ = navigator as Navigator;
     return !!navigator_.share;
+  }
+
+  get twitter_share_url() {
+    return `https://twitter.com/share?url=${this.encodedUrl}&text=${this.encodedTitle}&hashtags=${this.hashTag}&related=${this.account}`;
+  }
+
+  get line_share_url() {
+    return `https://social-plugins.line.me/lineit/share?url=${this.encodedUrl}`;
+  }
+
+  get facebook_share_url() {
+    return `http://www.facebook.com/share.php?u=${this.encodedUrl}`;
+  }
+
+  get pocket_share_url() {
+    return `http://getpocket.com/edit?url=${this.encodedUrl}&title=${this.encodedTitle}`;
+  }
+
+  get hatena_share_url() {
+    return `http://b.hatena.ne.jp/add?mode=confirm&url=${this.encodedUrl}&title=${this.encodedTitle}`;
   }
 }
 </script>

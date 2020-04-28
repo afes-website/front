@@ -6,14 +6,17 @@
       <b-link
         :to="{
           name: 'show_article',
-          params: { category: article.category, id: article.id },
+          params: {
+            category: get_category(article),
+            id: get_article_id(article),
+          },
         }"
         class="card-wrap-link"
         v-for="article in shown_articles"
-        :key="article.id"
+        :key="get_article_id(article)"
       >
         <b-card
-          :img-src="get_article_image(article.content)"
+          :img-src="get_article_image(article)"
           img-alt="eye catch"
           img-left
           class="mb-3"
@@ -36,7 +39,7 @@
               {{ getStringDate(article.updated_at) }}
             </span>
           </b-card-sub-title>
-          <b-card-text v-html="rendered_md(article.content)" />
+          <b-card-text v-html="rendered_md(article)" />
         </b-card>
       </b-link>
     </div>
@@ -227,7 +230,8 @@ export default class ArticleList extends Vue {
     return !!this.$route.params.category;
   }
 
-  rendered_md(md: string): string {
+  rendered_md(article: BlogArticle): string {
+    const md = article.content;
     const tokens = Markdown.parse(md, {});
     const tokens2txt = (tokens: Token[]) => {
       return tokens
@@ -245,7 +249,8 @@ export default class ArticleList extends Vue {
     return tokens2txt(tokens);
   }
 
-  get_article_image(md: string) {
+  get_article_image(article: BlogArticle) {
+    const md = article.content;
     const tokens = Markdown.parse(md, {});
     const get_first_img = (tokens: Token[]): string | null => {
       return tokens.reduce((cur: string | null, token: Token):
@@ -268,6 +273,14 @@ export default class ArticleList extends Vue {
     if (first_img_uri.startsWith(process.env.VUE_APP_API_BASE_URL + "/images"))
       return first_img_uri + "?h=150&w=150"; // out images support server-side-resizing
     return first_img_uri;
+  }
+
+  get_id(article: BlogArticle) {
+    return article.id;
+  }
+
+  get_category(article: BlogArticle) {
+    return article.category;
   }
 }
 </script>

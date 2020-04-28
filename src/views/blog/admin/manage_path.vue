@@ -8,7 +8,7 @@
     </b-button>
     <section id="form">
       Category
-      <b-form-select v-model="category" :state="category in categories">
+      <b-form-select v-model="category" :state="is_category_valid">
         <b-form-select-option
           v-for="(cat_obj, cat_id) in categories"
           :key="cat_id"
@@ -33,20 +33,14 @@
           <b-tr
             v-for="(revision, id) in revisions"
             :key="id"
-            :variant="
-              revision.status == 'accepted'
-                ? 'success'
-                : revision.status == 'rejected'
-                ? 'secondary'
-                : ''
-            "
+            :variant="get_status_color(revision)"
             @click="select_revision(id)"
           >
             <b-th>
               <b-form-radio
                 v-model.number="revision_selection"
                 name="revision-selector"
-                :disabled="revision.status != 'accepted'"
+                :disabled="!is_revision_accepted(revision)"
                 :value="id"
                 >{{ id }}</b-form-radio
               >
@@ -56,18 +50,12 @@
             <b-td>{{ getStringTime(revision.timestamp) }}</b-td>
             <b-td>
               <font-awesome-icon
-                :icon="
-                  revision.status === 'accepted'
-                    ? 'check-circle'
-                    : revision.status === 'rejected'
-                    ? 'times-circle'
-                    : 'hourglass-half'
-                "
-                :id="[revision.id + '-status-icon']"
+                :icon="get_status_icon(revision)"
+                :id="format_revision_icon_id(revision)"
                 class="fa-fw"
               />
               <b-tooltip
-                :target="revision.id + '-status-icon'"
+                :target="format_revision_icon_id(revision)"
                 triggers="hover"
               >
                 {{ revision.status }}
@@ -77,14 +65,14 @@
               <b-button-group>
                 <b-button
                   @click="accept_revision(id)"
-                  v-if="revision.status === 'waiting'"
+                  v-if="is_revision_waiting(revision)"
                   variant="success"
                 >
                   Accept
                 </b-button>
                 <b-button
                   @click="reject_revision(id)"
-                  v-if="revision.status === 'waiting'"
+                  v-if="is_revision_waiting(revision)"
                   variant="danger"
                 >
                   Reject
@@ -318,6 +306,10 @@ export default class ManagePath extends Vue {
       });
   }
 
+  get is_category_valid() {
+    return this.category in this.categories;
+  }
+
   get can_apply() {
     return this.category != "" && this.revision_selection in this.revisions;
   }
@@ -366,6 +358,39 @@ export default class ManagePath extends Vue {
 
   select_revision(id: number) {
     if (this.revisions[id].status == "accepted") this.revision_selection = id;
+  }
+
+  get_status_color(revision: BlogRevision) {
+    switch (revision.status) {
+      case "accepted":
+        return "success";
+      case "rejected":
+        return "secondary";
+    }
+    return "";
+  }
+
+  get_status_icon(revision: BlogRevision) {
+    switch (revision.status) {
+      case "accepted":
+        return "check-circle";
+      case "rejected":
+        return "times-circle";
+      case "waiting":
+        return "hourglass-half";
+    }
+  }
+
+  is_revision_accepted(revision: BlogRevision) {
+    return revision.status == "accepted";
+  }
+
+  is_revision_waiting(revision: BlgoRevision) {
+    return revision.status === "waiting";
+  }
+
+  format_revision_icon_id(revision: BlogRevision) {
+    return revision.id + "-status-icon";
   }
 }
 </script>

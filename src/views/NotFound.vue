@@ -6,7 +6,7 @@
       <p class="404-large">
         お探しのページ <code>{{ $route.path }}</code> は見つかりませんでした。
       </p>
-      <p v-if="$route.path.substr(0, 5) === '/blog'">
+      <p v-if="is_in_blog_route">
         URLが間違っているか、記事が削除されている可能性があります。URLを再度お確かめください。
       </p>
       <p v-else>
@@ -45,5 +45,9 @@ import { Component, Vue } from "vue-property-decorator";
 @Component
 export default class NotFound extends Vue {
   readonly page_title = "404 Not Found";
+
+  get is_in_blog_route() {
+    return this.$route.path.substr(0, 5) === "/blog";
+  }
 }
 </script>

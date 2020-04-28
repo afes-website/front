@@ -20,30 +20,18 @@
       <b-tbody>
         <b-tr
           v-for="revision in sorted_revisions"
-          :key="revision.id"
-          :variant="
-            revision.status == 'accepted'
-              ? 'success'
-              : revision.status == 'rejected'
-              ? 'secondary'
-              : ''
-          "
+          :key="get_revision_id(revision)"
+          :variant="get_status_color(revision)"
           @click="open_revision(revision)"
         >
           <b-th>{{ revision.id }}</b-th>
           <b-td>
             <font-awesome-icon
-              :icon="
-                revision.status === 'accepted'
-                  ? 'check-circle'
-                  : revision.status === 'rejected'
-                  ? 'times-circle'
-                  : 'hourglass-half'
-              "
-              :id="[revision.id + '-status-icon']"
+              :icon="get_status_icon"
+              :id="format_status_icon_id"
               class="fa-fw"
             />
-            <b-tooltip :target="revision.id + '-status-icon'" triggers="hover">
+            <b-tooltip :target="format_status_icon_id" triggers="hover">
               {{ revision.status }}
             </b-tooltip>
           </b-td>
@@ -52,15 +40,12 @@
           <b-td class="td-time">{{ getStringTime(revision.timestamp) }}</b-td>
           <b-td>
             <b-link
-              v-if="
-                revision.article !== null &&
-                revision.article.revision_id == revision.id
-              "
+              v-if="is_used_for_article(revision)"
               :to="{
                 name: 'show_article',
                 params: {
-                  category: revision.article.category,
-                  id: revision.article_id,
+                  category: get_article_category(revision),
+                  id: get_article_id(revision),
                 },
               }"
             >
@@ -69,7 +54,10 @@
             </b-link>
             <b-link
               v-else
-              :to="{ name: 'revision_preview', params: { id: revision.id } }"
+              :to="{
+                name: 'revision_preview',
+                params: { id: get_revision_id(revision) },
+              }"
             >
               <font-awesome-icon :icon="['far', 'file']" class="fa-fw" />
               preview
@@ -217,6 +205,50 @@ export default class RevisionList extends Vue {
         name: "revision_preview",
         params: { id: revision.id.toString() },
       });
+  }
+
+  get_revision_id(revision: BlogRevisionWithArticle) {
+    return revision.id;
+  }
+
+  get_status_color(revision: BlogRevisionWithArticle) {
+    switch (revision.status) {
+      case "accepted":
+        return "success";
+      case "rejected":
+        return "secondary";
+      default:
+        return "";
+    }
+  }
+
+  get_status_icon(revision: BlogRevisionWithArticle) {
+    switch (revision.status) {
+      case "accepted":
+        return "check-circle";
+      case "rejected":
+        return "times-circle";
+      case "waiting":
+        return "hourglass-half";
+    }
+  }
+
+  format_status_icon_id(revision: BlogRevisionWithArticle) {
+    return revision.id + "-status-icon";
+  }
+
+  is_used_for_article(revision: BlogRevisionWithArticle) {
+    return (
+      revision.article !== null && revision.article.revision_id == revision.id
+    );
+  }
+
+  get_article_category(revision: BlogRevisionWithArticle) {
+    return revision.article.category;
+  }
+
+  get_article_id(revision: BlogRevisionWithArticle) {
+    return revision.article_id;
   }
 }
 </script>

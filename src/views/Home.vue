@@ -74,9 +74,9 @@
         <b-table-simple small hover>
           <b-tbody>
             <b-tr
-              v-for="article in sorted_articles.slice(0, 10)"
-              :key="article.id"
-              @click="linkToArticle(article.category, article.id)"
+              v-for="article in shown_articles"
+              :key="get_article_id(article)"
+              @click="linkToArticle(article)"
             >
               <b-td class="mobile-none">
                 <font-awesome-icon :icon="'clock'" class="fa-fw" />
@@ -352,19 +352,23 @@ export default class Home extends Vue {
       });
   }
 
-  get sorted_articles(): BlogArticle[] {
+  get shown_articles(): BlogArticle[] {
     let ret_articles = this.articles.concat(); // copy
     ret_articles = ret_articles.sort((a, b) => {
       return a.updated_at < b.updated_at ? 1 : -1; // compare in string
     });
-    return ret_articles;
+    return ret_articles.slice(0, 10);
   }
 
-  linkToArticle(category: string, id: string) {
+  linkToArticle(article: BlogArticle) {
     this.$router.push({
       name: "show_article",
-      params: { category: category, id: id },
+      params: { category: article.category, id: article.id },
     });
+  }
+
+  get_article_id(article: BlogArticle) {
+    return article.id;
   }
 }
 </script>

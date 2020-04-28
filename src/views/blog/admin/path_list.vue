@@ -28,9 +28,9 @@
             {{ route }}
             <b-badge
               variant="warning"
-              v-if="path.waiting_count != 0"
+              v-if="has_waiting(path)"
               v-b-tooltip.hover
-              :title="'has ' + path.waiting_count + ' waiting revisions'"
+              :title="format_waiting_revision_msg(path)"
               class="ml-1"
             >
               {{ path.waiting_count }}
@@ -48,10 +48,10 @@
           </b-td>
           <b-td class="td-icon">
             <b-link
-              v-if="path.category"
+              v-if="get_category(path)"
               :to="{
                 name: 'show_article',
-                params: { category: path.category, id: route },
+                params: { category: get_category(path), id: route },
               }"
             >
               <font-awesome-icon :icon="'file'" class="fa-fw fa-2x" />
@@ -216,6 +216,18 @@ export default class PathList extends Vue {
       name: "manage_path",
       params: { id: route },
     });
+  }
+
+  has_waiting(path: Path) {
+    return path.waiting_count != 0;
+  }
+
+  format_waiting_revision_msg(path: Path) {
+    return "has " + path.waiting_count + " waiting revisions";
+  }
+
+  get_category(path: Path) {
+    return path.category;
   }
 }
 </script>
