@@ -25,7 +25,7 @@
         <p>
           <span>
             <font-awesome-icon :icon="'user'" class="fa-fw" />
-            {{ revision.user_id }}
+            {{ revision.author.name }}
           </span>
           <span>
             <font-awesome-icon :icon="'clock'" class="fa-fw" />

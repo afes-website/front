@@ -84,7 +84,7 @@
               </b-td>
               <b-td class="table-nowrap">
                 <font-awesome-icon :icon="'folder'" class="fa-fw" />
-                {{ getCategory(article.category) }}
+                {{ categories[article.category].name }}
               </b-td>
               <b-td class="mobile-none">
                 <font-awesome-icon :icon="'user'" class="fa-fw" />
@@ -300,7 +300,8 @@ import { Component, Vue } from "vue-property-decorator";
 import api from "@/apis/$api";
 import aspida from "@aspida/axios";
 import { BlogArticle } from "@/apis/blog/articles/@types";
-import { categories, getCategory } from "@/libs/categories";
+import { Categories } from "@/apis/blog/categories/@types";
+import getCategories from "@/libs/categories";
 import TopPageButton from "@/components/TopPageButton.vue";
 import { getStringDate } from "@/libs/string_date";
 
@@ -318,11 +319,17 @@ export default class Home extends Vue {
   readonly page_title = "";
   articles: BlogArticle[] = [];
   client = aspida();
-  readonly getCategory = getCategory;
+  categories: Categories = {};
   readonly getStringDate = getStringDate;
 
   mounted() {
-    this.load();
+    getCategories()
+      .then((data) => {
+        this.categories = data;
+      })
+      .then(() => {
+        this.load();
+      });
   }
   load() {
     api(this.client)
@@ -333,8 +340,8 @@ export default class Home extends Vue {
           this.articles = this.articles.reduce(
             (v: BlogArticle[], article: BlogArticle) => {
               if (
-                !(article.category in categories) ||
-                categories[article.category].visible
+                !(article.category in this.categories) ||
+                this.categories[article.category].visible
               )
                 v.push(article);
               return v;

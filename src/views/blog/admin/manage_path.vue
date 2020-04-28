@@ -52,7 +52,7 @@
               >
             </b-th>
             <b-td>{{ revision.title }}</b-td>
-            <b-td>{{ revision.user_id }}</b-td>
+            <b-td>{{ revision.author.name }}</b-td>
             <b-td>{{ getStringTime(revision.timestamp) }}</b-td>
             <b-td>
               <font-awesome-icon
@@ -173,7 +173,8 @@ import FetchStatus from "@/libs/fetch_status";
 import FetchStatusIcon from "@/components/FetchStatusIcon.vue";
 import DiffLib from "difflib";
 import * as Diff2Html from "diff2html";
-import categories from "@/libs/categories";
+import { Categories } from "@/apis/blog/categories/@types";
+import getCategories from "@/libs/categories";
 import Breadcrumb from "@/components/Breadcrumb.vue";
 import { getStringTime } from "@/libs/string_date";
 
@@ -182,7 +183,7 @@ export default class ManagePath extends Vue {
   page_title = "記事管理";
   revisions: { [key: number]: BlogRevision } = {};
   client = aspida();
-  readonly categories = categories;
+  categories: Categories = {};
   readonly getStringTime = getStringTime;
 
   revision_selection = 0;
@@ -196,7 +197,13 @@ export default class ManagePath extends Vue {
   article_exists = false;
 
   mounted() {
-    this.load();
+    getCategories()
+      .then((data) => {
+        this.categories = data;
+      })
+      .then(() => {
+        this.load();
+      });
   }
 
   @Watch("$route")

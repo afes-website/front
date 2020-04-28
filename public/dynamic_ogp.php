@@ -1,7 +1,6 @@
 <?php
-$overwrite_image = null;
+const API_BASE = "https://api.dev.afes.info";
 function main() {
-  global $overwrite_image;
   $type = $_SERVER["REQUEST_URI"]==='/' ? 'website' : 'article';
   echo "<head prefix=\"og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# {$type}: http://ogp.me/ns/{$type}#\">";
 
@@ -14,8 +13,7 @@ function main() {
 
   print_meta('og:url', 'https://afes.info' . $_SERVER["REQUEST_URI"]);
 
-  $image = 'https://afes.info/img/thumbnail.jpg';
-  if ($overwrite_image !== null)$image = $overwrite_image;
+  $image = get_og_image($_SERVER["REQUEST_URI"]);
   print_meta('og:image', $image);
 
   // below are static ogp tags
@@ -53,28 +51,20 @@ function print_meta($key, $value) {
 }
 
 function get_blog_title($id) {
-  $api_base_url = 'https://api.afes.info';
-
   $context = stream_context_create(array(
     'http' => array('ignore_errors' => true)
   ));
 
-  $res = file_get_contents($api_base_url . '/blog/articles/' . $id, false, $context);
+  $res = file_get_contents(API_BASE . '/blog/articles/' . $id, false, $context);
   if (strpos($http_response_header[0], '200') === false)return '';
   return json_decode($res)->title;
 }
 
 function get_blog_category_name($id) {
-  $categories = [
-    "news" => "お知らせ",
-    "general" => "文実全体",
-    "workTeam" => "分科局",
-    "exh" => "展示団体",
-    "contrib" => "個人･寄稿",
-    "update" => "更新情報",
-    "internal" => "内部生向け",
-  ];
-  return $categories[$id];
+  $json = file_get_contents(API_BASE . '/blog/categories');
+  $json = mb_convert_encoding($json, 'UTF8', 'ASCII,JIS,UTF-8,EUC-JP,SJIS-WIN');
+  $categories = json_decode($json,true);
+  return $categories[$id]['name'];
 }
 
 function get_title($uri) {
@@ -91,14 +81,12 @@ function starts_with($str, $needle) {
 }
 
 function _get_title($uri) {
-  global $overwrite_image;
   if(substr($uri, -1)==='/') // cut trailing '/'
     $uri = substr($uri, 0, -1);
   switch ($uri) {
     case '': // trailing '/' is cut
       return '';
     case '/about':
-      $overwrite_image = get_img('about.jpg');
       return '学校長・委員長挨拶';
     case '/access':
       return 'アクセス';
@@ -137,16 +125,22 @@ function _get_title($uri) {
   return '';
 }
 
-function get_img($filename) {
-  $dpos = strrpos($filename, '.');
-  $fn = substr($filename, 0, $dpos);
-  $ext = substr($filename, $dpos+1);
-  foreach(glob(__DIR__ . '/img/' . "{$fn}.*.{$ext}") as $file){
-    if(is_file($file)){
-        return 'https://afes.info/img/' . basename($file);
+function get_og_image($uri) {
+  $static_img = 'https://afes.info/img/thumbnail.png';
+  if (!$uri || $uri == '/') // トップページ
+    return $static_img;
+  if (starts_with($uri, '/blog/admin')) // admin
+    return $static_img;
+
+  if (starts_with($uri, '/blog/')) {
+    $parts = explode('/', $uri);
+    if(count($parts) == 4) { // article
+      return API_BASE . "/ogimage/articles/$parts[3]";
     }
   }
-  return null;
+  $title = _get_title($uri);
+  $encoded_title = urlencode($title);
+  return API_BASE . "/ogimage?title=$encoded_title";
 }
 
 main();
