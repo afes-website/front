@@ -1,4 +1,5 @@
 <?php
+const API_BASE = "https://api.dev.afes.info";
 function main() {
   $type = $_SERVER["REQUEST_URI"]==='/' ? 'website' : 'article';
   echo "<head prefix=\"og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# {$type}: http://ogp.me/ns/{$type}#\">";
@@ -50,28 +51,20 @@ function print_meta($key, $value) {
 }
 
 function get_blog_title($id) {
-  $api_base_url = 'https://api.afes.info';
-
   $context = stream_context_create(array(
     'http' => array('ignore_errors' => true)
   ));
 
-  $res = file_get_contents($api_base_url . '/blog/articles/' . $id, false, $context);
+  $res = file_get_contents(API_BASE . '/blog/articles/' . $id, false, $context);
   if (strpos($http_response_header[0], '200') === false)return '';
   return json_decode($res)->title;
 }
 
 function get_blog_category_name($id) {
-  $categories = [
-    "news" => "お知らせ",
-    "general" => "文実全体",
-    "workTeam" => "分科局",
-    "exh" => "展示団体",
-    "contrib" => "個人･寄稿",
-    "update" => "更新情報",
-    "internal" => "内部生向け",
-  ];
-  return $categories[$id];
+  $json = file_get_contents(API_BASE . '/blog/categories');
+  $json = mb_convert_encoding($json, 'UTF8', 'ASCII,JIS,UTF-8,EUC-JP,SJIS-WIN');
+  $categories = json_decode($json,true);
+  return $categories[$id]['name'];
 }
 
 function get_title($uri) {
@@ -139,16 +132,15 @@ function get_og_image($uri) {
   if (starts_with($uri, '/blog/admin')) // admin
     return $static_img;
 
-  $api_base_url = 'https://api.afes.info';
   if (starts_with($uri, '/blog/')) {
     $parts = explode('/', $uri);
     if(count($parts) == 4) { // article
-      return "$api_base_url/ogimage/articles/$parts[3]";
+      return API_BASE . "/ogimage/articles/$parts[3]";
     }
   }
   $title = _get_title($uri);
   $encoded_title = urlencode($title);
-  return "$api_base_url/ogimage?title=$encoded_title";
+  return API_BASE . "/ogimage?title=$encoded_title";
 }
 
 main();

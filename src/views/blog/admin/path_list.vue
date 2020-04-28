@@ -37,7 +37,9 @@
             </b-badge>
           </b-th>
           <b-td>{{ path.title || "-" }}</b-td>
-          <b-td>{{ path.category ? getCategory(path.category) : "-" }}</b-td>
+          <b-td>{{
+            path.category ? categories[path.category].name : "-"
+          }}</b-td>
           <b-td class="td-time">
             {{ getStringTime(path.created_at) || "-" }}
           </b-td>
@@ -127,7 +129,8 @@ import AdminAuth from "@/libs/auth/admin_auth";
 import { BlogRevision } from "@/apis/blog/revisions/@types";
 import FetchStatus from "@/libs/fetch_status";
 import FetchStatusIcon from "@/components/FetchStatusIcon.vue";
-import { getCategory } from "@/libs/categories";
+import { Categories } from "@/apis/blog/categories/@types";
+import getCategories from "@/libs/categories";
 import Breadcrumb from "@/components/Breadcrumb.vue";
 import { getStringTime } from "@/libs/string_date";
 
@@ -144,13 +147,19 @@ export default class PathList extends Vue {
   readonly page_title = "記事一覧";
   paths: { [key: string]: Path } = {};
   client = aspida();
-  readonly getCategory = getCategory;
+  categories: Categories = {};
   readonly getStringTime = getStringTime;
 
   fetch_status: FetchStatus = "idle";
 
   mounted() {
-    this.load();
+    getCategories()
+      .then((data) => {
+        this.categories = data;
+      })
+      .then(() => {
+        this.load();
+      });
   }
 
   load() {

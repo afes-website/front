@@ -566,7 +566,8 @@ import { Component, Vue, Watch } from "vue-property-decorator";
 import Vue2TouchEvents from "vue2-touch-events";
 import AdminLoginModal from "./components/AdminLoginModal.vue";
 import WriterLoginModal from "./components/WriterLoginModal.vue";
-import categories from "@/libs/categories";
+import { Categories } from "@/apis/blog/categories/@types";
+import getCategories from "@/libs/categories";
 import NotFound from "@/views/NotFound.vue";
 import AdminAuth from "@/libs/auth/admin_auth";
 import WriterAuth from "@/libs/auth/writer_auth";
@@ -581,6 +582,7 @@ export default class Layout extends Vue {
   show_404 = false;
   admin_logged_in = false;
   writer_logged_in = false;
+  categories: Categories = {};
 
   readonly instagramIcon = require("@/assets/sns/instagram.svg");
   readonly azabuIcon = require("@/assets/sns/azabu.svg");
@@ -591,6 +593,9 @@ export default class Layout extends Vue {
   }
   mounted() {
     this.reload_login_status();
+    getCategories().then((data) => {
+      this.categories = data;
+    });
   }
 
   @Watch("$route")
@@ -613,8 +618,8 @@ export default class Layout extends Vue {
 
   get visible_categories() {
     const ret: { [key: string]: string } = {};
-    for (const k in categories) {
-      if (categories[k].visible) ret[k] = categories[k].name;
+    for (const k in this.categories) {
+      if (this.categories[k].visible) ret[k] = this.categories[k].name;
     }
     return ret;
   }

@@ -17,7 +17,8 @@ ol {
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { Location } from "vue-router";
-import categories from "@/libs/categories";
+import { Categories } from "@/apis/blog/categories/@types";
+import getCategories from "@/libs/categories";
 
 interface Item {
   text: string;
@@ -26,8 +27,16 @@ interface Item {
 
 @Component
 export default class Breadcrumb extends Vue {
+  categories: Categories = {};
+
   @Prop({ required: true })
   readonly text!: string;
+
+  mounted() {
+    getCategories().then((data) => {
+      this.categories = data;
+    });
+  }
 
   get getItems() {
     const items = this.available_items.reduce((arr, cur) => {
@@ -55,8 +64,8 @@ export default class Breadcrumb extends Vue {
       { text: "記事一覧", to: { name: "path_list" } },
     ];
     names = names.concat(
-      Object.keys(categories).map((category_id) => ({
-        text: categories[category_id].name,
+      Object.keys(this.categories).map((category_id) => ({
+        text: this.categories[category_id].name,
         to: { name: "article_list", params: { category: category_id } },
       }))
     );
