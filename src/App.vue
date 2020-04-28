@@ -486,6 +486,9 @@ header {
             a {
               line-height: 1.5;
               padding: 0.25rem 0;
+              &:hover {
+                background: unset;
+              }
             }
 
             ul li a {
