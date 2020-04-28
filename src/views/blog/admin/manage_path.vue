@@ -385,7 +385,7 @@ export default class ManagePath extends Vue {
     return revision.status == "accepted";
   }
 
-  is_revision_waiting(revision: BlgoRevision) {
+  is_revision_waiting(revision: BlogRevision) {
     return revision.status === "waiting";
   }
 
