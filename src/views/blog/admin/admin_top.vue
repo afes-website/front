@@ -20,7 +20,7 @@
           ログアウト
         </b-button>
       </template>
-      <b-button v-else @click="admin_login" size="sm" variant="primary">
+      <b-button v-else @click="admin_login" size="sm" variant="theme-dark">
         <font-awesome-icon :icon="'sign-in-alt'" class="fa-fw" />
         ログイン
       </b-button>
@@ -43,7 +43,7 @@
           ログアウト
         </b-button>
       </template>
-      <b-button v-else @click="writer_login" size="sm" variant="primary">
+      <b-button v-else @click="writer_login" size="sm" variant="theme-dark">
         <font-awesome-icon :icon="'sign-in-alt'" class="fa-fw" />
         ログイン
       </b-button>

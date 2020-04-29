@@ -208,8 +208,8 @@
 }
 
 header {
-  width: 17rem;
-  min-width: 17rem;
+  width: 16rem;
+  min-width: 16rem;
   padding: 1.5rem 0 0 3rem;
   height: 100vh;
   display: flex;
@@ -289,10 +289,9 @@ header {
               display: block;
               padding: 0.25rem 2rem;
               width: 100%;
-            }
-
-            &:hover {
-              background: rgba(#def, 0.075);
+              &:hover {
+                background: darken($theme-dark, 6%);
+              }
             }
 
             & > ul {
@@ -487,6 +486,9 @@ header {
             a {
               line-height: 1.5;
               padding: 0.25rem 0;
+              &:hover {
+                background: unset;
+              }
             }
 
             ul li a {

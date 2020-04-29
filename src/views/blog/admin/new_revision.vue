@@ -98,7 +98,7 @@
     </b-tabs>
     <b-button
       @click="post"
-      variant="primary"
+      variant="theme-dark"
       class="mt-3 mb-2"
       :disabled="article_path === '' || article_title === ''"
     >
