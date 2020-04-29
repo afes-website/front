@@ -40,7 +40,7 @@ article {
     margin-top: -14px;
     margin-bottom: 16px;
     text-align: right;
-    color: #6c757d;
+    color: var(--secondary);
     font-weight: 500;
 
     p {

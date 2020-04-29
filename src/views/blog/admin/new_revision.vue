@@ -94,7 +94,7 @@
     </b-tabs>
     <b-button
       @click="post"
-      variant="primary"
+      variant="theme-dark"
       class="mt-3 mb-2"
       :disabled="!can_post"
     >

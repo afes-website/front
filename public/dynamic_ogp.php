@@ -1,5 +1,5 @@
 <?php
-const API_BASE = "https://api.dev.afes.info";
+const API_BASE = "https://api.afes.info";
 function main() {
   $type = $_SERVER["REQUEST_URI"]==='/' ? 'website' : 'article';
   echo "<head prefix=\"og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# {$type}: http://ogp.me/ns/{$type}#\">";

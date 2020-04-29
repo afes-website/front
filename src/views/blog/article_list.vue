@@ -19,7 +19,6 @@
           :img-src="get_article_image(article)"
           img-alt="eye catch"
           img-left
-          class="mb-3"
         >
           <!-- TODO:add image -->
           <b-card-title>
@@ -57,8 +56,10 @@
 
 <style lang="scss" scoped>
 .card-wrap-link {
+  display: block;
   height: 150px;
   width: 100%;
+  margin-bottom: 1rem;
   .card {
     height: 150px;
     width: 100%;
