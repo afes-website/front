@@ -27,11 +27,14 @@
           <b-th>{{ get_revision_id(revision) }}</b-th>
           <b-td>
             <font-awesome-icon
-              :icon="get_status_icon"
-              :id="format_status_icon_id"
+              :icon="get_status_icon(revision)"
+              :id="format_status_icon_id(revision)"
               class="fa-fw"
             />
-            <b-tooltip :target="format_status_icon_id" triggers="hover">
+            <b-tooltip
+              :target="format_status_icon_id(revision)"
+              triggers="hover"
+            >
               {{ get_revision_status(revision) }}
             </b-tooltip>
           </b-td>

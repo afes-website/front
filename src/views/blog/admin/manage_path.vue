@@ -46,8 +46,8 @@
               >
             </b-th>
             <b-td>{{ get_revision_title(revision) }}</b-td>
-            <b-td>{{ revision_author_name }}</b-td>
-            <b-td>{{ get_revision_timestampe(revision) }}</b-td>
+            <b-td>{{ get_revision_author_name(revision) }}</b-td>
+            <b-td>{{ get_revision_timestamp(revision) }}</b-td>
             <b-td>
               <font-awesome-icon
                 :icon="get_status_icon(revision)"

@@ -8,12 +8,12 @@
           name: 'show_article',
           params: {
             category: get_category(article),
-            id: get_article_id(article),
+            id: get_id(article),
           },
         }"
         class="card-wrap-link"
         v-for="article in shown_articles"
-        :key="get_article_id(article)"
+        :key="get_id(article)"
       >
         <b-card
           :img-src="get_article_image(article)"
@@ -23,7 +23,7 @@
         >
           <!-- TODO:add image -->
           <b-card-title>
-            {{ get_article_title(article) }}
+            {{ get_title(article) }}
           </b-card-title>
           <b-card-sub-title>
             <span>
