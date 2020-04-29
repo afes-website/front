@@ -19,6 +19,7 @@
         <b-button-group>
           <b-button
             variant="secondary"
+            size="sm"
             v-if="can_edit"
             :to="{ name: 'new_revision', query: { path: article.id } }"
           >
@@ -27,6 +28,7 @@
           </b-button>
           <b-button
             variant="secondary"
+            size="sm"
             v-if="can_manage"
             :to="{ name: 'manage_path', params: { id: article.id } }"
           >
@@ -50,7 +52,7 @@ article {
     margin-top: -14px;
     margin-bottom: 16px;
     text-align: right;
-    color: #6c757d;
+    color: var(--secondary);
     font-weight: 500;
 
     span {
