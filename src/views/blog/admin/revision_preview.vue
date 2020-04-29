@@ -5,11 +5,11 @@
       <b-alert show variant="info">
         この投稿はプレビューです。<br />
         <b-badge :variant="status_color">
-          {{ revision.status }}
+          {{ status }}
         </b-badge>
         <span>
           <font-awesome-icon icon="file" class="fa-fw" />
-          {{ revision.article_id }}
+          {{ article_id }}
         </span>
       </b-alert>
       <h1>{{ page_title }}</h1>
@@ -17,11 +17,11 @@
         <p>
           <span>
             <font-awesome-icon :icon="'user'" class="fa-fw" />
-            {{ revision.author.name }}
+            {{ author_name }}
           </span>
           <span>
             <font-awesome-icon :icon="'clock'" class="fa-fw" />
-            {{ getStringTime(revision.timestamp) }}
+            {{ timestamp }}
           </span>
         </p>
       </div>
@@ -78,7 +78,6 @@ export default class ShowRevision extends Vue {
   revision: BlogRevision | null = null;
   client = aspida();
   fetch_status: FetchStatus = "idle";
-  readonly getStringTime = getStringTime;
 
   mounted() {
     this.load();
@@ -137,6 +136,24 @@ export default class ShowRevision extends Vue {
         return "";
     }
     return "";
+  }
+
+  get status() {
+    return this.revision?.status;
+  }
+
+  get article_id() {
+    return this.revision?.article_id;
+  }
+
+  get author_name() {
+    return this.revision?.author.name;
+  }
+
+  get timestamp() {
+    return this.revision === null
+      ? null
+      : getStringTime(this.revision.timestamp);
   }
 }
 </script>

@@ -80,18 +80,18 @@
             >
               <b-td class="mobile-none">
                 <font-awesome-icon :icon="'clock'" class="fa-fw" />
-                {{ getStringDate(article.updated_at) }}
+                {{ formatUpdatedDate(article) }}
               </b-td>
               <b-td class="table-nowrap">
                 <font-awesome-icon :icon="'folder'" class="fa-fw" />
-                {{ categories[article.category].name }}
+                {{ getCategoryName }}
               </b-td>
               <b-td class="mobile-none">
                 <font-awesome-icon :icon="'user'" class="fa-fw" />
-                {{ article.author.name }}
+                {{ getAuthorName(article) }}
               </b-td>
               <b-td>
-                {{ article.title }}
+                {{ getArticleTitle(article) }}
               </b-td>
             </b-tr>
           </b-tbody>
@@ -320,7 +320,6 @@ export default class Home extends Vue {
   articles: BlogArticle[] = [];
   client = aspida();
   categories: Categories = {};
-  readonly getStringDate = getStringDate;
 
   mounted() {
     getCategories()
@@ -369,6 +368,22 @@ export default class Home extends Vue {
 
   get_article_id(article: BlogArticle) {
     return article.id;
+  }
+
+  formatUpdatedDate(article: BlogArticle) {
+    return getStringDate(article.updated_at);
+  }
+
+  getCategoryName(article: BlogArticle) {
+    return this.categories[article.category];
+  }
+
+  getAuthorName(article: BlogArticle) {
+    return article.author.name;
+  }
+
+  getArticleTitle(article: BlogArticle) {
+    return article.title;
   }
 }
 </script>

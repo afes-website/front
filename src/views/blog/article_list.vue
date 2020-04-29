@@ -23,20 +23,20 @@
         >
           <!-- TODO:add image -->
           <b-card-title>
-            {{ article.title }}
+            {{ get_article_title(article) }}
           </b-card-title>
           <b-card-sub-title>
             <span>
               <font-awesome-icon :icon="'user'" class="fa-fw" />
-              {{ article.author.name }}
+              {{ get_author_name(article) }}
             </span>
             <span v-if="!isCategorySpecified">
               <font-awesome-icon :icon="'folder'" class="fa-fw" />
-              {{ categories[article.category].name }}
+              {{ get_category_name(article) }}
             </span>
             <span>
               <font-awesome-icon :icon="'clock'" class="fa-fw" />
-              {{ getStringDate(article.updated_at) }}
+              {{ get_updated_at(article) }}
             </span>
           </b-card-sub-title>
           <b-card-text v-html="rendered_md(article)" />
@@ -136,7 +136,6 @@ export default class ArticleList extends Vue {
   categories: Categories = {};
   readonly noImage = require("@/assets/no-image.svg");
   fetch_status: FetchStatus = "idle";
-  readonly getStringDate = getStringDate;
 
   perPage = 10;
 
@@ -281,6 +280,22 @@ export default class ArticleList extends Vue {
 
   get_category(article: BlogArticle) {
     return article.category;
+  }
+
+  get_title(article: BlogArticle) {
+    return article.title;
+  }
+
+  get_author_name(article: BlogArticle) {
+    return article.author.name;
+  }
+
+  get_category_name(article: BlogArticle) {
+    return this.categories[article.category].name;
+  }
+
+  get_updated_at(article: BlogArticle) {
+    return getStringDate(article.updated_at);
   }
 }
 </script>

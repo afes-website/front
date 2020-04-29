@@ -14,7 +14,7 @@
           :key="cat_id"
           :value="cat_id"
         >
-          {{ cat_obj.name }}
+          {{ get_category_name(cat_obj) }}
         </b-form-select-option>
       </b-form-select>
       <b-table-simple responsive hover small class="table">
@@ -45,9 +45,9 @@
                 >{{ id }}</b-form-radio
               >
             </b-th>
-            <b-td>{{ revision.title }}</b-td>
-            <b-td>{{ revision.author.name }}</b-td>
-            <b-td>{{ getStringTime(revision.timestamp) }}</b-td>
+            <b-td>{{ get_revision_title(revision) }}</b-td>
+            <b-td>{{ revision_author_name }}</b-td>
+            <b-td>{{ get_revision_timestampe(revision) }}</b-td>
             <b-td>
               <font-awesome-icon
                 :icon="get_status_icon(revision)"
@@ -58,7 +58,7 @@
                 :target="format_revision_icon_id(revision)"
                 triggers="hover"
               >
-                {{ revision.status }}
+                {{ get_revision_status(revision) }}
               </b-tooltip>
             </b-td>
             <b-td>
@@ -165,6 +165,7 @@ import { Categories } from "@/apis/blog/categories/@types";
 import getCategories from "@/libs/categories";
 import Breadcrumb from "@/components/Breadcrumb.vue";
 import { getStringTime } from "@/libs/string_date";
+import { Category } from "../../../apis/blog/categories/@types";
 
 @Component({ components: { FetchStatusIcon, Breadcrumb } })
 export default class ManagePath extends Vue {
@@ -172,7 +173,6 @@ export default class ManagePath extends Vue {
   revisions: { [key: number]: BlogRevision } = {};
   client = aspida();
   categories: Categories = {};
-  readonly getStringTime = getStringTime;
 
   revision_selection = 0;
   original_selection = 0;
@@ -391,6 +391,26 @@ export default class ManagePath extends Vue {
 
   format_revision_icon_id(revision: BlogRevision) {
     return revision.id + "-status-icon";
+  }
+
+  get_category_name(category: Category) {
+    return category.name;
+  }
+
+  get_revision_title(revision: BlogRevision) {
+    return revision.title;
+  }
+
+  get_revision_author_name(revision: BlogRevision) {
+    return revision.author.name;
+  }
+
+  get_revision_timestamp(revision: BlogRevision) {
+    return getStringTime(revision.timestamp);
+  }
+
+  get_revision_status(revision: BlogRevision) {
+    return revision.status;
   }
 }
 </script>

@@ -24,7 +24,7 @@
           :variant="get_status_color(revision)"
           @click="open_revision(revision)"
         >
-          <b-th>{{ revision.id }}</b-th>
+          <b-th>{{ get_revision_id(revision) }}</b-th>
           <b-td>
             <font-awesome-icon
               :icon="get_status_icon"
@@ -32,12 +32,12 @@
               class="fa-fw"
             />
             <b-tooltip :target="format_status_icon_id" triggers="hover">
-              {{ revision.status }}
+              {{ get_revision_status(revision) }}
             </b-tooltip>
           </b-td>
-          <b-td>{{ revision.title }}</b-td>
-          <b-td>{{ revision.article_id }}</b-td>
-          <b-td class="td-time">{{ getStringTime(revision.timestamp) }}</b-td>
+          <b-td>{{ get_revision_title(revision) }}</b-td>
+          <b-td>{{ get_article_id(revision) }}</b-td>
+          <b-td class="td-time">{{ get_revision_timestamp(revision) }}</b-td>
           <b-td>
             <b-link
               v-if="is_used_for_article(revision)"
@@ -114,7 +114,6 @@ export default class RevisionList extends Vue {
   readonly page_title = "あなたの記事リクエスト一覧";
   revisions: BlogRevisionWithArticle[] = [];
   client = aspida();
-  readonly getStringTime = getStringTime;
 
   fetch_status: FetchStatus = "idle";
 
@@ -209,6 +208,18 @@ export default class RevisionList extends Vue {
 
   get_revision_id(revision: BlogRevisionWithArticle) {
     return revision.id;
+  }
+
+  get_revision_status(revision: BlogRevisionWithArticle) {
+    return revision.status;
+  }
+
+  get_revision_title(revision: BlogRevisionWithArticle) {
+    return revision.title;
+  }
+
+  get_revision_timestamp(revision: BlogRevisionWithArticle) {
+    return getStringTime(revision.timestamp);
   }
 
   get_status_color(revision: BlogRevisionWithArticle) {

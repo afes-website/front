@@ -6,15 +6,15 @@
       <div class="under-title">
         <span>
           <font-awesome-icon :icon="'user'" class="fa-fw" />
-          {{ article.author.name }}
+          {{ get_author_name(article) }}
         </span>
         <span>
           <font-awesome-icon :icon="'folder'" class="fa-fw" />
-          {{ categories[article.category].name }}
+          {{ get_category_name(article) }}
         </span>
         <span>
           <font-awesome-icon :icon="'clock'" class="fa-fw" />
-          {{ getStringTime(article.updated_at) }}
+          {{ get_updated_at(article) }}
         </span>
         <b-button-group>
           <b-button
@@ -88,7 +88,6 @@ export default class ShowArticle extends Vue {
   client = aspida();
   fetch_status: FetchStatus = "idle";
   categories: Categories = {};
-  readonly getStringTime = getStringTime;
 
   mounted() {
     getCategories()
@@ -158,6 +157,18 @@ export default class ShowArticle extends Vue {
 
   get page_title_for_share() {
     return this.page_title + " - 第73回麻布学園文化祭";
+  }
+
+  get_author_name(article: BlogArticle) {
+    return article.author.name;
+  }
+
+  get_category_name(article: BlogArticle) {
+    return this.categories[article.category].name;
+  }
+
+  get_updated_at(article: BlogArticle) {
+    return getStringTime(article.updated_at);
   }
 }
 </script>
