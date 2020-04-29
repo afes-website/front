@@ -148,8 +148,12 @@ export default class AdminTop extends Vue {
   }
 
   admin_login() {
-    AdminAuth.attempt_get_JWT().then(() => {
-      this.load();
+    AdminAuth.strictValidateJWT(aspida()).then((is_valid) => {
+      if (!is_valid) {
+        AdminAuth.attempt_get_JWT().then(() => {
+          this.load();
+        });
+      }
     });
   }
 
@@ -159,8 +163,12 @@ export default class AdminTop extends Vue {
   }
 
   writer_login() {
-    WriterAuth.attempt_get_JWT().then(() => {
-      this.load();
+    WriterAuth.strictValidateJWT(aspida()).then((is_valid) => {
+      if (!is_valid) {
+        WriterAuth.attempt_get_JWT().then(() => {
+          this.load();
+        });
+      }
     });
   }
 
