@@ -124,6 +124,17 @@ module.exports = {
           }
         }
       },
+      VExpressionContainer(node) {
+        if (node.parent.type != "VElement") return; // check only mustache
+        if (node.expression === null) return;
+        if (!is_simple_expression(node.expression)) {
+          context.report({
+            node: node.expression,
+            loc: node.expression.loc,
+            message: "simple expressions are only allowed in mustaches",
+          });
+        }
+      },
     });
   },
 };
