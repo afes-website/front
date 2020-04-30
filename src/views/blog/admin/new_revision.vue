@@ -214,7 +214,6 @@ import * as Diff2Html from "diff2html";
 import ImageUploadModal from "@/components/ImageUploadModal.vue";
 import { get_image_url } from "@/apis/images/@utils";
 import Breadcrumb from "@/components/Breadcrumb.vue";
-import Token from "markdown-it/lib/token";
 
 @Component({ components: { FetchStatusIcon, ImageUploadModal, Breadcrumb } })
 export default class NewRevision extends Vue {
@@ -317,46 +316,11 @@ export default class NewRevision extends Vue {
   }
 
   rendered_md(md: string): string {
-    const tokens = Markdown.parse(md, {});
-    const tokens2txt = (tokens: Token[]) => {
-      return tokens
-        .map((token: Token): string => {
-          if (token.block) {
-            if (token.children !== null)
-              // children may be null despite the type definition
-              return tokens2txt(token.children) + "<br>";
-            else return "";
-          }
-          return token.content;
-        })
-        .join("");
-    };
-    return tokens2txt(tokens);
+    return Markdown.render_plaintext(md);
   }
 
   get_article_image(md: string) {
-    const tokens = Markdown.parse(md, {});
-    const get_first_img = (tokens: Token[]): string | null => {
-      return tokens.reduce((cur: string | null, token: Token):
-        | string
-        | null => {
-        if (cur !== null) return cur;
-        if (token.type === "image" && token.attrs !== null) {
-          return token.attrs.reduce((cur: string | null, attr: string[]) => {
-            if (cur !== null) return cur;
-            if (attr[0] == "src") return attr[1];
-            return null;
-          }, null);
-        }
-        if (token.children !== null) return get_first_img(token.children);
-        return null;
-      }, null);
-    };
-    const first_img_uri = get_first_img(tokens);
-    if (first_img_uri === null) return this.noImage;
-    if (first_img_uri.startsWith(process.env.VUE_APP_API_BASE_URL + "/images"))
-      return first_img_uri + "?h=150&w=150"; // out images support server-side-resizing
-    return first_img_uri;
+    return Markdown.get_first_image(md) || this.noImage;
   }
 
   readonly path_rule = /^[A-Za-z0-9_-]+$/;
