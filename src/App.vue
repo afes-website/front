@@ -108,10 +108,7 @@
               </li>
               <li>
                 <b-link :to="{ name: 'admin_top' }">ブログ管理</b-link>
-                <ul
-                  class="menu-secondary"
-                  v-if="this.$route.path.startsWith('/blog/admin')"
-                >
+                <ul class="menu-secondary" v-if="is_in_admin_route">
                   <template v-if="writer_logged_in">
                     <li>
                       <b-link :to="{ name: 'new_revision' }"
@@ -144,14 +141,14 @@
       <div
         id="main-box"
         :class="{
-          'main-box-wide': $route.path.startsWith('/blog/admin'),
-          'main-box-hide': $route.path === '/',
+          'main-box-wide': is_in_admin_route,
+          'main-box-hide': is_top_page,
         }"
       >
         <main>
           <router-view
             v-if="!show_404"
-            @not_found="show_404 = true"
+            @not_found="set_not_found"
           ></router-view>
           <not-found v-else></not-found>
         </main>
@@ -629,6 +626,18 @@ export default class Layout extends Vue {
   reload_login_status() {
     this.admin_logged_in = AdminAuth.getJWT() !== null;
     this.writer_logged_in = WriterAuth.getJWT() !== null;
+  }
+
+  get is_in_admin_route() {
+    return this.$route.path.startsWith("/blog/admin");
+  }
+
+  get is_top_page() {
+    return this.$route.path === "/";
+  }
+
+  set_not_found() {
+    this.show_404 = true;
   }
 }
 </script>

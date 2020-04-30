@@ -6,36 +6,39 @@
       <b-link
         :to="{
           name: 'show_article',
-          params: { category: article.category, id: article.id },
+          params: {
+            category: get_category(article),
+            id: get_id(article),
+          },
         }"
         class="card-wrap-link"
         v-for="article in shown_articles"
-        :key="article.id"
+        :key="get_id(article)"
       >
         <b-card
-          :img-src="get_article_image(article.content)"
+          :img-src="get_article_image(article)"
           img-alt="eye catch"
           img-left
         >
           <!-- TODO:add image -->
           <b-card-title>
-            {{ article.title }}
+            {{ get_title(article) }}
           </b-card-title>
           <b-card-sub-title>
             <span>
               <font-awesome-icon :icon="'user'" class="fa-fw" />
-              {{ article.author.name }}
+              {{ get_author_name(article) }}
             </span>
             <span v-if="!isCategorySpecified">
               <font-awesome-icon :icon="'folder'" class="fa-fw" />
-              {{ categories[article.category].name }}
+              {{ get_category_name(article) }}
             </span>
             <span>
               <font-awesome-icon :icon="'clock'" class="fa-fw" />
-              {{ getStringDate(article.updated_at) }}
+              {{ get_updated_at(article) }}
             </span>
           </b-card-sub-title>
-          <b-card-text v-html="rendered_md(article.content)" />
+          <b-card-text v-html="rendered_md(article)" />
         </b-card>
       </b-link>
     </div>
@@ -134,7 +137,6 @@ export default class ArticleList extends Vue {
   categories: Categories = {};
   readonly noImage = require("@/assets/no-image.svg");
   fetch_status: FetchStatus = "idle";
-  readonly getStringDate = getStringDate;
 
   perPage = 10;
 
@@ -228,7 +230,8 @@ export default class ArticleList extends Vue {
     return !!this.$route.params.category;
   }
 
-  rendered_md(md: string): string {
+  rendered_md(article: BlogArticle): string {
+    const md = article.content;
     const tokens = Markdown.parse(md, {});
     const tokens2txt = (tokens: Token[]) => {
       return tokens
@@ -246,7 +249,8 @@ export default class ArticleList extends Vue {
     return tokens2txt(tokens);
   }
 
-  get_article_image(md: string) {
+  get_article_image(article: BlogArticle) {
+    const md = article.content;
     const tokens = Markdown.parse(md, {});
     const get_first_img = (tokens: Token[]): string | null => {
       return tokens.reduce((cur: string | null, token: Token):
@@ -269,6 +273,30 @@ export default class ArticleList extends Vue {
     if (first_img_uri.startsWith(process.env.VUE_APP_API_BASE_URL + "/images"))
       return first_img_uri + "?h=150&w=150"; // out images support server-side-resizing
     return first_img_uri;
+  }
+
+  get_id(article: BlogArticle) {
+    return article.id;
+  }
+
+  get_category(article: BlogArticle) {
+    return article.category;
+  }
+
+  get_title(article: BlogArticle) {
+    return article.title;
+  }
+
+  get_author_name(article: BlogArticle) {
+    return article.author.name;
+  }
+
+  get_category_name(article: BlogArticle) {
+    return this.categories[article.category].name;
+  }
+
+  get_updated_at(article: BlogArticle) {
+    return getStringDate(article.updated_at);
   }
 }
 </script>

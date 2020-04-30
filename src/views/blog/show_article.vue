@@ -1,27 +1,27 @@
 <template>
   <article id="show-article">
-    <template v-if="article !== null">
+    <template v-if="found_article">
       <breadcrumb :text="page_title" />
       <h1>{{ page_title }}</h1>
       <div class="under-title">
         <span>
           <font-awesome-icon :icon="'user'" class="fa-fw" />
-          {{ article.author.name }}
+          {{ get_author_name(article) }}
         </span>
         <span>
           <font-awesome-icon :icon="'folder'" class="fa-fw" />
-          {{ categories[article.category].name }}
+          {{ get_category_name(article) }}
         </span>
         <span>
           <font-awesome-icon :icon="'clock'" class="fa-fw" />
-          {{ getStringTime(article.updated_at) }}
+          {{ get_updated_at(article) }}
         </span>
         <b-button-group>
           <b-button
             variant="secondary"
             size="sm"
             v-if="can_edit"
-            :to="{ name: 'new_revision', query: { path: article.id } }"
+            :to="{ name: 'new_revision', query: { path: article_id } }"
           >
             <font-awesome-icon icon="edit" class="fa-fw" />
             編集
@@ -30,7 +30,7 @@
             variant="secondary"
             size="sm"
             v-if="can_manage"
-            :to="{ name: 'manage_path', params: { id: article.id } }"
+            :to="{ name: 'manage_path', params: { id: article_id } }"
           >
             <font-awesome-icon icon="wrench" class="fa-fw" />
             管理
@@ -38,7 +38,7 @@
         </b-button-group>
       </div>
       <div class="main-content" v-html="rendered_md" />
-      <share-buttons :title="page_title + ' - 第73回麻布学園文化祭'" />
+      <share-buttons :title="page_title_for_share" />
     </template>
     <template v-else>
       <p>{{ fetch_status }}</p>
@@ -90,7 +90,6 @@ export default class ShowArticle extends Vue {
   client = aspida();
   fetch_status: FetchStatus = "idle";
   categories: Categories = {};
-  readonly getStringTime = getStringTime;
 
   mounted() {
     getCategories()
@@ -147,6 +146,31 @@ export default class ShowArticle extends Vue {
 
   get can_manage() {
     return AdminAuth.getJWT() !== null;
+  }
+
+  get found_article() {
+    return this.article !== null;
+  }
+
+  get article_id() {
+    if (this.article === null) return null;
+    return this.article.id;
+  }
+
+  get page_title_for_share() {
+    return this.page_title + " - 第73回麻布学園文化祭";
+  }
+
+  get_author_name(article: BlogArticle) {
+    return article.author.name;
+  }
+
+  get_category_name(article: BlogArticle) {
+    return this.categories[article.category].name;
+  }
+
+  get_updated_at(article: BlogArticle) {
+    return getStringTime(article.updated_at);
   }
 }
 </script>

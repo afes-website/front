@@ -9,7 +9,7 @@
       </b-form-invalid-feedback>
     </p>
     <p>
-      <b-button @click="load" :disabled="article_path === ''">
+      <b-button @click="load" :disabled="is_article_path_empty">
         記事情報を読みこむ
         <fetch-status-icon :status="fetch_status" />
       </b-button>
@@ -17,7 +17,7 @@
     <p>
       title:<b-input
         v-model="article_title"
-        @change="ogimage_title = article_title"
+        @change="apply_ogimage_title"
         :state="!!article_title"
       />
       <b-form-invalid-feedback v-if="!article_title">
@@ -27,7 +27,7 @@
     <b-tabs>
       <b-tab title="編集" active>
         <div class="toolbar">
-          <b-button @click="image_upload_modal_shown = true">
+          <b-button @click="show_image_upload_modal">
             画像を追加
           </b-button>
         </div>
@@ -81,11 +81,7 @@
         <small class="text-muted">
           SNSで共有されたときのサムネイルのプレビュー
         </small>
-        <img
-          v-if="!!ogimage_title"
-          :src="`https://api.afes.info/ogimage/preview?title=${ogimage_title}&author=author&category=category`"
-          alt=""
-        />
+        <img v-if="!!ogimage_title" :src="ogimage_url" alt="" />
         <div v-else>
           <small class="text-danger">
             タイトルを指定してください。
@@ -100,7 +96,7 @@
       @click="post"
       variant="theme-dark"
       class="mt-3 mb-2"
-      :disabled="article_path === '' || article_title === ''"
+      :disabled="!can_post"
     >
       post
       <fetch-status-icon :status="status" small />
@@ -366,6 +362,26 @@ export default class NewRevision extends Vue {
   readonly path_rule = /^[A-Za-z0-9_-]+$/;
   get is_valid_path() {
     return this.path_rule.test(this.article_path);
+  }
+
+  get is_article_path_empty() {
+    return this.article_path === "";
+  }
+
+  apply_ogimage_title() {
+    this.ogimage_title = this.article_title;
+  }
+
+  show_image_upload_modal() {
+    this.image_upload_modal_shown = true;
+  }
+
+  get ogimage_url() {
+    return `https://api.afes.info/ogimage/preview?title=${this.ogimage_title}&author=author&category=category`;
+  }
+
+  get can_post() {
+    return this.article_path !== "" && this.article_title !== "";
   }
 }
 </script>
