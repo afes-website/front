@@ -5,11 +5,11 @@
     <section class="profile">
       <h3>管理者ユーザ</h3>
       <font-awesome-icon icon="user-shield" class="fa-fw" />
-      <template v-if="this.admin_user !== null">
-        <span class="name">{{ this.admin_user.name }}</span>
-        <span class="id">@{{ this.admin_user.id }}</span>
+      <template v-if="admin_logged_in()">
+        <span class="name">{{ admin_user_name }}</span>
+        <span class="id">@{{ admin_user_id }}</span>
         <b-button
-          @click="admin_password_modal_shown = true"
+          @click="show_admin_password_modal"
           size="sm"
           variant="outline-info"
         >
@@ -20,7 +20,7 @@
           ログアウト
         </b-button>
       </template>
-      <b-button v-else @click="admin_login" size="sm" variant="primary">
+      <b-button v-else @click="admin_login" size="sm" variant="theme-dark">
         <font-awesome-icon :icon="'sign-in-alt'" class="fa-fw" />
         ログイン
       </b-button>
@@ -28,11 +28,11 @@
     <section class="profile">
       <h3>一般ユーザ</h3>
       <font-awesome-icon icon="user-edit" class="fa-fw" />
-      <template v-if="this.writer_user !== null">
-        <span class="name">{{ this.writer_user.name }}</span>
-        <span class="id">@{{ this.writer_user.id }}</span>
+      <template v-if="writer_logged_in()">
+        <span class="name">{{ writer_user_name }}</span>
+        <span class="id">@{{ writer_user_id }}</span>
         <b-button
-          @click="writer_password_modal_shown = true"
+          @click="show_writer_password_modal"
           size="sm"
           variant="outline-info"
         >
@@ -43,7 +43,7 @@
           ログアウト
         </b-button>
       </template>
-      <b-button v-else @click="writer_login" size="sm" variant="primary">
+      <b-button v-else @click="writer_login" size="sm" variant="theme-dark">
         <font-awesome-icon :icon="'sign-in-alt'" class="fa-fw" />
         ログイン
       </b-button>
@@ -185,6 +185,30 @@ export default class AdminTop extends Vue {
   writer_logged_in() {
     // same as below
     return WriterAuth.getJWT() !== null;
+  }
+
+  show_admin_password_modal() {
+    this.admin_password_modal_shown = true;
+  }
+
+  show_writer_password_modal() {
+    this.writer_password_modal_shown = true;
+  }
+
+  get admin_user_name() {
+    return this.admin_user?.name;
+  }
+
+  get admin_user_id() {
+    return this.admin_user?.id;
+  }
+
+  get writer_user_name() {
+    return this.writer_user?.name;
+  }
+
+  get writer_user_id() {
+    return this.writer_user?.id;
   }
 }
 </script>

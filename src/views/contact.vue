@@ -5,7 +5,7 @@
     <b-form @submit="send" v-show="!submitted">
       <b-form-group label="該当するものを選択してください:">
         <b-form-select
-          v-model="data.type"
+          v-model="kind"
           :options="typeOptions"
           required
           :state="isTypeValid"
@@ -18,7 +18,7 @@
       <b-form-group description="返信が必要な場合はご記入ください">
         <b-form-input
           type="email"
-          v-model="data.email"
+          v-model="email"
           placeholder="email (example@afes.info)"
           :state="isEmailValid"
           aria-describedby="input-email-feedback"
@@ -29,7 +29,7 @@
       </b-form-group>
       <b-form-group>
         <b-form-input
-          v-model="data.title"
+          v-model="title"
           placeholder="件名"
           required
           :state="isTitleValid"
@@ -41,7 +41,7 @@
       </b-form-group>
       <b-form-group>
         <b-form-textarea
-          v-model="data.message"
+          v-model="message"
           placeholder="お問い合わせ内容"
           rows="3"
           required
@@ -52,13 +52,7 @@
           必須です。
         </b-form-invalid-feedback>
       </b-form-group>
-      <b-button
-        type="submit"
-        variant="primary"
-        :disabled="
-          !(isTypeValid && isEmailValid && isTypeValid && isMessageValid)
-        "
-      >
+      <b-button type="submit" variant="primary" :disabled="!can_submit">
         送信
       </b-button>
     </b-form>
@@ -84,12 +78,10 @@ export default class Contact extends Vue {
   readonly page_title = "お問い合わせ";
   submitted = false;
 
-  data = {
-    type: "",
-    email: "",
-    title: "",
-    message: "",
-  };
+  kind = "";
+  email = "";
+  title = "";
+  message = "";
 
   readonly typeOptions = [
     "麻布に受験する事を考えている小学生とそのご家族",
@@ -101,16 +93,25 @@ export default class Contact extends Vue {
   ];
 
   get isTypeValid() {
-    return !!this.data.type.length;
+    return !!this.kind.length;
   }
   get isEmailValid() {
-    return this.data.email ? this.regEx.email.test(this.data.email) : "none";
+    return this.email ? this.regEx.email.test(this.email) : "none";
   }
   get isTitleValid() {
-    return !!this.data.title.length;
+    return !!this.title.length;
   }
   get isMessageValid() {
-    return !!this.data.message.length;
+    return !!this.message.length;
+  }
+
+  get can_submit() {
+    return (
+      this.isTypeValid &&
+      this.isEmailValid &&
+      this.isTitleValid &&
+      this.isMessageValid
+    );
   }
 
   readonly regEx = {
@@ -137,19 +138,19 @@ export default class Contact extends Vue {
 
     type.type = "hidden";
     type.name = "entry.1122193291";
-    type.value = this.data.type;
+    type.value = this.kind;
 
     mail.type = "hidden";
     mail.name = "entry.866765801";
-    mail.value = this.data.email;
+    mail.value = this.email;
 
     title.type = "hidden";
     title.name = "entry.661091479";
-    title.value = this.data.title;
+    title.value = this.title;
 
     message.type = "hidden";
     message.name = "entry.1526564238";
-    message.value = this.data.message;
+    message.value = this.message;
 
     form.appendChild(type);
     form.appendChild(mail);
