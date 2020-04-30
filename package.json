@@ -30,7 +30,7 @@
     "core-js": "^3.4.3",
     "diff2html": "^3.1.6",
     "difflib": "^0.2.4",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "js-cookie": "^2.2.1",
     "markdown-it": "^10.0.0",
     "markdown-it-checkbox": "^1.1.0",
