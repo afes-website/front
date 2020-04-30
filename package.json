@@ -21,6 +21,7 @@
     "@types/jquery": "^3.3.36",
     "@types/js-cookie": "^2.2.6",
     "@types/markdown-it": "^10.0.1",
+    "@types/punycode": "^2.1.0",
     "@typescript-eslint/eslint-plugin": "^2.30.0",
     "@typescript-eslint/parser": "^2.30.0",
     "aspida": "^0.15.1",
