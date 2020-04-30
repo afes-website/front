@@ -52,12 +52,7 @@
         <div v-html="rendered_content"></div>
         <hr />
         <h3>card preview</h3>
-        <b-card
-          :img-src="get_article_image(content)"
-          img-alt="eye catch"
-          img-left
-          class="mb-3"
-        >
+        <b-card :img-src="card_image" img-alt="eye catch" img-left class="mb-3">
           <b-card-title>
             {{ article_title }}
           </b-card-title>
@@ -75,7 +70,7 @@
               yyyy/mm/dd
             </span>
           </b-card-sub-title>
-          <b-card-text v-html="rendered_md(content)" />
+          <b-card-text v-html="card_text" />
         </b-card>
         <h3>og:image preview</h3>
         <small class="text-muted">
@@ -315,12 +310,12 @@ export default class NewRevision extends Vue {
     });
   }
 
-  rendered_md(md: string): string {
-    return Markdown.render_plaintext(md);
+  get card_text(): string {
+    return Markdown.render_plaintext(this.content);
   }
 
-  get_article_image(md: string) {
-    return Markdown.get_first_image(md) || this.noImage;
+  get card_image() {
+    return Markdown.get_first_image(this.content) || this.noImage;
   }
 
   readonly path_rule = /^[A-Za-z0-9_-]+$/;

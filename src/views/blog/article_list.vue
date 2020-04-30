@@ -15,11 +15,7 @@
         v-for="article in shown_articles"
         :key="get_id(article)"
       >
-        <b-card
-          :img-src="get_article_image(article)"
-          img-alt="eye catch"
-          img-left
-        >
+        <b-card :img-src="get_card_image(article)" img-alt="eye catch" img-left>
           <!-- TODO:add image -->
           <b-card-title>
             {{ get_title(article) }}
@@ -38,7 +34,7 @@
               {{ get_updated_at(article) }}
             </span>
           </b-card-sub-title>
-          <b-card-text v-html="rendered_md(article)" />
+          <b-card-text v-html="get_card_text(article)" />
         </b-card>
       </b-link>
     </div>
@@ -229,11 +225,11 @@ export default class ArticleList extends Vue {
     return !!this.$route.params.category;
   }
 
-  rendered_md(article: BlogArticle): string {
+  get_card_text(article: BlogArticle): string {
     return Markdown.render_plaintext(article.content);
   }
 
-  get_article_image(article: BlogArticle) {
+  get_card_image(article: BlogArticle) {
     return Markdown.get_first_image(article.content) || this.noImage;
   }
 
