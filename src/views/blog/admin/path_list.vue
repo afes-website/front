@@ -28,30 +28,28 @@
             {{ route }}
             <b-badge
               variant="warning"
-              v-if="path.waiting_count != 0"
+              v-if="has_waiting(path)"
               v-b-tooltip.hover
-              :title="'has ' + path.waiting_count + ' waiting revisions'"
+              :title="format_waiting_revision_msg(path)"
               class="ml-1"
             >
-              {{ path.waiting_count }}
+              {{ get_waiting_count(path) }}
             </b-badge>
           </b-th>
-          <b-td>{{ path.title || "-" }}</b-td>
-          <b-td>{{
-            path.category ? categories[path.category].name : "-"
-          }}</b-td>
+          <b-td>{{ get_title(path) }}</b-td>
+          <b-td>{{ get_category_name(path) }}</b-td>
           <b-td class="td-time">
-            {{ getStringTime(path.created_at) || "-" }}
+            {{ get_create_time(path) }}
           </b-td>
           <b-td class="td-time">
-            {{ getStringTime(path.updated_at) || "-" }}
+            {{ get_update_time(path) }}
           </b-td>
           <b-td class="td-icon">
             <b-link
-              v-if="path.category"
+              v-if="get_category(path)"
               :to="{
                 name: 'show_article',
-                params: { category: path.category, id: route },
+                params: { category: get_category(path), id: route },
               }"
             >
               <font-awesome-icon :icon="'file'" class="fa-fw fa-2x" />
@@ -148,7 +146,6 @@ export default class PathList extends Vue {
   paths: { [key: string]: Path } = {};
   client = aspida();
   categories: Categories = {};
-  readonly getStringTime = getStringTime;
 
   fetch_status: FetchStatus = "idle";
 
@@ -216,6 +213,38 @@ export default class PathList extends Vue {
       name: "manage_path",
       params: { id: route },
     });
+  }
+
+  has_waiting(path: Path) {
+    return path.waiting_count != 0;
+  }
+
+  format_waiting_revision_msg(path: Path) {
+    return "has " + path.waiting_count + " waiting revisions";
+  }
+
+  get_category(path: Path) {
+    return path.category;
+  }
+
+  get_waiting_count(path: Path) {
+    return path.waiting_count;
+  }
+
+  get_title(path: Path) {
+    return path.title || "-";
+  }
+
+  get_category_name(path: Path) {
+    return path.category ? this.categories[path.category].name : "-";
+  }
+
+  get_create_time(path: Path) {
+    return path.created_at ? getStringTime(path.created_at) : "-";
+  }
+
+  get_update_time(path: Path) {
+    return path.updated_at ? getStringTime(path.updated_at) : "-";
   }
 }
 </script>

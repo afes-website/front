@@ -1,23 +1,15 @@
 <template>
   <article id="show-revision">
-    <template v-if="revision !== null">
+    <template v-if="found_revision">
       <breadcrumb :text="page_title" />
       <b-alert show variant="info">
         この投稿はプレビューです。<br />
-        <b-badge
-          :variant="
-            revision.status === 'accepted'
-              ? 'success'
-              : revision.status === 'waiting'
-              ? 'secondary'
-              : 'danger'
-          "
-        >
-          {{ revision.status }}
+        <b-badge :variant="status_color">
+          {{ status }}
         </b-badge>
         <span>
           <font-awesome-icon icon="file" class="fa-fw" />
-          {{ revision.article_id }}
+          {{ article_id }}
         </span>
       </b-alert>
       <h1>{{ page_title }}</h1>
@@ -25,11 +17,11 @@
         <p>
           <span>
             <font-awesome-icon :icon="'user'" class="fa-fw" />
-            {{ revision.author.name }}
+            {{ author_name }}
           </span>
           <span>
             <font-awesome-icon :icon="'clock'" class="fa-fw" />
-            {{ getStringTime(revision.timestamp) }}
+            {{ timestamp }}
           </span>
         </p>
       </div>
@@ -86,7 +78,6 @@ export default class ShowRevision extends Vue {
   revision: BlogRevision | null = null;
   client = aspida();
   fetch_status: FetchStatus = "idle";
-  readonly getStringTime = getStringTime;
 
   mounted() {
     this.load();
@@ -128,6 +119,41 @@ export default class ShowRevision extends Vue {
   get rendered_md(): string | null {
     if (this.revision == null) return null;
     return Markdown.render(this.revision.content);
+  }
+
+  get found_revision() {
+    return this.revision !== null;
+  }
+
+  get status_color() {
+    if (this.revision === null) return "";
+    switch (this.revision.status) {
+      case "accepted":
+        return "success";
+      case "rejected":
+        return "secondary";
+      case "waiting":
+        return "";
+    }
+    return "";
+  }
+
+  get status() {
+    return this.revision?.status;
+  }
+
+  get article_id() {
+    return this.revision?.article_id;
+  }
+
+  get author_name() {
+    return this.revision?.author.name;
+  }
+
+  get timestamp() {
+    return this.revision === null
+      ? null
+      : getStringTime(this.revision.timestamp);
   }
 }
 </script>
