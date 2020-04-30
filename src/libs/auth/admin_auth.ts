@@ -15,6 +15,20 @@ function getJWT(): JWT | null {
   return jwt;
 }
 
+function strictValidateJWT(client: AspidaClient<AxiosRequestConfig>) {
+  const jwt = getJWT();
+  if (jwt === null) return Promise.resolve(false);
+  return new Promise((s) => {
+    api(client)
+      .admin.user.$get({ headers: { "X-ADMIN-TOKEN": jwt.content } })
+      .then(() => s(true))
+      .catch(() => {
+        Cookie.remove("admin_token");
+        s(false);
+      });
+  });
+}
+
 function attempt_get_JWT(): Promise<JWT> {
   return new Promise((s, r) => {
     const ret = getJWT();
@@ -66,4 +80,11 @@ function change_password(
     });
 }
 
-export default { getJWT, login, logout, change_password, attempt_get_JWT };
+export default {
+  getJWT,
+  strictValidateJWT,
+  login,
+  logout,
+  change_password,
+  attempt_get_JWT,
+};
