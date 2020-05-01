@@ -98,6 +98,8 @@ function _get_title($uri) {
       return '資料庫';
     case '/blog':
       return '近況 記事一覧';
+    case '/blog/newContrib':
+      return '新規寄稿';
     // Admin routes are disabled
     // case '/blog/admin':
     //   return 'ブログ管理';
