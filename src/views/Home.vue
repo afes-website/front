@@ -84,7 +84,7 @@
               </b-td>
               <b-td class="table-nowrap">
                 <font-awesome-icon :icon="'folder'" class="fa-fw" />
-                {{ getCategoryName }}
+                {{ getCategoryName(article) }}
               </b-td>
               <b-td class="mobile-none">
                 <font-awesome-icon :icon="'user'" class="fa-fw" />
