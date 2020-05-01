@@ -15,11 +15,7 @@
         v-for="article in shown_articles"
         :key="get_id(article)"
       >
-        <b-card
-          :img-src="get_article_image(article)"
-          img-alt="eye catch"
-          img-left
-        >
+        <b-card :img-src="get_card_image(article)" img-alt="eye catch" img-left>
           <!-- TODO:add image -->
           <b-card-title>
             {{ get_title(article) }}
@@ -38,7 +34,7 @@
               {{ get_updated_at(article) }}
             </span>
           </b-card-sub-title>
-          <b-card-text v-html="rendered_md(article)" />
+          <b-card-text v-html="get_card_text(article)" />
         </b-card>
       </b-link>
     </div>
@@ -124,7 +120,6 @@ import { BlogArticle, BlogArticleParameter } from "@/apis/blog/articles/@types";
 import Markdown from "@/libs/markdown";
 import { Categories } from "@/apis/blog/categories/@types";
 import getCategories from "@/libs/categories";
-import Token from "markdown-it/lib/token";
 import Breadcrumb from "@/components/Breadcrumb.vue";
 import FetchStatus from "@/libs/fetch_status";
 import { getStringDate } from "@/libs/string_date";
@@ -230,49 +225,12 @@ export default class ArticleList extends Vue {
     return !!this.$route.params.category;
   }
 
-  rendered_md(article: BlogArticle): string {
-    const md = article.content;
-    const tokens = Markdown.parse(md, {});
-    const tokens2txt = (tokens: Token[]) => {
-      return tokens
-        .map((token: Token): string => {
-          if (token.block) {
-            if (token.children !== null)
-              // children may be null despite the type definition
-              return tokens2txt(token.children) + "<br>";
-            else return "";
-          }
-          return token.content;
-        })
-        .join("");
-    };
-    return tokens2txt(tokens);
+  get_card_text(article: BlogArticle): string {
+    return Markdown.render_plaintext(article.content);
   }
 
-  get_article_image(article: BlogArticle) {
-    const md = article.content;
-    const tokens = Markdown.parse(md, {});
-    const get_first_img = (tokens: Token[]): string | null => {
-      return tokens.reduce((cur: string | null, token: Token):
-        | string
-        | null => {
-        if (cur !== null) return cur;
-        if (token.type === "image" && token.attrs !== null) {
-          return token.attrs.reduce((cur: string | null, attr: string[]) => {
-            if (cur !== null) return cur;
-            if (attr[0] == "src") return attr[1];
-            return null;
-          }, null);
-        }
-        if (token.children !== null) return get_first_img(token.children);
-        return null;
-      }, null);
-    };
-    const first_img_uri = get_first_img(tokens);
-    if (first_img_uri === null) return this.noImage;
-    if (first_img_uri.startsWith(process.env.VUE_APP_API_BASE_URL + "/images"))
-      return first_img_uri + "?h=150&w=150"; // out images support server-side-resizing
-    return first_img_uri;
+  get_card_image(article: BlogArticle) {
+    return Markdown.get_first_image(article.content) || this.noImage;
   }
 
   get_id(article: BlogArticle) {
