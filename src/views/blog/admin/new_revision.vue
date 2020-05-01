@@ -341,7 +341,7 @@ export default class NewRevision extends Vue {
         | string
         | null => {
         if (cur !== null) return cur;
-        if (token.type === "image") {
+        if (token.type === "image" && token.attrs !== null) {
           return token.attrs.reduce((cur: string | null, attr: string[]) => {
             if (cur !== null) return cur;
             if (attr[0] == "src") return attr[1];
