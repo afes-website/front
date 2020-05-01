@@ -375,7 +375,7 @@ export default class Home extends Vue {
   }
 
   getCategoryName(article: BlogArticle) {
-    return this.categories[article.category];
+    return this.categories[article.category].name;
   }
 
   getAuthorName(article: BlogArticle) {
