@@ -40,6 +40,14 @@ const routes = [
       import(/* webpackChunkName: "document" */ "@/views/document.vue"),
   },
   {
+    path: "/blog/newContrib",
+    name: "new_contrib",
+    component: () =>
+      import(
+        /* webpackChunkName: "new_contrib" */ "@/views/blog/new_contrib.vue"
+      ),
+  },
+  {
     path: "/blog/admin",
     name: "admin_top",
     component: () =>

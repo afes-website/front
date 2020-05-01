@@ -9,7 +9,7 @@
       </b-form-invalid-feedback>
     </p>
     <p>
-      <b-button @click="load" :disabled="article_path === ''">
+      <b-button @click="load" :disabled="is_article_path_empty">
         記事情報を読みこむ
         <fetch-status-icon :status="fetch_status" />
       </b-button>
@@ -17,7 +17,7 @@
     <p>
       title:<b-input
         v-model="article_title"
-        @change="ogimage_title = article_title"
+        @change="apply_ogimage_title"
         :state="!!article_title"
       />
       <b-form-invalid-feedback v-if="!article_title">
@@ -27,7 +27,7 @@
     <b-tabs>
       <b-tab title="編集" active>
         <div class="toolbar">
-          <b-button @click="image_upload_modal_shown = true">
+          <b-button @click="show_image_upload_modal">
             画像を追加
           </b-button>
         </div>
@@ -52,12 +52,7 @@
         <div v-html="rendered_content"></div>
         <hr />
         <h3>card preview</h3>
-        <b-card
-          :img-src="get_article_image(content)"
-          img-alt="eye catch"
-          img-left
-          class="mb-3"
-        >
+        <b-card :img-src="card_image" img-alt="eye catch" img-left class="mb-3">
           <b-card-title>
             {{ article_title }}
           </b-card-title>
@@ -75,17 +70,13 @@
               yyyy/mm/dd
             </span>
           </b-card-sub-title>
-          <b-card-text v-html="rendered_md(content)" />
+          <b-card-text v-html="card_text" />
         </b-card>
         <h3>og:image preview</h3>
         <small class="text-muted">
           SNSで共有されたときのサムネイルのプレビュー
         </small>
-        <img
-          v-if="!!ogimage_title"
-          :src="`https://api.afes.info/ogimage/preview?title=${ogimage_title}&author=author&category=category`"
-          alt=""
-        />
+        <img v-if="!!ogimage_title" :src="ogimage_url" alt="" />
         <div v-else>
           <small class="text-danger">
             タイトルを指定してください。
@@ -98,9 +89,9 @@
     </b-tabs>
     <b-button
       @click="post"
-      variant="primary"
+      variant="theme-dark"
       class="mt-3 mb-2"
-      :disabled="article_path === '' || article_title === ''"
+      :disabled="!can_post"
     >
       post
       <fetch-status-icon :status="status" small />
@@ -218,7 +209,6 @@ import * as Diff2Html from "diff2html";
 import ImageUploadModal from "@/components/ImageUploadModal.vue";
 import { get_image_url } from "@/apis/images/@utils";
 import Breadcrumb from "@/components/Breadcrumb.vue";
-import Token from "markdown-it/lib/token";
 
 @Component({ components: { FetchStatusIcon, ImageUploadModal, Breadcrumb } })
 export default class NewRevision extends Vue {
@@ -320,52 +310,37 @@ export default class NewRevision extends Vue {
     });
   }
 
-  rendered_md(md: string): string {
-    const tokens = Markdown.parse(md, {});
-    const tokens2txt = (tokens: Token[]) => {
-      return tokens
-        .map((token: Token): string => {
-          if (token.block) {
-            if (token.children !== null)
-              // children may be null despite the type definition
-              return tokens2txt(token.children) + "<br>";
-            else return "";
-          }
-          return token.content;
-        })
-        .join("");
-    };
-    return tokens2txt(tokens);
+  get card_text(): string {
+    return Markdown.render_plaintext(this.content);
   }
 
-  get_article_image(md: string) {
-    const tokens = Markdown.parse(md, {});
-    const get_first_img = (tokens: Token[]): string | null => {
-      return tokens.reduce((cur: string | null, token: Token):
-        | string
-        | null => {
-        if (cur !== null) return cur;
-        if (token.type === "image") {
-          return token.attrs.reduce((cur: string | null, attr: string[]) => {
-            if (cur !== null) return cur;
-            if (attr[0] == "src") return attr[1];
-            return null;
-          }, null);
-        }
-        if (token.children !== null) return get_first_img(token.children);
-        return null;
-      }, null);
-    };
-    const first_img_uri = get_first_img(tokens);
-    if (first_img_uri === null) return this.noImage;
-    if (first_img_uri.startsWith(process.env.VUE_APP_API_BASE_URL + "/images"))
-      return first_img_uri + "?h=150&w=150"; // out images support server-side-resizing
-    return first_img_uri;
+  get card_image() {
+    return Markdown.get_first_image(this.content) || this.noImage;
   }
 
   readonly path_rule = /^[A-Za-z0-9_-]+$/;
   get is_valid_path() {
     return this.path_rule.test(this.article_path);
+  }
+
+  get is_article_path_empty() {
+    return this.article_path === "";
+  }
+
+  apply_ogimage_title() {
+    this.ogimage_title = this.article_title;
+  }
+
+  show_image_upload_modal() {
+    this.image_upload_modal_shown = true;
+  }
+
+  get ogimage_url() {
+    return `https://api.afes.info/ogimage/preview?title=${this.ogimage_title}&author=author&category=category`;
+  }
+
+  get can_post() {
+    return this.article_path !== "" && this.article_title !== "";
   }
 }
 </script>

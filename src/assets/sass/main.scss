@@ -155,5 +155,12 @@ hr {
   }
 }
 
+// ==== Bootstrap force overwrite ====
+
+.page-item.active .page-link {
+  background: $theme-dark !important;
+  border-color: $theme-dark !important;
+}
+
 @import "~bootstrap";
 @import "~bootstrap-vue";
