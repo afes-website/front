@@ -84,7 +84,7 @@
               </b-td>
               <b-td class="table-nowrap">
                 <font-awesome-icon :icon="'folder'" class="fa-fw" />
-                {{ getCategoryName }}
+                {{ getCategoryName(article) }}
               </b-td>
               <b-td class="mobile-none">
                 <font-awesome-icon :icon="'user'" class="fa-fw" />
@@ -375,7 +375,7 @@ export default class Home extends Vue {
   }
 
   getCategoryName(article: BlogArticle) {
-    return this.categories[article.category];
+    return this.categories[article.category].name;
   }
 
   getAuthorName(article: BlogArticle) {
