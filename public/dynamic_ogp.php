@@ -27,7 +27,7 @@ function main() {
   print_meta('og:country-name', 'Japan');
   print_meta('og:email', 'contact@afes.info');
   print_meta('og:description',
-    '第73回麻布学園文化祭公式ウェブサイトです。2020年6月12日～14日に開催予定。当日の展示に関する情報や、日々の活動の様子などを掲載しています。');
+    '第73回麻布学園文化祭公式ウェブサイトです。新型コロナウイルス感染症（COVID-19）の流行状況により、２学期以降への無期限延期となりました。当日の展示に関する情報や、日々の活動の様子などを掲載しています。');
 }
 
 function should_support_ogp() {
