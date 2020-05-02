@@ -10,7 +10,7 @@
             style="line-height: 1.7; font-size: 0.95rem;"
           >
             新型コロナウイルス感染症の流行を考慮し、開催を<b>２学期以降への無期限延期</b>といたします。<br />
-            最終的な決定は、文実内、或いは全校によって行います。予めご了承ください。
+            最終的な決定は、文実内、或いは全校によって行う予定です。
             <b-link to="/blog/news/re-reschedule" class="alert-link">
               詳細はこちら
             </b-link>
