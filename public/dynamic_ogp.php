@@ -31,8 +31,8 @@ function main() {
 }
 
 function should_support_ogp() {
-  // User Agent Data from https://crieit.net/posts/OGP-Twitter-LINE-8
   switch ($_SERVER['HTTP_USER_AGENT']) {
+    // User Agent Data from https://crieit.net/posts/OGP-Twitter-LINE-8
     case 'Twitterbot/1.0':
     case 'facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)':
     case 'facebookexternalhit/1.1;line-poker/1.0':
@@ -41,6 +41,7 @@ function should_support_ogp() {
     case 'Mozilla/5.0 (Windows NT 6.1; WOW64) SkypeUriPreview Preview/0.5':
     case 'Slackbot-LinkExpanding 1.0 (+https://api.slack.com/robots)':
     case 'Mozilla/5.0 (compatible; PlurkBot/1.0; +https://www.plurk.com/) Firefox/61.0':
+    case 'notebot': // additional note.com
       return true;
   }
   return false;

@@ -7,6 +7,7 @@
       "text": "第73回麻布中学校･高等学校文化祭は、新型コロナウイルス感染拡大防止のため、２学期以降への無期限延期とします。最終的な決定は、文実内、あるいは全校によって行います。",
       "newsUpdatesAndGuidelines": "https://afes.info/blog/news/re-reschedule",
       "datePosted": "2020-05-02T19:00+0900",
+      "expires": "2020-09-01T10:00+0900",
       "category": "https://www.wikidata.org/wiki/Q81068910",
       "announcementLocation": {
         "@type": "LocalBusiness",
