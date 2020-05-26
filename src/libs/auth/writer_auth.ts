@@ -6,6 +6,7 @@ import api from "@/apis/$api";
 import { AspidaClient } from "aspida";
 import { AxiosRequestConfig } from "axios";
 import EventHub from "./writer_auth_eventhub";
+import aspida from "@aspida/axios";
 
 function getJWT(): JWT | null {
   const writer_token = Cookie.get("writer_token");
@@ -30,19 +31,21 @@ function strictValidateJWT(client: AspidaClient<AxiosRequestConfig>) {
 }
 
 function attempt_get_JWT(): Promise<JWT> {
-  return new Promise((s, r) => {
-    const ret = getJWT();
-    if (ret) {
-      s(ret);
-      return;
+  return strictValidateJWT(aspida()).then((r) => {
+    if (r) {
+      const ret = getJWT();
+      if (ret) {
+        return ret;
+      }
     }
-
-    EventHub.emitOpenModal();
-    EventHub.onLoginSuccess(() => {
-      attempt_get_JWT().then(s); // login success
-    });
-    EventHub.onLoginFail(() => {
-      r();
+    return new Promise((s, r) => {
+      EventHub.emitOpenModal();
+      EventHub.onLoginSuccess(() => {
+        attempt_get_JWT().then(s); // login success
+      });
+      EventHub.onLoginFail(() => {
+        r();
+      });
     });
   });
 }
