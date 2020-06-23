@@ -583,8 +583,6 @@ export default class Layout extends Vue {
   writer_logged_in = false;
   categories: Categories = {};
 
-  height = 0;
-
   readonly instagramIcon = require("@/assets/sns/instagram.svg");
   readonly azabuIcon = require("@/assets/sns/azabu.svg");
 
@@ -609,8 +607,8 @@ export default class Layout extends Vue {
   }
 
   resize() {
-    this.height = window.innerHeight;
-    document.documentElement.style.setProperty("--vh", `${this.height}px`);
+    const height = window.innerHeight;
+    document.documentElement.style.setProperty("--vh", `${height}px`);
   }
 
   show() {
