@@ -593,6 +593,7 @@ export default class Layout extends Vue {
   mounted() {
     this.resize();
     this.refs.mainWrapper.addEventListener("scroll", this.resize);
+    window.addEventListener("resize", this.resize);
 
     this.reload_login_status();
     getCategories().then((data) => {
@@ -601,6 +602,7 @@ export default class Layout extends Vue {
   }
   destroyed() {
     this.refs.mainWrapper.removeEventListener("scroll", this.resize);
+    window.removeEventListener("resize", this.resize);
   }
 
   @Watch("$route")
