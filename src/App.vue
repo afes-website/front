@@ -137,7 +137,7 @@
         ></div>
       </div>
     </header>
-    <div id="main-wrapper">
+    <div id="main-wrapper" @scroll="resize">
       <div
         id="main-box"
         :class="{
@@ -175,7 +175,7 @@
 
 <style lang="scss" scoped>
 #app {
-  height: 100vh;
+  height: var(--vh);
   margin: 0;
   display: flex;
 }
@@ -208,7 +208,7 @@ header {
   width: 16rem;
   min-width: 16rem;
   padding: 1.5rem 0 0 3rem;
-  height: 100vh;
+  height: var(--vh);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -316,7 +316,7 @@ header {
 
 #main-wrapper {
   flex-grow: 1;
-  height: 100vh;
+  height: var(--vh);
   overflow: auto;
   padding: 0;
 
@@ -325,7 +325,7 @@ header {
     padding: 1rem 1.5rem;
     margin: 0 auto 0 3rem;
     background: rgba(#fff, 0.9);
-    min-height: 100vh;
+    min-height: var(--vh);
     height: max-content;
 
     display: flex;
@@ -453,7 +453,7 @@ header {
           position: fixed;
           left: 0;
           top: 0;
-          height: 100vh;
+          height: var(--vh);
           width: 100vw;
           background-color: #000;
           opacity: 0;
@@ -502,7 +502,7 @@ header {
         width: 60%;
         max-width: 300px;
         left: -60%;
-        height: 100vh;
+        height: var(--vh);
         border-radius: 0;
         overflow-y: auto;
         top: 0;
@@ -591,16 +591,27 @@ export default class Layout extends Vue {
     writer_auth_eventhub.onLoginSuccess(this.reload_login_status);
   }
   mounted() {
+    this.resize();
+    window.addEventListener("resize", this.resize);
+
     this.reload_login_status();
     getCategories().then((data) => {
       this.categories = data;
     });
+  }
+  destroyed() {
+    window.removeEventListener("resize", this.resize);
   }
 
   @Watch("$route")
   route_changed() {
     this.sidebar_shown = false;
     this.show_404 = false;
+  }
+
+  resize() {
+    const height = window.innerHeight;
+    document.documentElement.style.setProperty("--vh", `${height}px`);
   }
 
   show() {
