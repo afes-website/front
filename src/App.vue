@@ -599,6 +599,9 @@ export default class Layout extends Vue {
       this.categories = data;
     });
   }
+  destroyed() {
+    this.refs.mainWrapper.removeEventListener("scroll", this.resize);
+  }
 
   @Watch("$route")
   route_changed() {
