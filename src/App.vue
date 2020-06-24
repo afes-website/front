@@ -137,7 +137,7 @@
         ></div>
       </div>
     </header>
-    <div id="main-wrapper">
+    <div id="main-wrapper" ref="mainWrapper">
       <div
         id="main-box"
         :class="{
@@ -592,7 +592,7 @@ export default class Layout extends Vue {
   }
   mounted() {
     this.resize();
-    window.addEventListener("resize", this.resize);
+    this.refs.mainWrapper.addEventListener("scroll", this.resize);
 
     this.reload_login_status();
     getCategories().then((data) => {
@@ -609,6 +609,11 @@ export default class Layout extends Vue {
   resize() {
     const height = window.innerHeight;
     document.documentElement.style.setProperty("--vh", `${height}px`);
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  get refs(): any {
+    return this.$refs;
   }
 
   show() {
