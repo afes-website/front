@@ -5,6 +5,10 @@
     <template v-if="writing">
       <b-alert variant="theme-dark" show>
         寄稿の受付は麻布生のみとなっています。麻布生以外の方の寄稿はご遠慮ください。
+        <hr />
+        <a href="https://afes.info/blog/internal/contrib_announce">
+          寄稿案内・ルールはこちら
+        </a>
       </b-alert>
       <p>
         title:<b-input
