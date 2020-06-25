@@ -4,6 +4,7 @@ export interface BlogRevision {
   title: string;
   article_id: string;
   author: WriterUserInfo;
+  handle_name: string | null;
   timestamp: string;
   content: string;
   status: "waiting" | "accepted" | "rejected";
