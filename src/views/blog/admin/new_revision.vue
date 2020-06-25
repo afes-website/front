@@ -269,6 +269,7 @@ export default class NewRevision extends Vue {
             title: this.article_title,
             article_id: this.article_path,
             content: this.content,
+            handle_name: null,
           },
           headers: {
             "X-BLOG-WRITER-TOKEN": token.content,

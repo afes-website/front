@@ -162,7 +162,7 @@ export default class ShowArticle extends Vue {
   }
 
   get_author_name(article: BlogArticle) {
-    return article.author.name;
+    return article.handle_name || article.author.name;
   }
 
   get_category_name(article: BlogArticle) {

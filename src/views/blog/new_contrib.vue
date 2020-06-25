@@ -16,6 +16,12 @@
           タイトルを指定してください。
         </b-form-invalid-feedback>
       </p>
+      <p>
+        handle name:<b-input
+          v-model="handle_name"
+          @change="apply_ogimage_title"
+        />
+      </p>
       <b-tabs>
         <b-tab title="編集" active>
           <b-textarea v-model="content" class="edit-area"></b-textarea>
@@ -223,6 +229,8 @@ export default class NewRevision extends Vue {
   article_title = "";
   ogimage_title = "";
   content = "";
+  handle_name: string | null = null;
+  ogimage_handle_name: string | null = null;
 
   status: FetchStatus = "idle";
   fetch_status: FetchStatus = "idle";
@@ -239,6 +247,7 @@ export default class NewRevision extends Vue {
         data: {
           title: this.article_title,
           content: this.content,
+          handle_name: this.handle_name,
         },
       })
       .then((data: BlogRevision) => {
@@ -277,10 +286,11 @@ export default class NewRevision extends Vue {
 
   apply_ogimage_title() {
     this.ogimage_title = this.article_title;
+    this.ogimage_handle_name = this.handle_name || "名もなき麻布生";
   }
 
   get ogimage_url() {
-    return `https://api.afes.info/ogimage/preview?title=${this.ogimage_title}&author=名もなき麻布生&category=個人･寄稿`;
+    return `https://api.afes.info/ogimage/preview?title=${this.ogimage_title}&author=${this.ogimage_handle_name}&category=個人･寄稿`;
   }
 
   get can_post() {
