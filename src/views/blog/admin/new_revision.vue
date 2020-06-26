@@ -2,20 +2,20 @@
   <div class="box wide-box">
     <breadcrumb :text="page_title" />
     <h1>{{ page_title }}</h1>
-    <p>
-      id:<b-input v-model="article_path" :state="is_valid_path" />
+    <b-form-group label="id:">
+      <b-input v-model="article_path" :state="is_valid_path" />
       <b-form-invalid-feedback v-if="!is_valid_path">
         idには英数、アンダーバー(<code>_</code>)、ハイフン(<code>-</code>)のみ使用することができます。
       </b-form-invalid-feedback>
-    </p>
-    <p>
+    </b-form-group>
+    <b-form-group>
       <b-button @click="load" :disabled="is_article_path_empty">
         記事情報を読みこむ
         <fetch-status-icon :status="fetch_status" />
       </b-button>
-    </p>
-    <p>
-      title:<b-input
+    </b-form-group>
+    <b-form-group label="title:">
+      <b-input
         v-model="article_title"
         @change="apply_ogimage_title"
         :state="!!article_title"
@@ -23,7 +23,7 @@
       <b-form-invalid-feedback v-if="!article_title">
         タイトルを指定してください。
       </b-form-invalid-feedback>
-    </p>
+    </b-form-group>
     <b-tabs>
       <b-tab title="編集" active>
         <div class="toolbar">

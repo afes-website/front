@@ -7,16 +7,17 @@
       <fetch-status-icon :status="fetch_status" small />
     </b-button>
     <section id="form">
-      Category
-      <b-form-select v-model="category" :state="is_category_valid">
-        <b-form-select-option
-          v-for="(cat_obj, cat_id) in categories"
-          :key="cat_id"
-          :value="cat_id"
-        >
-          {{ get_category_name(cat_obj) }}
-        </b-form-select-option>
-      </b-form-select>
+      <b-form-group label="Category:">
+        <b-form-select v-model="category" :state="is_category_valid">
+          <b-form-select-option
+            v-for="(cat_obj, cat_id) in categories"
+            :key="cat_id"
+            :value="cat_id"
+          >
+            {{ get_category_name(cat_obj) }}
+          </b-form-select-option>
+        </b-form-select>
+      </b-form-group>
       <b-table-simple responsive hover small class="table">
         <b-thead>
           <b-tr>
