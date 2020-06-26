@@ -10,8 +10,8 @@
           寄稿案内・ルールはこちら
         </a>
       </b-alert>
-      <p>
-        title:<b-input
+      <b-form-group label="title:">
+        <b-input
           v-model="article_title"
           @change="apply_ogimage_title"
           :state="!!article_title"
@@ -19,7 +19,7 @@
         <b-form-invalid-feedback v-if="!article_title">
           タイトルを指定してください。
         </b-form-invalid-feedback>
-      </p>
+      </b-form-group>
       <b-tabs>
         <b-tab title="編集" active>
           <b-textarea v-model="content" class="edit-area"></b-textarea>
