@@ -16,7 +16,7 @@
           タイトルを指定してください。
         </b-form-invalid-feedback>
       </b-form-group>
-      <b-form-group label="handle name:">
+      <b-form-group label="handle name (optional):">
         <b-input
           v-model="handle_name"
           @change="apply_ogimage_title"
