@@ -20,6 +20,7 @@
         handle name:<b-input
           v-model="handle_name"
           @change="apply_ogimage_title"
+          placeholder="名もなき麻布生"
         />
       </p>
       <b-tabs>
