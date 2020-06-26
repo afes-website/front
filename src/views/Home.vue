@@ -382,7 +382,7 @@ export default class Home extends Vue {
   }
 
   getAuthorName(article: BlogArticle) {
-    return article.author.name;
+    return article.handle_name || article.author.name;
   }
 
   getArticleTitle(article: BlogArticle) {

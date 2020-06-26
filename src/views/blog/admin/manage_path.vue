@@ -23,6 +23,7 @@
           <b-tr>
             <b-th></b-th>
             <b-th>title</b-th>
+            <b-th>handle name</b-th>
             <b-th>author</b-th>
             <b-th>created</b-th>
             <b-th>stat</b-th>
@@ -47,6 +48,7 @@
               >
             </b-th>
             <b-td>{{ get_revision_title(revision) }}</b-td>
+            <b-td>{{ get_revision_handle_name(revision) }}</b-td>
             <b-td>{{ get_revision_author_name(revision) }}</b-td>
             <b-td>{{ get_revision_timestamp(revision) }}</b-td>
             <b-td>
@@ -400,6 +402,10 @@ export default class ManagePath extends Vue {
 
   get_revision_title(revision: BlogRevision) {
     return revision.title;
+  }
+
+  get_revision_handle_name(revision: BlogRevision) {
+    return revision.handle_name;
   }
 
   get_revision_author_name(revision: BlogRevision) {

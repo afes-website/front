@@ -8,6 +8,7 @@ export interface BlogArticle {
   updated_at: string;
   content: string;
   author: WriterUserInfo;
+  handle_name: string | null;
 }
 
 export type BlogArticleParameter = Partial<

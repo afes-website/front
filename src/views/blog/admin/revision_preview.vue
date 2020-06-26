@@ -147,7 +147,7 @@ export default class ShowRevision extends Vue {
   }
 
   get author_name() {
-    return this.revision?.author.name;
+    return this.revision?.handle_name || this.revision?.author.name;
   }
 
   get timestamp() {
