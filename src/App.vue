@@ -240,19 +240,19 @@ header {
         margin-bottom: 8px;
         filter: drop-shadow(2px 2px 1px #fff) drop-shadow(-2px 2px 1px #fff)
           drop-shadow(2px -2px 1px #fff) drop-shadow(-2px -2px 1px #fff);
-
         a {
           display: block;
           margin: 8px;
           height: min-content;
           width: min-content;
         }
-
         svg {
           width: 32px;
           height: 32px;
         }
-
+        object {
+          pointer-events: none;
+        }
         .fa-twitter {
           color: #1da1f2;
         }
