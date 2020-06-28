@@ -19,6 +19,9 @@
         <b-form-invalid-feedback v-if="!article_title">
           タイトルを指定してください。
         </b-form-invalid-feedback>
+        <template v-slot:description>
+          <code>%0A</code>または<code>\n</code>で og:image 内で改行できます。
+        </template>
       </b-form-group>
       <b-form-group label="handle name (optional):">
         <b-input
