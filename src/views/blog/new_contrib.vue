@@ -32,7 +32,7 @@
           <b-textarea v-model="content" class="edit-area"></b-textarea>
         </b-tab>
         <b-tab title="プレビュー" id="preview">
-          <h1>{{ article_title }}</h1>
+          <h1>{{ decoded_article_title }}</h1>
           <div class="under-title">
             <span>
               <font-awesome-icon :icon="'user'" class="fa-fw" />
@@ -57,7 +57,7 @@
             class="mb-3"
           >
             <b-card-title>
-              {{ article_title }}
+              {{ decoded_article_title }}
             </b-card-title>
             <b-card-sub-title>
               <span>
@@ -300,6 +300,23 @@ export default class NewRevision extends Vue {
 
   get can_post() {
     return this.article_title !== "";
+  }
+
+  get decoded_article_title() {
+    let decoded = this.article_title;
+    decoded = unescape(decoded);
+    decoded = decoded.replace(/\\(.)/g, function (ma, m1) {
+      switch (m1) {
+        case "n":
+          return "";
+        case "\\":
+          return "\\";
+        default:
+          return "\\" + m1;
+      }
+    });
+    decoded = decoded.replace(/\n/g, "");
+    return decoded;
   }
 
   get_revision_title(revision: BlogRevision) {
