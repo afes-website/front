@@ -5,9 +5,13 @@
     <template v-if="writing">
       <b-alert variant="theme-dark" show>
         寄稿の受付は麻布生のみとなっています。麻布生以外の方の寄稿はご遠慮ください。
+        <hr />
+        <a href="https://afes.info/blog/internal/contrib_announce">
+          寄稿案内・ルールはこちら
+        </a>
       </b-alert>
-      <p>
-        title:<b-input
+      <b-form-group label="title:">
+        <b-input
           v-model="article_title"
           @change="apply_ogimage_title"
           :state="!!article_title"
@@ -15,13 +19,23 @@
         <b-form-invalid-feedback v-if="!article_title">
           タイトルを指定してください。
         </b-form-invalid-feedback>
-      </p>
+        <template v-slot:description>
+          <code>%0A</code>または<code>\n</code>で og:image 内で改行できます。
+        </template>
+      </b-form-group>
+      <b-form-group label="handle name (optional):">
+        <b-input
+          v-model="handle_name"
+          @change="apply_ogimage_title"
+          placeholder="名もなき麻布生"
+        />
+      </b-form-group>
       <b-tabs>
         <b-tab title="編集" active>
           <b-textarea v-model="content" class="edit-area"></b-textarea>
         </b-tab>
         <b-tab title="プレビュー" id="preview">
-          <h1>{{ article_title }}</h1>
+          <h1>{{ decoded_article_title }}</h1>
           <div class="under-title">
             <span>
               <font-awesome-icon :icon="'user'" class="fa-fw" />
@@ -46,7 +60,7 @@
             class="mb-3"
           >
             <b-card-title>
-              {{ article_title }}
+              {{ decoded_article_title }}
             </b-card-title>
             <b-card-sub-title>
               <span>
@@ -223,6 +237,8 @@ export default class NewRevision extends Vue {
   article_title = "";
   ogimage_title = "";
   content = "";
+  handle_name: string | null = null;
+  ogimage_handle_name: string | null = null;
 
   status: FetchStatus = "idle";
   fetch_status: FetchStatus = "idle";
@@ -239,6 +255,7 @@ export default class NewRevision extends Vue {
         data: {
           title: this.article_title,
           content: this.content,
+          handle_name: this.handle_name,
         },
       })
       .then((data: BlogRevision) => {
@@ -277,14 +294,32 @@ export default class NewRevision extends Vue {
 
   apply_ogimage_title() {
     this.ogimage_title = this.article_title;
+    this.ogimage_handle_name = this.handle_name || "名もなき麻布生";
   }
 
   get ogimage_url() {
-    return `https://api.afes.info/ogimage/preview?title=${this.ogimage_title}&author=名もなき麻布生&category=個人･寄稿`;
+    return `https://api.afes.info/ogimage/preview?title=${this.ogimage_title}&author=${this.ogimage_handle_name}&category=個人･寄稿`;
   }
 
   get can_post() {
     return this.article_title !== "";
+  }
+
+  get decoded_article_title() {
+    let decoded = this.article_title;
+    decoded = unescape(decoded);
+    decoded = decoded.replace(/\\(.)/g, function (ma, m1) {
+      switch (m1) {
+        case "n":
+          return "";
+        case "\\":
+          return "\\";
+        default:
+          return "\\" + m1;
+      }
+    });
+    decoded = decoded.replace(/\n/g, "");
+    return decoded;
   }
 
   get_revision_title(revision: BlogRevision) {

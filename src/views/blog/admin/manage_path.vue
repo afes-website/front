@@ -7,21 +7,23 @@
       <fetch-status-icon :status="fetch_status" small />
     </b-button>
     <section id="form">
-      Category
-      <b-form-select v-model="category" :state="is_category_valid">
-        <b-form-select-option
-          v-for="(cat_obj, cat_id) in categories"
-          :key="cat_id"
-          :value="cat_id"
-        >
-          {{ get_category_name(cat_obj) }}
-        </b-form-select-option>
-      </b-form-select>
+      <b-form-group label="Category:">
+        <b-form-select v-model="category" :state="is_category_valid">
+          <b-form-select-option
+            v-for="(cat_obj, cat_id) in categories"
+            :key="cat_id"
+            :value="cat_id"
+          >
+            {{ get_category_name(cat_obj) }}
+          </b-form-select-option>
+        </b-form-select>
+      </b-form-group>
       <b-table-simple responsive hover small class="table">
         <b-thead>
           <b-tr>
             <b-th></b-th>
             <b-th>title</b-th>
+            <b-th>handle name</b-th>
             <b-th>author</b-th>
             <b-th>created</b-th>
             <b-th>stat</b-th>
@@ -46,6 +48,7 @@
               >
             </b-th>
             <b-td>{{ get_revision_title(revision) }}</b-td>
+            <b-td>{{ get_revision_handle_name(revision) }}</b-td>
             <b-td>{{ get_revision_author_name(revision) }}</b-td>
             <b-td>{{ get_revision_timestamp(revision) }}</b-td>
             <b-td>
@@ -399,6 +402,10 @@ export default class ManagePath extends Vue {
 
   get_revision_title(revision: BlogRevision) {
     return revision.title;
+  }
+
+  get_revision_handle_name(revision: BlogRevision) {
+    return revision.handle_name;
   }
 
   get_revision_author_name(revision: BlogRevision) {

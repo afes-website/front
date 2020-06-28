@@ -2,20 +2,20 @@
   <div class="box wide-box">
     <breadcrumb :text="page_title" />
     <h1>{{ page_title }}</h1>
-    <p>
-      id:<b-input v-model="article_path" :state="is_valid_path" />
+    <b-form-group label="id:">
+      <b-input v-model="article_path" :state="is_valid_path" />
       <b-form-invalid-feedback v-if="!is_valid_path">
         idには英数、アンダーバー(<code>_</code>)、ハイフン(<code>-</code>)のみ使用することができます。
       </b-form-invalid-feedback>
-    </p>
-    <p>
+    </b-form-group>
+    <b-form-group>
       <b-button @click="load" :disabled="is_article_path_empty">
         記事情報を読みこむ
         <fetch-status-icon :status="fetch_status" />
       </b-button>
-    </p>
-    <p>
-      title:<b-input
+    </b-form-group>
+    <b-form-group label="title:">
+      <b-input
         v-model="article_title"
         @change="apply_ogimage_title"
         :state="!!article_title"
@@ -23,7 +23,10 @@
       <b-form-invalid-feedback v-if="!article_title">
         タイトルを指定してください。
       </b-form-invalid-feedback>
-    </p>
+      <template v-slot:description>
+        <code>%0A</code>または<code>\n</code>で og:image 内で改行できます。
+      </template>
+    </b-form-group>
     <b-tabs>
       <b-tab title="編集" active>
         <div class="toolbar">
@@ -34,7 +37,7 @@
         <b-textarea v-model="content" class="edit-area"></b-textarea>
       </b-tab>
       <b-tab title="プレビュー" id="preview">
-        <h1>{{ article_title }}</h1>
+        <h1>{{ decoded_article_title }}</h1>
         <div class="under-title">
           <span>
             <font-awesome-icon :icon="'user'" class="fa-fw" />
@@ -54,7 +57,7 @@
         <h3>card preview</h3>
         <b-card :img-src="card_image" img-alt="eye catch" img-left class="mb-3">
           <b-card-title>
-            {{ article_title }}
+            {{ decoded_article_title }}
           </b-card-title>
           <b-card-sub-title>
             <span>
@@ -269,6 +272,7 @@ export default class NewRevision extends Vue {
             title: this.article_title,
             article_id: this.article_path,
             content: this.content,
+            handle_name: null,
           },
           headers: {
             "X-BLOG-WRITER-TOKEN": token.content,
@@ -341,6 +345,23 @@ export default class NewRevision extends Vue {
 
   get can_post() {
     return this.article_path !== "" && this.article_title !== "";
+  }
+
+  get decoded_article_title() {
+    let decoded = this.article_title;
+    decoded = unescape(decoded);
+    decoded = decoded.replace(/\\(.)/g, function (ma, m1) {
+      switch (m1) {
+        case "n":
+          return "";
+        case "\\":
+          return "\\";
+        default:
+          return "\\" + m1;
+      }
+    });
+    decoded = decoded.replace(/\n/g, "");
+    return decoded;
   }
 }
 </script>
