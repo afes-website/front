@@ -39,7 +39,7 @@
           <div class="under-title">
             <span>
               <font-awesome-icon :icon="'user'" class="fa-fw" />
-              {{ handle_name }}
+              {{ display_name }}
             </span>
             <span>
               <font-awesome-icon :icon="'folder'" class="fa-fw" />
@@ -65,7 +65,7 @@
             <b-card-sub-title>
               <span>
                 <font-awesome-icon :icon="'user'" class="fa-fw" />
-                {{ handle_name }}
+                {{ display_name }}
               </span>
               <span>
                 <font-awesome-icon :icon="'folder'" class="fa-fw" />
@@ -290,6 +290,10 @@ export default class NewRevision extends Vue {
 
   get card_image() {
     return Markdown.get_first_image(this.content) || this.noImage;
+  }
+
+  get display_name() {
+    return this.handle_name || "名もなき麻布生";
   }
 
   apply_ogimage_title() {
