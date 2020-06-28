@@ -65,7 +65,7 @@
             <b-card-sub-title>
               <span>
                 <font-awesome-icon :icon="'user'" class="fa-fw" />
-                名もなき麻布生
+                {{ handle_name }}
               </span>
               <span>
                 <font-awesome-icon :icon="'folder'" class="fa-fw" />
