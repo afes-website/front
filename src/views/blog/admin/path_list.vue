@@ -6,63 +6,29 @@
       Reload
       <fetch-status-icon :status="fetch_status" small />
     </b-button>
-    <b-table-simple responsive hover class="table">
-      <b-thead>
-        <b-tr>
-          <b-th>id</b-th>
-          <b-th>title</b-th>
-          <b-th>category</b-th>
-          <b-th>created</b-th>
-          <b-th>updated</b-th>
-          <b-th>show</b-th>
-          <b-th>manage</b-th>
-        </b-tr>
-      </b-thead>
-      <b-tbody>
-        <b-tr
-          v-for="(path, route) in paths"
-          :key="route"
-          @click="open_manage_path(route)"
+    <b-table
+      show-empty
+      small
+      hover
+      :responsive="true"
+      :items="paths"
+      :fields="fields"
+      :filter="filter"
+      :sort-by.sync="sortBy"
+      class="mb-0"
+    >
+      <template v-slot:cell(waiting_count)="row">
+        <b-badge
+          variant="warning"
+          v-if="has_waiting(row)"
+          v-b-tooltip.hover
+          :title="format_waiting_revision_msg(row)"
+          class="ml-1"
         >
-          <b-th>
-            {{ route }}
-            <b-badge
-              variant="warning"
-              v-if="has_waiting(path)"
-              v-b-tooltip.hover
-              :title="format_waiting_revision_msg(path)"
-              class="ml-1"
-            >
-              {{ get_waiting_count(path) }}
-            </b-badge>
-          </b-th>
-          <b-td>{{ get_title(path) }}</b-td>
-          <b-td>{{ get_category_name(path) }}</b-td>
-          <b-td class="td-time">
-            {{ get_create_time(path) }}
-          </b-td>
-          <b-td class="td-time">
-            {{ get_update_time(path) }}
-          </b-td>
-          <b-td class="td-icon">
-            <b-link
-              v-if="get_category(path)"
-              :to="{
-                name: 'show_article',
-                params: { category: get_category(path), id: route },
-              }"
-            >
-              <font-awesome-icon :icon="'file'" class="fa-fw fa-2x" />
-            </b-link>
-          </b-td>
-          <b-td class="td-icon">
-            <b-link :to="{ name: 'manage_path', params: { id: route } }">
-              <font-awesome-icon :icon="'tools'" class="fa-fw fa-2x" />
-            </b-link>
-          </b-td>
-        </b-tr>
-      </b-tbody>
-    </b-table-simple>
+          {{ get_waiting_count(row) }}
+        </b-badge>
+      </template>
+    </b-table>
   </div>
 </template>
 
@@ -133,8 +99,20 @@ import Breadcrumb from "@/components/Breadcrumb.vue";
 import { getStringTime } from "@/libs/string_date";
 
 interface Path {
+  id: string;
   category?: string;
   title?: string;
+  author?: string;
+  handle_name?: string;
+  created_at?: string;
+  updated_at?: string;
+  waiting_count: number;
+}
+interface TmpPath {
+  category?: string;
+  title?: string;
+  author?: string;
+  handle_name?: string;
   created_at?: string;
   updated_at?: string;
   waiting_count: number;
@@ -143,7 +121,21 @@ interface Path {
 @Component({ components: { FetchStatusIcon, Breadcrumb } })
 export default class PathList extends Vue {
   readonly page_title = "記事一覧";
-  paths: { [key: string]: Path } = {};
+  paths: Path[] = [];
+  readonly fields = [
+    { key: "waiting_count", label: "" },
+    { key: "id", label: "Article ID" },
+    { key: "category", formatter: this.get_category_name },
+    { key: "title" },
+    { key: "author" },
+    { key: "handle_name" },
+    { key: "created_at", formatter: this.get_formatted_time, sortable: true },
+    { key: "updated_at", formatter: this.get_formatted_time, sortable: true },
+    { key: "actions", label: "" },
+  ];
+  filter = "";
+  sortBy = "created_at";
+
   client = aspida();
   categories: Categories = {};
 
@@ -162,16 +154,20 @@ export default class PathList extends Vue {
   load() {
     if (this.fetch_status == "pending") return;
     this.fetch_status = "pending";
-    this.paths = {};
+    this.paths = [];
+    const tmp_paths: { [key: string]: TmpPath } = {};
     AdminAuth.attempt_get_JWT()
       .then((token) => {
+        // get articles
         api(this.client)
           .blog.articles.$get()
           .then((data: BlogArticle[]) => {
             for (const article of data) {
-              this.$set(this.paths, article.id, {
+              this.$set(tmp_paths, article.id, {
                 category: article.category,
                 title: article.title,
+                author: article.author.name,
+                handle_name: article.handle_name,
                 created_at: article.created_at,
                 updated_at: article.updated_at,
                 waiting_count: 0,
@@ -181,7 +177,8 @@ export default class PathList extends Vue {
         return token;
       })
       .then((token) => {
-        api(this.client)
+        // get revisions
+        return api(this.client)
           .blog.revisions.$get({
             headers: {
               "X-ADMIN-TOKEN": token.content,
@@ -189,22 +186,42 @@ export default class PathList extends Vue {
           })
           .then((data: BlogRevision[]) => {
             for (const revision of data) {
-              if (!(revision.article_id in this.paths)) {
+              if (!(revision.article_id in tmp_paths)) {
                 // does not exist
-                this.$set(this.paths, revision.article_id, {
+                this.$set(tmp_paths, revision.article_id, {
                   title: revision.title,
+                  created_at: revision.timestamp,
+                  author: revision.author.name,
+                  handle_name: revision.handle_name,
                   waiting_count: 0,
                 });
               }
               if (revision.status === "waiting") {
-                this.paths[revision.article_id].waiting_count++;
+                tmp_paths[revision.article_id].waiting_count++;
               }
             }
-            this.fetch_status = "idle";
           })
           .catch(() => {
             this.fetch_status = "fail";
           });
+      })
+      .then(() => {
+        // object -> array
+        const array_paths: Path[] = [];
+        for (const [id, path] of Object.entries(tmp_paths)) {
+          array_paths.push({
+            id: id,
+            category: path.category,
+            title: path.title,
+            author: path.author,
+            handle_name: path.handle_name,
+            created_at: path.created_at,
+            updated_at: path.updated_at,
+            waiting_count: path.waiting_count,
+          });
+        }
+        this.paths.splice(0, this.paths.length, ...array_paths);
+        this.fetch_status = "idle";
       });
   }
 
@@ -215,36 +232,28 @@ export default class PathList extends Vue {
     });
   }
 
-  has_waiting(path: Path) {
-    return path.waiting_count != 0;
+  has_waiting(row: { item: Path }) {
+    return row.item.waiting_count != 0;
   }
 
-  format_waiting_revision_msg(path: Path) {
-    return "has " + path.waiting_count + " waiting revisions";
+  format_waiting_revision_msg(row: { item: Path }) {
+    return "has " + row.item.waiting_count + " waiting revisions";
   }
 
-  get_category(path: Path) {
-    return path.category;
+  get_category(row: { item: Path }) {
+    return row.item.category;
   }
 
-  get_waiting_count(path: Path) {
-    return path.waiting_count;
+  get_waiting_count(row: { item: Path }) {
+    return row.item.waiting_count;
   }
 
-  get_title(path: Path) {
-    return path.title || "-";
+  get_category_name(category_id: string | undefined) {
+    return category_id ? this.categories[category_id].name : "-";
   }
 
-  get_category_name(path: Path) {
-    return path.category ? this.categories[path.category].name : "-";
-  }
-
-  get_create_time(path: Path) {
-    return path.created_at ? getStringTime(path.created_at) : "-";
-  }
-
-  get_update_time(path: Path) {
-    return path.updated_at ? getStringTime(path.updated_at) : "-";
+  get_formatted_time(timestamp: string | undefined) {
+    return timestamp ? getStringTime(timestamp) : "-";
   }
 }
 </script>
