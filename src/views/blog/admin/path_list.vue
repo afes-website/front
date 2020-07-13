@@ -137,6 +137,7 @@ import Breadcrumb from "@/components/Breadcrumb.vue";
 import { getStringTime } from "@/libs/string_date";
 import { WriterUserInfo } from "@/apis/writer/user";
 import { BvTableVariant } from "bootstrap-vue";
+import JWT from "@/libs/auth/jwt";
 
 interface Path {
   id: string;
@@ -218,27 +219,27 @@ export default class PathList extends Vue {
     AdminAuth.attempt_get_JWT()
       .then((token) => {
         // get articles
-        api(this.client)
-          .blog.articles.$get()
-          .then((data: BlogArticle[]) => {
-            for (const article of data) {
-              tmp_paths[article.id] = {
-                category: article.category,
-                title: article.title,
-                author: article.author,
-                handle_name: article.handle_name,
-                created_at: article.created_at,
-                updated_at: article.updated_at,
-                waiting_count: 0,
-                revisions: [],
-              };
-            }
-          });
-        return token;
+        return new Promise<JWT>((resolve) =>
+          api(this.client)
+            .blog.articles.$get()
+            .then((data: BlogArticle[]) => {
+              for (const article of data) {
+                tmp_paths[article.id] = {
+                  category: article.category,
+                  title: article.title,
+                  author: article.author,
+                  handle_name: article.handle_name,
+                  created_at: article.created_at,
+                  updated_at: article.updated_at,
+                  waiting_count: 0,
+                  revisions: [],
+                };
+              }
+              resolve(token);
+            })
+        );
       })
       .then((token) => {
-        // eslint-disable-next-line no-console
-        console.log(tmp_paths);
         // get revisions
         return api(this.client)
           .blog.revisions.$get({
