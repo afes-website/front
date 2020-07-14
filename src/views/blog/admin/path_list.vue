@@ -158,7 +158,7 @@
             :value="get_category_selection(row)"
             @change="set_category_selection(row, $event)"
             size="sm"
-            class="mb-1"
+            class="mb-1 bg-transparent"
           >
             <b-form-select-option
               v-for="(cat_obj, cat_id) in categories"
