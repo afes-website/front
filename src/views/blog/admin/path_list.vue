@@ -19,6 +19,7 @@
       :fields="pathFields"
       :filter="pathFilter"
       :sort-by.sync="sortBy"
+      :busy="is_busy"
       class="mb-0"
     >
       <template v-slot:cell(waiting_count)="row">
@@ -69,6 +70,12 @@
         >
           <font-awesome-icon icon="file" class="fa-fw" />
         </b-button>
+      </template>
+      <template v-slot:table-busy>
+        <div class="text-center text-theme-dark my-2">
+          <b-spinner class="align-middle mr-2"></b-spinner>
+          <strong>Loading...</strong>
+        </div>
       </template>
       <template v-slot:row-details="row">
         <b-table
@@ -491,6 +498,10 @@ export default class PathList extends Vue {
       });
     }
     return array_paths;
+  }
+
+  get is_busy() {
+    return this.fetch_status !== "idle";
   }
 
   can_apply(row: { item: ArrayPath }) {
