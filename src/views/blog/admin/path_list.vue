@@ -307,8 +307,8 @@ export default class PathList extends Vue {
     { key: "handle_name" },
     { key: "created_at", formatter: this.get_formatted_time, sortable: true },
     { key: "updated_at", formatter: this.get_formatted_time, sortable: true },
-    { key: "manage" },
-    { key: "show" },
+    { key: "manage", label: "" },
+    { key: "show", label: "" },
   ];
   readonly revisionFields = [
     { key: "id", label: "No.", sortable: true },
