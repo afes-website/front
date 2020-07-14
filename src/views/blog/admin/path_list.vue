@@ -6,6 +6,9 @@
       Reload
       <fetch-status-icon :status="fetch_status" small />
     </b-button>
+    <b-form-group label="filter">
+      <b-input v-model="pathFilter"></b-input>
+    </b-form-group>
     <b-table
       show-empty
       small
