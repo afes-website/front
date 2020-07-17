@@ -19,6 +19,7 @@
       :fields="pathFields"
       :filter="pathFilter"
       :sort-by.sync="sortBy"
+      :sort-desc.sync="sortDesc"
       :busy="is_busy"
       class="mb-0"
     >
@@ -327,6 +328,7 @@ export default class PathList extends Vue {
   ];
   pathFilter = "";
   sortBy = "revision_id";
+  sortDesc = true;
 
   client = aspida();
   categories: Categories = {};
