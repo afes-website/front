@@ -396,17 +396,9 @@ export default class PathList extends Vue {
               if (revision.status === "waiting") {
                 this.paths[revision.article_id].waiting_count++;
               }
-              switch (revision.status) {
-                case "accepted":
-                  revision["_rowVariant"] = "success";
-                  break;
-                case "rejected":
-                  revision["_rowVariant"] = "secondary";
-                  break;
-                case "waiting":
-                  revision["_rowVariant"] = "warning";
-                  break;
-              }
+              revision["_rowVariant"] = this.get_status_variant(
+                revision.status
+              );
               this.paths[revision.article_id].revisions.push(revision);
               this.fetch_status = "idle";
             }
@@ -601,6 +593,17 @@ export default class PathList extends Vue {
 
   get_formatted_time(timestamp: string | undefined) {
     return timestamp ? getStringTime(timestamp) : "-";
+  }
+
+  get_status_variant(status: "waiting" | "accepted" | "rejected") {
+    switch (status) {
+      case "accepted":
+        return "success";
+      case "rejected":
+        return "secondary";
+      case "waiting":
+        return "warning";
+    }
   }
 }
 </script>
