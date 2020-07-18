@@ -22,20 +22,15 @@
       :sort-desc.sync="sortDesc"
       :busy="is_busy"
       class="mb-0"
+      @row-clicked="toggle_details"
     >
       <template v-slot:cell(waiting_count)="row">
         <font-awesome-icon
           icon="angle-down"
           class="fa-fw"
           v-if="get_is_details_showing(row)"
-          @click="toggle_details(row)"
         />
-        <font-awesome-icon
-          icon="angle-right"
-          class="fa-fw"
-          v-else
-          @click="toggle_details(row)"
-        />
+        <font-awesome-icon icon="angle-right" class="fa-fw" v-else />
         <b-badge
           variant="warning"
           v-if="get_has_waiting_revision(row)"
@@ -548,8 +543,8 @@ export default class PathList extends Vue {
 
   /* ==== Paths Table : details ==== */
 
-  toggle_details(row: { toggleDetails(): void }) {
-    return row.toggleDetails();
+  toggle_details(item: { _showDetails: boolean | undefined }) {
+    this.$set(item, "_showDetails", !item._showDetails);
   }
 
   get_is_details_showing(row: { detailsShowing: boolean }) {
