@@ -363,18 +363,10 @@ export default class PathList extends Vue {
             .then((data: BlogArticle[]) => {
               for (const article of data) {
                 this.$set(this.paths, article.id, {
-                  category: article.category,
-                  title: article.title,
-                  author: article.author,
-                  handle_name: article.handle_name,
-                  created_at: article.created_at,
-                  updated_at: article.updated_at,
+                  ...article,
                   waiting_count: 0,
-                  revision_id: article.revision_id,
                   article_exists: true,
                   revisions: [],
-                  revision_selection: article.revision_id,
-                  category_selection: article.category,
                 });
               }
               resolve(token);
@@ -394,10 +386,7 @@ export default class PathList extends Vue {
               if (!(revision.article_id in this.paths)) {
                 // does not exist
                 this.$set(this.paths, revision.article_id, {
-                  title: revision.title,
-                  created_at: revision.timestamp,
-                  author: revision.author,
-                  handle_name: revision.handle_name,
+                  ...revision,
                   article_exists: false,
                   waiting_count: 0,
                   revision_id: revision.id,
@@ -490,18 +479,7 @@ export default class PathList extends Vue {
     for (const [id, path] of Object.entries(this.paths)) {
       array_paths.push({
         id: id,
-        category: path.category,
-        title: path.title,
-        author: path.author,
-        handle_name: path.handle_name,
-        created_at: path.created_at,
-        updated_at: path.updated_at,
-        waiting_count: path.waiting_count,
-        revision_id: path.revision_id,
-        article_exists: path.article_exists,
-        revisions: path.revisions,
-        revision_selection: path.revision_selection,
-        category_selection: path.category_selection,
+        ...path,
       });
     }
     return array_paths;
