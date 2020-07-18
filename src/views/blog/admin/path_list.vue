@@ -38,17 +38,20 @@
         />
         <b-badge
           variant="warning"
-          v-if="has_waiting(row)"
+          v-if="get_has_waiting_revision(row)"
           v-b-tooltip.hover
-          :title="format_waiting_revision_msg(row)"
+          :title="get_formatted_waiting_revision_msg(row)"
           class="ml-1"
         >
-          {{ get_waiting_count(row) }}
+          {{ get_path_waiting_count(row) }}
         </b-badge>
       </template>
       <template v-slot:cell(manage)="row">
         <b-button
-          :to="{ name: 'manage_path', params: { id: get_article_id(row) } }"
+          :to="{
+            name: 'manage_path',
+            params: { id: get_path_article_id(row) },
+          }"
           target="_blank"
           size="sm"
           variant="theme-dark"
@@ -59,10 +62,13 @@
       </template>
       <template v-slot:cell(show)="row">
         <b-button
-          v-if="get_category(row)"
+          v-if="get_path_category(row)"
           :to="{
             name: 'show_article',
-            params: { category: get_category(row), id: get_article_id(row) },
+            params: {
+              category: get_path_category(row),
+              id: get_path_article_id(row),
+            },
           }"
           target="_blank"
           size="sm"
@@ -85,7 +91,7 @@
           hover
           :responsive="true"
           head-variant="light"
-          :items="get_revisions(row)"
+          :items="get_path_revisions(row)"
           :fields="revisionFields"
           sort-by="id"
           class="mb-1"
@@ -104,11 +110,11 @@
           <template v-slot:cell(status)="r_row">
             <font-awesome-icon
               :icon="get_status_icon(r_row)"
-              :id="format_revision_icon_id(r_row)"
+              :id="get_formatted_revision_icon_id(r_row)"
               class="fa-fw"
             />
             <b-tooltip
-              :target="format_revision_icon_id(r_row)"
+              :target="get_formatted_revision_icon_id(r_row)"
               triggers="hover"
             >
               {{ get_revision_status(r_row) }}
@@ -118,7 +124,10 @@
             <b-button-group size="sm">
               <b-button
                 @click="
-                  accept_revision(get_article_id(row), get_revision_id(r_row))
+                  accept_revision(
+                    get_path_article_id(row),
+                    get_revision_id(r_row)
+                  )
                 "
                 v-if="is_revision_waiting(r_row)"
                 variant="success"
@@ -128,7 +137,10 @@
               </b-button>
               <b-button
                 @click="
-                  reject_revision(get_article_id(row), get_revision_id(r_row))
+                  reject_revision(
+                    get_path_article_id(row),
+                    get_revision_id(r_row)
+                  )
                 "
                 v-if="is_revision_waiting(r_row)"
                 variant="danger"
@@ -173,14 +185,14 @@
             <b-button
               @click="apply_changes(row)"
               variant="primary"
-              :disabled="!can_apply"
+              :disabled="!get_can_apply"
               class="mb-0"
             >
               apply
             </b-button>
             <b-button
               variant="danger"
-              :disabled="!get_article_exists(row)"
+              :disabled="!get_is_article_exists(row)"
               class="mb-0"
             >
               delete
@@ -506,46 +518,37 @@ export default class PathList extends Vue {
     return this.fetch_status !== "idle";
   }
 
-  can_apply(row: { item: ArrayPath }) {
-    if (row.item.category_selection && row.item.revision_selection)
-      return (
-        row.item.category_selection in this.categories &&
-        row.item.revision_selection in row.item.revisions
-      );
-    return false;
-  }
+  /* ==== Paths Table : main ==== */
 
-  get_article_exists(row: { item: ArrayPath }) {
+  get_is_article_exists(row: { item: ArrayPath }) {
     return row.item.article_exists;
   }
 
-  has_waiting(row: { item: ArrayPath }) {
+  get_has_waiting_revision(row: { item: ArrayPath }) {
     return row.item.waiting_count != 0;
   }
 
-  format_waiting_revision_msg(row: { item: ArrayPath }) {
-    return "has " + row.item.waiting_count + " waiting revisions";
-  }
-
-  get_category(row: { item: ArrayPath }) {
-    return row.item.category;
-  }
-
-  get_author_name(author: WriterUserInfo) {
-    return author.name;
-  }
-
-  get_article_id(row: { item: ArrayPath }) {
-    return row.item.id;
-  }
-
-  get_waiting_count(row: { item: ArrayPath }) {
+  get_path_waiting_count(row: { item: ArrayPath }) {
     return row.item.waiting_count;
   }
 
-  get_revisions(row: { item: ArrayPath }) {
+  get_formatted_waiting_revision_msg(row: { item: ArrayPath }) {
+    return "has " + row.item.waiting_count + " waiting revisions";
+  }
+
+  get_path_article_id(row: { item: ArrayPath }) {
+    return row.item.id;
+  }
+
+  get_path_category(row: { item: ArrayPath }) {
+    return row.item.category;
+  }
+
+  get_path_revisions(row: { item: ArrayPath }) {
     return row.item.revisions;
   }
+
+  /* ==== Paths Table : details ==== */
 
   toggle_details(row: { toggleDetails(): void }) {
     return row.toggleDetails();
@@ -555,14 +558,39 @@ export default class PathList extends Vue {
     return row.detailsShowing;
   }
 
-  get_category_name(category_id: string | undefined) {
-    if (category_id && category_id in this.categories)
-      return this.categories[category_id].name;
-    return "-";
+  get_revision_selection(row: { item: ArrayPath }) {
+    return row.item.revision_selection;
   }
 
-  get_formatted_time(timestamp: string | undefined) {
-    return timestamp ? getStringTime(timestamp) : "-";
+  set_category_selection(row: { item: ArrayPath }, event: string) {
+    row.item.category_selection = event;
+  }
+
+  get_category_selection(row: { item: ArrayPath }) {
+    return row.item.category_selection;
+  }
+
+  set_revision_selection(row: { item: ArrayPath }, event: number) {
+    row.item.revision_selection = event;
+  }
+
+  get_can_apply(row: { item: ArrayPath }) {
+    if (row.item.category_selection && row.item.revision_selection)
+      return (
+        row.item.category_selection in this.categories &&
+        row.item.revision_selection in row.item.revisions
+      );
+    return false;
+  }
+
+  /* ==== Revisions Table ==== */
+
+  is_revision_accepted(r_row: { item: BlogRevision }) {
+    return r_row.item.status == "accepted";
+  }
+
+  is_revision_waiting(r_row: { item: BlogRevision }) {
+    return r_row.item.status === "waiting";
   }
 
   get_status_icon(r_row: { item: BlogRevision }) {
@@ -576,15 +604,7 @@ export default class PathList extends Vue {
     }
   }
 
-  is_revision_accepted(r_row: { item: BlogRevision }) {
-    return r_row.item.status == "accepted";
-  }
-
-  is_revision_waiting(r_row: { item: BlogRevision }) {
-    return r_row.item.status === "waiting";
-  }
-
-  format_revision_icon_id(r_row: { item: BlogRevision }) {
+  get_formatted_revision_icon_id(r_row: { item: BlogRevision }) {
     return r_row.item.id + "-status-icon";
   }
 
@@ -596,20 +616,20 @@ export default class PathList extends Vue {
     return r_row.item.id;
   }
 
-  get_revision_selection(row: { item: ArrayPath }) {
-    return row.item.revision_selection;
+  /* ==== Other Utils ==== */
+
+  get_author_name(author: WriterUserInfo) {
+    return author.name;
   }
 
-  get_category_selection(row: { item: ArrayPath }) {
-    return row.item.category_selection;
+  get_category_name(category_id: string | undefined) {
+    if (category_id && category_id in this.categories)
+      return this.categories[category_id].name;
+    return "-";
   }
 
-  set_category_selection(row: { item: ArrayPath }, event: string) {
-    row.item.category_selection = event;
-  }
-
-  set_revision_selection(row: { item: ArrayPath }, event: number) {
-    row.item.revision_selection = event;
+  get_formatted_time(timestamp: string | undefined) {
+    return timestamp ? getStringTime(timestamp) : "-";
   }
 }
 </script>
