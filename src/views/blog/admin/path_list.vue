@@ -385,12 +385,14 @@ export default class PathList extends Vue {
             for (const revision of data) {
               if (!(revision.article_id in this.paths)) {
                 // does not exist
+                const { id, timestamp, ...rest } = revision;
                 this.$set(this.paths, revision.article_id, {
-                  ...revision,
+                  ...rest,
                   article_exists: false,
                   waiting_count: 0,
-                  revision_id: revision.id,
+                  revision_id: id,
                   revisions: [],
+                  created_at: timestamp,
                 });
               }
               if (revision.status === "waiting") {
