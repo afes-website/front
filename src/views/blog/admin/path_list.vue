@@ -85,15 +85,13 @@
         </div>
       </template>
       <template v-slot:row-details="row">
-        <b-table
-          show-empty
+        <b-table-lite
           small
           hover
           :responsive="true"
           head-variant="light"
           :items="get_path_revisions(row)"
           :fields="revisionFields"
-          sort-by="id"
           class="mb-1"
           style="width: calc(100% - 24px); margin-left: 24px;"
         >
@@ -165,7 +163,7 @@
               preview
             </b-button>
           </template>
-        </b-table>
+        </b-table-lite>
         <b-form-group class="ml-4">
           <b-form-select
             :value="get_category_selection(row)"
