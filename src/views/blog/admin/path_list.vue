@@ -96,7 +96,7 @@
               :disabled="!is_revision_accepted(r_row)"
               :value="get_revision_id(r_row)"
               :checked="get_revision_selection(row)"
-              @click="update_revision_selection(row, r_row)"
+              @change="set_revision_selection(row, $event)"
             >
               {{ get_revision_id(r_row) }}
             </b-form-radio>
@@ -159,7 +159,7 @@
             :value="get_category_selection(row)"
             @change="set_category_selection(row, $event)"
             size="sm"
-            class="mb-1 bg-transparent"
+            class="mb-1"
           >
             <b-form-select-option
               v-for="(cat_obj, cat_id) in categories"
@@ -171,7 +171,7 @@
           </b-form-select>
           <b-button-group size="sm">
             <b-button
-              @click="apply_changes"
+              @click="apply_changes(row)"
               variant="primary"
               :disabled="!can_apply"
               class="mb-0"
@@ -565,16 +565,6 @@ export default class PathList extends Vue {
     return timestamp ? getStringTime(timestamp) : "-";
   }
 
-  get_status_color(r_row: { item: BlogRevision }) {
-    switch (r_row.item.status) {
-      case "accepted":
-        return "success";
-      case "rejected":
-        return "secondary";
-    }
-    return "";
-  }
-
   get_status_icon(r_row: { item: BlogRevision }) {
     switch (r_row.item.status) {
       case "accepted":
@@ -610,22 +600,16 @@ export default class PathList extends Vue {
     return row.item.revision_selection;
   }
 
-  update_revision_selection(
-    row: { item: ArrayPath },
-    r_row: { item: TableRevision }
-  ) {
-    row.item.revision_selection = r_row.item.id;
-  }
-
   get_category_selection(row: { item: ArrayPath }) {
     return row.item.category_selection;
   }
 
-  set_category_selection(
-    row: { item: ArrayPath },
-    event: { target: { value: string } }
-  ) {
-    row.item.category_selection = event.target.value;
+  set_category_selection(row: { item: ArrayPath }, event: string) {
+    row.item.category_selection = event;
+  }
+
+  set_revision_selection(row: { item: ArrayPath }, event: number) {
+    row.item.revision_selection = event;
   }
 }
 </script>
