@@ -420,8 +420,8 @@ export default class PathList extends Vue {
             "X-ADMIN-TOKEN": token.content,
           },
         })
-        .then((data: BlogRevision) => {
-          this.$set(this.paths[article_id], revision_id, data);
+        .then(() => {
+          this.load();
         });
     });
   }
@@ -435,8 +435,8 @@ export default class PathList extends Vue {
             "X-ADMIN-TOKEN": token.content,
           },
         })
-        .then((data: BlogRevision) => {
-          this.$set(this.paths[article_id], revision_id, data);
+        .then(() => {
+          this.load();
         });
     });
   }
