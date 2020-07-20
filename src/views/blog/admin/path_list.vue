@@ -398,9 +398,6 @@ export default class PathList extends Vue {
               if (revision.status === "waiting") {
                 this.paths[revision.article_id].waiting_count++;
               }
-              revision["_rowVariant"] = this.get_status_variant(
-                revision.status
-              );
               this.paths[revision.article_id].revisions.push(revision);
               this.fetch_status = "idle";
             }
@@ -420,8 +417,12 @@ export default class PathList extends Vue {
             "X-ADMIN-TOKEN": token.content,
           },
         })
-        .then(() => {
-          this.load();
+        .then((res) => {
+          const index = this.paths[article_id].revisions.findIndex(
+            ({ id }) => id === revision_id
+          );
+          this.paths[article_id].revisions.splice(index, 1, res);
+          this.paths[article_id].waiting_count--;
         });
     });
   }
@@ -435,16 +436,20 @@ export default class PathList extends Vue {
             "X-ADMIN-TOKEN": token.content,
           },
         })
-        .then(() => {
-          this.load();
+        .then((res) => {
+          const index = this.paths[article_id].revisions.findIndex(
+            ({ id }) => id === revision_id
+          );
+          this.paths[article_id].revisions.splice(index, 1, res);
+          this.paths[article_id].waiting_count--;
         });
     });
   }
 
   apply_changes(row: { item: ArrayPath }) {
-    AdminAuth.attempt_get_JWT()
-      .then((token) => {
-        return api(this.client)
+    AdminAuth.attempt_get_JWT().then((token) => {
+      return new Promise<BlogArticle>((resolve) =>
+        api(this.client)
           .blog.articles._id(row.item.id)
           .$patch({
             data: {
@@ -454,23 +459,53 @@ export default class PathList extends Vue {
             headers: {
               "X-ADMIN-TOKEN": token.content,
             },
+          })
+          .then((article) => {
+            // update article
+            this.$set(this.paths, article.id, {
+              ...article,
+              waiting_count: 0,
+              article_exists: true,
+              revisions: [],
+            });
+            resolve(article);
+          })
+      )
+        .then((article) => {
+          api(this.client)
+            .blog.revisions.$get({
+              query: {
+                article_id: article.id,
+              },
+              headers: {
+                "X-ADMIN-TOKEN": token.content,
+              },
+            })
+            .then((revisions) => {
+              // update article.revisions
+              for (const revision of revisions) {
+                if (revision.status === "waiting")
+                  this.paths[revision.article_id].waiting_count++;
+                this.paths[revision.article_id].revisions.push(revision);
+              }
+            });
+        })
+        .catch(() => {
+          this.$bvToast.toast("apply changes failed", {
+            title: "Error",
+            variant: "Danger",
           });
-      })
-      .then(() => {
-        this.load();
-      })
-      .catch(() => {
-        this.$bvToast.toast("apply changes failed", {
-          title: "Error",
-          variant: "Danger",
         });
-      });
+    });
   }
 
   get array_paths(): ArrayPath[] {
     // object -> array
     const array_paths: ArrayPath[] = [];
     for (const [id, path] of Object.entries(this.paths)) {
+      for (const revision of path.revisions) {
+        revision._rowVariant = this.get_status_variant(revision.status);
+      }
       array_paths.push({
         id: id,
         ...path,
