@@ -291,7 +291,7 @@ interface Path {
   revision_id: number;
   waiting_count: number;
   article_exists: boolean;
-  revisions: TableRevision[];
+  revisions: BlogRevision[];
   revision_selection?: number;
   category_selection?: string;
 }
@@ -503,12 +503,21 @@ export default class PathList extends Vue {
     // object -> array
     const array_paths: ArrayPath[] = [];
     for (const [id, path] of Object.entries(this.paths)) {
+      const table_revisions: TableRevision[] = [];
       for (const revision of path.revisions) {
-        revision._rowVariant = this.get_status_variant(revision.status);
+        table_revisions.push({
+          _rowVariant: this.get_status_variant(revision.status),
+          ...revision,
+        });
       }
+
+      // TODO: fix rule
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { revisions, ...rest } = path;
       array_paths.push({
         id: id,
-        ...path,
+        revisions: table_revisions,
+        ...rest,
       });
     }
     return array_paths;
