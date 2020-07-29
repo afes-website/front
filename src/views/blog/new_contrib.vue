@@ -75,6 +75,10 @@
                 <font-awesome-icon :icon="'clock'" class="fa-fw" />
                 yyyy/mm/dd
               </span>
+              <span>
+                <font-awesome-icon :icon="'stopwatch'" class="fa-fw" />
+                {{ time_to_read }} 分
+              </span>
             </b-card-sub-title>
             <b-card-text v-html="card_text" />
           </b-card>
@@ -334,6 +338,10 @@ export default class NewRevision extends Vue {
   }
   get_revision_article_id(revision: BlogRevision) {
     return revision.article_id;
+  }
+
+  get time_to_read() {
+    return Math.ceil(Markdown.render_plaintext(this.content).length / 400);
   }
 }
 </script>
