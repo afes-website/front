@@ -33,6 +33,10 @@
               <font-awesome-icon :icon="'clock'" class="fa-fw" />
               {{ get_updated_at(article) }}
             </span>
+            <span>
+              <font-awesome-icon :icon="'stopwatch'" class="fa-fw" />
+              {{ get_time_to_read(article) }} 分
+            </span>
           </b-card-sub-title>
           <b-card-text v-html="get_card_text(article)" />
         </b-card>
@@ -255,6 +259,10 @@ export default class ArticleList extends Vue {
 
   get_updated_at(article: BlogArticle) {
     return getStringDate(article.updated_at);
+  }
+
+  get_time_to_read(article: BlogArticle) {
+    return Math.ceil(Markdown.render_plaintext(article.content).length / 400);
   }
 }
 </script>
