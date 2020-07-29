@@ -373,7 +373,7 @@ export default class NewRevision extends Vue {
   }
 
   get time_to_read() {
-    return Math.ceil(Markdown.render_plaintext(this.content).length / 400);
+    return Markdown.time_to_read(this.content);
   }
 }
 </script>

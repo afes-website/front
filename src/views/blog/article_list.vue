@@ -262,7 +262,7 @@ export default class ArticleList extends Vue {
   }
 
   get_time_to_read(article: BlogArticle) {
-    return Math.ceil(Markdown.render_plaintext(article.content).length / 400);
+    return Markdown.time_to_read(article.content);
   }
 }
 </script>
