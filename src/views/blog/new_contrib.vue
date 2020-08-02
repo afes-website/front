@@ -77,7 +77,7 @@
               </span>
               <span>
                 <font-awesome-icon :icon="'stopwatch'" class="fa-fw" />
-                {{ time_to_read }} 分
+                約 {{ time_to_read }} 分
               </span>
             </b-card-sub-title>
             <b-card-text v-html="card_text" />

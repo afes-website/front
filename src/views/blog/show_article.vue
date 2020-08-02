@@ -18,7 +18,7 @@
         </span>
         <span>
           <font-awesome-icon :icon="'stopwatch'" class="fa-fw" />
-          {{ get_time_to_read(article) }} 分
+          約 {{ get_time_to_read(article) }} 分
         </span>
         <b-button-group>
           <b-button
