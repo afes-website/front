@@ -68,6 +68,7 @@ export function render_plaintext(md: string) {
 
 export function time_to_read(md: string) {
   return Math.ceil(render_plaintext(md).length / 400);
+  // return minute to read
 }
 
 export default {
