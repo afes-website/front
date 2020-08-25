@@ -23,9 +23,7 @@
 
     <template v-slot:modal-footer="{ ok }">
       <fetch-status-icon :status="status" />
-      <b-button variant="primary" @click="ok">
-        Submit
-      </b-button>
+      <b-button variant="primary" @click="ok"> Submit </b-button>
     </template>
   </b-modal>
 </template>

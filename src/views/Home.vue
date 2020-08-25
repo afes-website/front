@@ -7,7 +7,7 @@
             show
             variant="danger"
             class="top-page-alert mt-3"
-            style="line-height: 1.7; font-size: 0.95rem;"
+            style="line-height: 1.7; font-size: 0.95rem"
           >
             新型コロナウイルス感染症の流行を考慮し、開催を<b>２学期以降への無期限延期</b>といたします。<br />
             最終的な決定は、文実内、或いは全校によって行う予定です。
@@ -57,9 +57,7 @@
         <p>
           2020年6月12日から14日での開催を予定していましたが、新型コロナウイルス感染症（COVID-19）の流行状況により、２学期以降への無期限延期となりました。
           最終的な決定は、文実内、或いは全校によって行います。(場合によっては教員による決定となる可能性もあります）<br />
-          <b-link to="/blog/news/re-reschedule">
-            詳細はこちら
-          </b-link>
+          <b-link to="/blog/news/re-reschedule"> 詳細はこちら </b-link>
         </p>
         <p>
           当日の展示に関する情報や、日々の活動の様子（近況）などを掲載しています。

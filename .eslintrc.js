@@ -36,6 +36,7 @@ module.exports = {
       rules: {
         "@typescript-eslint/camelcase": "off",
         "@typescript-eslint/no-explicit-any": "error",
+        "@typescript-eslint/explicit-module-boundary-types": "off",
         "rulesdir/vue-template-simple-expr": "error",
       },
     },

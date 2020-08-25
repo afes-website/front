@@ -88,7 +88,7 @@
           :items="get_path_revisions(row)"
           :fields="revisionFields"
           class="mb-1"
-          style="width: calc(100% - 24px); margin-left: 24px;"
+          style="width: calc(100% - 24px); margin-left: 24px"
         >
           <template v-slot:cell(id)="r_row">
             <b-form-radio
@@ -452,7 +452,7 @@ export default class PathList extends Vue {
         api(this.client)
           .blog.articles._id(row.item.id)
           .$patch({
-            data: {
+            body: {
               category: row.item.category_selection,
               revision_id: row.item.revision_selection,
             },

@@ -12,19 +12,19 @@ class EventHub extends Vue {
   emitOpenModal() {
     this.$emit(OPEN_MODAL);
   }
-  onOpenModal(callback: Function) {
+  onOpenModal(callback: (...args: unknown[]) => void) {
     this.$on(OPEN_MODAL, callback);
   }
   emitLoginSuccess() {
     this.$emit(LOGIN_SUCCESS);
   }
-  onLoginSuccess(callback: Function) {
+  onLoginSuccess(callback: (...args: unknown[]) => void) {
     this.$on(LOGIN_SUCCESS, callback);
   }
   emitLoginFail() {
     this.$emit(LOGIN_FAIL);
   }
-  onLoginFail(callback: Function) {
+  onLoginFail(callback: (...args: unknown[]) => void) {
     this.$on(LOGIN_FAIL, callback);
   }
 }

@@ -12,9 +12,7 @@
 
     <template v-slot:modal-footer="{ ok }">
       <fetch-status-icon :status="status" />
-      <b-button variant="primary" @click="ok">
-        Submit
-      </b-button>
+      <b-button variant="primary" @click="ok"> Submit </b-button>
     </template>
   </b-modal>
 </template>
@@ -53,7 +51,7 @@ export default class ImageUploadModal extends Vue {
       .then((token) => {
         if (this.file === null) throw "file not selected";
         return api(this.client).images.$post({
-          data: {
+          body: {
             content: this.file,
           },
           headers: {
