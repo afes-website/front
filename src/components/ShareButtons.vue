@@ -11,7 +11,7 @@
           role="img"
           viewBox="0 0 24 24"
           xmlns="http://www.w3.org/2000/svg"
-          style="vertical-align: -0.2em;"
+          style="vertical-align: -0.2em"
         >
           <path
             fill="currentColor"
@@ -44,7 +44,7 @@
           role="img"
           viewBox="0 0 24 24"
           xmlns="http://www.w3.org/2000/svg"
-          style="vertical-align: -0.2em;"
+          style="vertical-align: -0.2em"
         >
           <path
             fill="currentColor"

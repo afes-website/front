@@ -75,6 +75,10 @@
                 <font-awesome-icon :icon="'clock'" class="fa-fw" />
                 yyyy/mm/dd
               </span>
+              <span>
+                <font-awesome-icon :icon="'stopwatch'" class="fa-fw" />
+                約 {{ time_to_read }} 分
+              </span>
             </b-card-sub-title>
             <b-card-text v-html="card_text" />
           </b-card>
@@ -84,9 +88,7 @@
           </small>
           <img v-if="!!ogimage_title" :src="ogimage_url" alt="" />
           <div v-else>
-            <small class="text-danger">
-              タイトルを指定してください。
-            </small>
+            <small class="text-danger"> タイトルを指定してください。 </small>
           </div>
         </b-tab>
       </b-tabs>
@@ -110,25 +112,19 @@
       <b-table-simple>
         <b-tbody>
           <b-tr>
-            <b-th>
-              number
-            </b-th>
+            <b-th> number </b-th>
             <b-td>
               {{ get_revision_id(revision) }}
             </b-td>
           </b-tr>
           <b-tr>
-            <b-th>
-              id
-            </b-th>
+            <b-th> id </b-th>
             <b-td>
               {{ get_revision_article_id(revision) }}
             </b-td>
           </b-tr>
           <b-tr>
-            <b-th>
-              title
-            </b-th>
+            <b-th> title </b-th>
             <b-td>
               {{ get_revision_title(revision) }}
             </b-td>
@@ -252,7 +248,7 @@ export default class NewRevision extends Vue {
 
     api(aspida())
       .blog.revisions.contrib.$post({
-        data: {
+        body: {
           title: this.article_title,
           content: this.content,
           handle_name: this.handle_name,
@@ -334,6 +330,10 @@ export default class NewRevision extends Vue {
   }
   get_revision_article_id(revision: BlogRevision) {
     return revision.article_id;
+  }
+
+  get time_to_read() {
+    return Markdown.time_to_read(this.content);
   }
 }
 </script>

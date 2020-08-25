@@ -16,6 +16,10 @@
           <font-awesome-icon :icon="'clock'" class="fa-fw" />
           {{ get_updated_at(article) }}
         </span>
+        <span>
+          <font-awesome-icon :icon="'stopwatch'" class="fa-fw" />
+          約 {{ get_time_to_read(article) }} 分
+        </span>
         <b-button-group>
           <b-button
             variant="secondary"
@@ -171,6 +175,10 @@ export default class ShowArticle extends Vue {
 
   get_updated_at(article: BlogArticle) {
     return getStringTime(article.updated_at);
+  }
+
+  get_time_to_read(article: BlogArticle) {
+    return Markdown.time_to_read(article.content);
   }
 }
 </script>

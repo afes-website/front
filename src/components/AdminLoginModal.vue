@@ -28,9 +28,7 @@
 
     <template v-slot:modal-footer="{ ok }">
       <fetch-status-icon :status="status" />
-      <b-button variant="primary" @click="ok">
-        Login
-      </b-button>
+      <b-button variant="primary" @click="ok"> Login </b-button>
     </template>
   </b-modal>
 </template>

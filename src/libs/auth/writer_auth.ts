@@ -56,7 +56,7 @@ function login(
   password: string
 ): Promise<string> {
   return api(client)
-    .writer.login.$post({ data: { id, password } })
+    .writer.login.$post({ body: { id, password } })
     .then((d: { token: string }) => {
       Cookie.set("writer_token", d.token);
       return d.token;
@@ -76,7 +76,7 @@ function change_password(
   return api(client)
     .writer.change_password.$post({
       headers: { "X-BLOG-WRITER-TOKEN": token.content },
-      data: { password },
+      body: { password },
     })
     .then(() => {
       return;

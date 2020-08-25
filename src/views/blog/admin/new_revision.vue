@@ -30,9 +30,7 @@
     <b-tabs>
       <b-tab title="編集" active>
         <div class="toolbar">
-          <b-button @click="show_image_upload_modal">
-            画像を追加
-          </b-button>
+          <b-button @click="show_image_upload_modal"> 画像を追加 </b-button>
         </div>
         <b-textarea v-model="content" class="edit-area"></b-textarea>
       </b-tab>
@@ -50,6 +48,10 @@
           <span>
             <font-awesome-icon :icon="'clock'" class="fa-fw" />
             yyyy/mm/dd
+          </span>
+          <span>
+            <font-awesome-icon :icon="'stopwatch'" class="fa-fw" />
+            約 {{ time_to_read }} 分
           </span>
         </div>
         <div v-html="rendered_content"></div>
@@ -72,6 +74,10 @@
               <font-awesome-icon :icon="'clock'" class="fa-fw" />
               yyyy/mm/dd
             </span>
+            <span>
+              <font-awesome-icon :icon="'stopwatch'" class="fa-fw" />
+              約 {{ time_to_read }} 分
+            </span>
           </b-card-sub-title>
           <b-card-text v-html="card_text" />
         </b-card>
@@ -81,9 +87,7 @@
         </small>
         <img v-if="!!ogimage_title" :src="ogimage_url" alt="" />
         <div v-else>
-          <small class="text-danger">
-            タイトルを指定してください。
-          </small>
+          <small class="text-danger"> タイトルを指定してください。 </small>
         </div>
       </b-tab>
       <b-tab title="現在との差分">
@@ -268,7 +272,7 @@ export default class NewRevision extends Vue {
     WriterAuth.attempt_get_JWT().then((token) => {
       api(aspida())
         .blog.revisions.$post({
-          data: {
+          body: {
             title: this.article_title,
             article_id: this.article_path,
             content: this.content,
@@ -362,6 +366,10 @@ export default class NewRevision extends Vue {
     });
     decoded = decoded.replace(/\n/g, "");
     return decoded;
+  }
+
+  get time_to_read() {
+    return Markdown.time_to_read(this.content);
   }
 }
 </script>

@@ -55,7 +55,7 @@ function login(
   password: string
 ): Promise<string> {
   return api(client)
-    .admin.login.$post({ data: { id, password } })
+    .admin.login.$post({ body: { id, password } })
     .then((d: { token: string }) => {
       Cookie.set("admin_token", d.token);
       return d.token;
@@ -75,7 +75,7 @@ function change_password(
   return api(client)
     .admin.change_password.$post({
       headers: { "X-ADMIN-TOKEN": token.content },
-      data: { password },
+      body: { password },
     })
     .then(() => {
       return;
