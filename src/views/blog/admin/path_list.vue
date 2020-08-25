@@ -452,7 +452,7 @@ export default class PathList extends Vue {
         api(this.client)
           .blog.articles._id(row.item.id)
           .$patch({
-            data: {
+            body: {
               category: row.item.category_selection,
               revision_id: row.item.revision_selection,
             },

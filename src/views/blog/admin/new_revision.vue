@@ -272,7 +272,7 @@ export default class NewRevision extends Vue {
     WriterAuth.attempt_get_JWT().then((token) => {
       api(aspida())
         .blog.revisions.$post({
-          data: {
+          body: {
             title: this.article_title,
             article_id: this.article_path,
             content: this.content,

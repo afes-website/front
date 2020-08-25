@@ -51,7 +51,7 @@ export default class ImageUploadModal extends Vue {
       .then((token) => {
         if (this.file === null) throw "file not selected";
         return api(this.client).images.$post({
-          data: {
+          body: {
             content: this.file,
           },
           headers: {

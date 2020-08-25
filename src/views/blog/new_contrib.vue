@@ -248,7 +248,7 @@ export default class NewRevision extends Vue {
 
     api(aspida())
       .blog.revisions.contrib.$post({
-        data: {
+        body: {
           title: this.article_title,
           content: this.content,
           handle_name: this.handle_name,

@@ -291,7 +291,7 @@ export default class ManagePath extends Vue {
         return api(this.client)
           .blog.articles._id(this.$route.params.id)
           .$patch({
-            data: {
+            body: {
               category: this.category,
               revision_id: this.revision_selection,
             },
