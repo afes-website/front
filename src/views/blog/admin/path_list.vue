@@ -88,7 +88,7 @@
           :items="get_path_revisions(row)"
           :fields="revisionFields"
           class="mb-1"
-          style="width: calc(100% - 24px); margin-left: 24px;"
+          style="width: calc(100% - 24px); margin-left: 24px"
         >
           <template v-slot:cell(id)="r_row">
             <b-form-radio
