@@ -10,9 +10,9 @@
             style="line-height: 1.7; font-size: 0.95rem"
           >
             長期に渡る協議の結果、<b>10/31～11/1の２日間</b> に
-            <b>内部生/保護者のみ</b> で開催することとなりました。<br />
+            <b>内部生･保護者のみ</b> で開催することとなりました。<br />
             また、オンラインでの開催についても検討を進めています。<br />
-            <b-link to="/blog/news/schedule-decision" class="alert-link">
+            <b-link to="/blog/news/schedule-declaration" class="alert-link">
               詳細はこちら
             </b-link>
           </b-alert>
@@ -57,11 +57,11 @@
         <p>第73回 麻布学園文化祭 公式ウェブサイトです。</p>
         <p>
           2020年10月31日から11月1日の2日間に、内部生とその保護者のみで開催いたします。<br />
-          <b-link to="/blog/news/schedule-decision">詳細はこちら</b-link>
+          <b-link to="/blog/news/schedule-declaration">詳細はこちら</b-link>
         </p>
         <p>
-          また、外部への発表、及び交流の代替手段として、オンラインでの文化祭を検討しています。
-          近日発表いたしますので、発表をお待ちください。
+          また、外部への発表、及び交流の代替手段として、オンラインでの文化祭企画などの検討を進めています。
+          近日中に発表いたしますので、発表をお待ちください。
         </p>
         <p>
           当日の展示に関する情報や、日々の活動の様子（近況）などを掲載しています。
