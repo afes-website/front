@@ -111,7 +111,6 @@
       </nav>
       <small>&copy; 第73回麻布学園文化祭実行委員会 2020</small>
     </div>
-    <SpecialAnnouncement />
   </div>
 </template>
 
@@ -302,7 +301,6 @@ import { BlogArticle } from "@/apis/blog/articles/@types";
 import { Categories } from "@/apis/blog/categories/@types";
 import getCategories from "@/libs/categories";
 import TopPageButton from "@/components/TopPageButton.vue";
-import SpecialAnnouncement from "@/components/SpecialAnnouncement.vue";
 import { getStringDate } from "@/libs/string_date";
 
 import VueScrollTo from "vue-scrollto";
@@ -313,7 +311,6 @@ Vue.use(VueScrollTo, {
 @Component({
   components: {
     TopPageButton,
-    SpecialAnnouncement,
   },
 })
 export default class Home extends Vue {
