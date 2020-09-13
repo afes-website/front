@@ -2,6 +2,10 @@
 # yarn lockfile v1
 
 
+"@afes-website/docs@git+https://github.com/afes-website/docs.git#2.0.5":
+  version "2.0.4"
+  resolved "git+https://github.com/afes-website/docs.git#9bf47359639e9a13409525bcef55737cbc48aa12"
+
 "@ant-design-vue/babel-helper-vue-transform-on@^1.0.0":
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@ant-design-vue/babel-helper-vue-transform-on/-/babel-helper-vue-transform-on-1.0.1.tgz#d219d92f4e1fc5e7add211c347c7fa000518b623"
