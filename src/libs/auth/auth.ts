@@ -2,16 +2,16 @@ import Cookie from "js-cookie";
 
 import JWT from "./jwt";
 
-import api from "@/apis/$api";
+import api from "@afes-website/docs";
 import { AspidaClient } from "aspida";
 import { AxiosRequestConfig } from "axios";
-import EventHub from "./admin_auth_eventhub";
+import EventHub from "./auth_eventhub";
 import aspida from "@aspida/axios";
 
 function getJWT(): JWT | null {
-  const admin_token = Cookie.get("admin_token");
-  if (!admin_token) return null;
-  const jwt = new JWT(admin_token, "admin_uid");
+  const token = Cookie.get("token");
+  if (!token) return null;
+  const jwt = new JWT(token, "uid");
   if (!jwt.isValidAt(new Date())) return null;
   return jwt;
 }
@@ -21,10 +21,10 @@ function strictValidateJWT(client: AspidaClient<AxiosRequestConfig>) {
   if (jwt === null) return Promise.resolve(false);
   return new Promise((s) => {
     api(client)
-      .admin.user.$get({ headers: { "X-ADMIN-TOKEN": jwt.content } })
+      .auth.user.$get({ headers: { Authorization: "bearer " + jwt.content } })
       .then(() => s(true))
       .catch(() => {
-        Cookie.remove("admin_token");
+        Cookie.remove("token");
         s(false);
       });
   });
@@ -55,15 +55,15 @@ function login(
   password: string
 ): Promise<string> {
   return api(client)
-    .admin.login.$post({ body: { id, password } })
+    .auth.login.$post({ body: { id, password } })
     .then((d: { token: string }) => {
-      Cookie.set("admin_token", d.token);
+      Cookie.set("token", d.token);
       return d.token;
     });
 }
 
 function logout() {
-  Cookie.remove("admin_token");
+  Cookie.remove("token");
 }
 
 function change_password(
@@ -73,8 +73,8 @@ function change_password(
   const token = getJWT();
   if (token == null) return Promise.reject();
   return api(client)
-    .admin.change_password.$post({
-      headers: { "X-ADMIN-TOKEN": token.content },
+    .auth.change_password.$post({
+      headers: { Authorization: token.content },
       body: { password },
     })
     .then(() => {

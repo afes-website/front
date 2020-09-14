@@ -218,9 +218,9 @@ div#preview {
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import api from "@/apis/$api";
+import api from "@afes-website/docs";
 import aspida from "@aspida/axios";
-import { BlogRevision } from "@/apis/blog/revisions/@types";
+import { BlogRevision } from "@afes-website/docs";
 import FetchStatus from "@/libs/fetch_status";
 import FetchStatusIcon from "@/components/FetchStatusIcon.vue";
 import Markdown from "@/libs/markdown";

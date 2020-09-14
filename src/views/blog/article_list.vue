@@ -118,11 +118,11 @@
 
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
-import api from "@/apis/$api";
+import api from "@afes-website/docs";
 import aspida from "@aspida/axios";
-import { BlogArticle, BlogArticleParameter } from "@/apis/blog/articles/@types";
+import { BlogArticle, BlogArticleParameter } from "@afes-website/docs";
 import Markdown from "@/libs/markdown";
-import { Categories } from "@/apis/blog/categories/@types";
+import { Categories } from "@afes-website/docs";
 import getCategories from "@/libs/categories";
 import Breadcrumb from "@/components/Breadcrumb.vue";
 import FetchStatus from "@/libs/fetch_status";

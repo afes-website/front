@@ -204,17 +204,17 @@ div#preview {
 
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
-import api from "@/apis/$api";
+import api from "@afes-website/docs";
 import aspida from "@aspida/axios";
-import WriterAuth from "@/libs/auth/writer_auth";
-import { BlogRevision } from "@/apis/blog/revisions/@types";
+import Auth from "@/libs/auth/auth";
+import { BlogRevision } from "@afes-website/docs";
 import FetchStatus from "@/libs/fetch_status";
 import FetchStatusIcon from "@/components/FetchStatusIcon.vue";
 import Markdown from "@/libs/markdown";
 import DiffLib from "difflib";
 import * as Diff2Html from "diff2html";
 import ImageUploadModal from "@/components/ImageUploadModal.vue";
-import { get_image_url } from "@/apis/images/@utils";
+import { get_image_url } from "@afes-website/docs";
 import Breadcrumb from "@/components/Breadcrumb.vue";
 
 @Component({ components: { FetchStatusIcon, ImageUploadModal, Breadcrumb } })
@@ -269,7 +269,7 @@ export default class NewRevision extends Vue {
   post() {
     this.status = "pending";
 
-    WriterAuth.attempt_get_JWT().then((token) => {
+    Auth.attempt_get_JWT().then((token) => {
       api(aspida())
         .blog.revisions.$post({
           body: {
@@ -279,7 +279,7 @@ export default class NewRevision extends Vue {
             handle_name: null,
           },
           headers: {
-            "X-BLOG-WRITER-TOKEN": token.content,
+            Authorization: "bearer " + token.content,
           },
         })
         .then((data: BlogRevision) => {

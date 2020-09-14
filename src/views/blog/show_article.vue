@@ -68,18 +68,18 @@ article {
 
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
-import api from "@/apis/$api";
+import api from "@afes-website/docs";
 import aspida from "@aspida/axios";
-import { BlogArticle } from "@/apis/blog/articles/@types";
+import { BlogArticle } from "@afes-website/docs";
 import is_axios_error from "@/libs/is_axios_error";
 import FetchStatus from "@/libs/fetch_status";
 import Markdown from "@/libs/markdown";
-import { Categories } from "@/apis/blog/categories/@types";
+import { Categories } from "@afes-website/docs";
 import getCategories from "@/libs/categories";
 import Breadcrumb from "@/components/Breadcrumb.vue";
 import ShareButtons from "@/components/ShareButtons.vue";
-import AdminAuth from "@/libs/auth/admin_auth";
-import WriterAuth from "@/libs/auth/writer_auth";
+import AdminAuth from "@/libs/auth/auth";
+import Auth from "@/libs/auth/auth";
 import { getStringTime } from "@/libs/string_date";
 
 @Component({
@@ -142,7 +142,7 @@ export default class ShowArticle extends Vue {
   }
 
   get can_edit() {
-    const jwt = WriterAuth.getJWT();
+    const jwt = Auth.getJWT();
     if (jwt === null) return false;
     if (this.article === null) return false;
     return this.article.author.id === jwt.userId;

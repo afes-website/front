@@ -154,21 +154,21 @@
 
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
-import api from "@/apis/$api";
+import api from "@afes-website/docs";
 import aspida from "@aspida/axios";
-import AdminAuth from "@/libs/auth/admin_auth";
-import { BlogRevision } from "@/apis/blog/revisions/@types";
-import { BlogArticle } from "@/apis/blog/articles/@types";
+import AdminAuth from "@/libs/auth/auth";
+import { BlogRevision } from "@afes-website/docs";
+import { BlogArticle } from "@afes-website/docs";
 import is_axios_error from "@/libs/is_axios_error";
 import FetchStatus from "@/libs/fetch_status";
 import FetchStatusIcon from "@/components/FetchStatusIcon.vue";
 import DiffLib from "difflib";
 import * as Diff2Html from "diff2html";
-import { Categories } from "@/apis/blog/categories/@types";
+import { Categories } from "@afes-website/docs";
 import getCategories from "@/libs/categories";
 import Breadcrumb from "@/components/Breadcrumb.vue";
 import { getStringTime } from "@/libs/string_date";
-import { Category } from "../../../apis/blog/categories/@types";
+import { Category } from "@afes-website/docs";
 
 @Component({ components: { FetchStatusIcon, Breadcrumb } })
 export default class ManagePath extends Vue {
@@ -233,7 +233,7 @@ export default class ManagePath extends Vue {
                 article_id: this.$route.params.id,
               },
               headers: {
-                "X-ADMIN-TOKEN": token.content,
+                Authorization: "bearer " + token.content,
               },
             })
             .then((data: BlogRevision[]) => {
@@ -260,7 +260,7 @@ export default class ManagePath extends Vue {
         .blog.revisions._id(id)
         .accept.$patch({
           headers: {
-            "X-ADMIN-TOKEN": token.content,
+            Authorization: "bearer " + token.content,
           },
         })
         .then((data: BlogRevision) => {
@@ -275,7 +275,7 @@ export default class ManagePath extends Vue {
         .blog.revisions._id(id)
         .reject.$patch({
           headers: {
-            "X-ADMIN-TOKEN": token.content,
+            Authorization: "bearer " + token.content,
           },
         })
         .then((data: BlogRevision) => {
@@ -296,7 +296,7 @@ export default class ManagePath extends Vue {
               revision_id: this.revision_selection,
             },
             headers: {
-              "X-ADMIN-TOKEN": token.content,
+              Authorization: "bearer " + token.content,
             },
           });
       })
@@ -324,7 +324,9 @@ export default class ManagePath extends Vue {
         return api(this.client)
           .blog.articles._id(this.$route.params.id)
           .delete({
-            headers: { "X-ADMIN-TOKEN": token.content },
+            headers: {
+              Authorization: "bearer " + token.content,
+            },
           });
       })
       .then(() => {

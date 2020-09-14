@@ -97,11 +97,11 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import api from "@/apis/$api";
+import api from "@afes-website/docs";
 import aspida from "@aspida/axios";
-import WriterAuth from "@/libs/auth/writer_auth";
-import { BlogRevision } from "@/apis/blog/revisions/@types";
-import { BlogArticle } from "@/apis/blog/articles/@types";
+import Auth from "@/libs/auth/auth";
+import { BlogRevision } from "@afes-website/docs";
+import { BlogArticle } from "@afes-website/docs";
 import is_axios_error from "@/libs/is_axios_error";
 import FetchStatus from "@/libs/fetch_status";
 import FetchStatusIcon from "@/components/FetchStatusIcon.vue";
@@ -128,12 +128,12 @@ export default class RevisionList extends Vue {
     if (this.fetch_status == "pending") return;
     this.fetch_status = "pending";
     this.revisions = [];
-    WriterAuth.attempt_get_JWT()
+    Auth.attempt_get_JWT()
       .then((token) => {
         api(this.client)
           .blog.revisions.$get({
             headers: {
-              "X-BLOG-WRITER-TOKEN": token.content,
+              Authorization: "bearer " + token.content,
             },
           })
           .then((data: BlogRevision[]) => {

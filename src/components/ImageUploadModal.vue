@@ -21,9 +21,9 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
 
 import aspida from "@aspida/axios";
-import api from "@/apis/$api";
+import api from "@afes-website/docs";
 import FetchStatus from "@/libs/fetch_status";
-import WriterAuth from "@/libs/auth/writer_auth";
+import Auth from "@/libs/auth/auth";
 import FetchStatusIcon from "@/components/FetchStatusIcon.vue";
 
 @Component({ components: { FetchStatusIcon } })
@@ -47,7 +47,7 @@ export default class ImageUploadModal extends Vue {
   modal_ok(e: Event) {
     e.preventDefault();
     this.status = "pending";
-    WriterAuth.attempt_get_JWT()
+    Auth.attempt_get_JWT()
       .then((token) => {
         if (this.file === null) throw "file not selected";
         return api(this.client).images.$post({
@@ -55,7 +55,7 @@ export default class ImageUploadModal extends Vue {
             content: this.file,
           },
           headers: {
-            "X-BLOG-WRITER-TOKEN": token.content,
+            Authorization: "bearer " + token.content,
           },
         });
       })

@@ -563,19 +563,19 @@ header {
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
 import Vue2TouchEvents from "vue2-touch-events";
-import AdminLoginModal from "./components/AdminLoginModal.vue";
-import WriterLoginModal from "./components/WriterLoginModal.vue";
-import { Categories } from "@/apis/blog/categories/@types";
+import LoginModal from "./components/LoginModal.vue";
+import { Categories } from "@afes-website/docs";
 import getCategories from "@/libs/categories";
 import NotFound from "@/views/NotFound.vue";
-import AdminAuth from "@/libs/auth/admin_auth";
-import WriterAuth from "@/libs/auth/writer_auth";
-import admin_auth_eventhub from "@/libs/auth/admin_auth_eventhub";
-import writer_auth_eventhub from "@/libs/auth/writer_auth_eventhub";
+import AdminAuth from "@/libs/auth/auth";
+import Auth from "@/libs/auth/auth";
+import admin_auth_eventhub from "@/libs/auth/auth_eventhub";
 
 Vue.use(Vue2TouchEvents);
 
-@Component({ components: { AdminLoginModal, WriterLoginModal, NotFound } })
+@Component({
+  components: { AdminLoginModal: LoginModal, NotFound },
+})
 export default class Layout extends Vue {
   sidebar_shown = false;
   show_404 = false;
@@ -588,7 +588,6 @@ export default class Layout extends Vue {
 
   created() {
     admin_auth_eventhub.onLoginSuccess(this.reload_login_status);
-    writer_auth_eventhub.onLoginSuccess(this.reload_login_status);
   }
   mounted() {
     this.resize();
@@ -636,7 +635,7 @@ export default class Layout extends Vue {
 
   reload_login_status() {
     this.admin_logged_in = AdminAuth.getJWT() !== null;
-    this.writer_logged_in = WriterAuth.getJWT() !== null;
+    this.writer_logged_in = Auth.getJWT() !== null;
   }
 
   get is_in_admin_route() {

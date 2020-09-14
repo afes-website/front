@@ -56,15 +56,14 @@ span {
 
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
-import api from "@/apis/$api";
+import api from "@afes-website/docs";
 import aspida from "@aspida/axios";
-import { BlogRevision } from "@/apis/blog/revisions/@types";
+import { BlogRevision } from "@afes-website/docs";
 import is_axios_error from "@/libs/is_axios_error";
 import FetchStatus from "@/libs/fetch_status";
 import Markdown from "@/libs/markdown";
-import AdminAuth from "@/libs/auth/admin_auth";
-import WriterAuth from "@/libs/auth/writer_auth";
-import { AdminAuthToken, WriterAuthToken } from "../../../apis/@types";
+import Auth from "@/libs/auth/auth";
+import { AuthToken } from "@afes-website/docs";
 import Breadcrumb from "@/components/Breadcrumb.vue";
 import { getStringTime } from "@/libs/string_date";
 
@@ -88,14 +87,16 @@ export default class ShowRevision extends Vue {
   }
 
   load() {
+    // TODO: fix
     this.revision = null;
     this.fetch_status = "pending";
-    new Promise<AdminAuthToken | WriterAuthToken>((s, r) => {
-      const admin_token = AdminAuth.getJWT();
-      if (admin_token !== null) s({ "X-ADMIN-TOKEN": admin_token.content });
-      const writer_token = WriterAuth.getJWT();
+    new Promise<AuthToken>((s, r) => {
+      const admin_token = Auth.getJWT();
+      if (admin_token !== null)
+        s({ Authorization: "bearer " + admin_token.content });
+      const writer_token = Auth.getJWT();
       if (writer_token !== null)
-        s({ "X-BLOG-WRITER-TOKEN": writer_token.content });
+        s({ Authorization: "bearer " + writer_token.content });
       r("not logged in");
     })
       .then((header) => {

@@ -1,7 +1,7 @@
 <template>
   <b-modal
     id="modal-1"
-    title="Writer Login"
+    title="Admin Login"
     v-model="value"
     @ok="modal_ok"
     @hidden="modal_cancel"
@@ -21,6 +21,7 @@
           v-model="password"
           required
           type="password"
+          @keypress.enter="submit"
         ></b-form-input>
       </b-form-group>
     </b-form>
@@ -37,12 +38,12 @@ import { Component, Vue } from "vue-property-decorator";
 import aspida from "@aspida/axios";
 
 import Auth from "@/libs/auth";
-import EventHub from "@/libs/auth/writer_auth_eventhub";
+import EventHub from "@/libs/auth/auth_eventhub";
 import FetchStatus from "@/libs/fetch_status";
 import FetchStatusIcon from "@/components/FetchStatusIcon.vue";
 
 @Component({ components: { FetchStatusIcon } })
-export default class WriterLoginModal extends Vue {
+export default class LoginModal extends Vue {
   id = "";
   password = "";
   status: FetchStatus = "idle";
@@ -66,7 +67,7 @@ export default class WriterLoginModal extends Vue {
 
   login() {
     this.status = "pending";
-    Auth.WriterAuth.login(aspida(), this.id, this.password)
+    Auth.Auth.login(aspida(), this.id, this.password)
       .then(() => {
         this.status = "idle";
         this.value = false;

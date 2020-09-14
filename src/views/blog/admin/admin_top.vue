@@ -5,22 +5,18 @@
     <section class="profile">
       <h3>管理者ユーザ</h3>
       <font-awesome-icon icon="user-shield" class="fa-fw" />
-      <template v-if="admin_logged_in()">
-        <span class="name">{{ admin_user_name }}</span>
-        <span class="id">@{{ admin_user_id }}</span>
-        <b-button
-          @click="show_admin_password_modal"
-          size="sm"
-          variant="outline-info"
-        >
+      <template v-if="logged_in()">
+        <span class="name">{{ user_name }}</span>
+        <span class="id">@{{ user_id }}</span>
+        <b-button @click="show_password_modal" size="sm" variant="outline-info">
           パスワード変更
         </b-button>
-        <b-button @click="admin_logout" size="sm" variant="outline-danger">
+        <b-button @click="logout" size="sm" variant="outline-danger">
           <font-awesome-icon :icon="'sign-out-alt'" class="fa-fw" />
           ログアウト
         </b-button>
       </template>
-      <b-button v-else @click="admin_login" size="sm" variant="theme-dark">
+      <b-button v-else @click="login" size="sm" variant="theme-dark">
         <font-awesome-icon :icon="'sign-in-alt'" class="fa-fw" />
         ログイン
       </b-button>
@@ -64,15 +60,14 @@
         >
       </section>
     </template>
-    <section v-if="admin_logged_in">
+    <section v-if="logged_in">
       <h2>記事一覧･管理</h2>
       <p>Writerからの投稿リクエストの承認･却下や、記事削除はここ。</p>
       <b-button :to="{ name: 'path_list' }" variant="outline-theme-dark"
         >リクエスト一覧</b-button
       >
     </section>
-    <admin-change-password-modal v-model="admin_password_modal_shown" />
-    <writer-change-password-modal v-model="writer_password_modal_shown" />
+    <admin-change-password-modal v-model="password_modal_shown" />
   </div>
 </template>
 
@@ -92,123 +87,74 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import api from "@/apis/$api";
+import api from "@afes-website/docs";
 import aspida from "@aspida/axios";
-import AdminAuth from "@/libs/auth/admin_auth";
-import WriterAuth from "@/libs/auth/writer_auth";
-import { AdminUserInfo } from "@/apis/admin/user.ts";
-import { WriterUserInfo } from "@/apis/writer/user.ts";
-import AdminChangePasswordModal from "@/components/AdminChangePasswordModal.vue";
-import WriterChangePasswordModal from "@/components/WriterChangePasswordModal.vue";
+import Auth from "@/libs/auth/auth";
+import { UserInfo } from "@afes-website/docs";
+import ChangePasswordModal from "@/components/ChangePasswordModal.vue";
 import Breadcrumb from "@/components/Breadcrumb.vue";
 
 @Component({
   components: {
-    AdminChangePasswordModal,
-    WriterChangePasswordModal,
+    AdminChangePasswordModal: ChangePasswordModal,
     Breadcrumb,
   },
 })
 export default class AdminTop extends Vue {
   readonly page_title = "ブログ管理";
 
-  admin_user: AdminUserInfo | null = null;
-  writer_user: WriterUserInfo | null = null;
+  user: UserInfo | null = null;
 
-  admin_password_modal_shown = false;
-  writer_password_modal_shown = false;
+  password_modal_shown = false;
 
   mounted() {
     this.load();
   }
 
   load() {
-    if (this.admin_logged_in()) {
-      AdminAuth.attempt_get_JWT()
+    if (this.logged_in()) {
+      Auth.attempt_get_JWT()
         .then((token) => {
-          return api(aspida()).admin.user.$get({
-            headers: { "X-ADMIN-TOKEN": token.content },
+          return api(aspida()).auth.user.$get({
+            headers: { Authorization: "bearer " + token.content },
           });
         })
         .then((user_info) => {
-          this.admin_user = user_info;
-        });
-    }
-    if (this.writer_logged_in()) {
-      WriterAuth.attempt_get_JWT()
-        .then((token) => {
-          return api(aspida()).writer.user.$get({
-            headers: { "X-BLOG-WRITER-TOKEN": token.content },
-          });
-        })
-        .then((user_info) => {
-          this.writer_user = user_info;
+          this.user = user_info;
         });
     }
   }
 
-  admin_login() {
-    AdminAuth.strictValidateJWT(aspida()).then((is_valid) => {
+  login() {
+    Auth.strictValidateJWT(aspida()).then((is_valid) => {
       if (!is_valid) {
-        AdminAuth.attempt_get_JWT().then(() => {
+        Auth.attempt_get_JWT().then(() => {
           this.load();
         });
       }
     });
   }
 
-  admin_logout() {
-    AdminAuth.logout();
-    this.admin_user = null;
+  logout() {
+    Auth.logout();
+    this.user = null;
   }
 
-  writer_login() {
-    WriterAuth.strictValidateJWT(aspida()).then((is_valid) => {
-      if (!is_valid) {
-        WriterAuth.attempt_get_JWT().then(() => {
-          this.load();
-        });
-      }
-    });
-  }
-
-  writer_logout() {
-    WriterAuth.logout();
-    this.writer_user = null;
-  }
-
-  admin_logged_in() {
+  logged_in() {
     // to disable cache, this isn't getter
-    return AdminAuth.getJWT() !== null;
+    return Auth.getJWT() !== null;
   }
 
-  writer_logged_in() {
-    // same as below
-    return WriterAuth.getJWT() !== null;
+  show_password_modal() {
+    this.password_modal_shown = true;
   }
 
-  show_admin_password_modal() {
-    this.admin_password_modal_shown = true;
+  get user_name() {
+    return this.user?.name;
   }
 
-  show_writer_password_modal() {
-    this.writer_password_modal_shown = true;
-  }
-
-  get admin_user_name() {
-    return this.admin_user?.name;
-  }
-
-  get admin_user_id() {
-    return this.admin_user?.id;
-  }
-
-  get writer_user_name() {
-    return this.writer_user?.name;
-  }
-
-  get writer_user_id() {
-    return this.writer_user?.id;
+  get user_id() {
+    return this.user?.id;
   }
 }
 </script>
