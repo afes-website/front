@@ -23,7 +23,6 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 import aspida from "@aspida/axios";
 import api from "@afes-website/docs";
 import FetchStatus from "@/libs/fetch_status";
-import Auth from "@/libs/auth/auth";
 import FetchStatusIcon from "@/components/FetchStatusIcon.vue";
 
 @Component({ components: { FetchStatusIcon } })
@@ -47,26 +46,26 @@ export default class ImageUploadModal extends Vue {
   modal_ok(e: Event) {
     e.preventDefault();
     this.status = "pending";
-    Auth.attempt_get_JWT()
-      .then((token) => {
-        if (this.file === null) throw "file not selected";
-        return api(this.client).images.$post({
+    if (!this.file) throw "file not selected";
+    this.$auth.attempt_get_JWT("blogWriter").then((token) => {
+      api(this.client)
+        .images.$post({
           body: {
-            content: this.file,
+            content: this.file as File,
           },
           headers: {
-            Authorization: "bearer " + token.content,
+            Authorization: "bearer " + token,
           },
+        })
+        .then((data: { id: string }) => {
+          this.status = "idle";
+          this._value = false;
+          this.$emit("uploaded", data.id);
+        })
+        .catch(() => {
+          this.status = "fail";
         });
-      })
-      .then((data: { id: string }) => {
-        this.status = "idle";
-        this._value = false;
-        this.$emit("uploaded", data.id);
-      })
-      .catch(() => {
-        this.status = "fail";
-      });
+    });
   }
 }
 </script>

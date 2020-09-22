@@ -99,7 +99,6 @@
 import { Component, Vue } from "vue-property-decorator";
 import api from "@afes-website/docs";
 import aspida from "@aspida/axios";
-import Auth from "@/libs/auth/auth";
 import { BlogRevision } from "@afes-website/docs";
 import { BlogArticle } from "@afes-website/docs";
 import is_axios_error from "@/libs/is_axios_error";
@@ -128,12 +127,13 @@ export default class RevisionList extends Vue {
     if (this.fetch_status == "pending") return;
     this.fetch_status = "pending";
     this.revisions = [];
-    Auth.attempt_get_JWT()
+    this.$auth
+      .attempt_get_JWT("blogWriter")
       .then((token) => {
         api(this.client)
           .blog.revisions.$get({
             headers: {
-              Authorization: "bearer " + token.content,
+              Authorization: "bearer " + token,
             },
           })
           .then((data: BlogRevision[]) => {

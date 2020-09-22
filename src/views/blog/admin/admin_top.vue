@@ -3,48 +3,14 @@
     <breadcrumb :text="page_title" />
     <h1>{{ page_title }}</h1>
     <section class="profile">
-      <h3>管理者ユーザ</h3>
-      <font-awesome-icon icon="user-shield" class="fa-fw" />
-      <template v-if="logged_in()">
-        <span class="name">{{ user_name }}</span>
-        <span class="id">@{{ user_id }}</span>
-        <b-button @click="show_password_modal" size="sm" variant="outline-info">
-          パスワード変更
-        </b-button>
-        <b-button @click="logout" size="sm" variant="outline-danger">
-          <font-awesome-icon :icon="'sign-out-alt'" class="fa-fw" />
-          ログアウト
-        </b-button>
-      </template>
-      <b-button v-else @click="login" size="sm" variant="theme-dark">
-        <font-awesome-icon :icon="'sign-in-alt'" class="fa-fw" />
-        ログイン
+      <font-awesome-icon :icon="user_icon" class="fa-fw" />
+      <span class="name">{{ user_name }}</span>
+      <span class="id">@{{ user_id }}</span>
+      <b-button @click="show_password_modal" size="sm" variant="outline-info">
+        パスワード変更
       </b-button>
     </section>
-    <section class="profile">
-      <h3>一般ユーザ</h3>
-      <font-awesome-icon icon="user-edit" class="fa-fw" />
-      <template v-if="writer_logged_in()">
-        <span class="name">{{ writer_user_name }}</span>
-        <span class="id">@{{ writer_user_id }}</span>
-        <b-button
-          @click="show_writer_password_modal"
-          size="sm"
-          variant="outline-info"
-        >
-          パスワード変更
-        </b-button>
-        <b-button @click="writer_logout" size="sm" variant="outline-danger">
-          <font-awesome-icon :icon="'sign-out-alt'" class="fa-fw" />
-          ログアウト
-        </b-button>
-      </template>
-      <b-button v-else @click="writer_login" size="sm" variant="theme-dark">
-        <font-awesome-icon :icon="'sign-in-alt'" class="fa-fw" />
-        ログイン
-      </b-button>
-    </section>
-    <template v-if="writer_logged_in">
+    <template v-if="is_writer">
       <section>
         <h2>新規リクエスト</h2>
         <p>投稿の新規リクエストはこちらから。</p>
@@ -60,14 +26,14 @@
         >
       </section>
     </template>
-    <section v-if="logged_in">
+    <section v-if="is_admin">
       <h2>記事一覧･管理</h2>
       <p>Writerからの投稿リクエストの承認･却下や、記事削除はここ。</p>
       <b-button :to="{ name: 'path_list' }" variant="outline-theme-dark"
         >リクエスト一覧</b-button
       >
     </section>
-    <admin-change-password-modal v-model="password_modal_shown" />
+    <change-password-modal v-model="password_modal_shown" />
   </div>
 </template>
 
@@ -87,74 +53,55 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import api from "@afes-website/docs";
-import aspida from "@aspida/axios";
-import Auth from "@/libs/auth/auth";
-import { UserInfo } from "@afes-website/docs";
+import { get_user_icon, StorageUserInfo } from "@/libs/auth";
 import ChangePasswordModal from "@/components/ChangePasswordModal.vue";
 import Breadcrumb from "@/components/Breadcrumb.vue";
 
 @Component({
   components: {
-    AdminChangePasswordModal: ChangePasswordModal,
+    ChangePasswordModal,
     Breadcrumb,
   },
 })
 export default class AdminTop extends Vue {
   readonly page_title = "ブログ管理";
-
-  user: UserInfo | null = null;
-
   password_modal_shown = false;
+
+  user: StorageUserInfo | null = null;
 
   mounted() {
     this.load();
   }
 
   load() {
-    if (this.logged_in()) {
-      Auth.attempt_get_JWT()
-        .then((token) => {
-          return api(aspida()).auth.user.$get({
-            headers: { Authorization: "bearer " + token.content },
-          });
-        })
-        .then((user_info) => {
-          this.user = user_info;
-        });
+    if (this.$auth.get_current_user_id) {
+      this.user = this.$auth.get_current_user;
+    } else {
+      this.$router.push({ name: "login" });
     }
-  }
-
-  login() {
-    Auth.strictValidateJWT(aspida()).then((is_valid) => {
-      if (!is_valid) {
-        Auth.attempt_get_JWT().then(() => {
-          this.load();
-        });
-      }
-    });
-  }
-
-  logout() {
-    Auth.logout();
-    this.user = null;
-  }
-
-  logged_in() {
-    // to disable cache, this isn't getter
-    return Auth.getJWT() !== null;
   }
 
   show_password_modal() {
     this.password_modal_shown = true;
   }
 
-  get user_name() {
-    return this.user?.name;
+  get user_id() {
+    return this.$auth.get_current_user?.id;
   }
 
-  get user_id() {
-    return this.user?.id;
+  get user_name() {
+    return this.$auth.get_current_user?.name;
+  }
+
+  get user_icon() {
+    return get_user_icon(this.$auth.get_current_user);
+  }
+
+  get is_writer() {
+    return this.user?.permissions.blogWriter;
+  }
+  get is_admin() {
+    return this.user?.permissions.blogAdmin;
   }
 }
 </script>

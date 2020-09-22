@@ -156,7 +156,6 @@
 import { Component, Vue, Watch } from "vue-property-decorator";
 import api from "@afes-website/docs";
 import aspida from "@aspida/axios";
-import AdminAuth from "@/libs/auth/auth";
 import { BlogRevision } from "@afes-website/docs";
 import { BlogArticle } from "@afes-website/docs";
 import is_axios_error from "@/libs/is_axios_error";
@@ -174,7 +173,6 @@ import { Category } from "@afes-website/docs";
 export default class ManagePath extends Vue {
   page_title = "記事管理";
   revisions: { [key: number]: BlogRevision } = {};
-  client = aspida();
   categories: Categories = {};
 
   revision_selection = 0;
@@ -186,6 +184,8 @@ export default class ManagePath extends Vue {
   delete_status: FetchStatus = "idle";
 
   article_exists = false;
+
+  api_token = "";
 
   mounted() {
     getCategories()
@@ -208,59 +208,56 @@ export default class ManagePath extends Vue {
     this.revision_selection = 0;
     this.original_selection = 0;
     this.page_title = "記事管理: " + this.$route.params.id;
-    AdminAuth.attempt_get_JWT()
-      .then((token) => {
-        Promise.all([
-          api(this.client)
-            .blog.articles._id(this.$route.params.id)
-            .$get()
-            .then((data: BlogArticle) => {
-              this.category = data.category;
-              this.original_selection = data.revision_id;
-              this.revision_selection = data.revision_id;
-              this.article_exists = true;
-            })
-            .catch((e: unknown) => {
-              if (is_axios_error(e) && e.response && e.response.status == 404) {
-                // article may not to exist
-                return;
-              }
-              throw e;
-            }),
-          api(this.client)
-            .blog.revisions.$get({
-              query: {
-                article_id: this.$route.params.id,
-              },
-              headers: {
-                Authorization: "bearer " + token.content,
-              },
-            })
-            .then((data: BlogRevision[]) => {
-              for (const revision of data) {
-                this.$set(this.revisions, revision.id, revision);
-              }
-            }),
-        ])
-          .then(() => {
-            this.fetch_status = "idle";
+
+    this.$auth.attempt_get_JWT("blogAdmin").then((token) => {
+      Promise.all([
+        api(aspida())
+          .blog.articles._id(this.$route.params.id)
+          .$get()
+          .then((data: BlogArticle) => {
+            this.category = data.category;
+            this.original_selection = data.revision_id;
+            this.revision_selection = data.revision_id;
+            this.article_exists = true;
           })
-          .catch(() => {
-            this.fetch_status = "fail";
-          });
-      })
-      .catch(() => {
-        this.fetch_status = "fail";
-      });
+          .catch((e: unknown) => {
+            if (is_axios_error(e) && e.response && e.response.status == 404) {
+              // article may not to exist
+              return;
+            }
+            throw e;
+          }),
+        api(aspida())
+          .blog.revisions.$get({
+            query: {
+              article_id: this.$route.params.id,
+            },
+            headers: {
+              Authorization: "bearer " + token,
+            },
+          })
+          .then((data: BlogRevision[]) => {
+            for (const revision of data) {
+              this.$set(this.revisions, revision.id, revision);
+            }
+          }),
+      ])
+        .then(() => {
+          this.fetch_status = "idle";
+        })
+        .catch(() => {
+          this.fetch_status = "fail";
+        });
+    });
   }
 
   accept_revision(id: number) {
-    AdminAuth.attempt_get_JWT().then((token) => {
-      api(this.client)
+    this.$auth.attempt_get_JWT("blogAdmin").then((token) => {
+      api(aspida())
         .blog.revisions._id(id)
         .accept.$patch({
           headers: {
-            Authorization: "bearer " + token.content,
+            Authorization: "bearer " + token,
           },
         })
         .then((data: BlogRevision) => {
@@ -270,12 +267,12 @@ export default class ManagePath extends Vue {
   }
 
   reject_revision(id: number) {
-    AdminAuth.attempt_get_JWT().then((token) => {
-      api(this.client)
+    this.$auth.attempt_get_JWT("blogAdmin").then((token) => {
+      api(aspida())
         .blog.revisions._id(id)
         .reject.$patch({
           headers: {
-            Authorization: "bearer " + token.content,
+            Authorization: "bearer " + token,
           },
         })
         .then((data: BlogRevision) => {
@@ -286,27 +283,26 @@ export default class ManagePath extends Vue {
 
   apply_changes() {
     this.post_status = "pending";
-    AdminAuth.attempt_get_JWT()
-      .then((token) => {
-        return api(this.client)
-          .blog.articles._id(this.$route.params.id)
-          .$patch({
-            body: {
-              category: this.category,
-              revision_id: this.revision_selection,
-            },
-            headers: {
-              Authorization: "bearer " + token.content,
-            },
-          });
-      })
-      .then(() => {
-        this.post_status = "idle";
-        this.load();
-      })
-      .catch(() => {
-        this.post_status = "fail";
-      });
+    this.$auth.attempt_get_JWT("blogAdmin").then((token) => {
+      api(aspida())
+        .blog.articles._id(this.$route.params.id)
+        .$patch({
+          body: {
+            category: this.category,
+            revision_id: this.revision_selection,
+          },
+          headers: {
+            Authorization: "bearer " + token,
+          },
+        })
+        .then(() => {
+          this.post_status = "idle";
+          this.load();
+        })
+        .catch(() => {
+          this.post_status = "fail";
+        });
+    });
   }
 
   get is_category_valid() {
@@ -319,23 +315,22 @@ export default class ManagePath extends Vue {
 
   delete_article() {
     this.delete_status = "pending";
-    AdminAuth.attempt_get_JWT()
-      .then((token) => {
-        return api(this.client)
-          .blog.articles._id(this.$route.params.id)
-          .delete({
-            headers: {
-              Authorization: "bearer " + token.content,
-            },
-          });
-      })
-      .then(() => {
-        this.delete_status = "idle";
-        this.load();
-      })
-      .catch(() => {
-        this.delete_status = "fail";
-      });
+    this.$auth.attempt_get_JWT("blogAdmin").then((token) => {
+      api(aspida())
+        .blog.articles._id(this.$route.params.id)
+        .delete({
+          headers: {
+            Authorization: "bearer " + token,
+          },
+        })
+        .then(() => {
+          this.delete_status = "idle";
+          this.load();
+        })
+        .catch(() => {
+          this.delete_status = "fail";
+        });
+    });
   }
 
   get diff_from_original() {

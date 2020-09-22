@@ -206,7 +206,6 @@ div#preview {
 import { Component, Vue, Watch } from "vue-property-decorator";
 import api from "@afes-website/docs";
 import aspida from "@aspida/axios";
-import Auth from "@/libs/auth/auth";
 import { BlogRevision } from "@afes-website/docs";
 import FetchStatus from "@/libs/fetch_status";
 import FetchStatusIcon from "@/components/FetchStatusIcon.vue";
@@ -269,7 +268,7 @@ export default class NewRevision extends Vue {
   post() {
     this.status = "pending";
 
-    Auth.attempt_get_JWT().then((token) => {
+    this.$auth.attempt_get_JWT("blogWriter").then((token) => {
       api(aspida())
         .blog.revisions.$post({
           body: {
@@ -278,8 +277,9 @@ export default class NewRevision extends Vue {
             content: this.content,
             handle_name: null,
           },
+
           headers: {
-            Authorization: "bearer " + token.content,
+            Authorization: "bearer " + token,
           },
         })
         .then((data: BlogRevision) => {

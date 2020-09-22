@@ -62,7 +62,6 @@ import { BlogRevision } from "@afes-website/docs";
 import is_axios_error from "@/libs/is_axios_error";
 import FetchStatus from "@/libs/fetch_status";
 import Markdown from "@/libs/markdown";
-import Auth from "@/libs/auth/auth";
 import { AuthToken } from "@afes-website/docs";
 import Breadcrumb from "@/components/Breadcrumb.vue";
 import { getStringTime } from "@/libs/string_date";
@@ -87,22 +86,15 @@ export default class ShowRevision extends Vue {
   }
 
   load() {
-    // TODO: fix
     this.revision = null;
     this.fetch_status = "pending";
-    new Promise<AuthToken>((s, r) => {
-      const admin_token = Auth.getJWT();
-      if (admin_token !== null)
-        s({ Authorization: "bearer " + admin_token.content });
-      const writer_token = Auth.getJWT();
-      if (writer_token !== null)
-        s({ Authorization: "bearer " + writer_token.content });
-      r("not logged in");
-    })
-      .then((header) => {
+
+    this.$auth
+      .attempt_get_JWT("blogAdmin")
+      .then((token) => {
         return api(this.client)
           .blog.revisions._id(Number(this.$route.params.id))
-          .$get({ headers: header });
+          .$get({ headers: { Authorization: "bearer " + token } });
       })
       .then((data) => {
         this.revision = data;

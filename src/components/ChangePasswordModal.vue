@@ -1,11 +1,5 @@
 <template>
-  <b-modal
-    id="modal-1"
-    title="Change Password"
-    v-model="_value"
-    @ok="modal_ok"
-    @hidden="modal_cancel"
-  >
+  <b-modal id="modal-1" title="Change Password" v-model="_value" @ok="modal_ok">
     <b-form @submit.stop.prevent="change_password">
       <b-form-group
         id="input-group-password"
@@ -29,13 +23,10 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
-
 import aspida from "@aspida/axios";
-
-import Auth from "@/libs/auth/auth";
-import EventHub from "@/libs/auth/auth_eventhub";
 import FetchStatus from "@/libs/fetch_status";
 import FetchStatusIcon from "@/components/FetchStatusIcon.vue";
+import { api } from "@afes-website/docs";
 
 @Component({ components: { FetchStatusIcon } })
 export default class ChangePasswordModal extends Vue {
@@ -58,25 +49,27 @@ export default class ChangePasswordModal extends Vue {
     this.change_password();
   }
 
-  modal_cancel() {
-    EventHub.emitLoginFail();
-  }
-
   change_password() {
     this.status = "pending";
-    Auth.change_password(aspida(), this.password)
-      .then(() => {
-        this.status = "idle";
-        this._value = false;
-        EventHub.emitLoginSuccess();
-        this.$bvToast.toast("パスワードを変更しました。", {
-          title: "Change Password",
-          autoHideDelay: 5000,
+    if (this.$auth.get_current_user)
+      api(aspida())
+        .auth.change_password.$post({
+          body: { password: this.password },
+          headers: {
+            Authorization: "bearer " + this.$auth.get_current_user.token,
+          },
+        })
+        .then(() => {
+          this.status = "idle";
+          this._value = false;
+          this.$bvToast.toast("パスワードを変更しました。", {
+            title: "Change Password",
+            autoHideDelay: 5000,
+          });
+        })
+        .catch(() => {
+          this.status = "fail";
         });
-      })
-      .catch(() => {
-        this.status = "fail";
-      });
   }
 }
 </script>

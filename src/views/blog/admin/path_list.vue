@@ -254,7 +254,6 @@ import { Component, Vue } from "vue-property-decorator";
 import api from "@afes-website/docs";
 import aspida from "@aspida/axios";
 import { BlogArticle } from "@afes-website/docs";
-import AdminAuth from "@/libs/auth/auth";
 import { BlogRevision } from "@afes-website/docs";
 import FetchStatus from "@/libs/fetch_status";
 import FetchStatusIcon from "@/components/FetchStatusIcon.vue";
@@ -264,7 +263,6 @@ import Breadcrumb from "@/components/Breadcrumb.vue";
 import { getStringTime } from "@/libs/string_date";
 import { UserInfo } from "@afes-website/docs";
 import { BvTableVariant } from "bootstrap-vue";
-import JWT from "@/libs/auth/jwt";
 
 interface ArrayPath {
   id: string;
@@ -354,10 +352,11 @@ export default class PathList extends Vue {
     if (this.fetch_status == "pending") return;
     this.fetch_status = "pending";
     this.paths = {};
-    AdminAuth.attempt_get_JWT()
+    this.$auth
+      .attempt_get_JWT("blogAdmin")
       .then((token) => {
         // get articles
-        return new Promise<JWT>((resolve) =>
+        return new Promise<string>((resolve) =>
           api(this.client)
             .blog.articles.$get()
             .then((data: BlogArticle[]) => {
@@ -378,7 +377,7 @@ export default class PathList extends Vue {
         api(this.client)
           .blog.revisions.$get({
             headers: {
-              Authorization: "bearer " + token.content,
+              Authorization: "bearer " + token,
             },
           })
           .then((data: TableRevision[]) => {
@@ -409,12 +408,12 @@ export default class PathList extends Vue {
   }
 
   accept_revision(article_id: string, revision_id: number) {
-    AdminAuth.attempt_get_JWT().then((token) => {
+    this.$auth.attempt_get_JWT("blogAdmin").then((token) => {
       api(this.client)
         .blog.revisions._id(revision_id)
         .accept.$patch({
           headers: {
-            Authorization: "bearer " + token.content,
+            Authorization: "bearer " + token,
           },
         })
         .then((res) => {
@@ -428,12 +427,12 @@ export default class PathList extends Vue {
   }
 
   reject_revision(article_id: string, revision_id: number) {
-    AdminAuth.attempt_get_JWT().then((token) => {
+    this.$auth.attempt_get_JWT("blogAdmin").then((token) => {
       api(this.client)
         .blog.revisions._id(revision_id)
         .reject.$patch({
           headers: {
-            Authorization: "bearer " + token.content,
+            Authorization: "bearer " + token,
           },
         })
         .then((res) => {
@@ -447,7 +446,7 @@ export default class PathList extends Vue {
   }
 
   apply_changes(row: { item: ArrayPath }) {
-    AdminAuth.attempt_get_JWT().then((token) => {
+    this.$auth.attempt_get_JWT("blogAdmin").then((token) => {
       return new Promise<BlogArticle>((resolve) =>
         api(this.client)
           .blog.articles._id(row.item.id)
@@ -457,7 +456,7 @@ export default class PathList extends Vue {
               revision_id: row.item.revision_selection,
             },
             headers: {
-              Authorization: "bearer " + token.content,
+              Authorization: "bearer " + token,
             },
           })
           .then((article) => {
@@ -478,7 +477,7 @@ export default class PathList extends Vue {
                 article_id: article.id,
               },
               headers: {
-                Authorization: "bearer " + token.content,
+                Authorization: "bearer " + token,
               },
             })
             .then((revisions) => {
