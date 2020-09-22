@@ -28,6 +28,7 @@
 
 <style lang="scss">
 .forbidden {
+  text-align: center;
   .hand-paper {
     $size: 200px;
     display: flex;
