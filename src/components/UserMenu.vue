@@ -1,6 +1,6 @@
 <template>
-  <div id="user-menu">
-    <div @click="toggle_popover">
+  <b-button id="user-menu">
+    <div>
       <font-awesome-icon
         :icon="user_icon(current_user)"
         class="user-icon fa-fw"
@@ -14,6 +14,7 @@
       :show.sync="is_show_popover"
       target="user-menu"
       placement="top"
+      triggers="focus"
     >
       <template v-slot:default>
         <b-list-group id="user-menu-item-wrapper" hover>
@@ -70,11 +71,14 @@
         </b-button>
       </template>
     </b-modal>
-  </div>
+  </b-button>
 </template>
 
 <style lang="scss" scoped>
 #user-menu {
+  display: block;
+  border: none;
+  width: 100%;
   background: $theme-dark;
   color: #fff;
   font-size: 17px;
@@ -82,6 +86,7 @@
   border-radius: 8px;
   line-height: 30px;
   cursor: pointer;
+  text-align: left;
 }
 </style>
 
@@ -149,10 +154,6 @@ export default class UserMenu extends Vue {
   to_login() {
     this.$router.push({ name: "login" });
     this.is_show_popover = false;
-  }
-
-  toggle_popover() {
-    this.is_show_popover = !this.is_show_popover;
   }
 
   user_id(user: StorageUserInfo) {
