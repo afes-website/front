@@ -249,7 +249,7 @@ export default class NewRevision extends Vue {
       this.loadArticle();
     }
     this.load();
-    auth_eventhub.onUpdateAuth(this.load());
+    auth_eventhub.onUpdateAuth(this.load);
   }
 
   @Watch("$route")
