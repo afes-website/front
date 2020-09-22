@@ -58,7 +58,7 @@ export default class Auth {
     return this.all_users;
   }
 
-  get_all_user_ids(): string[] {
+  get get_all_user_ids(): string[] {
     return Object.keys(this.all_users);
   }
 
