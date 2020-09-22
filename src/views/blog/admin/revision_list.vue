@@ -1,5 +1,5 @@
 <template>
-  <div class="box wide-box">
+  <forbidden :is-forbidden="forbidden" class="box wide-box">
     <breadcrumb :text="page_title" />
     <h1>{{ page_title }}</h1>
     <b-button @click="load">
@@ -69,7 +69,7 @@
         </b-tr>
       </b-tbody>
     </b-table-simple>
-  </div>
+  </forbidden>
 </template>
 
 <style lang="scss" scoped>
@@ -106,18 +106,20 @@ import FetchStatus from "@/libs/fetch_status";
 import FetchStatusIcon from "@/components/FetchStatusIcon.vue";
 import Breadcrumb from "@/components/Breadcrumb.vue";
 import { getStringTime } from "@/libs/string_date";
+import Forbidden from "@/components/Forbidden.vue";
 
 interface BlogRevisionWithArticle extends BlogRevision {
   article: BlogArticle | null;
 }
 
-@Component({ components: { FetchStatusIcon, Breadcrumb } })
+@Component({ components: { FetchStatusIcon, Breadcrumb, Forbidden } })
 export default class RevisionList extends Vue {
   readonly page_title = "あなたの記事リクエスト一覧";
   revisions: BlogRevisionWithArticle[] = [];
   client = aspida();
 
   fetch_status: FetchStatus = "idle";
+  forbidden = false;
 
   mounted() {
     this.load();
@@ -179,6 +181,7 @@ export default class RevisionList extends Vue {
       })
       .catch(() => {
         this.fetch_status = "fail";
+        this.forbidden = true;
       });
   }
 

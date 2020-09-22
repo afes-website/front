@@ -1,5 +1,5 @@
 <template>
-  <div class="box wide-box">
+  <forbidden :is-forbidden="forbidden" class="box wide-box">
     <breadcrumb :text="page_title" />
     <h1>{{ page_title }}</h1>
     <b-form-group label="id:">
@@ -107,7 +107,7 @@
       v-model="image_upload_modal_shown"
       @uploaded="image_uploaded"
     />
-  </div>
+  </forbidden>
 </template>
 
 <style lang="scss" scoped>
@@ -215,8 +215,11 @@ import * as Diff2Html from "diff2html";
 import ImageUploadModal from "@/components/ImageUploadModal.vue";
 import { get_image_url } from "@afes-website/docs";
 import Breadcrumb from "@/components/Breadcrumb.vue";
+import Forbidden from "@/components/Forbidden.vue";
 
-@Component({ components: { FetchStatusIcon, ImageUploadModal, Breadcrumb } })
+@Component({
+  components: { FetchStatusIcon, ImageUploadModal, Breadcrumb, Forbidden },
+})
 export default class NewRevision extends Vue {
   readonly page_title = "記事投稿/編集";
 
@@ -231,6 +234,8 @@ export default class NewRevision extends Vue {
 
   image_upload_modal_shown = false;
 
+  forbidden = false;
+
   readonly noImage = require("@/assets/no-image.svg");
 
   image_uploaded(id: string) {
@@ -242,6 +247,10 @@ export default class NewRevision extends Vue {
       this.article_path = this.$route.query.path;
       this.load();
     }
+
+    this.$auth.attempt_get_JWT("blogWriter").catch(() => {
+      this.forbidden = true;
+    });
   }
 
   @Watch("$route")

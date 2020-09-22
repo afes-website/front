@@ -92,13 +92,18 @@ export default class Auth {
   }
 
   attempt_get_JWT(
-    _permission?: keyof StorageUserInfo["permissions"]
+    _permission?:
+      | keyof StorageUserInfo["permissions"]
+      | (keyof StorageUserInfo["permissions"])[]
   ): Promise<string> {
-    if (this.get_current_user) {
-      if (_permission && this.get_current_user.permissions[_permission])
-        return Promise.resolve(this.get_current_user.token);
-      return Promise.reject();
-    }
+    const perm_arr = !_permission
+      ? []
+      : Array.isArray(_permission)
+      ? _permission
+      : [_permission];
+    const current_user = this.get_current_user;
+    if (current_user && perm_arr.some((val) => current_user.permissions[val]))
+      return Promise.resolve(current_user.token);
     return Promise.reject();
   }
 

@@ -1,5 +1,5 @@
 <template>
-  <div id="path-list" class="box wide-box">
+  <forbidden :is-forbidden="forbidden" id="path-list" class="box wide-box">
     <breadcrumb :text="page_title" />
     <h1>{{ page_title }}</h1>
     <b-button @click="load">
@@ -194,7 +194,7 @@
         </b-form-group>
       </template>
     </b-table>
-  </div>
+  </forbidden>
 </template>
 
 <style lang="scss" scoped>
@@ -263,6 +263,7 @@ import Breadcrumb from "@/components/Breadcrumb.vue";
 import { getStringTime } from "@/libs/string_date";
 import { UserInfo } from "@afes-website/docs";
 import { BvTableVariant } from "bootstrap-vue";
+import Forbidden from "@/components/Forbidden.vue";
 
 interface ArrayPath {
   id: string;
@@ -297,7 +298,7 @@ interface TableRevision extends BlogRevision {
   _rowVariant?: BvTableVariant;
 }
 
-@Component({ components: { FetchStatusIcon, Breadcrumb } })
+@Component({ components: { FetchStatusIcon, Breadcrumb, Forbidden } })
 export default class PathList extends Vue {
   readonly page_title = "記事一覧";
   paths: { [key: string]: Path } = {};
@@ -337,6 +338,7 @@ export default class PathList extends Vue {
   categories: Categories = {};
 
   fetch_status: FetchStatus = "idle";
+  forbidden = false;
 
   mounted() {
     getCategories()
@@ -348,10 +350,11 @@ export default class PathList extends Vue {
       });
   }
 
-  load() {
+  async load() {
     if (this.fetch_status == "pending") return;
     this.fetch_status = "pending";
     this.paths = {};
+
     this.$auth
       .attempt_get_JWT("blogAdmin")
       .then((token) => {
@@ -404,6 +407,9 @@ export default class PathList extends Vue {
           .catch(() => {
             this.fetch_status = "fail";
           });
+      })
+      .catch(() => {
+        this.forbidden = true;
       });
   }
 

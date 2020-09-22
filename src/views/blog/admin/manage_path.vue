@@ -1,5 +1,5 @@
 <template>
-  <div class="box wide-box">
+  <forbidden :is-forbidden="forbidden" class="box wide-box">
     <breadcrumb :text="page_title" />
     <h1>{{ page_title }}</h1>
     <b-button @click="load">
@@ -113,7 +113,7 @@
     <b-modal id="delete-confirm-modal" @ok="delete_article">
       <p>削除してもよろしいですか?</p>
     </b-modal>
-  </div>
+  </forbidden>
 </template>
 
 <style lang="scss" scoped>
@@ -168,8 +168,9 @@ import getCategories from "@/libs/categories";
 import Breadcrumb from "@/components/Breadcrumb.vue";
 import { getStringTime } from "@/libs/string_date";
 import { Category } from "@afes-website/docs";
+import Forbidden from "@/components/Forbidden.vue";
 
-@Component({ components: { FetchStatusIcon, Breadcrumb } })
+@Component({ components: { FetchStatusIcon, Breadcrumb, Forbidden } })
 export default class ManagePath extends Vue {
   page_title = "記事管理";
   revisions: { [key: number]: BlogRevision } = {};
@@ -184,6 +185,7 @@ export default class ManagePath extends Vue {
   delete_status: FetchStatus = "idle";
 
   article_exists = false;
+  forbidden = false;
 
   api_token = "";
 
@@ -209,46 +211,51 @@ export default class ManagePath extends Vue {
     this.original_selection = 0;
     this.page_title = "記事管理: " + this.$route.params.id;
 
-    this.$auth.attempt_get_JWT("blogAdmin").then((token) => {
-      Promise.all([
-        api(aspida())
-          .blog.articles._id(this.$route.params.id)
-          .$get()
-          .then((data: BlogArticle) => {
-            this.category = data.category;
-            this.original_selection = data.revision_id;
-            this.revision_selection = data.revision_id;
-            this.article_exists = true;
+    this.$auth
+      .attempt_get_JWT("blogAdmin")
+      .then((token) => {
+        Promise.all([
+          api(aspida())
+            .blog.articles._id(this.$route.params.id)
+            .$get()
+            .then((data: BlogArticle) => {
+              this.category = data.category;
+              this.original_selection = data.revision_id;
+              this.revision_selection = data.revision_id;
+              this.article_exists = true;
+            })
+            .catch((e: unknown) => {
+              if (is_axios_error(e) && e.response && e.response.status == 404) {
+                // article may not to exist
+                return;
+              }
+              throw e;
+            }),
+          api(aspida())
+            .blog.revisions.$get({
+              query: {
+                article_id: this.$route.params.id,
+              },
+              headers: {
+                Authorization: "bearer " + token,
+              },
+            })
+            .then((data: BlogRevision[]) => {
+              for (const revision of data) {
+                this.$set(this.revisions, revision.id, revision);
+              }
+            }),
+        ])
+          .then(() => {
+            this.fetch_status = "idle";
           })
-          .catch((e: unknown) => {
-            if (is_axios_error(e) && e.response && e.response.status == 404) {
-              // article may not to exist
-              return;
-            }
-            throw e;
-          }),
-        api(aspida())
-          .blog.revisions.$get({
-            query: {
-              article_id: this.$route.params.id,
-            },
-            headers: {
-              Authorization: "bearer " + token,
-            },
-          })
-          .then((data: BlogRevision[]) => {
-            for (const revision of data) {
-              this.$set(this.revisions, revision.id, revision);
-            }
-          }),
-      ])
-        .then(() => {
-          this.fetch_status = "idle";
-        })
-        .catch(() => {
-          this.fetch_status = "fail";
-        });
-    });
+          .catch(() => {
+            this.fetch_status = "fail";
+          });
+      })
+      .catch(() => {
+        this.forbidden = true;
+      });
   }
 
   accept_revision(id: number) {

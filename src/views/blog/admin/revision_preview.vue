@@ -1,5 +1,5 @@
 <template>
-  <article id="show-revision">
+  <forbidden :is-forbidden="forbidden" id="show-revision">
     <template v-if="found_revision">
       <breadcrumb :text="page_title" />
       <b-alert show variant="info">
@@ -30,11 +30,11 @@
     <template v-else>
       <p>{{ fetch_status }}</p>
     </template>
-  </article>
+  </forbidden>
 </template>
 
 <style lang="scss" scoped>
-article {
+#show-revision {
   max-width: 952px;
   .under-title {
     margin-top: -14px;
@@ -62,13 +62,14 @@ import { BlogRevision } from "@afes-website/docs";
 import is_axios_error from "@/libs/is_axios_error";
 import FetchStatus from "@/libs/fetch_status";
 import Markdown from "@/libs/markdown";
-import { AuthToken } from "@afes-website/docs";
 import Breadcrumb from "@/components/Breadcrumb.vue";
 import { getStringTime } from "@/libs/string_date";
+import Forbidden from "@/components/Forbidden.vue";
 
 @Component({
   components: {
     Breadcrumb,
+    Forbidden,
   },
 })
 export default class ShowRevision extends Vue {
@@ -76,6 +77,7 @@ export default class ShowRevision extends Vue {
   revision: BlogRevision | null = null;
   client = aspida();
   fetch_status: FetchStatus = "idle";
+  forbidden = false;
 
   mounted() {
     this.load();
@@ -85,17 +87,22 @@ export default class ShowRevision extends Vue {
     this.load();
   }
 
-  load() {
+  async load() {
     this.revision = null;
     this.fetch_status = "pending";
 
-    this.$auth
-      .attempt_get_JWT("blogAdmin")
-      .then((token) => {
-        return api(this.client)
-          .blog.revisions._id(Number(this.$route.params.id))
-          .$get({ headers: { Authorization: "bearer " + token } });
-      })
+    let token = "";
+
+    try {
+      token = await this.$auth.attempt_get_JWT(["blogWriter", "blogAdmin"]);
+    } catch {
+      this.forbidden = true;
+      return;
+    }
+
+    api(this.client)
+      .blog.revisions._id(Number(this.$route.params.id))
+      .$get({ headers: { Authorization: "bearer " + token } })
       .then((data) => {
         this.revision = data;
         this.page_title = data.title;
@@ -104,6 +111,7 @@ export default class ShowRevision extends Vue {
       .catch((e: unknown) => {
         if (is_axios_error(e)) {
           if (e.response && e.response.status == 404) this.$emit("not_found");
+          if (e.response && e.response.status == 403) this.forbidden = true;
         }
         this.fetch_status = "fail";
       });
