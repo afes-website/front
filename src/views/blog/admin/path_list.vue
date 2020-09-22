@@ -264,6 +264,7 @@ import { getStringTime } from "@/libs/string_date";
 import { UserInfo } from "@afes-website/docs";
 import { BvTableVariant } from "bootstrap-vue";
 import Forbidden from "@/components/Forbidden.vue";
+import auth_eventhub from "@/libs/auth_eventhub";
 
 interface ArrayPath {
   id: string;
@@ -348,9 +349,11 @@ export default class PathList extends Vue {
       .then(() => {
         this.load();
       });
+    auth_eventhub.onUpdateAuth(this.load);
   }
 
   async load() {
+    this.forbidden = false;
     if (this.fetch_status == "pending") return;
     this.fetch_status = "pending";
     this.paths = {};
@@ -410,6 +413,7 @@ export default class PathList extends Vue {
       })
       .catch(() => {
         this.forbidden = true;
+        this.fetch_status = "fail";
       });
   }
 

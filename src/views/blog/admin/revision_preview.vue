@@ -65,6 +65,7 @@ import Markdown from "@/libs/markdown";
 import Breadcrumb from "@/components/Breadcrumb.vue";
 import { getStringTime } from "@/libs/string_date";
 import Forbidden from "@/components/Forbidden.vue";
+import auth_eventhub from "@/libs/auth_eventhub";
 
 @Component({
   components: {
@@ -81,6 +82,7 @@ export default class ShowRevision extends Vue {
 
   mounted() {
     this.load();
+    auth_eventhub.onUpdateAuth(this.load);
   }
   @Watch("$route")
   route_changed() {
@@ -88,6 +90,7 @@ export default class ShowRevision extends Vue {
   }
 
   async load() {
+    this.forbidden = false;
     this.revision = null;
     this.fetch_status = "pending";
 

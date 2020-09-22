@@ -169,6 +169,7 @@ import Breadcrumb from "@/components/Breadcrumb.vue";
 import { getStringTime } from "@/libs/string_date";
 import { Category } from "@afes-website/docs";
 import Forbidden from "@/components/Forbidden.vue";
+import auth_eventhub from "@/libs/auth_eventhub";
 
 @Component({ components: { FetchStatusIcon, Breadcrumb, Forbidden } })
 export default class ManagePath extends Vue {
@@ -197,6 +198,7 @@ export default class ManagePath extends Vue {
       .then(() => {
         this.load();
       });
+    auth_eventhub.onUpdateAuth(this.load);
   }
 
   @Watch("$route")
@@ -205,6 +207,7 @@ export default class ManagePath extends Vue {
   }
 
   load() {
+    this.forbidden = false;
     this.fetch_status = "pending";
     this.article_exists = false;
     this.revision_selection = 0;
@@ -255,6 +258,7 @@ export default class ManagePath extends Vue {
       })
       .catch(() => {
         this.forbidden = true;
+        this.fetch_status = "fail";
       });
   }
 

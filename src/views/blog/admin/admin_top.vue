@@ -56,6 +56,7 @@ import { Component, Vue } from "vue-property-decorator";
 import { get_user_icon, StorageUserInfo } from "@/libs/auth";
 import ChangePasswordModal from "@/components/ChangePasswordModal.vue";
 import Breadcrumb from "@/components/Breadcrumb.vue";
+import auth_eventhub from "@/libs/auth_eventhub";
 
 @Component({
   components: {
@@ -71,6 +72,7 @@ export default class AdminTop extends Vue {
 
   mounted() {
     this.load();
+    auth_eventhub.onUpdateAuth(this.load);
   }
 
   load() {

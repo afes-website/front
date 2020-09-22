@@ -107,6 +107,7 @@ import FetchStatusIcon from "@/components/FetchStatusIcon.vue";
 import Breadcrumb from "@/components/Breadcrumb.vue";
 import { getStringTime } from "@/libs/string_date";
 import Forbidden from "@/components/Forbidden.vue";
+import auth_eventhub from "@/libs/auth_eventhub";
 
 interface BlogRevisionWithArticle extends BlogRevision {
   article: BlogArticle | null;
@@ -123,9 +124,11 @@ export default class RevisionList extends Vue {
 
   mounted() {
     this.load();
+    auth_eventhub.onUpdateAuth(this.load);
   }
 
   load() {
+    this.forbidden = false;
     if (this.fetch_status == "pending") return;
     this.fetch_status = "pending";
     this.revisions = [];
@@ -180,8 +183,8 @@ export default class RevisionList extends Vue {
           });
       })
       .catch(() => {
-        this.fetch_status = "fail";
         this.forbidden = true;
+        this.fetch_status = "fail";
       });
   }
 

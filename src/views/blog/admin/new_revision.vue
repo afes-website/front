@@ -9,7 +9,7 @@
       </b-form-invalid-feedback>
     </b-form-group>
     <b-form-group>
-      <b-button @click="load" :disabled="is_article_path_empty">
+      <b-button @click="loadArticle" :disabled="is_article_path_empty">
         記事情報を読みこむ
         <fetch-status-icon :status="fetch_status" />
       </b-button>
@@ -216,6 +216,7 @@ import ImageUploadModal from "@/components/ImageUploadModal.vue";
 import { get_image_url } from "@afes-website/docs";
 import Breadcrumb from "@/components/Breadcrumb.vue";
 import Forbidden from "@/components/Forbidden.vue";
+import auth_eventhub from "@/libs/auth_eventhub";
 
 @Component({
   components: { FetchStatusIcon, ImageUploadModal, Breadcrumb, Forbidden },
@@ -245,12 +246,10 @@ export default class NewRevision extends Vue {
   mounted() {
     if ("path" in this.$route.query && !Array.isArray(this.$route.query.path)) {
       this.article_path = this.$route.query.path;
-      this.load();
+      this.loadArticle();
     }
-
-    this.$auth.attempt_get_JWT("blogWriter").catch(() => {
-      this.forbidden = true;
-    });
+    this.load();
+    auth_eventhub.onUpdateAuth(this.load());
   }
 
   @Watch("$route")
@@ -259,6 +258,13 @@ export default class NewRevision extends Vue {
   }
 
   load() {
+    this.forbidden = false;
+    this.$auth.attempt_get_JWT("blogWriter").catch(() => {
+      this.forbidden = true;
+    });
+  }
+
+  loadArticle() {
     this.fetch_status = "pending";
     api(aspida())
       .blog.articles._id(this.article_path)
