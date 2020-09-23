@@ -107,7 +107,7 @@ import FetchStatusIcon from "@/components/FetchStatusIcon.vue";
 import Breadcrumb from "@/components/Breadcrumb.vue";
 import { getStringTime } from "@/libs/string_date";
 import Forbidden from "@/components/Forbidden.vue";
-import auth_eventhub from "@/libs/auth_eventhub";
+import auth_eventhub from "@/libs/auth/auth_eventhub";
 
 interface BlogRevisionWithArticle extends BlogRevision {
   article: BlogArticle | null;

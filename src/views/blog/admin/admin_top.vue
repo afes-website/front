@@ -53,10 +53,10 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import { get_user_icon, StorageUserInfo } from "@/libs/auth";
+import { get_user_icon, StorageUserInfo } from "@/libs/auth/auth";
 import ChangePasswordModal from "@/components/ChangePasswordModal.vue";
 import Breadcrumb from "@/components/Breadcrumb.vue";
-import auth_eventhub from "@/libs/auth_eventhub";
+import auth_eventhub from "@/libs/auth/auth_eventhub";
 
 @Component({
   components: {

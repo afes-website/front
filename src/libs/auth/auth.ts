@@ -8,6 +8,8 @@ import {
   faUserShield,
   IconDefinition,
 } from "@fortawesome/free-solid-svg-icons";
+import { token_is_valid_at } from "@/libs/auth/jwt_utils";
+import auth_eventhub from "@/libs/auth/auth_eventhub";
 
 const storage_key_users = "users";
 const storage_key_current_user = "current_user";
@@ -102,6 +104,10 @@ export default class Auth {
       ? _permission
       : [_permission];
     const current_user = this.get_current_user;
+    if (!(current_user && token_is_valid_at(current_user.token))) {
+      auth_eventhub.emitTokenExpired();
+      return Promise.reject();
+    }
     if (current_user && perm_arr.some((val) => current_user.permissions[val]))
       return Promise.resolve(current_user.token);
     return Promise.reject();

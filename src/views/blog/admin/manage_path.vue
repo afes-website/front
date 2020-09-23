@@ -169,7 +169,7 @@ import Breadcrumb from "@/components/Breadcrumb.vue";
 import { getStringTime } from "@/libs/string_date";
 import { Category } from "@afes-website/docs";
 import Forbidden from "@/components/Forbidden.vue";
-import auth_eventhub from "@/libs/auth_eventhub";
+import auth_eventhub from "@/libs/auth/auth_eventhub";
 
 @Component({ components: { FetchStatusIcon, Breadcrumb, Forbidden } })
 export default class ManagePath extends Vue {

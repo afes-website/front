@@ -216,7 +216,7 @@ import ImageUploadModal from "@/components/ImageUploadModal.vue";
 import { get_image_url } from "@afes-website/docs";
 import Breadcrumb from "@/components/Breadcrumb.vue";
 import Forbidden from "@/components/Forbidden.vue";
-import auth_eventhub from "@/libs/auth_eventhub";
+import auth_eventhub from "@/libs/auth/auth_eventhub";
 
 @Component({
   components: { FetchStatusIcon, ImageUploadModal, Breadcrumb, Forbidden },

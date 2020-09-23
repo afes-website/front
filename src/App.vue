@@ -570,7 +570,7 @@ import { Categories } from "@afes-website/docs";
 import getCategories from "@/libs/categories";
 import NotFound from "@/views/NotFound.vue";
 import UserMenu from "@/components/UserMenu.vue";
-import auth_eventhub from "@/libs/auth_eventhub";
+import auth_eventhub from "@/libs/auth/auth_eventhub";
 
 Vue.use(Vue2TouchEvents);
 

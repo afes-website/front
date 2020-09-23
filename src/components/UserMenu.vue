@@ -71,6 +71,7 @@
         </b-button>
       </template>
     </b-modal>
+    <ReLoginModal />
   </b-button>
 </template>
 
@@ -116,11 +117,14 @@ $menu-border-color: rgba(#000, 0.125);
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import { StorageUserInfo } from "@/libs/auth";
-import { get_user_icon } from "@/libs/auth";
-import auth_eventhub from "@/libs/auth_eventhub";
+import { StorageUserInfo } from "@/libs/auth/auth";
+import { get_user_icon } from "@/libs/auth/auth";
+import auth_eventhub from "@/libs/auth/auth_eventhub";
+import ReLoginModal from "@/components/ReLoginModal.vue";
 
-@Component
+@Component({
+  components: { ReLoginModal },
+})
 export default class UserMenu extends Vue {
   current_user: StorageUserInfo | null = null;
   users: StorageUserInfo[] = [];

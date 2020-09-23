@@ -264,7 +264,7 @@ import { getStringTime } from "@/libs/string_date";
 import { UserInfo } from "@afes-website/docs";
 import { BvTableVariant } from "bootstrap-vue";
 import Forbidden from "@/components/Forbidden.vue";
-import auth_eventhub from "@/libs/auth_eventhub";
+import auth_eventhub from "@/libs/auth/auth_eventhub";
 
 interface ArrayPath {
   id: string;
