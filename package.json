@@ -6,8 +6,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
-    "lint": "vue-cli-service lint",
-    "api:build": "aspida --build"
+    "lint": "vue-cli-service lint"
   },
   "dependencies": {
     "@afes-website/docs": "git+https://github.com/afes-website/docs.git#~2.0",
