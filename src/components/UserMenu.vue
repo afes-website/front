@@ -1,5 +1,5 @@
 <template>
-  <b-button id="user-menu">
+  <b-button id="user-menu" v-if="isLoggedIn">
     <div>
       <font-awesome-icon
         :icon="user_icon(current_user)"
@@ -154,6 +154,10 @@ export default class UserMenu extends Vue {
   to_login() {
     this.$router.push({ name: "login" });
     this.is_show_popover = false;
+  }
+
+  get isLoggedIn() {
+    return !!this.current_user;
   }
 
   user_id(user: StorageUserInfo) {
