@@ -5,6 +5,7 @@ import isAxiosError from "@/libs/is_axios_error";
 import {
   faUser,
   faUserCog,
+  faUserEdit,
   faUserShield,
   IconDefinition,
 } from "@fortawesome/free-solid-svg-icons";
@@ -179,7 +180,7 @@ export const get_user_icon = (
   account: StorageUserInfo | null
 ): IconDefinition => {
   if (account?.permissions.admin) return faUserShield;
-  if (account?.permissions.general) return faUserCog;
-  if (account?.permissions.exhibition) return faUser;
+  if (account?.permissions.blogAdmin) return faUserCog;
+  if (account?.permissions.blogWriter) return faUserEdit;
   return faUser;
 };
