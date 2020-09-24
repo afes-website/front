@@ -114,12 +114,17 @@ export default class Auth {
       : Array.isArray(_permission)
       ? _permission
       : [_permission];
+
     const current_user = this.get_current_user;
-    if (!(current_user && token_is_valid_at(current_user.token))) {
+    if (!current_user) return Promise.reject("You are not logged in.");
+    if (!token_is_valid_at(current_user.token)) {
       auth_eventhub.emitTokenExpired();
-      return Promise.reject();
+      return Promise.reject("Token has been expired.");
     }
-    if (current_user && perm_arr.some((val) => current_user.permissions[val]))
+
+    if (Array.isArray(_permission) ? !_permission.length : !_permission)
+      return Promise.resolve(current_user.token);
+    if (perm_arr.some((val) => current_user.permissions[val]))
       return Promise.resolve(current_user.token);
     return Promise.reject();
   }
