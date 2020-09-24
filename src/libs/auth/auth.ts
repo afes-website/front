@@ -94,6 +94,16 @@ export default class Auth {
     if (this.on_change_hook) this.on_change_hook();
   }
 
+  /**
+   * token を Promise で返す
+   * @param _permission 権限の種類文字列もしくはその配列
+   * @returns token:
+   *          指定された権限を有している場合・権限が指定されていない場合
+   * @throws {string|undefined}
+   * Error Message
+   * - You are not logged in.
+   * - Token has been expired.
+   */
   attempt_get_JWT(
     _permission?:
       | keyof StorageUserInfo["permissions"]
