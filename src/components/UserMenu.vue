@@ -1,5 +1,5 @@
 <template>
-  <b-button id="user-menu" v-if="isLoggedIn">
+  <b-button id="user-menu" v-if="isLoggedIn" variant="theme-dark">
     <div>
       <font-awesome-icon
         :icon="user_icon(current_user)"
@@ -80,8 +80,6 @@
   display: block;
   border: none;
   width: 100%;
-  background: $theme-dark;
-  color: #fff;
   font-size: 17px;
   padding: 8px 16px;
   border-radius: 8px;
