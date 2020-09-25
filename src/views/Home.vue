@@ -299,10 +299,10 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import api from "@/apis/$api";
+import api from "@afes-website/docs";
 import aspida from "@aspida/axios";
-import { BlogArticle } from "@/apis/blog/articles/@types";
-import { Categories } from "@/apis/blog/categories/@types";
+import { BlogArticle } from "@afes-website/docs";
+import { Categories } from "@afes-website/docs";
 import getCategories from "@/libs/categories";
 import TopPageButton from "@/components/TopPageButton.vue";
 import { getStringDate } from "@/libs/string_date";

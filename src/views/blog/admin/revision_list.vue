@@ -1,5 +1,5 @@
 <template>
-  <div class="box wide-box">
+  <forbidden :is-forbidden="forbidden" class="box wide-box">
     <breadcrumb :text="page_title" />
     <h1>{{ page_title }}</h1>
     <b-button @click="load">
@@ -69,7 +69,7 @@
         </b-tr>
       </b-tbody>
     </b-table-simple>
-  </div>
+  </forbidden>
 </template>
 
 <style lang="scss" scoped>
@@ -97,43 +97,48 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import api from "@/apis/$api";
+import api from "@afes-website/docs";
 import aspida from "@aspida/axios";
-import WriterAuth from "@/libs/auth/writer_auth";
-import { BlogRevision } from "@/apis/blog/revisions/@types";
-import { BlogArticle } from "@/apis/blog/articles/@types";
+import { BlogRevision } from "@afes-website/docs";
+import { BlogArticle } from "@afes-website/docs";
 import is_axios_error from "@/libs/is_axios_error";
 import FetchStatus from "@/libs/fetch_status";
 import FetchStatusIcon from "@/components/FetchStatusIcon.vue";
 import Breadcrumb from "@/components/Breadcrumb.vue";
 import { getStringTime } from "@/libs/string_date";
+import Forbidden from "@/components/Forbidden.vue";
+import auth_eventhub from "@/libs/auth/auth_eventhub";
 
 interface BlogRevisionWithArticle extends BlogRevision {
   article: BlogArticle | null;
 }
 
-@Component({ components: { FetchStatusIcon, Breadcrumb } })
+@Component({ components: { FetchStatusIcon, Breadcrumb, Forbidden } })
 export default class RevisionList extends Vue {
   readonly page_title = "あなたの記事リクエスト一覧";
   revisions: BlogRevisionWithArticle[] = [];
   client = aspida();
 
   fetch_status: FetchStatus = "idle";
+  forbidden = false;
 
   mounted() {
     this.load();
+    auth_eventhub.onUpdateAuth(this.load);
   }
 
   load() {
+    this.forbidden = false;
     if (this.fetch_status == "pending") return;
     this.fetch_status = "pending";
     this.revisions = [];
-    WriterAuth.attempt_get_JWT()
+    this.$auth
+      .attempt_get_JWT("blogWriter")
       .then((token) => {
         api(this.client)
           .blog.revisions.$get({
             headers: {
-              "X-BLOG-WRITER-TOKEN": token.content,
+              Authorization: "bearer " + token,
             },
           })
           .then((data: BlogRevision[]) => {
@@ -178,6 +183,7 @@ export default class RevisionList extends Vue {
           });
       })
       .catch(() => {
+        this.forbidden = true;
         this.fetch_status = "fail";
       });
   }

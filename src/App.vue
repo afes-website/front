@@ -129,6 +129,7 @@
               <li><b-link :to="{ name: 'document' }">文化祭資料</b-link></li>
             </ul>
           </nav>
+          <UserMenu id="user-menu" />
         </div>
         <div
           id="menu-fade"
@@ -168,8 +169,6 @@
         </footer>
       </div>
     </div>
-    <admin-login-modal />
-    <writer-login-modal />
   </div>
 </template>
 
@@ -309,6 +308,10 @@ header {
             opacity: 0.65;
           }
         }
+      }
+      #user-menu {
+        margin: 16px 0;
+        box-shadow: 0 0 1em rgba(0, 0, 0, 0.3);
       }
     }
   }
@@ -563,19 +566,17 @@ header {
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
 import Vue2TouchEvents from "vue2-touch-events";
-import AdminLoginModal from "./components/AdminLoginModal.vue";
-import WriterLoginModal from "./components/WriterLoginModal.vue";
-import { Categories } from "@/apis/blog/categories/@types";
+import { Categories } from "@afes-website/docs";
 import getCategories from "@/libs/categories";
 import NotFound from "@/views/NotFound.vue";
-import AdminAuth from "@/libs/auth/admin_auth";
-import WriterAuth from "@/libs/auth/writer_auth";
-import admin_auth_eventhub from "@/libs/auth/admin_auth_eventhub";
-import writer_auth_eventhub from "@/libs/auth/writer_auth_eventhub";
+import UserMenu from "@/components/UserMenu.vue";
+import auth_eventhub from "@/libs/auth/auth_eventhub";
 
 Vue.use(Vue2TouchEvents);
 
-@Component({ components: { AdminLoginModal, WriterLoginModal, NotFound } })
+@Component({
+  components: { NotFound, UserMenu },
+})
 export default class Layout extends Vue {
   sidebar_shown = false;
   show_404 = false;
@@ -587,8 +588,7 @@ export default class Layout extends Vue {
   readonly azabuIcon = require("@/assets/sns/azabu.svg");
 
   created() {
-    admin_auth_eventhub.onLoginSuccess(this.reload_login_status);
-    writer_auth_eventhub.onLoginSuccess(this.reload_login_status);
+    auth_eventhub.onUpdateAuth(this.reload_login_status);
   }
   mounted() {
     this.resize();
@@ -607,6 +607,9 @@ export default class Layout extends Vue {
   route_changed() {
     this.sidebar_shown = false;
     this.show_404 = false;
+
+    if (this.is_need_auth && !this.$auth.get_current_user_id)
+      this.$router.push({ name: "login" });
   }
 
   resize() {
@@ -635,12 +638,21 @@ export default class Layout extends Vue {
   }
 
   reload_login_status() {
-    this.admin_logged_in = AdminAuth.getJWT() !== null;
-    this.writer_logged_in = WriterAuth.getJWT() !== null;
+    this.admin_logged_in = !!this.$auth.get_current_user?.permissions
+      ?.blogAdmin;
+    this.writer_logged_in = !!this.$auth.get_current_user?.permissions
+      ?.blogWriter;
   }
 
   get is_in_admin_route() {
     return this.$route.path.startsWith("/blog/admin");
+  }
+
+  get is_need_auth() {
+    return (
+      this.$route.path.startsWith("/blog/admin") &&
+      !this.$route.path.startsWith("/blog/admin/login")
+    );
   }
 
   get is_top_page() {

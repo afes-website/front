@@ -17,7 +17,7 @@ ol {
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { Location } from "vue-router";
-import { Categories } from "@/apis/blog/categories/@types";
+import { Categories } from "@afes-website/docs";
 import getCategories from "@/libs/categories";
 
 interface Item {

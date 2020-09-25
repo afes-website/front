@@ -1,5 +1,5 @@
 <template>
-  <article id="show-revision">
+  <forbidden :is-forbidden="forbidden" id="show-revision">
     <template v-if="found_revision">
       <breadcrumb :text="page_title" />
       <b-alert show variant="info">
@@ -30,11 +30,11 @@
     <template v-else>
       <p>{{ fetch_status }}</p>
     </template>
-  </article>
+  </forbidden>
 </template>
 
 <style lang="scss" scoped>
-article {
+#show-revision {
   max-width: 952px;
   .under-title {
     margin-top: -14px;
@@ -56,21 +56,21 @@ span {
 
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
-import api from "@/apis/$api";
+import api from "@afes-website/docs";
 import aspida from "@aspida/axios";
-import { BlogRevision } from "@/apis/blog/revisions/@types";
+import { BlogRevision } from "@afes-website/docs";
 import is_axios_error from "@/libs/is_axios_error";
 import FetchStatus from "@/libs/fetch_status";
 import Markdown from "@/libs/markdown";
-import AdminAuth from "@/libs/auth/admin_auth";
-import WriterAuth from "@/libs/auth/writer_auth";
-import { AdminAuthToken, WriterAuthToken } from "../../../apis/@types";
 import Breadcrumb from "@/components/Breadcrumb.vue";
 import { getStringTime } from "@/libs/string_date";
+import Forbidden from "@/components/Forbidden.vue";
+import auth_eventhub from "@/libs/auth/auth_eventhub";
 
 @Component({
   components: {
     Breadcrumb,
+    Forbidden,
   },
 })
 export default class ShowRevision extends Vue {
@@ -78,31 +78,34 @@ export default class ShowRevision extends Vue {
   revision: BlogRevision | null = null;
   client = aspida();
   fetch_status: FetchStatus = "idle";
+  forbidden = false;
 
   mounted() {
     this.load();
+    auth_eventhub.onUpdateAuth(this.load);
   }
   @Watch("$route")
   route_changed() {
     this.load();
   }
 
-  load() {
+  async load() {
+    this.forbidden = false;
     this.revision = null;
     this.fetch_status = "pending";
-    new Promise<AdminAuthToken | WriterAuthToken>((s, r) => {
-      const admin_token = AdminAuth.getJWT();
-      if (admin_token !== null) s({ "X-ADMIN-TOKEN": admin_token.content });
-      const writer_token = WriterAuth.getJWT();
-      if (writer_token !== null)
-        s({ "X-BLOG-WRITER-TOKEN": writer_token.content });
-      r("not logged in");
-    })
-      .then((header) => {
-        return api(this.client)
-          .blog.revisions._id(Number(this.$route.params.id))
-          .$get({ headers: header });
-      })
+
+    let token = "";
+
+    try {
+      token = await this.$auth.attempt_get_JWT(["blogWriter", "blogAdmin"]);
+    } catch {
+      this.forbidden = true;
+      return;
+    }
+
+    api(this.client)
+      .blog.revisions._id(Number(this.$route.params.id))
+      .$get({ headers: { Authorization: "bearer " + token } })
       .then((data) => {
         this.revision = data;
         this.page_title = data.title;
@@ -111,6 +114,7 @@ export default class ShowRevision extends Vue {
       .catch((e: unknown) => {
         if (is_axios_error(e)) {
           if (e.response && e.response.status == 404) this.$emit("not_found");
+          if (e.response && e.response.status == 403) this.forbidden = true;
         }
         this.fetch_status = "fail";
       });

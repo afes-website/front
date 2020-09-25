@@ -1,5 +1,5 @@
 <template>
-  <div id="path-list" class="box wide-box">
+  <forbidden :is-forbidden="forbidden" id="path-list" class="box wide-box">
     <breadcrumb :text="page_title" />
     <h1>{{ page_title }}</h1>
     <b-button @click="load">
@@ -194,7 +194,7 @@
         </b-form-group>
       </template>
     </b-table>
-  </div>
+  </forbidden>
 </template>
 
 <style lang="scss" scoped>
@@ -251,26 +251,26 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import api from "@/apis/$api";
+import api from "@afes-website/docs";
 import aspida from "@aspida/axios";
-import { BlogArticle } from "@/apis/blog/articles/@types";
-import AdminAuth from "@/libs/auth/admin_auth";
-import { BlogRevision } from "@/apis/blog/revisions/@types";
+import { BlogArticle } from "@afes-website/docs";
+import { BlogRevision } from "@afes-website/docs";
 import FetchStatus from "@/libs/fetch_status";
 import FetchStatusIcon from "@/components/FetchStatusIcon.vue";
-import { Categories } from "@/apis/blog/categories/@types";
+import { Categories } from "@afes-website/docs";
 import getCategories from "@/libs/categories";
 import Breadcrumb from "@/components/Breadcrumb.vue";
 import { getStringTime } from "@/libs/string_date";
-import { WriterUserInfo } from "@/apis/writer/user";
+import { UserInfo } from "@afes-website/docs";
 import { BvTableVariant } from "bootstrap-vue";
-import JWT from "@/libs/auth/jwt";
+import Forbidden from "@/components/Forbidden.vue";
+import auth_eventhub from "@/libs/auth/auth_eventhub";
 
 interface ArrayPath {
   id: string;
   category?: string;
   title?: string;
-  author?: WriterUserInfo;
+  author?: UserInfo;
   handle_name?: string | null;
   created_at?: string;
   updated_at?: string;
@@ -284,7 +284,7 @@ interface ArrayPath {
 interface Path {
   category?: string;
   title?: string;
-  author?: WriterUserInfo;
+  author?: UserInfo;
   handle_name?: string | null;
   created_at?: string;
   updated_at?: string;
@@ -299,7 +299,7 @@ interface TableRevision extends BlogRevision {
   _rowVariant?: BvTableVariant;
 }
 
-@Component({ components: { FetchStatusIcon, Breadcrumb } })
+@Component({ components: { FetchStatusIcon, Breadcrumb, Forbidden } })
 export default class PathList extends Vue {
   readonly page_title = "記事一覧";
   paths: { [key: string]: Path } = {};
@@ -339,6 +339,7 @@ export default class PathList extends Vue {
   categories: Categories = {};
 
   fetch_status: FetchStatus = "idle";
+  forbidden = false;
 
   mounted() {
     getCategories()
@@ -348,16 +349,20 @@ export default class PathList extends Vue {
       .then(() => {
         this.load();
       });
+    auth_eventhub.onUpdateAuth(this.load);
   }
 
-  load() {
+  async load() {
+    this.forbidden = false;
     if (this.fetch_status == "pending") return;
     this.fetch_status = "pending";
     this.paths = {};
-    AdminAuth.attempt_get_JWT()
+
+    this.$auth
+      .attempt_get_JWT("blogAdmin")
       .then((token) => {
         // get articles
-        return new Promise<JWT>((resolve) =>
+        return new Promise<string>((resolve) =>
           api(this.client)
             .blog.articles.$get()
             .then((data: BlogArticle[]) => {
@@ -378,7 +383,7 @@ export default class PathList extends Vue {
         api(this.client)
           .blog.revisions.$get({
             headers: {
-              "X-ADMIN-TOKEN": token.content,
+              Authorization: "bearer " + token,
             },
           })
           .then((data: TableRevision[]) => {
@@ -405,16 +410,20 @@ export default class PathList extends Vue {
           .catch(() => {
             this.fetch_status = "fail";
           });
+      })
+      .catch(() => {
+        this.forbidden = true;
+        this.fetch_status = "fail";
       });
   }
 
   accept_revision(article_id: string, revision_id: number) {
-    AdminAuth.attempt_get_JWT().then((token) => {
+    this.$auth.attempt_get_JWT("blogAdmin").then((token) => {
       api(this.client)
         .blog.revisions._id(revision_id)
         .accept.$patch({
           headers: {
-            "X-ADMIN-TOKEN": token.content,
+            Authorization: "bearer " + token,
           },
         })
         .then((res) => {
@@ -428,12 +437,12 @@ export default class PathList extends Vue {
   }
 
   reject_revision(article_id: string, revision_id: number) {
-    AdminAuth.attempt_get_JWT().then((token) => {
+    this.$auth.attempt_get_JWT("blogAdmin").then((token) => {
       api(this.client)
         .blog.revisions._id(revision_id)
         .reject.$patch({
           headers: {
-            "X-ADMIN-TOKEN": token.content,
+            Authorization: "bearer " + token,
           },
         })
         .then((res) => {
@@ -447,7 +456,7 @@ export default class PathList extends Vue {
   }
 
   apply_changes(row: { item: ArrayPath }) {
-    AdminAuth.attempt_get_JWT().then((token) => {
+    this.$auth.attempt_get_JWT("blogAdmin").then((token) => {
       return new Promise<BlogArticle>((resolve) =>
         api(this.client)
           .blog.articles._id(row.item.id)
@@ -457,7 +466,7 @@ export default class PathList extends Vue {
               revision_id: row.item.revision_selection,
             },
             headers: {
-              "X-ADMIN-TOKEN": token.content,
+              Authorization: "bearer " + token,
             },
           })
           .then((article) => {
@@ -478,7 +487,7 @@ export default class PathList extends Vue {
                 article_id: article.id,
               },
               headers: {
-                "X-ADMIN-TOKEN": token.content,
+                Authorization: "bearer " + token,
               },
             })
             .then((revisions) => {
@@ -627,7 +636,7 @@ export default class PathList extends Vue {
 
   /* ==== Other Utils ==== */
 
-  get_author_name(author: WriterUserInfo) {
+  get_author_name(author: UserInfo) {
     return author.name;
   }
 

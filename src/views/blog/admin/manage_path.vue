@@ -1,5 +1,5 @@
 <template>
-  <div class="box wide-box">
+  <forbidden :is-forbidden="forbidden" class="box wide-box">
     <breadcrumb :text="page_title" />
     <h1>{{ page_title }}</h1>
     <b-button @click="load">
@@ -113,7 +113,7 @@
     <b-modal id="delete-confirm-modal" @ok="delete_article">
       <p>削除してもよろしいですか?</p>
     </b-modal>
-  </div>
+  </forbidden>
 </template>
 
 <style lang="scss" scoped>
@@ -154,27 +154,27 @@
 
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
-import api from "@/apis/$api";
+import api from "@afes-website/docs";
 import aspida from "@aspida/axios";
-import AdminAuth from "@/libs/auth/admin_auth";
-import { BlogRevision } from "@/apis/blog/revisions/@types";
-import { BlogArticle } from "@/apis/blog/articles/@types";
+import { BlogRevision } from "@afes-website/docs";
+import { BlogArticle } from "@afes-website/docs";
 import is_axios_error from "@/libs/is_axios_error";
 import FetchStatus from "@/libs/fetch_status";
 import FetchStatusIcon from "@/components/FetchStatusIcon.vue";
 import DiffLib from "difflib";
 import * as Diff2Html from "diff2html";
-import { Categories } from "@/apis/blog/categories/@types";
+import { Categories } from "@afes-website/docs";
 import getCategories from "@/libs/categories";
 import Breadcrumb from "@/components/Breadcrumb.vue";
 import { getStringTime } from "@/libs/string_date";
-import { Category } from "../../../apis/blog/categories/@types";
+import { Category } from "@afes-website/docs";
+import Forbidden from "@/components/Forbidden.vue";
+import auth_eventhub from "@/libs/auth/auth_eventhub";
 
-@Component({ components: { FetchStatusIcon, Breadcrumb } })
+@Component({ components: { FetchStatusIcon, Breadcrumb, Forbidden } })
 export default class ManagePath extends Vue {
   page_title = "記事管理";
   revisions: { [key: number]: BlogRevision } = {};
-  client = aspida();
   categories: Categories = {};
 
   revision_selection = 0;
@@ -186,6 +186,9 @@ export default class ManagePath extends Vue {
   delete_status: FetchStatus = "idle";
 
   article_exists = false;
+  forbidden = false;
+
+  api_token = "";
 
   mounted() {
     getCategories()
@@ -195,6 +198,7 @@ export default class ManagePath extends Vue {
       .then(() => {
         this.load();
       });
+    auth_eventhub.onUpdateAuth(this.load);
   }
 
   @Watch("$route")
@@ -203,15 +207,18 @@ export default class ManagePath extends Vue {
   }
 
   load() {
+    this.forbidden = false;
     this.fetch_status = "pending";
     this.article_exists = false;
     this.revision_selection = 0;
     this.original_selection = 0;
     this.page_title = "記事管理: " + this.$route.params.id;
-    AdminAuth.attempt_get_JWT()
+
+    this.$auth
+      .attempt_get_JWT("blogAdmin")
       .then((token) => {
         Promise.all([
-          api(this.client)
+          api(aspida())
             .blog.articles._id(this.$route.params.id)
             .$get()
             .then((data: BlogArticle) => {
@@ -227,13 +234,13 @@ export default class ManagePath extends Vue {
               }
               throw e;
             }),
-          api(this.client)
+          api(aspida())
             .blog.revisions.$get({
               query: {
                 article_id: this.$route.params.id,
               },
               headers: {
-                "X-ADMIN-TOKEN": token.content,
+                Authorization: "bearer " + token,
               },
             })
             .then((data: BlogRevision[]) => {
@@ -250,17 +257,18 @@ export default class ManagePath extends Vue {
           });
       })
       .catch(() => {
+        this.forbidden = true;
         this.fetch_status = "fail";
       });
   }
 
   accept_revision(id: number) {
-    AdminAuth.attempt_get_JWT().then((token) => {
-      api(this.client)
+    this.$auth.attempt_get_JWT("blogAdmin").then((token) => {
+      api(aspida())
         .blog.revisions._id(id)
         .accept.$patch({
           headers: {
-            "X-ADMIN-TOKEN": token.content,
+            Authorization: "bearer " + token,
           },
         })
         .then((data: BlogRevision) => {
@@ -270,12 +278,12 @@ export default class ManagePath extends Vue {
   }
 
   reject_revision(id: number) {
-    AdminAuth.attempt_get_JWT().then((token) => {
-      api(this.client)
+    this.$auth.attempt_get_JWT("blogAdmin").then((token) => {
+      api(aspida())
         .blog.revisions._id(id)
         .reject.$patch({
           headers: {
-            "X-ADMIN-TOKEN": token.content,
+            Authorization: "bearer " + token,
           },
         })
         .then((data: BlogRevision) => {
@@ -286,27 +294,26 @@ export default class ManagePath extends Vue {
 
   apply_changes() {
     this.post_status = "pending";
-    AdminAuth.attempt_get_JWT()
-      .then((token) => {
-        return api(this.client)
-          .blog.articles._id(this.$route.params.id)
-          .$patch({
-            body: {
-              category: this.category,
-              revision_id: this.revision_selection,
-            },
-            headers: {
-              "X-ADMIN-TOKEN": token.content,
-            },
-          });
-      })
-      .then(() => {
-        this.post_status = "idle";
-        this.load();
-      })
-      .catch(() => {
-        this.post_status = "fail";
-      });
+    this.$auth.attempt_get_JWT("blogAdmin").then((token) => {
+      api(aspida())
+        .blog.articles._id(this.$route.params.id)
+        .$patch({
+          body: {
+            category: this.category,
+            revision_id: this.revision_selection,
+          },
+          headers: {
+            Authorization: "bearer " + token,
+          },
+        })
+        .then(() => {
+          this.post_status = "idle";
+          this.load();
+        })
+        .catch(() => {
+          this.post_status = "fail";
+        });
+    });
   }
 
   get is_category_valid() {
@@ -319,21 +326,22 @@ export default class ManagePath extends Vue {
 
   delete_article() {
     this.delete_status = "pending";
-    AdminAuth.attempt_get_JWT()
-      .then((token) => {
-        return api(this.client)
-          .blog.articles._id(this.$route.params.id)
-          .delete({
-            headers: { "X-ADMIN-TOKEN": token.content },
-          });
-      })
-      .then(() => {
-        this.delete_status = "idle";
-        this.load();
-      })
-      .catch(() => {
-        this.delete_status = "fail";
-      });
+    this.$auth.attempt_get_JWT("blogAdmin").then((token) => {
+      api(aspida())
+        .blog.articles._id(this.$route.params.id)
+        .delete({
+          headers: {
+            Authorization: "bearer " + token,
+          },
+        })
+        .then(() => {
+          this.delete_status = "idle";
+          this.load();
+        })
+        .catch(() => {
+          this.delete_status = "fail";
+        });
+    });
   }
 
   get diff_from_original() {

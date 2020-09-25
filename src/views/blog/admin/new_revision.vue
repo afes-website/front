@@ -1,5 +1,5 @@
 <template>
-  <div class="box wide-box">
+  <forbidden :is-forbidden="forbidden" class="box wide-box">
     <breadcrumb :text="page_title" />
     <h1>{{ page_title }}</h1>
     <b-form-group label="id:">
@@ -9,7 +9,7 @@
       </b-form-invalid-feedback>
     </b-form-group>
     <b-form-group>
-      <b-button @click="load" :disabled="is_article_path_empty">
+      <b-button @click="loadArticle" :disabled="is_article_path_empty">
         記事情報を読みこむ
         <fetch-status-icon :status="fetch_status" />
       </b-button>
@@ -107,7 +107,7 @@
       v-model="image_upload_modal_shown"
       @uploaded="image_uploaded"
     />
-  </div>
+  </forbidden>
 </template>
 
 <style lang="scss" scoped>
@@ -204,20 +204,23 @@ div#preview {
 
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
-import api from "@/apis/$api";
+import api from "@afes-website/docs";
 import aspida from "@aspida/axios";
-import WriterAuth from "@/libs/auth/writer_auth";
-import { BlogRevision } from "@/apis/blog/revisions/@types";
+import { BlogRevision } from "@afes-website/docs";
 import FetchStatus from "@/libs/fetch_status";
 import FetchStatusIcon from "@/components/FetchStatusIcon.vue";
 import Markdown from "@/libs/markdown";
 import DiffLib from "difflib";
 import * as Diff2Html from "diff2html";
 import ImageUploadModal from "@/components/ImageUploadModal.vue";
-import { get_image_url } from "@/apis/images/@utils";
+import { get_image_url } from "@afes-website/docs";
 import Breadcrumb from "@/components/Breadcrumb.vue";
+import Forbidden from "@/components/Forbidden.vue";
+import auth_eventhub from "@/libs/auth/auth_eventhub";
 
-@Component({ components: { FetchStatusIcon, ImageUploadModal, Breadcrumb } })
+@Component({
+  components: { FetchStatusIcon, ImageUploadModal, Breadcrumb, Forbidden },
+})
 export default class NewRevision extends Vue {
   readonly page_title = "記事投稿/編集";
 
@@ -232,6 +235,8 @@ export default class NewRevision extends Vue {
 
   image_upload_modal_shown = false;
 
+  forbidden = false;
+
   readonly noImage = require("@/assets/no-image.svg");
 
   image_uploaded(id: string) {
@@ -241,8 +246,10 @@ export default class NewRevision extends Vue {
   mounted() {
     if ("path" in this.$route.query && !Array.isArray(this.$route.query.path)) {
       this.article_path = this.$route.query.path;
-      this.load();
+      this.loadArticle();
     }
+    this.load();
+    auth_eventhub.onUpdateAuth(this.load);
   }
 
   @Watch("$route")
@@ -251,6 +258,13 @@ export default class NewRevision extends Vue {
   }
 
   load() {
+    this.forbidden = false;
+    this.$auth.attempt_get_JWT("blogWriter").catch(() => {
+      this.forbidden = true;
+    });
+  }
+
+  loadArticle() {
     this.fetch_status = "pending";
     api(aspida())
       .blog.articles._id(this.article_path)
@@ -269,7 +283,7 @@ export default class NewRevision extends Vue {
   post() {
     this.status = "pending";
 
-    WriterAuth.attempt_get_JWT().then((token) => {
+    this.$auth.attempt_get_JWT("blogWriter").then((token) => {
       api(aspida())
         .blog.revisions.$post({
           body: {
@@ -278,8 +292,9 @@ export default class NewRevision extends Vue {
             content: this.content,
             handle_name: null,
           },
+
           headers: {
-            "X-BLOG-WRITER-TOKEN": token.content,
+            Authorization: "bearer " + token,
           },
         })
         .then((data: BlogRevision) => {

@@ -35,6 +35,12 @@ if (process.env.VUE_APP_GA_ID) {
   );
 }
 
+import Auth from "@/libs/auth/auth";
+import auth_eventhub from "@/libs/auth/auth_eventhub";
+Vue.prototype.$auth = new Auth(() => {
+  auth_eventhub.emitUpdateAuth();
+});
+
 new Vue({
   router,
   render: (h) => h(App),

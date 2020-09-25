@@ -3,52 +3,14 @@
     <breadcrumb :text="page_title" />
     <h1>{{ page_title }}</h1>
     <section class="profile">
-      <h3>管理者ユーザ</h3>
-      <font-awesome-icon icon="user-shield" class="fa-fw" />
-      <template v-if="admin_logged_in()">
-        <span class="name">{{ admin_user_name }}</span>
-        <span class="id">@{{ admin_user_id }}</span>
-        <b-button
-          @click="show_admin_password_modal"
-          size="sm"
-          variant="outline-info"
-        >
-          パスワード変更
-        </b-button>
-        <b-button @click="admin_logout" size="sm" variant="outline-danger">
-          <font-awesome-icon :icon="'sign-out-alt'" class="fa-fw" />
-          ログアウト
-        </b-button>
-      </template>
-      <b-button v-else @click="admin_login" size="sm" variant="theme-dark">
-        <font-awesome-icon :icon="'sign-in-alt'" class="fa-fw" />
-        ログイン
+      <font-awesome-icon :icon="user_icon" class="fa-fw" />
+      <span class="name">{{ user_name }}</span>
+      <span class="id">@{{ user_id }}</span>
+      <b-button @click="show_password_modal" size="sm" variant="outline-info">
+        パスワード変更
       </b-button>
     </section>
-    <section class="profile">
-      <h3>一般ユーザ</h3>
-      <font-awesome-icon icon="user-edit" class="fa-fw" />
-      <template v-if="writer_logged_in()">
-        <span class="name">{{ writer_user_name }}</span>
-        <span class="id">@{{ writer_user_id }}</span>
-        <b-button
-          @click="show_writer_password_modal"
-          size="sm"
-          variant="outline-info"
-        >
-          パスワード変更
-        </b-button>
-        <b-button @click="writer_logout" size="sm" variant="outline-danger">
-          <font-awesome-icon :icon="'sign-out-alt'" class="fa-fw" />
-          ログアウト
-        </b-button>
-      </template>
-      <b-button v-else @click="writer_login" size="sm" variant="theme-dark">
-        <font-awesome-icon :icon="'sign-in-alt'" class="fa-fw" />
-        ログイン
-      </b-button>
-    </section>
-    <template v-if="writer_logged_in">
+    <template v-if="is_writer">
       <section>
         <h2>新規リクエスト</h2>
         <p>投稿の新規リクエストはこちらから。</p>
@@ -64,15 +26,14 @@
         >
       </section>
     </template>
-    <section v-if="admin_logged_in">
+    <section v-if="is_admin">
       <h2>記事一覧･管理</h2>
       <p>Writerからの投稿リクエストの承認･却下や、記事削除はここ。</p>
       <b-button :to="{ name: 'path_list' }" variant="outline-theme-dark"
         >リクエスト一覧</b-button
       >
     </section>
-    <admin-change-password-modal v-model="admin_password_modal_shown" />
-    <writer-change-password-modal v-model="writer_password_modal_shown" />
+    <change-password-modal v-model="password_modal_shown" />
   </div>
 </template>
 
@@ -92,123 +53,57 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import api from "@/apis/$api";
-import aspida from "@aspida/axios";
-import AdminAuth from "@/libs/auth/admin_auth";
-import WriterAuth from "@/libs/auth/writer_auth";
-import { AdminUserInfo } from "@/apis/admin/user.ts";
-import { WriterUserInfo } from "@/apis/writer/user.ts";
-import AdminChangePasswordModal from "@/components/AdminChangePasswordModal.vue";
-import WriterChangePasswordModal from "@/components/WriterChangePasswordModal.vue";
+import { get_user_icon, StorageUserInfo } from "@/libs/auth/auth";
+import ChangePasswordModal from "@/components/ChangePasswordModal.vue";
 import Breadcrumb from "@/components/Breadcrumb.vue";
+import auth_eventhub from "@/libs/auth/auth_eventhub";
 
 @Component({
   components: {
-    AdminChangePasswordModal,
-    WriterChangePasswordModal,
+    ChangePasswordModal,
     Breadcrumb,
   },
 })
 export default class AdminTop extends Vue {
   readonly page_title = "ブログ管理";
+  password_modal_shown = false;
 
-  admin_user: AdminUserInfo | null = null;
-  writer_user: WriterUserInfo | null = null;
-
-  admin_password_modal_shown = false;
-  writer_password_modal_shown = false;
+  user: StorageUserInfo | null = null;
 
   mounted() {
     this.load();
+    auth_eventhub.onUpdateAuth(this.load);
   }
 
   load() {
-    if (this.admin_logged_in()) {
-      AdminAuth.attempt_get_JWT()
-        .then((token) => {
-          return api(aspida()).admin.user.$get({
-            headers: { "X-ADMIN-TOKEN": token.content },
-          });
-        })
-        .then((user_info) => {
-          this.admin_user = user_info;
-        });
-    }
-    if (this.writer_logged_in()) {
-      WriterAuth.attempt_get_JWT()
-        .then((token) => {
-          return api(aspida()).writer.user.$get({
-            headers: { "X-BLOG-WRITER-TOKEN": token.content },
-          });
-        })
-        .then((user_info) => {
-          this.writer_user = user_info;
-        });
+    if (this.$auth.get_current_user_id) {
+      this.user = this.$auth.get_current_user;
+    } else {
+      this.$router.push({ name: "login" });
     }
   }
 
-  admin_login() {
-    AdminAuth.strictValidateJWT(aspida()).then((is_valid) => {
-      if (!is_valid) {
-        AdminAuth.attempt_get_JWT().then(() => {
-          this.load();
-        });
-      }
-    });
+  show_password_modal() {
+    this.password_modal_shown = true;
   }
 
-  admin_logout() {
-    AdminAuth.logout();
-    this.admin_user = null;
+  get user_id() {
+    return this.user?.id;
   }
 
-  writer_login() {
-    WriterAuth.strictValidateJWT(aspida()).then((is_valid) => {
-      if (!is_valid) {
-        WriterAuth.attempt_get_JWT().then(() => {
-          this.load();
-        });
-      }
-    });
+  get user_name() {
+    return this.user?.name;
   }
 
-  writer_logout() {
-    WriterAuth.logout();
-    this.writer_user = null;
+  get user_icon() {
+    return get_user_icon(this.user);
   }
 
-  admin_logged_in() {
-    // to disable cache, this isn't getter
-    return AdminAuth.getJWT() !== null;
+  get is_writer() {
+    return this.user?.permissions.blogWriter;
   }
-
-  writer_logged_in() {
-    // same as below
-    return WriterAuth.getJWT() !== null;
-  }
-
-  show_admin_password_modal() {
-    this.admin_password_modal_shown = true;
-  }
-
-  show_writer_password_modal() {
-    this.writer_password_modal_shown = true;
-  }
-
-  get admin_user_name() {
-    return this.admin_user?.name;
-  }
-
-  get admin_user_id() {
-    return this.admin_user?.id;
-  }
-
-  get writer_user_name() {
-    return this.writer_user?.name;
-  }
-
-  get writer_user_id() {
-    return this.writer_user?.id;
+  get is_admin() {
+    return this.user?.permissions.blogAdmin;
   }
 }
 </script>
