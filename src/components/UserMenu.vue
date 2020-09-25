@@ -25,10 +25,14 @@
             action
             button
           >
-            <font-awesome-icon
-              :icon="user_icon(user)"
-              class="user-icon fa-fw"
-            /><br />
+            <div class="icons-wrapper">
+              <font-awesome-icon :icon="user_icon(user)" class="fa-fw" />
+              <font-awesome-icon
+                icon="check"
+                class="current-user-check fa-fw"
+                v-if="is_current_user(user)"
+              />
+            </div>
             {{ user_name(user) }}
           </b-list-group-item>
           <b-list-group-item
@@ -103,6 +107,17 @@ $menu-border-color: rgba(#000, 0.125);
     background: none;
     font-size: 15px;
     line-height: 25px;
+    .icons-wrapper {
+      display: flex;
+      flex-direction: row;
+      align-items: baseline;
+      justify-content: space-between;
+      margin: 5px 0;
+      .current-user-check {
+        height: 15px;
+        color: $theme-dark;
+      }
+    }
   }
   .list-group-item:hover {
     background: #f8f9fa;
@@ -160,6 +175,10 @@ export default class UserMenu extends Vue {
 
   get isLoggedIn() {
     return !!this.current_user;
+  }
+
+  is_current_user(user: StorageUserInfo) {
+    return this.$auth.get_current_user_id === user.id;
   }
 
   user_id(user: StorageUserInfo) {
