@@ -22,7 +22,7 @@
             v-for="user in users"
             :key="user_id(user)"
             @click="switch_user(user)"
-            actiton
+            action
             button
           >
             <font-awesome-icon
