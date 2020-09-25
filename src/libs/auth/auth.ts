@@ -34,7 +34,6 @@ export default class Auth {
   private async init(): Promise<void> {
     this.load_all_users();
     this.load_current_user_id();
-    await this.update_all_users();
     this.reload_current_user();
   }
 
