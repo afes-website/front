@@ -155,6 +155,7 @@ export const get_user_icon = (
 ): IconDefinition => {
   if (account?.permissions.admin) return faUserShield;
   if (account?.permissions.blogAdmin) return faUserCog;
-  if (account?.permissions.blogWriter) return faUserEdit;
+  if (account?.permissions.blogWriter || account?.permissions.exhibition)
+    return faUserEdit;
   return faUser;
 };
