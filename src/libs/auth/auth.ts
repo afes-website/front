@@ -1,7 +1,6 @@
 import Vue from "vue";
 import api, { UserInfo } from "@afes-website/docs";
 import axios from "@aspida/axios";
-import isAxiosError from "@/libs/is_axios_error";
 import {
   faUser,
   faUserCog,
@@ -126,45 +125,6 @@ export default class Auth {
     if (perm_arr.some((val) => current_user.permissions[val]))
       return Promise.resolve(current_user.token);
     return Promise.reject();
-  }
-
-  private static async update_user_info(
-    data: StorageUserInfo
-  ): Promise<StorageUserInfo | undefined> {
-    try {
-      const ret = await api(axios()).auth.user.$get({
-        headers: { Authorization: "bearer " + data.token },
-      });
-      return { ...ret, token: data.token };
-    } catch (e) {
-      if (isAxiosError(e) && e.response?.status === 401) return undefined;
-      else return data;
-    }
-  }
-
-  async update_user(user_id: string): Promise<void> {
-    if (user_id in this.all_users) return;
-    const data = await Auth.update_user_info(this.all_users[user_id]);
-    if (data === undefined) this.remove_user(user_id);
-    else {
-      this.all_users[user_id] = data;
-      this.save_all_users();
-    }
-  }
-
-  async update_all_users(): Promise<void> {
-    await Promise.allSettled(
-      Object.keys(this.all_users).map(async (user_id) => {
-        try {
-          const ret = await Auth.update_user_info(this.all_users[user_id]);
-          if (ret === undefined) this.remove_user(user_id);
-          else Vue.set(this.all_users, user_id, ret);
-        } catch {
-          this.remove_user(user_id);
-        }
-      })
-    );
-    this.save_all_users();
   }
 
   private reload_current_user(): void {
