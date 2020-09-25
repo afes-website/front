@@ -18,8 +18,21 @@
     >
       <template v-slot:default>
         <b-list-group id="user-menu-item-wrapper" hover>
+          <b-list-group-item @click="switch_user(user)" action button>
+            <div class="icons-wrapper">
+              <font-awesome-icon
+                :icon="user_icon(current_user)"
+                class="fa-fw"
+              />
+              <font-awesome-icon
+                icon="check"
+                class="current-user-check fa-fw"
+              />
+            </div>
+            {{ user_name(current_user) }}
+          </b-list-group-item>
           <b-list-group-item
-            v-for="user in users"
+            v-for="user in non_current_users"
             :key="user_id(user)"
             @click="switch_user(user)"
             action
@@ -27,11 +40,6 @@
           >
             <div class="icons-wrapper">
               <font-awesome-icon :icon="user_icon(user)" class="fa-fw" />
-              <font-awesome-icon
-                icon="check"
-                class="current-user-check fa-fw"
-                v-if="is_current_user(user)"
-              />
             </div>
             {{ user_name(user) }}
           </b-list-group-item>
@@ -175,6 +183,12 @@ export default class UserMenu extends Vue {
 
   get isLoggedIn() {
     return !!this.current_user;
+  }
+
+  get non_current_users() {
+    return this.users.filter((user) => {
+      return user.id !== this.$auth.get_current_user_id;
+    });
   }
 
   is_current_user(user: StorageUserInfo) {
