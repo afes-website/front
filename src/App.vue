@@ -310,7 +310,7 @@ header {
         }
       }
       #user-menu {
-        margin-top: 16px;
+        margin: 16px 0;
         box-shadow: 0 0 1em rgba(0, 0, 0, 0.3);
       }
     }
