@@ -88,15 +88,15 @@ export default class AdminTop extends Vue {
   }
 
   get user_id() {
-    return this.$auth.get_current_user?.id;
+    return this.user?.id;
   }
 
   get user_name() {
-    return this.$auth.get_current_user?.name;
+    return this.user?.name;
   }
 
   get user_icon() {
-    return get_user_icon(this.$auth.get_current_user);
+    return get_user_icon(this.user);
   }
 
   get is_writer() {
