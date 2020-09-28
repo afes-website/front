@@ -107,22 +107,34 @@
                 </ul>
               </li>
               <li>
-                <b-link :to="{ name: 'admin_top' }">ブログ管理</b-link>
+                <b-link :to="{ name: 'admin_top' }">管理</b-link>
                 <ul class="menu-secondary" v-if="is_in_admin_route">
                   <template v-if="writer_logged_in">
                     <li>
                       <b-link :to="{ name: 'new_revision' }"
-                        >新規リクエスト</b-link
+                        >新規記事リクエスト</b-link
                       >
                     </li>
                     <li>
                       <b-link :to="{ name: 'revision_list' }"
-                        >リクエスト一覧</b-link
+                        >記事リクエスト一覧</b-link
                       >
                     </li>
                   </template>
                   <li v-if="admin_logged_in">
                     <b-link :to="{ name: 'path_list' }">記事一覧</b-link>
+                  </li>
+                  <hr v-if="is_need_hr" />
+                  <template v-if="exhibition_logged_in">
+                    <li>
+                      <b-link :to="{ name: '' }">展示更新リクエスト</b-link>
+                    </li>
+                    <li>
+                      <b-link :to="{ name: '' }">展示リクエスト一覧</b-link>
+                    </li>
+                  </template>
+                  <li v-if="admin_logged_in">
+                    <b-link :to="{ name: '' }">展示一覧</b-link>
                   </li>
                 </ul>
               </li>
@@ -272,6 +284,12 @@ header {
         //border: 1px solid #eee;
         border-radius: 0.5rem;
 
+        hr {
+          display: block;
+          border-bottom: 1px solid #fff;
+          margin: 0.25rem 0;
+        }
+
         & > ul {
           padding-left: 0;
           margin: 0;
@@ -283,7 +301,7 @@ header {
 
             a {
               display: block;
-              padding: 0.25rem 2rem;
+              padding: 0.25rem 1.5rem;
               width: 100%;
               &:hover {
                 background: darken($theme-dark, 6%);
@@ -292,9 +310,16 @@ header {
 
             & > ul {
               padding: 0;
+              font-size: 1rem;
+
+              hr {
+                margin-left: 2.5rem;
+                width: calc(100% - 2.5rem - 1rem);
+              }
+
               & > li > a {
                 padding: 0.25rem 0;
-                padding-left: 3rem;
+                padding-left: 2.5rem;
               }
             }
           }
@@ -492,6 +517,7 @@ header {
             }
 
             ul li a {
+              font-size: 1.3rem;
               padding-left: 1em;
             }
           }
@@ -502,9 +528,9 @@ header {
         padding: calc(3.5rem - 1px) 1.6rem 0 1.6rem;
         font-size: 1.3rem;
         position: fixed;
-        width: 60%;
+        width: 70%;
         max-width: 300px;
-        left: -60%;
+        left: -70%;
         height: var(--vh);
         border-radius: 0;
         overflow-y: auto;
@@ -514,7 +540,7 @@ header {
         hr {
           display: block;
           position: relative;
-          width: 60vw;
+          width: 70vw;
           left: -1.6rem;
           margin: 0.5rem 0;
           border: none;
@@ -582,6 +608,7 @@ export default class Layout extends Vue {
   show_404 = false;
   admin_logged_in = false;
   writer_logged_in = false;
+  exhibition_logged_in = false;
   categories: Categories = {};
 
   readonly instagramIcon = require("@/assets/sns/instagram.svg");
@@ -642,10 +669,20 @@ export default class Layout extends Vue {
       ?.blogAdmin;
     this.writer_logged_in = !!this.$auth.get_current_user?.permissions
       ?.blogWriter;
+    this.exhibition_logged_in = !!this.$auth.get_current_user?.permissions
+      ?.exhibition;
+  }
+
+  get is_need_hr() {
+    return (
+      ((this.writer_logged_in || this.admin_logged_in) &&
+        this.exhibition_logged_in) ||
+      this.admin_logged_in
+    );
   }
 
   get is_in_admin_route() {
-    return this.$route.path.startsWith("/blog/admin");
+    return this.$route.path.startsWith("/admin");
   }
 
   get is_need_auth() {

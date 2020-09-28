@@ -136,7 +136,7 @@
 </style>
 
 <style lang="scss">
-@import "~diff2html/bundles/css/diff2html.min.css";
+@import "../../../../node_modules/diff2html/bundles/css/diff2html.min.css";
 #diff-view {
   .d2h-file-list-wrapper {
     display: none;
