@@ -2,9 +2,10 @@
 # yarn lockfile v1
 
 
-"@afes-website/docs@git+https://github.com/afes-website/docs.git#~2.0":
-  version "2.0.5"
-  resolved "git+https://github.com/afes-website/docs.git#e7dee699cae3dec557e8ebcac8e21982e7adc5fe"
+"@afes-website/docs@~2.2":
+  version "2.2.3"
+  resolved "https://registry.yarnpkg.com/@afes-website/docs/-/docs-2.2.3.tgz#21d39ee4822d61b50da7deb6b4f61ec3e8b7964c"
+  integrity sha512-6kqexNYdS7IJHaTDKJ84Y4CzWz9wNw1o1R/qEgKvvwDd2aanGZW9LzI7f7aJyESmdlyGDwsBGSptPe/YLOWYJA==
 
 "@aspida/axios@^0.10.2":
   version "0.10.2"
