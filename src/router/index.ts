@@ -100,6 +100,38 @@ const routes = [
       ),
   },
   {
+    path: "/admin/exh/list",
+    name: "admin_exh_list",
+    component: () =>
+      import(
+        /* webpackChunkName: "admin_exh_list" */ "@/views/admin/exh/exh_list.vue"
+      ),
+  },
+  {
+    path: "/admin/exh/draft",
+    name: "admin_draft_list",
+    component: () =>
+      import(
+        /* webpackChunkName: "admin_draft_list" */ "@/views/admin/exh/draft_list.vue"
+      ),
+  },
+  {
+    path: "/admin/exh/draft/:id(\\d+)",
+    name: "admin_draft_manage",
+    component: () =>
+      import(
+        /* webpackChunkName: "admin_draft_manage" */ "@/views/admin/exh/draft_manage.vue"
+      ),
+  },
+  {
+    path: "/admin/exh/draft/:id(\\d+)/preview",
+    name: "admin_draft_preview",
+    component: () =>
+      import(
+        /* webpackChunkName: "admin_draft_preview" */ "@/views/admin/exh/draft_preview.vue"
+      ),
+  },
+  {
     path: "/blog/:category?",
     name: "article_list",
     component: () =>
