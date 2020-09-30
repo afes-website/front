@@ -134,7 +134,12 @@
                     </li>
                   </template>
                   <li v-if="admin_logged_in">
-                    <b-link :to="{ name: '' }">展示一覧</b-link>
+                    <b-link :to="{ name: 'admin_exh_list' }">展示一覧</b-link>
+                  </li>
+                  <li v-if="admin_logged_in">
+                    <b-link :to="{ name: 'admin_draft_list' }"
+                      >展示リクエスト一覧</b-link
+                    >
                   </li>
                 </ul>
               </li>
