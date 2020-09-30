@@ -108,7 +108,7 @@ const routes = [
       ),
   },
   {
-    path: "/admin/exh/draft",
+    path: "/admin/draft",
     name: "admin_draft_list",
     component: () =>
       import(
@@ -116,7 +116,7 @@ const routes = [
       ),
   },
   {
-    path: "/admin/exh/draft/:id(\\d+)",
+    path: "/admin/draft/:id(\\d+)",
     name: "admin_draft_manage",
     component: () =>
       import(
@@ -124,7 +124,7 @@ const routes = [
       ),
   },
   {
-    path: "/admin/exh/draft/:id(\\d+)/preview",
+    path: "/admin/draft/:id(\\d+)/preview",
     name: "admin_draft_preview",
     component: () =>
       import(
