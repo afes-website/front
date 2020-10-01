@@ -93,50 +93,6 @@ export default class ExhManage extends Vue {
       });
   }
 
-  accept_draft(draft_id: number) {
-    this.$auth.attempt_get_JWT("blogAdmin").then((token) => {
-      api(aspida())
-        .online.exhibition.drafts._id(draft_id)
-        .accept.$patch({
-          headers: {
-            Authorization: "bearer " + token,
-          },
-        })
-        .then((res) => {
-          this.drafts.splice(
-            0,
-            this.drafts.length,
-            ...this.drafts.map((draft) => {
-              if (draft.id === res.id) return res;
-              return draft;
-            })
-          );
-        });
-    });
-  }
-
-  reject_draft(draft_id: number) {
-    this.$auth.attempt_get_JWT("blogAdmin").then((token) => {
-      api(aspida())
-        .online.exhibition.drafts._id(draft_id)
-        .reject.$patch({
-          headers: {
-            Authorization: "bearer " + token,
-          },
-        })
-        .then((res) => {
-          this.drafts.splice(
-            0,
-            this.drafts.length,
-            ...this.drafts.map((draft) => {
-              if (draft.id === res.id) return res;
-              return draft;
-            })
-          );
-        });
-    });
-  }
-
   /* ==== Draft getter ==== */
 
   get id() {
