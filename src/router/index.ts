@@ -100,11 +100,19 @@ const routes = [
       ),
   },
   {
-    path: "/admin/exh/list",
+    path: "/admin/exh",
     name: "admin_exh_list",
     component: () =>
       import(
         /* webpackChunkName: "admin_exh_list" */ "@/views/admin/exh/exh_list.vue"
+      ),
+  },
+  {
+    path: "/admin/exh/:id",
+    name: "admin_exh_manage",
+    component: () =>
+      import(
+        /* webpackChunkName: "admin_exh_manage" */ "@/views/admin/exh/exh_manage.vue"
       ),
   },
   {
