@@ -131,7 +131,7 @@ export default class DraftManage extends Vue {
       .then((token) => {
         this.forbidden = false;
         api(aspida())
-          .online.exhibition.drafts._id(Number(this.$route.params.id))
+          .online.drafts._id(Number(this.$route.params.id))
           .$get({
             headers: { Authorization: "bearer " + token },
           })
@@ -147,7 +147,7 @@ export default class DraftManage extends Vue {
   accept_draft() {
     this.$auth.attempt_get_JWT("blogAdmin").then((token) => {
       api(aspida())
-        .online.exhibition.drafts._id(Number(this.$route.params.id))
+        .online.drafts._id(Number(this.$route.params.id))
         .accept.$patch({
           headers: {
             Authorization: "bearer " + token,
@@ -162,7 +162,7 @@ export default class DraftManage extends Vue {
   reject_draft() {
     this.$auth.attempt_get_JWT("blogAdmin").then((token) => {
       api(aspida())
-        .online.exhibition.drafts._id(Number(this.$route.params.id))
+        .online.drafts._id(Number(this.$route.params.id))
         .reject.$patch({
           headers: {
             Authorization: "bearer " + token,

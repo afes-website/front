@@ -38,7 +38,7 @@ export default class DraftList extends Vue {
       .then((token) => {
         this.forbidden = false;
         api(aspida())
-          .online.exhibition.drafts.$get({
+          .online.drafts.$get({
             headers: { Authorization: "bearer " + token },
           })
           .then((res) => {

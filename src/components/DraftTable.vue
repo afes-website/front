@@ -216,7 +216,7 @@ export default class DraftTable extends Vue {
   accept_draft(draft_id: number) {
     this.$auth.attempt_get_JWT("blogAdmin").then((token) => {
       api(aspida())
-        .online.exhibition.drafts._id(draft_id)
+        .online.drafts._id(draft_id)
         .accept.$patch({
           headers: {
             Authorization: "bearer " + token,
@@ -238,7 +238,7 @@ export default class DraftTable extends Vue {
   reject_draft(draft_id: number) {
     this.$auth.attempt_get_JWT("blogAdmin").then((token) => {
       api(aspida())
-        .online.exhibition.drafts._id(draft_id)
+        .online.drafts._id(draft_id)
         .reject.$patch({
           headers: {
             Authorization: "bearer " + token,

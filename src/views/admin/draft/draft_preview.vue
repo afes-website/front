@@ -99,7 +99,7 @@ export default class DraftPreview extends Vue {
     }
 
     api(this.client)
-      .online.exhibition.drafts._id(Number(this.$route.params.id))
+      .online.drafts._id(Number(this.$route.params.id))
       .$get({ headers: { Authorization: "bearer " + token } })
       .then((data) => {
         this.draft = data;
