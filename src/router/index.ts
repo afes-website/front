@@ -120,7 +120,7 @@ const routes = [
     name: "admin_draft_list",
     component: () =>
       import(
-        /* webpackChunkName: "admin_draft_list" */ "@/views/admin/exh/draft_list.vue"
+        /* webpackChunkName: "admin_draft_list" */ "@/views/admin/draft/draft_list.vue"
       ),
   },
   {
@@ -128,7 +128,7 @@ const routes = [
     name: "admin_draft_manage",
     component: () =>
       import(
-        /* webpackChunkName: "admin_draft_manage" */ "@/views/admin/exh/draft_manage.vue"
+        /* webpackChunkName: "admin_draft_manage" */ "@/views/admin/draft/draft_manage.vue"
       ),
   },
   {
@@ -136,7 +136,7 @@ const routes = [
     name: "admin_draft_preview",
     component: () =>
       import(
-        /* webpackChunkName: "admin_draft_preview" */ "@/views/admin/exh/draft_preview.vue"
+        /* webpackChunkName: "admin_draft_preview" */ "@/views/admin/draft/draft_preview.vue"
       ),
   },
   {
