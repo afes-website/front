@@ -1,5 +1,10 @@
 <template>
-  <forbidden :is-forbidden="forbidden" id="path-list" class="box wide-box">
+  <forbidden
+    :is-forbidden="forbidden"
+    :title="page_title"
+    id="path-list"
+    class="box wide-box"
+  >
     <breadcrumb :text="page_title" />
     <h1>{{ page_title }}</h1>
     <b-button @click="load">
