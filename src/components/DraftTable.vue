@@ -176,7 +176,10 @@ import { getStringTime } from "@/libs/string_date";
 @Component
 export default class DraftTable extends Vue {
   @Prop({ required: true, default: [] })
-  drafts: Draft[] = [];
+  readonly value?: Draft[];
+
+  @Prop({ required: false, default: null })
+  readonly exh_id?: string;
 
   current_tab_number = 0;
 
@@ -220,10 +223,10 @@ export default class DraftTable extends Vue {
           },
         })
         .then((res) => {
-          this.drafts.splice(
-            0,
-            this.drafts.length,
-            ...this.drafts.map((draft) => {
+          this.$emit(
+            "input",
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            this.value!.map((draft) => {
               if (draft.id === res.id) draft = res;
               return draft;
             })
@@ -242,10 +245,10 @@ export default class DraftTable extends Vue {
           },
         })
         .then((res) => {
-          this.drafts.splice(
-            0,
-            this.drafts.length,
-            ...this.drafts.map((draft) => {
+          this.$emit(
+            "input",
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            this.value!.map((draft) => {
               if (draft.id === res.id) draft = res;
               return draft;
             })
@@ -275,7 +278,8 @@ export default class DraftTable extends Vue {
   }
 
   get filteredDrafts(): Draft[] {
-    const drafts_filtered_by_exh_id = this.drafts.filter((draft) => {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const drafts_filtered_by_exh_id = this.value!.filter((draft) => {
       if (this.exh_id) draft.exhibition.id === this.exh_id;
       return true;
     });

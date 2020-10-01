@@ -2,7 +2,7 @@
   <forbidden :is-forbidden="forbidden" class="box wide-box">
     <breadcrumb :text="page_title" />
     <h1>{{ page_title }}</h1>
-    <DraftTable :drafts="drafts" />
+    <DraftTable v-model="drafts" />
   </forbidden>
 </template>
 
