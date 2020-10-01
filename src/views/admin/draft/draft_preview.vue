@@ -1,5 +1,5 @@
 <template>
-  <forbidden :is-forbidden="forbidden" id="show-revision">
+  <forbidden :is-forbidden="forbidden" :title="page_title" id="show-revision">
     <template v-if="found_draft">
       <breadcrumb :text="page_title" />
       <b-alert show variant="info">
