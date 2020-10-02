@@ -338,7 +338,9 @@ export default class DraftTable extends Vue {
       case 1:
         return draftsOnTable.filter((draft) => draft.status === "waiting");
       case 2:
-        return draftsOnTable.filter((draft) => draft.status === "accepted");
+        return draftsOnTable.filter(
+          (draft) => draft.status === "accepted" && !draft.deleted
+        );
       case 3:
         return draftsOnTable.filter((draft) => draft.status === "rejected");
       case 4:
