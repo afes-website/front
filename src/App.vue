@@ -130,7 +130,14 @@
                       <b-link :to="{ name: '' }">展示更新リクエスト</b-link>
                     </li>
                     <li>
-                      <b-link :to="{ name: '' }">展示リクエスト一覧</b-link>
+                      <b-link
+                        :to="{
+                          name: 'admin_exh_manage',
+                          params: { id: exh_id },
+                        }"
+                      >
+                        展示管理
+                      </b-link>
                     </li>
                   </template>
                   <li v-if="admin_logged_in">
@@ -615,6 +622,7 @@ export default class Layout extends Vue {
   writer_logged_in = false;
   exhibition_logged_in = false;
   categories: Categories = {};
+  exh_id = "";
 
   readonly instagramIcon = require("@/assets/sns/instagram.svg");
   readonly azabuIcon = require("@/assets/sns/azabu.svg");
@@ -676,6 +684,10 @@ export default class Layout extends Vue {
       ?.blogWriter;
     this.exhibition_logged_in = !!this.$auth.get_current_user?.permissions
       ?.exhibition;
+
+    this.exh_id = this.exhibition_logged_in
+      ? this.$auth.get_current_user?.id || ""
+      : "";
   }
 
   get is_need_hr() {
