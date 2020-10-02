@@ -48,6 +48,20 @@
       :sort-by.sync="sortBy"
       :sort-desc.sync="sortDesc"
     >
+      <template v-slot:cell(published_icon)="row">
+        <template v-if="get_published(row)">
+          <font-awesome-icon
+            :icon="['far', 'eye']"
+            :id="get_formatted_revision_icon_id(row, 'published-icon')"
+          />
+          <b-tooltip
+            :target="get_formatted_revision_icon_id(row, 'published-icon')"
+            triggers="hover"
+          >
+            公開中
+          </b-tooltip>
+        </template>
+      </template>
       <template v-slot:cell(status)="row">
         <font-awesome-icon
           :icon="get_status_icon(get_status(row))"
@@ -138,6 +152,20 @@
             Reject
           </b-button>
         </b-button-group>
+        <b-button-group
+          size="sm"
+          v-if="get_draft_can_publish(row)"
+          class="ml-1"
+        >
+          <b-button
+            variant="theme-dark"
+            @click="publish_draft(get_id(row))"
+            class="mb-0"
+          >
+            <font-awesome-icon icon="upload" class="fa-fw" />
+            Publish
+          </b-button>
+        </b-button-group>
       </template>
       <template v-slot:cell(show)="row">
         <b-button-group size="sm">
@@ -203,6 +231,7 @@ export default class DraftTable extends Vue {
   current_tab_number = 0;
 
   readonly draftFields = [
+    { key: "published_icon", label: "" },
     { key: "id", label: "ID", sortable: true },
     { key: "status", label: "" },
     { key: "comment_count", label: "" },
@@ -276,6 +305,24 @@ export default class DraftTable extends Vue {
     });
   }
 
+  publish_draft(draft_id: number) {
+    this.$auth.attempt_get_JWT("blogAdmin").then((token) => {
+      api(aspida())
+        .online.drafts._id(draft_id)
+        .publish.$patch({ headers: { Authorization: "bearer " + token } })
+        .then(() => {
+          api(aspida())
+            .online.drafts.$get({
+              headers: { Authorization: "bearer " + token },
+            })
+            .then((res) => {
+              // all drafts refresh
+              this.$emit("input", res);
+            });
+        });
+    });
+  }
+
   get filteredDrafts(): DraftOnTable[] {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const draftsOnTable: DraftOnTable[] = this.value!.filter((draft) => {
@@ -299,6 +346,12 @@ export default class DraftTable extends Vue {
       default:
         return draftsOnTable.filter((draft) => !draft.deleted);
     }
+  }
+
+  get canCurrentUserPublish(): boolean {
+    if (this.$auth.get_current_user)
+      return this.$auth.get_current_user.permissions.blogAdmin;
+    else return false;
   }
 
   /* ==== Draft getter ==== */
@@ -328,7 +381,7 @@ export default class DraftTable extends Vue {
   }
 
   get_published(row: { item: Draft }) {
-    return row.item.published;
+    return row.item.published && !row.item.deleted;
   }
 
   get_deleted(row: { item: Draft }) {
@@ -337,6 +390,18 @@ export default class DraftTable extends Vue {
 
   get_comments_count(row: { item: Draft }) {
     return row.item.comments.length;
+  }
+
+  get_draft_status_is_accepted(row: { item: Draft }) {
+    return row.item.status === "accepted";
+  }
+
+  get_draft_can_publish(row: { item: Draft }) {
+    return (
+      this.get_draft_status_is_accepted(row) &&
+      this.canCurrentUserPublish &&
+      !this.get_published(row)
+    );
   }
 
   /* ==== formatter ==== */
