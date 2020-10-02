@@ -261,44 +261,28 @@ export default class DraftTable extends Vue {
     });
   }
 
-  @Watch("current_tab_number")
-  tab_change() {
-    switch (this.current_tab_number) {
-      case 0:
-        this.draftFilter = "";
-        break;
-      case 1:
-        this.draftFilter = "waiting";
-        break;
-      case 2:
-        this.draftFilter = "accepted";
-        break;
-      case 3:
-        this.draftFilter = "rejected";
-        break;
-      case 4:
-        this.draftFilter = "";
-    }
-  }
-
   get filteredDrafts(): DraftOnTable[] {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const drafts_filtered_by_exh_id: DraftOnTable[] = this.value!.filter(
-      (draft) => {
-        if (this.exh_id) draft.exhibition.id === this.exh_id;
-        return true;
-      }
-    ).map((draft) => {
+    const draftsOnTable: DraftOnTable[] = this.value!.filter((draft) => {
+      if (this.exh_id) draft.exhibition.id === this.exh_id;
+      return true;
+    }).map((draft) => {
       return { _rowVariant: this.get_status_variant(draft.status), ...draft };
     });
 
     switch (this.current_tab_number) {
       case 0:
-        return drafts_filtered_by_exh_id;
+        return draftsOnTable;
+      case 1:
+        return draftsOnTable.filter((draft) => draft.status === "waiting");
+      case 2:
+        return draftsOnTable.filter((draft) => draft.status === "accepted");
+      case 3:
+        return draftsOnTable.filter((draft) => draft.status === "rejected");
       case 4:
-        return drafts_filtered_by_exh_id.filter((draft) => draft.deleted);
+        return draftsOnTable.filter((draft) => draft.deleted);
       default:
-        return drafts_filtered_by_exh_id.filter((draft) => !draft.deleted);
+        return draftsOnTable.filter((draft) => !draft.deleted);
     }
   }
 
