@@ -18,8 +18,22 @@
             <b-th>更新日時</b-th>
             <b-td>{{ get_formatted_time(updated_at) }}</b-td>
           </b-tr>
+          <b-tr>
+            <b-th>サムネイル画像 ID</b-th>
+            <b-td>
+              <code>{{ image_id }}</code>
+            </b-td>
+          </b-tr>
         </b-tbody>
       </b-table-simple>
+    </section>
+    <section>
+      <h2>サムネイル画像</h2>
+      <img
+        :src="get_formatted_image_id(image_id)"
+        class="exh_thumbnail"
+        alt="thumbnail"
+      />
     </section>
     <section>
       <h2>リクエスト一覧</h2>
@@ -32,7 +46,14 @@
   </forbidden>
 </template>
 
-<style lang="scss"></style>
+<style lang="scss" scoped>
+.exh_thumbnail {
+  width: 400px;
+  max-width: 100%;
+  border: 12px solid #999;
+  margin: 0 auto 0 0;
+}
+</style>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
@@ -111,10 +132,22 @@ export default class ExhManage extends Vue {
     return this.exhibition?.updated_at;
   }
 
+  get image_id() {
+    return this.exhibition?.thumbnail_image_id;
+  }
+
   /* ==== formatter ==== */
 
   get_formatted_time(timestamp: string | undefined) {
     return timestamp ? getStringTime(timestamp) : "-";
+  }
+
+  get_formatted_image_id(image_id: string | undefined) {
+    return image_id
+      ? api(aspida())
+          .images._id(image_id)
+          .$path({ query: { w: 400, h: 400 } })
+      : "";
   }
 }
 </script>
