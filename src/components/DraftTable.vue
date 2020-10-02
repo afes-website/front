@@ -173,6 +173,10 @@ import api, {
 import aspida from "@aspida/axios";
 import { getStringTime } from "@/libs/string_date";
 
+type DraftOnTable = {
+  _rowVariant?: string;
+} & Draft;
+
 @Component
 export default class DraftTable extends Vue {
   @Prop({ required: true, default: [] })
@@ -277,12 +281,17 @@ export default class DraftTable extends Vue {
     }
   }
 
-  get filteredDrafts(): Draft[] {
+  get filteredDrafts(): DraftOnTable[] {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const drafts_filtered_by_exh_id = this.value!.filter((draft) => {
-      if (this.exh_id) draft.exhibition.id === this.exh_id;
-      return true;
+    const drafts_filtered_by_exh_id: DraftOnTable[] = this.value!.filter(
+      (draft) => {
+        if (this.exh_id) draft.exhibition.id === this.exh_id;
+        return true;
+      }
+    ).map((draft) => {
+      return { _rowVariant: this.get_status_variant(draft.status), ...draft };
     });
+
     switch (this.current_tab_number) {
       case 0:
         return drafts_filtered_by_exh_id;
