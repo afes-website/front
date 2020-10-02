@@ -1,6 +1,11 @@
 <template>
   <div class="draft-list-table">
-    <b-tabs v-model="current_tab_number" fill justified>
+    <b-tabs
+      v-model="current_tab_number"
+      fill
+      justified
+      active-nav-item-class="table-active-tab"
+    >
       <b-tab>
         <template v-slot:title>
           <font-awesome-icon icon="list-ul" class="fa-fw" />
@@ -161,6 +166,16 @@
     </b-table>
   </div>
 </template>
+
+<style lang="scss">
+.draft-list-table {
+  .table-active-tab {
+    background: $theme-dark !important;
+    color: #fff !important;
+    border-color: $theme-dark !important;
+  }
+}
+</style>
 
 <script lang="ts">
 import { Vue, Prop, Component } from "vue-property-decorator";
