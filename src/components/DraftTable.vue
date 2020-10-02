@@ -163,7 +163,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, Watch, Prop, Component } from "vue-property-decorator";
+import { Vue, Prop, Component } from "vue-property-decorator";
 import api, {
   Draft,
   ExhibitionSummary,
