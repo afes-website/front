@@ -233,7 +233,7 @@ export default class DraftTable extends Vue {
   sortDesc = false;
 
   accept_draft(draft_id: number) {
-    this.$auth.attempt_get_JWT("blogAdmin").then((token) => {
+    this.$auth.attempt_get_JWT(["blogAdmin", "teacher"]).then((token) => {
       api(aspida())
         .online.drafts._id(draft_id)
         .accept.$patch({
@@ -255,7 +255,7 @@ export default class DraftTable extends Vue {
   }
 
   reject_draft(draft_id: number) {
-    this.$auth.attempt_get_JWT("blogAdmin").then((token) => {
+    this.$auth.attempt_get_JWT(["blogAdmin", "teacher"]).then((token) => {
       api(aspida())
         .online.drafts._id(draft_id)
         .reject.$patch({
