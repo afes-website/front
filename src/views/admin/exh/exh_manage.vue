@@ -80,37 +80,62 @@ export default class ExhManage extends Vue {
   exh_id = "";
 
   mounted() {
-    this.load();
-    auth_eventhub.onUpdateAuth(this.load);
+    this.confirmPermission();
+    auth_eventhub.onUpdateAuth(this.confirmPermission);
+    this.$watch("$route", this.confirmPermission);
   }
 
-  async load() {
+  confirmPermission() {
     this.exh_id = this.$route.params.id;
     this.$auth
-      .attempt_get_JWT(["blogAdmin", "teacher", "exhibition"])
+      .attempt_get_JWT(["teacher", "blogAdmin"])
       .then((token) => {
-        this.forbidden = false;
-        api(aspida())
-          .online.exhibition._id(this.exh_id)
-          .$get()
-          .then((res) => {
-            this.exhibition = res;
-          });
-        api(aspida())
-          .online.drafts.$get({
-            headers: { Authorization: "bearer " + token },
-          })
-          .then((res) => {
-            // TODO: query 化 (docs 対応・back 実装)
-            this.drafts.splice(
-              0,
-              this.drafts.length,
-              ...res.filter((draft) => draft.exhibition.id === this.exh_id)
-            );
-          });
+        // load as admin
+        this.fetchData(token);
       })
       .catch(() => {
-        this.forbidden = true;
+        this.$auth
+          .attempt_get_JWT("exhibition")
+          .then((token) => {
+            if (
+              this.exh_id === this.$auth.get_current_user_id &&
+              this.$auth.get_current_user_id
+            ) {
+              // load as exhibition
+              this.fetchData(token);
+            } else {
+              // push to top
+              this.$router.push({
+                name: "admin_top",
+              });
+            }
+          })
+          .catch(() => {
+            this.forbidden = true;
+          });
+      });
+  }
+
+  fetchData(token: string) {
+    this.forbidden = false;
+    // TODO: 404, 500, etc...
+    api(aspida())
+      .online.exhibition._id(this.exh_id)
+      .$get()
+      .then((res) => {
+        this.exhibition = res;
+      });
+    api(aspida())
+      .online.drafts.$get({
+        headers: { Authorization: "bearer " + token },
+      })
+      .then((res) => {
+        // TODO: query 化 (docs 対応・back 実装)
+        this.drafts.splice(
+          0,
+          this.drafts.length,
+          ...res.filter((draft) => draft.exhibition.id === this.exh_id)
+        );
       });
   }
 
