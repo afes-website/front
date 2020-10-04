@@ -41,7 +41,10 @@ html body {
 
   p {
     line-height: 1.75rem;
-    margin-bottom: .75rem;
+    margin: 0;
+    &:not(:last-of-type) {
+      margin-bottom: .75rem;
+    }
   }
 
   img {
