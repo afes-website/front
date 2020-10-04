@@ -152,11 +152,9 @@
             Reject
           </b-button>
         </b-button-group>
-        <b-button-group
-          size="sm"
-          v-if="get_draft_can_publish(row)"
-          class="ml-1"
-        >
+      </template>
+      <template v-slot:cell(publish)="row">
+        <b-button-group size="sm" v-if="get_draft_can_publish(row)">
           <b-button
             variant="theme-dark"
             @click="publish_draft(get_id(row))"
@@ -167,7 +165,7 @@
           </b-button>
         </b-button-group>
       </template>
-      <template v-slot:cell(show)="row">
+      <template v-slot:cell(manage)="row">
         <b-button-group size="sm">
           <b-button
             :to="{
@@ -215,6 +213,7 @@ import api, {
 } from "@afes-website/docs";
 import aspida from "@aspida/axios";
 import { getStringTime } from "@/libs/string_date";
+import auth_eventhub from "@/libs/auth/auth_eventhub";
 
 type DraftOnTable = {
   _rowVariant?: string;
@@ -228,38 +227,71 @@ export default class DraftTable extends Vue {
   @Prop({ required: false, default: null })
   readonly exh_id?: string;
 
+  currentUser: UserInfo | null = null;
+  draftFields = [];
+
   current_tab_number = 0;
 
-  readonly draftFields = [
-    { key: "published_icon", label: "" },
-    { key: "id", label: "ID", sortable: true },
-    { key: "status", label: "" },
-    { key: "comment_count", label: "" },
-    { key: "review_status", label: "文実" },
-    { key: "teacher_review_status", label: "教員" },
-    { key: "archive_status", label: "" },
-    {
-      key: "exhibition",
-      label: "展示名",
-      formatter: this.get_formatted_exh_name,
-    },
-    {
-      key: "author",
-      label: "投稿者",
-      formatter: this.get_formatted_author_name,
-    },
-    {
-      key: "created_at",
-      label: "投稿日時",
-      formatter: this.get_formatted_time,
-      sortable: true,
-    },
-    { key: "review", label: "Review" },
-    { key: "show", label: "" },
-  ];
   draftFilter = "";
   sortBy = "id";
   sortDesc = false;
+
+  get generateDraftFields() {
+    const fields = [];
+
+    // 共通
+    fields.push(
+      { key: "published_icon", label: "" },
+      { key: "id", label: "ID", sortable: true },
+      { key: "status", label: "" },
+      { key: "comment_count", label: "" },
+      { key: "review_status", label: "文実" },
+      { key: "teacher_review_status", label: "教員" },
+      { key: "archive_status", label: "" },
+      {
+        key: "exhibition",
+        label: "展示名",
+        formatter: this.get_formatted_exh_name,
+      },
+      {
+        key: "author",
+        label: "投稿者",
+        formatter: this.get_formatted_author_name,
+      },
+      {
+        key: "created_at",
+        label: "投稿日時",
+        formatter: this.get_formatted_time,
+        sortable: true,
+      }
+    );
+
+    // review button
+    if (
+      this.currentUser?.permissions.blogAdmin ||
+      this.currentUser?.permissions.teacher
+    )
+      fields.push({ key: "review", label: "Review" });
+
+    // publish button
+    if (this.currentUser?.permissions.blogAdmin)
+      fields.push({ key: "publish", label: "Publish" });
+
+    // manage & preview link
+    fields.push({ key: "manage", label: "" });
+
+    return fields;
+  }
+
+  mounted() {
+    this.loadUserInfo();
+    auth_eventhub.onUpdateAuth(this.loadUserInfo);
+  }
+
+  loadUserInfo() {
+    this.currentUser = this.$auth.get_current_user;
+    this.draftFields = this.generateDraftFields;
+  }
 
   accept_draft(draft_id: number) {
     this.$auth.attempt_get_JWT(["blogAdmin", "teacher"]).then((token) => {
