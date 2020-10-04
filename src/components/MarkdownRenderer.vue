@@ -19,5 +19,9 @@ export default class MarkdownRenderer extends Vue {
   get rendered() {
     return Markdown.render(this.content);
   }
+
+  updated() {
+    Markdown.post_render();
+  }
 }
 </script>

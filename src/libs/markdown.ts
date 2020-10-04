@@ -7,6 +7,10 @@ import MarkdownIt_Ins from "markdown-it-ins";
 import MarkdownIt_Container from "markdown-it-container";
 import MarkdownIt_CjkBreaks from "markdown-it-cjk-breaks";
 
+import MarkdownIt_Embed, {
+  post_render as embed_post,
+} from "@/libs/markdown_embed";
+
 import Token from "markdown-it/lib/token";
 
 export const Markdown = MarkdownIt({ linkify: true })
@@ -19,7 +23,8 @@ export const Markdown = MarkdownIt({ linkify: true })
   .use(MarkdownIt_Container, "alert-info")
   .use(MarkdownIt_Container, "alert-warning")
   .use(MarkdownIt_Container, "alert-danger")
-  .use(MarkdownIt_CjkBreaks);
+  .use(MarkdownIt_CjkBreaks)
+  .use(MarkdownIt_Embed);
 
 export function render(md: string) {
   return Markdown.render(md);
@@ -71,10 +76,15 @@ export function time_to_read(md: string) {
   return Math.ceil(render_plaintext(md).length / 400);
 }
 
+export function post_render() {
+  embed_post();
+}
+
 export default {
   Markdown,
   render,
   get_first_image,
   render_plaintext,
   time_to_read,
+  post_render,
 };
