@@ -28,11 +28,10 @@
       </b-table-simple>
     </section>
     <section>
-      <h2>サムネイル画像</h2>
-      <img
-        :src="get_formatted_image_id(image_id)"
-        class="exh_thumbnail"
-        alt="thumbnail"
+      <h2>プレビュー</h2>
+      <exhibition-card
+        :title="name"
+        :image-url="get_formatted_image_id(image_id)"
       />
     </section>
     <section>
@@ -60,6 +59,7 @@ import { Component, Vue } from "vue-property-decorator";
 import auth_eventhub from "@/libs/auth/auth_eventhub";
 import Breadcrumb from "@/components/Breadcrumb.vue";
 import Forbidden from "@/components/Forbidden.vue";
+import ExhibitionCard from "@/components/ExhibitionCard.vue";
 import DraftTable from "@/components/DraftTable.vue";
 import api, { Draft, Exhibition } from "@afes-website/docs";
 import aspida from "@aspida/axios";
@@ -69,6 +69,7 @@ import { getStringTime } from "@/libs/string_date";
   components: {
     Breadcrumb,
     Forbidden,
+    ExhibitionCard,
     DraftTable,
   },
 })
