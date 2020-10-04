@@ -108,6 +108,7 @@ import api, {
 } from "@afes-website/docs";
 import aspida from "@aspida/axios";
 import { getStringTime } from "@/libs/string_date";
+import auth from "@/libs/auth/auth";
 
 @Component({
   components: {
@@ -177,18 +178,18 @@ export default class DraftManage extends Vue {
   /* ==== Draft getter ==== */
 
   get id() {
-    return this.draft?.id;
+    return this.draft?.id || "";
   }
 
   get content() {
-    return this.draft?.content;
+    return this.draft?.content || "";
   }
 
-  get exh_info() {
+  get exh_info(): ExhibitionSummary | null {
     return this.draft?.exhibition;
   }
 
-  get author_info() {
+  get author_info(): UserInfo | null {
     return this.draft?.author;
   }
 
@@ -214,12 +215,14 @@ export default class DraftManage extends Vue {
 
   /* ==== formatter ==== */
 
-  get_formatted_exh_name(exh: ExhibitionSummary) {
-    return `${exh.name} @${exh.id}`;
+  get_formatted_exh_name(exh: ExhibitionSummary | null) {
+    if (exh) return `${exh.name} @${exh.id}`;
+    return "";
   }
 
-  get_formatted_author_name(author: UserInfo) {
-    return `${author.name} @${author.id}`;
+  get_formatted_author_name(author: UserInfo | null) {
+    if (author) return `${author.name} @${author.id}`;
+    return "";
   }
 
   get_formatted_time(timestamp: string | undefined) {
