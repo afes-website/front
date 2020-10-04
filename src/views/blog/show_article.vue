@@ -41,7 +41,7 @@
           </b-button>
         </b-button-group>
       </div>
-      <div class="main-content" v-html="rendered_md" />
+      <markdown-renderer :content="article_content" v-if="article" />
       <share-buttons :title="page_title_for_share" />
     </template>
     <template v-else>
@@ -78,12 +78,14 @@ import { Categories } from "@afes-website/docs";
 import getCategories from "@/libs/categories";
 import Breadcrumb from "@/components/Breadcrumb.vue";
 import ShareButtons from "@/components/ShareButtons.vue";
+import MarkdownRenderer from "@/components/MarkdownRenderer.vue";
 import { getStringTime } from "@/libs/string_date";
 
 @Component({
   components: {
     Breadcrumb,
     ShareButtons,
+    MarkdownRenderer,
   },
 })
 export default class ShowArticle extends Vue {
@@ -134,9 +136,9 @@ export default class ShowArticle extends Vue {
       });
   }
 
-  get rendered_md(): string | null {
+  get article_content(): string | null {
     if (this.article == null) return null;
-    return Markdown.render(this.article.content);
+    return this.article.content;
   }
 
   get can_edit() {

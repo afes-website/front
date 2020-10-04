@@ -50,7 +50,7 @@
               yyyy/mm/dd
             </span>
           </div>
-          <div v-html="rendered_content"></div>
+          <markdown-renderer :content="content" />
           <hr />
           <h3>card preview</h3>
           <b-card
@@ -80,7 +80,7 @@
                 約 {{ time_to_read }} 分
               </span>
             </b-card-sub-title>
-            <b-card-text v-html="card_text" />
+            <b-card-text>{{ card_text }}</b-card-text>
           </b-card>
           <h3>og:image preview</h3>
           <small class="text-muted">
@@ -225,8 +225,9 @@ import FetchStatus from "@/libs/fetch_status";
 import FetchStatusIcon from "@/components/FetchStatusIcon.vue";
 import Markdown from "@/libs/markdown";
 import Breadcrumb from "@/components/Breadcrumb.vue";
+import MarkdownRenderer from "@/components/MarkdownRenderer.vue";
 
-@Component({ components: { FetchStatusIcon, Breadcrumb } })
+@Component({ components: { FetchStatusIcon, Breadcrumb, MarkdownRenderer } })
 export default class NewRevision extends Vue {
   readonly page_title = "新規寄稿";
 
@@ -274,10 +275,6 @@ export default class NewRevision extends Vue {
     this.ogimage_title = "";
     this.content = "";
     this.writing = !this.writing;
-  }
-
-  get rendered_content() {
-    return Markdown.render(this.content);
   }
 
   get card_text(): string {

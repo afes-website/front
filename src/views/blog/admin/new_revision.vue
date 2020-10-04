@@ -51,7 +51,7 @@
             約 {{ time_to_read }} 分
           </span>
         </div>
-        <div v-html="rendered_content"></div>
+        <markdown-renderer :content="content" />
         <hr />
         <h3>card preview</h3>
         <b-card :img-src="card_image" img-alt="eye catch" img-left class="mb-3">
@@ -212,7 +212,13 @@ import Forbidden from "@/components/Forbidden.vue";
 import auth_eventhub from "@/libs/auth/auth_eventhub";
 
 @Component({
-  components: { FetchStatusIcon, Breadcrumb, Forbidden, MarkdownEditor },
+  components: {
+    FetchStatusIcon,
+    Breadcrumb,
+    Forbidden,
+    MarkdownEditor,
+    MarkdownRenderer,
+  },
 })
 export default class NewRevision extends Vue {
   readonly page_title = "記事投稿/編集";
@@ -297,10 +303,6 @@ export default class NewRevision extends Vue {
           this.status = "fail";
         });
     });
-  }
-
-  get rendered_content() {
-    return Markdown.render(this.content);
   }
 
   get diff_from_current(): string {
