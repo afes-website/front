@@ -82,6 +82,10 @@
       </b-button-group>
     </section>
     <section>
+      <h2>コメント</h2>
+      <CommentList v-model="draft" :draft-id="id" />
+    </section>
+    <section>
       <h2>差分</h2>
       <p>現在の展示コンテンツとの差分です。</p>
       <!-- // TODO: diff  -->
@@ -100,20 +104,22 @@ import { Component, Vue } from "vue-property-decorator";
 import auth_eventhub from "@/libs/auth/auth_eventhub";
 import Breadcrumb from "@/components/Breadcrumb.vue";
 import Forbidden from "@/components/Forbidden.vue";
+import CommentList from "@/components/CommentList.vue";
 import api, {
   Draft,
+  DraftComment,
   ExhibitionSummary,
   ReviewStatus,
   UserInfo,
 } from "@afes-website/docs";
 import aspida from "@aspida/axios";
 import { getStringTime } from "@/libs/string_date";
-import auth from "@/libs/auth/auth";
 
 @Component({
   components: {
     Breadcrumb,
     Forbidden,
+    CommentList,
   },
 })
 export default class DraftManage extends Vue {
@@ -131,17 +137,29 @@ export default class DraftManage extends Vue {
       .attempt_get_JWT(["blogAdmin", "teacher"])
       .then((token) => {
         this.forbidden = false;
-        api(aspida())
-          .online.drafts._id(Number(this.$route.params.id))
-          .$get({
-            headers: { Authorization: "bearer " + token },
-          })
-          .then((res) => {
-            this.draft = res;
-          });
+        this.fetchData(token);
       })
       .catch(() => {
-        this.forbidden = true;
+        this.$auth
+          .attempt_get_JWT("exhibition")
+          .then((token) => {
+            this.forbidden = false;
+            this.fetchData(token);
+          })
+          .catch(() => {
+            this.forbidden = true;
+          });
+      });
+  }
+
+  fetchData(token: string) {
+    api(aspida())
+      .online.drafts._id(Number(this.$route.params.id))
+      .$get({
+        headers: { Authorization: "bearer " + token },
+      })
+      .then((res) => {
+        this.draft = res;
       });
   }
 
@@ -213,6 +231,10 @@ export default class DraftManage extends Vue {
     return this.draft?.created_at;
   }
 
+  get comments(): DraftComment[] {
+    return this.draft.comments || [];
+  }
+
   /* ==== formatter ==== */
 
   get_formatted_exh_name(exh: ExhibitionSummary | null) {
@@ -227,10 +249,6 @@ export default class DraftManage extends Vue {
 
   get_formatted_time(timestamp: string | undefined) {
     return timestamp ? getStringTime(timestamp) : "-";
-  }
-
-  get_formatted_revision_icon_id(row: { item: Draft }, prefix = "") {
-    return row.item.id + (prefix ? `-${prefix}` : "") + "-status-icon";
   }
 
   /* ==== status ==== */
