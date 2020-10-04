@@ -38,7 +38,7 @@
               約 {{ get_time_to_read(article) }} 分
             </span>
           </b-card-sub-title>
-          <b-card-text v-html="get_card_text(article)" />
+          <b-card-text>{{ get_card_text(article) }}</b-card-text>
         </b-card>
       </b-link>
     </div>

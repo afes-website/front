@@ -76,7 +76,7 @@
               約 {{ time_to_read }} 分
             </span>
           </b-card-sub-title>
-          <b-card-text v-html="card_text" />
+          <b-card-text>{{ card_text }}</b-card-text>
         </b-card>
         <h3>og:image preview</h3>
         <small class="text-muted">

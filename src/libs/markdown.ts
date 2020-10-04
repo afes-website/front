@@ -61,7 +61,7 @@ export function render_plaintext(md: string) {
         if (token.block) {
           if (token.children !== null)
             // children may be null despite the type definition
-            return tokens2txt(token.children) + "<br>";
+            return tokens2txt(token.children) + " ";
           else return "";
         }
         return token.content;
