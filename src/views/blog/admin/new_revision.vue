@@ -29,10 +29,7 @@
     </b-form-group>
     <b-tabs>
       <b-tab title="編集" active>
-        <div class="toolbar">
-          <b-button @click="show_image_upload_modal"> 画像を追加 </b-button>
-        </div>
-        <b-textarea v-model="content" class="edit-area"></b-textarea>
+        <markdown-editor v-model="content" />
       </b-tab>
       <b-tab title="プレビュー" id="preview">
         <h1>{{ decoded_article_title }}</h1>
@@ -103,10 +100,6 @@
       post
       <fetch-status-icon :status="status" small />
     </b-button>
-    <image-upload-modal
-      v-model="image_upload_modal_shown"
-      @uploaded="image_uploaded"
-    />
   </forbidden>
 </template>
 
@@ -212,14 +205,14 @@ import FetchStatusIcon from "@/components/FetchStatusIcon.vue";
 import Markdown from "@/libs/markdown";
 import DiffLib from "difflib";
 import * as Diff2Html from "diff2html";
-import ImageUploadModal from "@/components/ImageUploadModal.vue";
-import { get_image_url } from "@afes-website/docs";
+import MarkdownRenderer from "@/components/MarkdownRenderer.vue";
+import MarkdownEditor from "@/components/MarkdownEditor.vue";
 import Breadcrumb from "@/components/Breadcrumb.vue";
 import Forbidden from "@/components/Forbidden.vue";
 import auth_eventhub from "@/libs/auth/auth_eventhub";
 
 @Component({
-  components: { FetchStatusIcon, ImageUploadModal, Breadcrumb, Forbidden },
+  components: { FetchStatusIcon, Breadcrumb, Forbidden, MarkdownEditor },
 })
 export default class NewRevision extends Vue {
   readonly page_title = "記事投稿/編集";
@@ -233,15 +226,9 @@ export default class NewRevision extends Vue {
   status: FetchStatus = "idle";
   fetch_status: FetchStatus = "idle";
 
-  image_upload_modal_shown = false;
-
   forbidden = false;
 
   readonly noImage = require("@/assets/no-image.svg");
-
-  image_uploaded(id: string) {
-    this.content += `![image alt](${get_image_url(id)})\n`;
-  }
 
   mounted() {
     if ("path" in this.$route.query && !Array.isArray(this.$route.query.path)) {
@@ -352,10 +339,6 @@ export default class NewRevision extends Vue {
 
   apply_ogimage_title() {
     this.ogimage_title = this.article_title;
-  }
-
-  show_image_upload_modal() {
-    this.image_upload_modal_shown = true;
   }
 
   get ogimage_url() {
