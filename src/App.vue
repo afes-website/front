@@ -140,14 +140,16 @@
                       </b-link>
                     </li>
                   </template>
-                  <li v-if="admin_logged_in">
-                    <b-link :to="{ name: 'admin_exh_list' }">展示一覧</b-link>
-                  </li>
-                  <li v-if="admin_logged_in">
-                    <b-link :to="{ name: 'admin_draft_list' }"
-                      >展示リクエスト一覧</b-link
-                    >
-                  </li>
+                  <template v-if="admin_or_teacher_logged_in">
+                    <li>
+                      <b-link :to="{ name: 'admin_exh_list' }">展示一覧</b-link>
+                    </li>
+                    <li>
+                      <b-link :to="{ name: 'admin_draft_list' }"
+                        >展示リクエスト一覧</b-link
+                      >
+                    </li>
+                  </template>
                 </ul>
               </li>
               <li><b-link :to="{ name: 'document' }">文化祭資料</b-link></li>
@@ -621,8 +623,13 @@ export default class Layout extends Vue {
   admin_logged_in = false;
   writer_logged_in = false;
   exhibition_logged_in = false;
+  teacher_logged_in = false;
   categories: Categories = {};
   exh_id = "";
+
+  get admin_or_teacher_logged_in() {
+    return this.admin_logged_in || this.teacher_logged_in;
+  }
 
   readonly instagramIcon = require("@/assets/sns/instagram.svg");
   readonly azabuIcon = require("@/assets/sns/azabu.svg");
@@ -684,6 +691,7 @@ export default class Layout extends Vue {
       ?.blogWriter;
     this.exhibition_logged_in = !!this.$auth.get_current_user?.permissions
       ?.exhibition;
+    this.teacher_logged_in = !!this.$auth.get_current_user?.permissions.teacher;
 
     this.exh_id = this.exhibition_logged_in
       ? this.$auth.get_current_user?.id || ""
