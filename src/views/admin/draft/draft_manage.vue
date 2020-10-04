@@ -204,11 +204,11 @@ export default class DraftManage extends Vue {
   }
 
   get exh_info(): ExhibitionSummary | null {
-    return this.draft?.exhibition;
+    return this.draft?.exhibition || null;
   }
 
   get author_info(): UserInfo | null {
-    return this.draft?.author;
+    return this.draft?.author || null;
   }
 
   get status() {
@@ -232,7 +232,7 @@ export default class DraftManage extends Vue {
   }
 
   get comments(): DraftComment[] {
-    return this.draft.comments || [];
+    return this.draft?.comments || [];
   }
 
   /* ==== formatter ==== */

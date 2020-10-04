@@ -214,6 +214,7 @@ import api, {
 import aspida from "@aspida/axios";
 import { getStringTime } from "@/libs/string_date";
 import auth_eventhub from "@/libs/auth/auth_eventhub";
+import { BvTableField } from "bootstrap-vue";
 
 type DraftOnTable = {
   _rowVariant?: string;
@@ -228,7 +229,7 @@ export default class DraftTable extends Vue {
   readonly exh_id?: string;
 
   currentUser: UserInfo | null = null;
-  draftFields = [];
+  draftFields: BvTableField[] = [];
 
   current_tab_number = 0;
 

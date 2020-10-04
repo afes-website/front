@@ -175,7 +175,7 @@ import Markdown from "@/libs/markdown";
 @Component
 export default class CommentList extends Vue {
   @Prop({ required: true, default: [] })
-  value: Draft;
+  value?: Draft;
 
   get comments(): DraftComment[] {
     if (this.value) return this.value.comments || [];
@@ -183,7 +183,7 @@ export default class CommentList extends Vue {
   }
 
   @Prop({ required: true })
-  draftId: number;
+  draftId?: number;
 
   newComment = "";
 
@@ -203,7 +203,8 @@ export default class CommentList extends Vue {
       .attempt_get_JWT(["exhibition", "blogAdmin", "teacher"])
       .then((token) => {
         api(aspida())
-          .online.drafts._id(this.draftId)
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          .online.drafts._id(this.draftId!)
           .comment.$post({
             headers: { Authorization: "bearer " + token },
             body: { comment: this.newComment },
@@ -216,10 +217,11 @@ export default class CommentList extends Vue {
   }
 
   get_comment_author(comment: DraftComment) {
-    return comment.author;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    return comment.author!;
   }
   get_comment_content(comment: DraftComment) {
-    return comment.content;
+    return comment.message;
   }
   get_comment_created_at(comment: DraftComment) {
     return comment.created_at;
@@ -238,7 +240,7 @@ export default class CommentList extends Vue {
   get_formatted_from_now(timestamp: string | undefined) {
     return timestamp ? getStringFromNow(timestamp) : "-";
   }
-  get_user_icon(author: UserInfo) {
+  get_user_icon(author: StorageUserInfo | UserInfo) {
     return get_user_icon(author);
   }
 

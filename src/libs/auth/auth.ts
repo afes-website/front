@@ -152,7 +152,7 @@ export default class Auth {
 }
 
 export const get_user_icon = (
-  account: StorageUserInfo | null
+  account: StorageUserInfo | UserInfo | null
 ): IconDefinition => {
   if (account?.permissions.admin) return faUserShield;
   if (account?.permissions.blogAdmin) return faUserCog;
