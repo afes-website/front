@@ -6,6 +6,7 @@ import {
   faUserCog,
   faUserEdit,
   faUserShield,
+  faUserTie,
   IconDefinition,
 } from "@fortawesome/free-solid-svg-icons";
 import { token_is_valid_at } from "@/libs/auth/jwt_utils";
@@ -155,6 +156,7 @@ export const get_user_icon = (
 ): IconDefinition => {
   if (account?.permissions.admin) return faUserShield;
   if (account?.permissions.blogAdmin) return faUserCog;
+  if (account?.permissions.teacher) return faUserTie;
   if (account?.permissions.blogWriter || account?.permissions.exhibition)
     return faUserEdit;
   return faUser;
