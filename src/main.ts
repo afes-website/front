@@ -41,6 +41,9 @@ Vue.prototype.$auth = new Auth(() => {
   auth_eventhub.emitUpdateAuth();
 });
 
+import TwitterWidgets from "twitter-widgets";
+TwitterWidgets.load();
+
 new Vue({
   router,
   render: (h) => h(App),
