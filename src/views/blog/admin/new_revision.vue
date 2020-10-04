@@ -104,7 +104,6 @@
 </template>
 
 <style lang="scss" scoped>
-.edit-area,
 div.preview,
 div.diff {
   height: 750px;

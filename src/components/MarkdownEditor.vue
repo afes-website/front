@@ -10,6 +10,14 @@
     />
   </div>
 </template>
+<style lang="scss">
+.edit-area {
+  height: 750px;
+  overflow: scroll;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+}
+</style>
 
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
