@@ -13,7 +13,7 @@ import MarkdownIt_Embed, {
 
 import Token from "markdown-it/lib/token";
 
-export const Markdown = MarkdownIt({ linkify: true })
+export const Markdown = MarkdownIt({ linkify: true, html: true })
   .use(MarkdownIt_Sanitizer)
   .use(MarkdownIt_Imsize)
   .use(MarkdownIt_Checkbox)
