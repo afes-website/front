@@ -108,6 +108,14 @@ function detect_embed_type(content: string): EmbedInfo {
       };
   }
   {
+    const match = strip_content.match(/^instagram\.com\/p\/(\w+)/);
+    if (match)
+      return {
+        type: "instagram",
+        content: match[1],
+      };
+  }
+  {
     const match = strip_content.match(
       /^youtube\.com\/watch(?:\/?\?v=|\/)(\w+)/
     );
