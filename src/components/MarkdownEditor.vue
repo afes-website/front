@@ -1,9 +1,15 @@
 <template>
   <div>
     <div class="toolbar">
-      <b-button-group size="sm">
-        <b-button @click="show_image_upload_modal"> 画像を追加 </b-button>
-        <b-button @click="show_embed_modal">コンテンツの埋め込み</b-button>
+      <b-button-group size="">
+        <b-button variant="outline-secondary" @click="show_image_upload_modal">
+          <font-awesome-icon icon="image" class="fa-fw" />
+          画像を追加
+        </b-button>
+        <b-button variant="outline-secondary" @click="show_embed_modal">
+          <font-awesome-icon icon="anchor" class="fa-fw" />
+          コンテンツの埋め込み
+        </b-button>
       </b-button-group>
     </div>
     <b-textarea v-model="_value" class="edit-area"></b-textarea>
