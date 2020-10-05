@@ -225,8 +225,8 @@ export default class EmbedModal extends Vue {
       icon: faYoutube,
       name: "YouTube video & live",
       example: [
-        "https://www.youtube.com/watch?v=hy6B_EPE50s",
-        "https://youtu.be/hy6B_EPE50s",
+        "https://www.youtube.com/watch?v=Snl9KRhh5lw",
+        "https://youtu.be/Snl9KRhh5lw",
       ],
     },
     {
