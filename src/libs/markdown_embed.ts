@@ -43,8 +43,6 @@ const render_embed: Renderer.RenderRule = (tokens, idx) => {
   switch (type) {
     case "tweet":
       return `<blockquote class="twitter-tweet"><a href="https://twitter.com/_/status/${id}"></a></blockquote>`;
-    case "twitter_timeline":
-      return `<a class="twitter-timeline" href="https://twitter.com/${id}"></a>`;
     case "instagram":
       return `<iframe src="//instagram.com/p/${id}/embed/" width="612" height="710" frameborder="0" scrolling="no" allowtransparency="true"></iframe>`;
     case "youtube":
@@ -63,9 +61,6 @@ export function get_plaintext(tag: string) {
   switch (tag) {
     case "tweet":
       name = "Twitter";
-      break;
-    case "twitter_timeline":
-      name = "Twitter User Timeline";
       break;
     case "instagram":
       name = "Instagram";

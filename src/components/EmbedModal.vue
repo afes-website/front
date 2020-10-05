@@ -75,8 +75,7 @@ $link: #777777;
   }
 
   // 非選択時
-  .tweet,
-  .twitter_timeline {
+  .tweet {
     color: $twitter;
   }
   .instagram {
@@ -94,8 +93,7 @@ $link: #777777;
       color: #fff;
       padding: 10px 10px;
 
-      &.tweet,
-      &.twitter_timeline {
+      &.tweet {
         background: $twitter;
       }
       &.instagram {
@@ -119,18 +117,12 @@ $link: #777777;
 import { Component, Vue, Prop } from "vue-property-decorator";
 import {
   faTwitter,
-  faTwitterSquare,
   faInstagram,
   faYoutube,
 } from "@fortawesome/free-brands-svg-icons";
 import { faLink, IconDefinition } from "@fortawesome/free-solid-svg-icons";
 
-type EmbedType =
-  | "tweet"
-  | "twitter_timeline"
-  | "youtube"
-  | "instagram"
-  | "link";
+type EmbedType = "tweet" | "youtube" | "instagram" | "link";
 type EmbedInfo = {
   type: EmbedType;
   content: string;
@@ -152,14 +144,6 @@ function detect_embed_type(content: string): EmbedInfo {
     if (match)
       return {
         type: "tweet",
-        content: match[1],
-      };
-  }
-  {
-    const match = strip_content.match(/^twitter\.com\/(\w+)/);
-    if (match)
-      return {
-        type: "twitter_timeline",
         content: match[1],
       };
   }
@@ -204,12 +188,6 @@ export default class EmbedModal extends Vue {
       icon: faTwitter,
       name: "Twitter tweet",
       example: ["https://twitter.com/73_Afes/status/1311653798381674499"],
-    },
-    {
-      type: "twitter_timeline",
-      icon: faTwitterSquare,
-      name: "Twitter user timeline",
-      example: ["https://twitter.com/73_Afes"],
     },
     {
       type: "instagram",
