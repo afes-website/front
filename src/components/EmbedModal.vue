@@ -39,17 +39,17 @@
   padding: 0;
   list-style: none;
 
+  font-size: 1.2rem;
+
   li {
     transition: transform 0.3s ease-out, font-size 0.3s ease-out;
     display: inline-block;
   }
 
   &.has_selection li {
-    // transform: scale(0.5);
     font-size: 0.75em;
     &.selected {
-      // transform: scale(1.0);
-      font-size: 2em;
+      font-size: 1.5em;
     }
     &:not(.selected) {
       opacity: 0.5;
