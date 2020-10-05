@@ -54,7 +54,7 @@ $link: #777777;
   padding: 0;
 
   li {
-    transition: transform 0.3s ease-out, font-size 0.3s ease-out;
+    transition: padding 0.5s ease-in;
     padding: 5px 10px;
     border-radius: 8px;
 
