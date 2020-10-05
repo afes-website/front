@@ -217,11 +217,10 @@ export default class CommentList extends Vue {
   }
 
   get_comment_author(comment: DraftComment) {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    return comment.author!;
+    return comment.author;
   }
   get_comment_content(comment: DraftComment) {
-    return comment.message;
+    return comment.content;
   }
   get_comment_created_at(comment: DraftComment) {
     return comment.created_at;
@@ -244,8 +243,9 @@ export default class CommentList extends Vue {
     return get_user_icon(author);
   }
 
-  get_html(markdown: string) {
-    return Markdown.render(markdown);
+  get_html(markdown: string | undefined) {
+    if (markdown) return Markdown.render(markdown);
+    return "Parser Error";
   }
 }
 </script>
