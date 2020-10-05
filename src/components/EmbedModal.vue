@@ -74,6 +74,13 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
+import {
+  faTwitter,
+  faTwitterSquare,
+  faInstagram,
+  faYoutube,
+} from "@fortawesome/free-brands-svg-icons";
+import { faLink } from "@fortawesome/free-solid-svg-icons";
 
 type EmbedType =
   | "tweet"
@@ -143,11 +150,11 @@ function detect_embed_type(content: string): EmbedInfo {
 export default class EmbedModal extends Vue {
   content = "";
   readonly icons = [
-    { type: "tweet", icon: ["fab", "twitter"] },
-    { type: "twitter_timeline", icon: ["fab", "twitter-square"] },
-    { type: "instagram", icon: ["fab", "instagram"] },
-    { type: "youtube", icon: ["fab", "youtube"] },
-    { type: "link", icon: "link" },
+    { type: "tweet", icon: faTwitter },
+    { type: "twitter_timeline", icon: faTwitterSquare },
+    { type: "instagram", icon: faInstagram },
+    { type: "youtube", icon: faYoutube },
+    { type: "link", icon: faLink },
   ];
 
   @Prop({ default: false })
