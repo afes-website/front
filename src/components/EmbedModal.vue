@@ -2,6 +2,7 @@
   <b-modal
     id="modal-1"
     title="埋め込みコンテンツの挿入"
+    @show="init"
     @ok="modal_ok"
     v-model="_value"
     centered
@@ -245,6 +246,10 @@ export default class EmbedModal extends Vue {
 
   set _value(val: boolean) {
     this.$emit("input", val);
+  }
+
+  init() {
+    this.content = "";
   }
 
   get detect_embed(): EmbedInfo | null {
