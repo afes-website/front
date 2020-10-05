@@ -176,7 +176,7 @@ export default class EmbedModal extends Vue {
     const ret = this.detect_embed;
     if (ret === null) return null;
     if (ret.type === "link") return `[link](${ret.content})`;
-    return `{${ret.type} ${ret.content}}`;
+    return `\n{${ret.type} ${ret.content}}\n`;
   }
 
   modal_ok(e: Event) {
