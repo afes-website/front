@@ -11,7 +11,7 @@
         id="input-group-url"
         label="URL"
         label-for="input-1"
-        description="共有用URLを入力してください。"
+        description="共有用URLを入力してください。埋め込みタグには対応していません。"
       >
         <b-form-input id="input-url" v-model="content" type="text" required />
       </b-form-group>
