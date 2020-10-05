@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="toolbar">
-      <b-button-group>
+      <b-button-group size="sm">
         <b-button @click="show_image_upload_modal"> 画像を追加 </b-button>
         <b-button @click="show_embed_modal">コンテンツの埋め込み</b-button>
       </b-button-group>
@@ -15,8 +15,11 @@
   </div>
 </template>
 <style lang="scss" scoped>
+.toolbar {
+  margin: 10px 0;
+}
 .edit-area {
-  height: 750px;
+  height: 700px;
   overflow: scroll;
   border: 1px solid #ced4da;
   border-radius: 4px;
