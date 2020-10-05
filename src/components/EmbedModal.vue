@@ -207,7 +207,7 @@ function detect_embed_type(content: string): EmbedInfo {
 @Component
 export default class EmbedModal extends Vue {
   content = "";
-  readonly embedExamples = [
+  readonly embedExamples: EmbedExample[] = [
     {
       type: "tweet",
       icon: faTwitter,
@@ -235,7 +235,7 @@ export default class EmbedModal extends Vue {
       name: "その他 URL（リンクとして挿入）",
       example: ["https://afes.info", "https://github.com/afes-website/front/"],
     },
-  ] as EmbedExample[];
+  ] as const;
 
   @Prop({ default: false })
   value = false;
