@@ -14,7 +14,7 @@
     <embed-modal v-model="embed_modal_shown" @created="embed_created" />
   </div>
 </template>
-<style lang="scss">
+<style lang="scss" scoped>
 .edit-area {
   height: 750px;
   overflow: scroll;
