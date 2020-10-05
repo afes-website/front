@@ -8,6 +8,7 @@ import MarkdownIt_Container from "markdown-it-container";
 import MarkdownIt_CjkBreaks from "markdown-it-cjk-breaks";
 
 import MarkdownIt_Embed, {
+  get_plaintext,
   post_render as embed_post,
 } from "@/libs/markdown_embed";
 
@@ -64,6 +65,7 @@ export function render_plaintext(md: string) {
             return tokens2txt(token.children) + " ";
           else return "";
         }
+        if (token.type === "blog_embed") return get_plaintext(token.tag);
         return token.content;
       })
       .join("");

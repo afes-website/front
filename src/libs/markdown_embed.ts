@@ -58,6 +58,27 @@ export default function embed_plugin(md: MarkdownIt) {
   md.renderer.rules["blog_embed"] = render_embed;
 }
 
+export function get_plaintext(tag: string) {
+  let name: string;
+  switch (tag) {
+    case "tweet":
+      name = "Twitter";
+      break;
+    case "twitter_timeline":
+      name = "Twitter User Timeline";
+      break;
+    case "instagram":
+      name = "Instagram";
+      break;
+    case "youtube":
+      name = "YouTube";
+      break;
+    default:
+      return "";
+  }
+  return `[${name} 埋め込み]`;
+}
+
 export function post_render() {
   window.twttr.widgets.load();
 }
