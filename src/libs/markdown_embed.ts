@@ -42,7 +42,7 @@ const render_embed: Renderer.RenderRule = (tokens, idx) => {
 
   switch (type) {
     case "tweet":
-      return `<blockquote class="twitter-tweet"><a href="https://twitter.com/_/status/${id}?ref_src=twsrc%5Etfw"></a></blockquote>`;
+      return `<blockquote class="twitter-tweet"><a href="https://twitter.com/_/status/${id}"></a></blockquote>`;
     case "twitter_timeline":
       return `<a class="twitter-timeline" href="https://twitter.com/${id}"></a>`;
     case "instagram":
