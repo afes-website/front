@@ -4,13 +4,14 @@
     title="コンテンツの挿入"
     @ok="modal_ok"
     v-model="_value"
+    centered
   >
     <b-form>
       <b-form-group
         id="input-group-url"
         label="URL"
         label-for="input-1"
-        description="共有用URLを入力してください"
+        description="共有用URLを入力してください。"
       >
         <b-form-input
           id="input-url"
