@@ -62,6 +62,10 @@ $link: #777777;
       margin: 0;
       padding: 0;
 
+      @media screen and (max-width: 900px) {
+        display: none;
+      }
+
       li {
         display: block;
         list-style: none;
