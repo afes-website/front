@@ -1,7 +1,7 @@
 <template>
   <b-modal
     id="modal-1"
-    title="コンテンツの挿入"
+    title="埋め込みコンテンツの挿入"
     @ok="modal_ok"
     v-model="_value"
     centered
@@ -16,23 +16,25 @@
         <b-form-input id="input-url" v-model="content" type="text" required />
       </b-form-group>
     </b-form>
-    <ul class="type-icons" :class="{ has_selection: type }">
+    <ul class="type-list" :class="{ has_selection: type }">
       <li
         v-for="(example, i) in embedExamples"
         :key="i"
         :class="get_icon_classes(example)"
       >
-        <font-awesome-icon
-          :icon="get_example_icon(example)"
-          class="fa-fw mr-1"
-        />
-        <span>{{ get_example_name(example) }}</span>
-        <br />
-        <ul class="example-url-wrapper">
-          <li v-for="url in get_example_example(example)" :key="url">
-            <code class="example-url">{{ url }}</code>
-          </li>
-        </ul>
+        <div class="type-content">
+          <font-awesome-icon
+            :icon="get_example_icon(example)"
+            class="fa-fw mr-1"
+          />
+          <span>{{ get_example_name(example) }}</span>
+          <br />
+          <ul class="example-url-wrapper">
+            <li v-for="url in get_example_example(example)" :key="url">
+              <code class="example-url">{{ url }}</code>
+            </li>
+          </ul>
+        </div>
       </li>
     </ul>
     <template v-slot:modal-footer="{ ok }">
@@ -48,15 +50,16 @@ $instagram-gradient: linear-gradient(-135deg, #1400c8, #b900b4, #f50000);
 $youtube: #ff0000;
 $link: #777777;
 
-.type-icons {
+.type-list {
   font-size: 1rem;
   list-style: none;
   padding: 0;
+  position: relative;
 
   li {
-    transition: padding 0.5s ease-in;
+    transition: padding 0.3s ease-in, color 0.3s;
     padding: 5px 10px;
-    border-radius: 8px;
+    position: relative;
 
     .example-url-wrapper {
       margin: 0;
@@ -88,22 +91,43 @@ $link: #777777;
     color: $link;
   }
 
+  & > li::before {
+    content: "";
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    transition: opacity 0.3s ease-in;
+  }
+
+  .tweet::before {
+    background: $twitter;
+  }
+  .instagram::before {
+    background: $instagram-gradient;
+  }
+  .youtube::before {
+    background: $youtube;
+  }
+  .link::before {
+    background: $link;
+  }
+
   &.has_selection > li {
+    .type-content {
+      position: relative;
+    }
+
     &.selected {
       color: #fff;
       padding: 10px 10px;
+      font-weight: 500;
 
-      &.tweet {
-        background: $twitter;
-      }
-      &.instagram {
-        background: $instagram-gradient;
-      }
-      &.youtube {
-        background: $youtube;
-      }
-      &.link {
-        background: $link;
+      &::before {
+        opacity: 1;
       }
     }
     &:not(.selected) {
