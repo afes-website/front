@@ -1,5 +1,4 @@
 import MarkdownIt from "markdown-it";
-import MarkdownIt_Sanitizer from "markdown-it-sanitizer";
 import MarkdownIt_Imsize from "markdown-it-imsize";
 import MarkdownIt_Checkbox from "markdown-it-checkbox";
 import MarkdownIt_Mark from "markdown-it-mark";
@@ -10,7 +9,6 @@ import MarkdownIt_CjkBreaks from "markdown-it-cjk-breaks";
 import Token from "markdown-it/lib/token";
 
 export const Markdown = MarkdownIt({ linkify: true })
-  .use(MarkdownIt_Sanitizer)
   .use(MarkdownIt_Imsize)
   .use(MarkdownIt_Checkbox)
   .use(MarkdownIt_Mark)
