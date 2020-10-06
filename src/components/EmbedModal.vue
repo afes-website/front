@@ -191,7 +191,7 @@ function detect_embed_type(content: string): EmbedInfo {
       };
   }
   {
-    const match = strip_content.match(/^youtu.be\/(\w+)/);
+    const match = strip_content.match(/^youtu\.be\/(\w+)/);
     if (match)
       return {
         type: "youtube",
