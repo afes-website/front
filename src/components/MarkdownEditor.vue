@@ -5,7 +5,7 @@
         <b-button
           variant="outline-secondary"
           @click="show_image_upload_modal"
-          v-if="!_noImage"
+          v-if="!noImage"
         >
           <font-awesome-icon icon="image" class="fa-fw" />
           画像を追加
@@ -63,12 +63,8 @@ export default class MarkdownEditor extends Vue {
     this.$emit("input", val);
   }
 
-  @Prop()
+  @Prop({ default: false, type: Boolean })
   noImage?: boolean;
-
-  get _noImage() {
-    return this.noImage || this.noImage === "";
-  }
 
   image_uploaded(id: string) {
     this._value += `![image alt](${get_image_url(id)})\n`;

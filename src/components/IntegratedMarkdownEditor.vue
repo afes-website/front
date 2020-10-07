@@ -2,7 +2,7 @@
   <div class="integrated-md-editor">
     <b-tabs>
       <b-tab title="編集" active>
-        <markdown-editor v-model="_value" :no-image="_noImage" />
+        <markdown-editor v-model="_value" :no-image="noImage" />
       </b-tab>
       <b-tab title="プレビュー" class="preview">
         <slot name="beforePreview" />
@@ -72,12 +72,8 @@ export default class IntegratedMarkdownEditor extends Vue {
     return this.old !== undefined;
   }
 
-  @Prop({ default: false })
+  @Prop({ default: false, type: Boolean })
   noImage?: boolean;
-
-  get _noImage() {
-    return this.noImage || this.noImage === "";
-  }
 
   get diff_from_latest(): string {
     if (!this.old) return "";
