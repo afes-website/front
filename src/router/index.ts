@@ -124,6 +124,14 @@ const routes = [
       ),
   },
   {
+    path: "/admin/draft/post",
+    name: "admin_draft_post",
+    component: () =>
+      import(
+        /* webpackChunkName: "admin_draft_post" */ "@/views/admin/draft/draft_post.vue"
+      ),
+  },
+  {
     path: "/admin/draft/:id(\\d+)",
     name: "admin_draft_manage",
     component: () =>

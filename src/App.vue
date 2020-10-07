@@ -127,7 +127,9 @@
                   <hr v-if="is_need_hr" />
                   <template v-if="exhibition_logged_in">
                     <li>
-                      <b-link :to="{ name: '' }">展示更新リクエスト</b-link>
+                      <b-link :to="{ name: 'admin_draft_post' }">
+                        展示更新リクエスト
+                      </b-link>
                     </li>
                     <li>
                       <b-link
@@ -145,9 +147,9 @@
                       <b-link :to="{ name: 'admin_exh_list' }">展示一覧</b-link>
                     </li>
                     <li>
-                      <b-link :to="{ name: 'admin_draft_list' }"
-                        >展示リクエスト一覧</b-link
-                      >
+                      <b-link :to="{ name: 'admin_draft_list' }">
+                        展示リクエスト一覧
+                      </b-link>
                     </li>
                   </template>
                 </ul>
