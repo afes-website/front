@@ -69,7 +69,7 @@ export default class IntegratedMarkdownEditor extends Vue {
   latest?: string;
 
   get diff_shown() {
-    return Boolean(this.latest);
+    return this.latest !== undefined;
   }
 
   get diff_from_latest(): string {
