@@ -174,8 +174,6 @@ import FetchStatusIcon from "@/components/FetchStatusIcon.vue";
 import Markdown from "@/libs/markdown";
 import DiffLib from "difflib";
 import * as Diff2Html from "diff2html";
-import MarkdownRenderer from "@/components/MarkdownRenderer.vue";
-import MarkdownEditor from "@/components/MarkdownEditor.vue";
 import Breadcrumb from "@/components/Breadcrumb.vue";
 import Forbidden from "@/components/Forbidden.vue";
 import auth_eventhub from "@/libs/auth/auth_eventhub";
@@ -187,8 +185,6 @@ import IntegratedMarkdownEditor from "@/components/IntegratedMarkdownEditor.vue"
     FetchStatusIcon,
     Breadcrumb,
     Forbidden,
-    MarkdownEditor,
-    MarkdownRenderer,
   },
 })
 export default class NewRevision extends Vue {

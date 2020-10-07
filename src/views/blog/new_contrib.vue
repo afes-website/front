@@ -213,7 +213,6 @@ import FetchStatus from "@/libs/fetch_status";
 import FetchStatusIcon from "@/components/FetchStatusIcon.vue";
 import Markdown from "@/libs/markdown";
 import Breadcrumb from "@/components/Breadcrumb.vue";
-import MarkdownRenderer from "@/components/MarkdownRenderer.vue";
 import IntegratedMarkdownEditor from "@/components/IntegratedMarkdownEditor.vue";
 
 @Component({
@@ -221,7 +220,6 @@ import IntegratedMarkdownEditor from "@/components/IntegratedMarkdownEditor.vue"
     IntegratedMarkdownEditor,
     FetchStatusIcon,
     Breadcrumb,
-    MarkdownRenderer,
   },
 })
 export default class NewRevision extends Vue {
