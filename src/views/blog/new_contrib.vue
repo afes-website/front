@@ -30,7 +30,7 @@
           placeholder="名もなき麻布生"
         />
       </b-form-group>
-      <IntegratedMarkdownEditor v-model="content" id="ime">
+      <IntegratedMarkdownEditor v-model="content" id="ime" no-image>
         <template v-slot:beforePreview>
           <h1>{{ decoded_article_title }}</h1>
           <div class="under-title">

@@ -2,7 +2,11 @@
   <div>
     <div class="toolbar">
       <b-button-group size="">
-        <b-button variant="outline-secondary" @click="show_image_upload_modal">
+        <b-button
+          variant="outline-secondary"
+          @click="show_image_upload_modal"
+          v-if="!_noImage"
+        >
           <font-awesome-icon icon="image" class="fa-fw" />
           画像を追加
         </b-button>
@@ -57,6 +61,13 @@ export default class MarkdownEditor extends Vue {
 
   set _value(val: string) {
     this.$emit("input", val);
+  }
+
+  @Prop()
+  noImage?: boolean;
+
+  get _noImage() {
+    return this.noImage || this.noImage === "";
   }
 
   image_uploaded(id: string) {
