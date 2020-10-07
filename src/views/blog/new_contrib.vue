@@ -30,11 +30,8 @@
           placeholder="名もなき麻布生"
         />
       </b-form-group>
-      <b-tabs>
-        <b-tab title="編集" active>
-          <b-textarea v-model="content" class="edit-area"></b-textarea>
-        </b-tab>
-        <b-tab title="プレビュー" id="preview">
+      <IntegratedMarkdownEditor v-model="content" id="ime">
+        <template v-slot:beforePreview>
           <h1>{{ decoded_article_title }}</h1>
           <div class="under-title">
             <span>
@@ -50,7 +47,8 @@
               yyyy/mm/dd
             </span>
           </div>
-          <markdown-renderer :content="content" />
+        </template>
+        <template v-slot:afterPreview>
           <hr />
           <h3>card preview</h3>
           <b-card
@@ -90,8 +88,8 @@
           <div v-else>
             <small class="text-danger"> タイトルを指定してください。 </small>
           </div>
-        </b-tab>
-      </b-tabs>
+        </template>
+      </IntegratedMarkdownEditor>
       <b-button
         @click="post"
         variant="theme-dark"
@@ -140,68 +138,10 @@
   </div>
 </template>
 
-<style lang="scss" scoped>
-.edit-area,
-div.preview {
-  height: 750px;
-  overflow: scroll;
-  border: 1px solid #ced4da;
-  border-radius: 4px;
-}
-div#preview {
-  padding-top: 1rem;
-  max-width: 952px;
-}
-
-.card {
-  height: 150px;
-  width: 100%;
-  color: #222;
-  .card-img-left {
-    max-width: 148px; // 150px(height) - 1px(border) * 2
-    min-width: 148px; // tricky solution for image collapsing
-    display: block;
-    width: auto;
-    height: auto;
-  }
-
-  .card-body {
-    overflow: hidden;
-    width: 100%;
-    .card-title {
-      margin-top: -8px;
-      margin-bottom: 12px;
-      text-overflow: ellipsis;
-      overflow: hidden;
-      max-height: 1.2em;
-      white-space: nowrap;
-    }
-
-    .card-subtitle {
-      margin-bottom: 5px;
-
-      span {
-        margin-right: 0.5em;
-      }
-    }
-
-    .card-text {
-      display: block; // fallback
-      display: -webkit-box;
-      //max-height: 4.5em;
-      position: relative;
-      overflow: hidden;
-      -webkit-box-orient: vertical;
-      -webkit-line-clamp: 2; // 2 lines
-      text-overflow: ellipsis;
-      line-height: 1.5;
-    }
-  }
-}
-</style>
-
 <style lang="scss">
-#preview {
+/* ==== !! be careful - NOT scoped !! ==== */
+
+#ime {
   .under-title {
     margin-top: -14px;
     margin-bottom: 16px;
@@ -211,6 +151,54 @@ div#preview {
 
     span {
       margin-right: 0.5em;
+    }
+  }
+
+  .card {
+    height: 150px;
+    width: 100%;
+    color: #222;
+
+    .card-img-left {
+      max-width: 148px; // 150px(height) - 1px(border) * 2
+      min-width: 148px; // tricky solution for image collapsing
+      display: block;
+      width: auto;
+      height: auto;
+    }
+
+    .card-body {
+      overflow: hidden;
+      width: 100%;
+
+      .card-title {
+        margin-top: -8px;
+        margin-bottom: 12px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        max-height: 1.2em;
+        white-space: nowrap;
+      }
+
+      .card-subtitle {
+        margin-bottom: 5px;
+
+        span {
+          margin-right: 0.5em;
+        }
+      }
+
+      .card-text {
+        display: block; // fallback
+        display: -webkit-box;
+        //max-height: 4.5em;
+        position: relative;
+        overflow: hidden;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2; // 2 lines
+        text-overflow: ellipsis;
+        line-height: 1.5;
+      }
     }
   }
 }
@@ -226,8 +214,16 @@ import FetchStatusIcon from "@/components/FetchStatusIcon.vue";
 import Markdown from "@/libs/markdown";
 import Breadcrumb from "@/components/Breadcrumb.vue";
 import MarkdownRenderer from "@/components/MarkdownRenderer.vue";
+import IntegratedMarkdownEditor from "@/components/IntegratedMarkdownEditor.vue";
 
-@Component({ components: { FetchStatusIcon, Breadcrumb, MarkdownRenderer } })
+@Component({
+  components: {
+    IntegratedMarkdownEditor,
+    FetchStatusIcon,
+    Breadcrumb,
+    MarkdownRenderer,
+  },
+})
 export default class NewRevision extends Vue {
   readonly page_title = "新規寄稿";
 

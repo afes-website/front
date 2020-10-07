@@ -27,12 +27,13 @@
         <code>%0A</code>または<code>\n</code>で og:image 内で改行できます。
       </template>
     </b-form-group>
-    <b-tabs>
-      <b-tab title="編集" active>
-        <markdown-editor v-model="content" />
-      </b-tab>
-      <b-tab title="プレビュー" id="preview">
-        <h1>{{ decoded_article_title }}</h1>
+    <IntegratedMarkdownEditor
+      v-model="content"
+      :latest="latest_content"
+      id="ime"
+    >
+      <template v-slot:beforePreview>
+        <h1>{{ article_title }}</h1>
         <div class="under-title">
           <span>
             <font-awesome-icon :icon="'user'" class="fa-fw" />
@@ -51,7 +52,8 @@
             約 {{ time_to_read }} 分
           </span>
         </div>
-        <markdown-renderer :content="content" />
+      </template>
+      <template v-slot:afterPreview>
         <hr />
         <h3>card preview</h3>
         <b-card :img-src="card_image" img-alt="eye catch" img-left class="mb-3">
@@ -86,11 +88,8 @@
         <div v-else>
           <small class="text-danger"> タイトルを指定してください。 </small>
         </div>
-      </b-tab>
-      <b-tab title="現在との差分">
-        <div id="diff-view" v-html="diff_from_current" class="diff"></div>
-      </b-tab>
-    </b-tabs>
+      </template>
+    </IntegratedMarkdownEditor>
     <b-button
       @click="post"
       variant="theme-dark"
@@ -103,68 +102,10 @@
   </forbidden>
 </template>
 
-<style lang="scss" scoped>
-div.preview,
-div.diff {
-  height: 750px;
-  overflow: scroll;
-  border: 1px solid #ced4da;
-  border-radius: 4px;
-}
-div#preview {
-  padding-top: 1rem;
-  max-width: 952px;
-}
-
-.card {
-  height: 150px;
-  width: 100%;
-  color: #222;
-  .card-img-left {
-    max-width: 148px; // 150px(height) - 1px(border) * 2
-    min-width: 148px; // tricky solution for image collapsing
-    display: block;
-    width: auto;
-    height: auto;
-  }
-
-  .card-body {
-    overflow: hidden;
-    width: 100%;
-    .card-title {
-      margin-top: -8px;
-      margin-bottom: 12px;
-      text-overflow: ellipsis;
-      overflow: hidden;
-      max-height: 1.2em;
-      white-space: nowrap;
-    }
-
-    .card-subtitle {
-      margin-bottom: 5px;
-
-      span {
-        margin-right: 0.5em;
-      }
-    }
-
-    .card-text {
-      display: block; // fallback
-      display: -webkit-box;
-      //max-height: 4.5em;
-      position: relative;
-      overflow: hidden;
-      -webkit-box-orient: vertical;
-      -webkit-line-clamp: 2; // 2 lines
-      text-overflow: ellipsis;
-      line-height: 1.5;
-    }
-  }
-}
-</style>
-
 <style lang="scss">
-#preview {
+/* ==== !! be careful - NOT scoped !! ==== */
+
+#ime {
   .under-title {
     margin-top: -14px;
     margin-bottom: 16px;
@@ -176,19 +117,52 @@ div#preview {
       margin-right: 0.5em;
     }
   }
-}
-@import "~diff2html/bundles/css/diff2html.min.css";
-#diff-view {
-  .d2h-file-list-wrapper {
-    display: none;
-  }
-  .d2h-wrapper {
-    .d2h-file-header {
-      display: none;
+
+  .card {
+    height: 150px;
+    width: 100%;
+    color: #222;
+
+    .card-img-left {
+      max-width: 148px; // 150px(height) - 1px(border) * 2
+      min-width: 148px; // tricky solution for image collapsing
+      display: block;
+      width: auto;
+      height: auto;
     }
-    td {
-      padding: 0;
-      position: unset;
+
+    .card-body {
+      overflow: hidden;
+      width: 100%;
+
+      .card-title {
+        margin-top: -8px;
+        margin-bottom: 12px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        max-height: 1.2em;
+        white-space: nowrap;
+      }
+
+      .card-subtitle {
+        margin-bottom: 5px;
+
+        span {
+          margin-right: 0.5em;
+        }
+      }
+
+      .card-text {
+        display: block; // fallback
+        display: -webkit-box;
+        //max-height: 4.5em;
+        position: relative;
+        overflow: hidden;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2; // 2 lines
+        text-overflow: ellipsis;
+        line-height: 1.5;
+      }
     }
   }
 }
@@ -209,9 +183,11 @@ import MarkdownEditor from "@/components/MarkdownEditor.vue";
 import Breadcrumb from "@/components/Breadcrumb.vue";
 import Forbidden from "@/components/Forbidden.vue";
 import auth_eventhub from "@/libs/auth/auth_eventhub";
+import IntegratedMarkdownEditor from "@/components/IntegratedMarkdownEditor.vue";
 
 @Component({
   components: {
+    IntegratedMarkdownEditor,
     FetchStatusIcon,
     Breadcrumb,
     Forbidden,
