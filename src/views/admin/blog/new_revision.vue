@@ -27,15 +27,9 @@
         <code>%0A</code>または<code>\n</code>で og:image 内で改行できます。
       </template>
     </b-form-group>
-    <b-tabs>
-      <b-tab title="編集" active>
-        <div class="toolbar">
-          <b-button @click="show_image_upload_modal"> 画像を追加 </b-button>
-        </div>
-        <b-textarea v-model="content" class="edit-area"></b-textarea>
-      </b-tab>
-      <b-tab title="プレビュー" id="preview">
-        <h1>{{ decoded_article_title }}</h1>
+    <IntegratedMarkdownEditor v-model="content" :old="latest_content" id="ime">
+      <template v-slot:beforePreview>
+        <h1>{{ article_title }}</h1>
         <div class="under-title">
           <span>
             <font-awesome-icon :icon="'user'" class="fa-fw" />
@@ -54,7 +48,8 @@
             約 {{ time_to_read }} 分
           </span>
         </div>
-        <div v-html="rendered_content"></div>
+      </template>
+      <template v-slot:afterPreview>
         <hr />
         <h3>card preview</h3>
         <b-card :img-src="card_image" img-alt="eye catch" img-left class="mb-3">
@@ -79,7 +74,7 @@
               約 {{ time_to_read }} 分
             </span>
           </b-card-sub-title>
-          <b-card-text v-html="card_text" />
+          <b-card-text>{{ card_text }}</b-card-text>
         </b-card>
         <h3>og:image preview</h3>
         <small class="text-muted">
@@ -89,11 +84,8 @@
         <div v-else>
           <small class="text-danger"> タイトルを指定してください。 </small>
         </div>
-      </b-tab>
-      <b-tab title="現在との差分">
-        <div id="diff-view" v-html="diff_from_current" class="diff"></div>
-      </b-tab>
-    </b-tabs>
+      </template>
+    </IntegratedMarkdownEditor>
     <b-button
       @click="post"
       variant="theme-dark"
@@ -103,76 +95,13 @@
       post
       <fetch-status-icon :status="status" small />
     </b-button>
-    <image-upload-modal
-      v-model="image_upload_modal_shown"
-      @uploaded="image_uploaded"
-    />
   </forbidden>
 </template>
 
-<style lang="scss" scoped>
-.edit-area,
-div.preview,
-div.diff {
-  height: 750px;
-  overflow: scroll;
-  border: 1px solid #ced4da;
-  border-radius: 4px;
-}
-div#preview {
-  padding-top: 1rem;
-  max-width: 952px;
-}
-
-.card {
-  height: 150px;
-  width: 100%;
-  color: #222;
-  .card-img-left {
-    max-width: 148px; // 150px(height) - 1px(border) * 2
-    min-width: 148px; // tricky solution for image collapsing
-    display: block;
-    width: auto;
-    height: auto;
-  }
-
-  .card-body {
-    overflow: hidden;
-    width: 100%;
-    .card-title {
-      margin-top: -8px;
-      margin-bottom: 12px;
-      text-overflow: ellipsis;
-      overflow: hidden;
-      max-height: 1.2em;
-      white-space: nowrap;
-    }
-
-    .card-subtitle {
-      margin-bottom: 5px;
-
-      span {
-        margin-right: 0.5em;
-      }
-    }
-
-    .card-text {
-      display: block; // fallback
-      display: -webkit-box;
-      //max-height: 4.5em;
-      position: relative;
-      overflow: hidden;
-      -webkit-box-orient: vertical;
-      -webkit-line-clamp: 2; // 2 lines
-      text-overflow: ellipsis;
-      line-height: 1.5;
-    }
-  }
-}
-</style>
-
 <style lang="scss">
-#preview {
+/* ==== !! be careful - NOT scoped !! ==== */
+
+#ime {
   .under-title {
     margin-top: -14px;
     margin-bottom: 16px;
@@ -184,19 +113,52 @@ div#preview {
       margin-right: 0.5em;
     }
   }
-}
-@import "../../../../node_modules/diff2html/bundles/css/diff2html.min.css";
-#diff-view {
-  .d2h-file-list-wrapper {
-    display: none;
-  }
-  .d2h-wrapper {
-    .d2h-file-header {
-      display: none;
+
+  .card {
+    height: 150px;
+    width: 100%;
+    color: #222;
+
+    .card-img-left {
+      max-width: 148px; // 150px(height) - 1px(border) * 2
+      min-width: 148px; // tricky solution for image collapsing
+      display: block;
+      width: auto;
+      height: auto;
     }
-    td {
-      padding: 0;
-      position: unset;
+
+    .card-body {
+      overflow: hidden;
+      width: 100%;
+
+      .card-title {
+        margin-top: -8px;
+        margin-bottom: 12px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        max-height: 1.2em;
+        white-space: nowrap;
+      }
+
+      .card-subtitle {
+        margin-bottom: 5px;
+
+        span {
+          margin-right: 0.5em;
+        }
+      }
+
+      .card-text {
+        display: block; // fallback
+        display: -webkit-box;
+        //max-height: 4.5em;
+        position: relative;
+        overflow: hidden;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2; // 2 lines
+        text-overflow: ellipsis;
+        line-height: 1.5;
+      }
     }
   }
 }
@@ -212,14 +174,18 @@ import FetchStatusIcon from "@/components/FetchStatusIcon.vue";
 import Markdown from "@/libs/markdown";
 import DiffLib from "difflib";
 import * as Diff2Html from "diff2html";
-import ImageUploadModal from "@/components/ImageUploadModal.vue";
-import { get_image_url } from "@afes-website/docs";
 import Breadcrumb from "@/components/Breadcrumb.vue";
 import Forbidden from "@/components/Forbidden.vue";
 import auth_eventhub from "@/libs/auth/auth_eventhub";
+import IntegratedMarkdownEditor from "@/components/IntegratedMarkdownEditor.vue";
 
 @Component({
-  components: { FetchStatusIcon, ImageUploadModal, Breadcrumb, Forbidden },
+  components: {
+    IntegratedMarkdownEditor,
+    FetchStatusIcon,
+    Breadcrumb,
+    Forbidden,
+  },
 })
 export default class NewRevision extends Vue {
   readonly page_title = "記事投稿/編集";
@@ -233,15 +199,9 @@ export default class NewRevision extends Vue {
   status: FetchStatus = "idle";
   fetch_status: FetchStatus = "idle";
 
-  image_upload_modal_shown = false;
-
   forbidden = false;
 
   readonly noImage = require("@/assets/no-image.svg");
-
-  image_uploaded(id: string) {
-    this.content += `![image alt](${get_image_url(id)})\n`;
-  }
 
   mounted() {
     if ("path" in this.$route.query && !Array.isArray(this.$route.query.path)) {
@@ -312,10 +272,6 @@ export default class NewRevision extends Vue {
     });
   }
 
-  get rendered_content() {
-    return Markdown.render(this.content);
-  }
-
   get diff_from_current(): string {
     const diff = DiffLib.unifiedDiff(
       this.latest_content.split("\n"), // old
@@ -352,10 +308,6 @@ export default class NewRevision extends Vue {
 
   apply_ogimage_title() {
     this.ogimage_title = this.article_title;
-  }
-
-  show_image_upload_modal() {
-    this.image_upload_modal_shown = true;
   }
 
   get ogimage_url() {

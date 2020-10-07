@@ -1,5 +1,11 @@
 <template>
-  <b-modal id="modal-1" title="Uploading image" @ok="modal_ok" v-model="_value">
+  <b-modal
+    id="modal-1"
+    title="Uploading image"
+    @ok="modal_ok"
+    v-model="_value"
+    centered
+  >
     <b-form>
       <b-form-group id="input-group-file" label="file:" label-for="input-file">
         <b-form-file
