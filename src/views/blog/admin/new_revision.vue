@@ -27,11 +27,7 @@
         <code>%0A</code>または<code>\n</code>で og:image 内で改行できます。
       </template>
     </b-form-group>
-    <IntegratedMarkdownEditor
-      v-model="content"
-      :latest="latest_content"
-      id="ime"
-    >
+    <IntegratedMarkdownEditor v-model="content" :old="latest_content" id="ime">
       <template v-slot:beforePreview>
         <h1>{{ article_title }}</h1>
         <div class="under-title">

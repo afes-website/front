@@ -66,16 +66,16 @@ export default class IntegratedMarkdownEditor extends Vue {
   }
 
   @Prop()
-  latest?: string;
+  old?: string;
 
   get diff_shown() {
-    return this.latest !== undefined;
+    return this.old !== undefined;
   }
 
   get diff_from_latest(): string {
-    if (!this.latest) return "";
+    if (!this.old) return "";
     const diff = DiffLib.unifiedDiff(
-      this.latest.split("\n"), // old
+      this.old.split("\n"), // old
       this._value.split("\n"), // new
       {
         fromfile: "Original",
