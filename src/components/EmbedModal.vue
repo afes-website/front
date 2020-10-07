@@ -39,7 +39,9 @@
       </li>
     </ul>
     <template v-slot:modal-footer="{ ok }">
-      <b-button variant="primary" @click="ok">挿入</b-button>
+      <b-button variant="primary" @click="ok" :disabled="!content">
+        挿入
+      </b-button>
     </template>
   </b-modal>
 </template>
