@@ -155,12 +155,13 @@ export default class DraftPost extends Vue {
         if (typeof this.$route.query.exh_id === "string") {
           this.exh_id = this.$route.query.exh_id;
           this.reloadExhibitionInfo();
+          this.loadLatestDraft(token);
         }
         if (!isNaN(+this.$route.query.draft_id)) {
           this.draft_id = +this.$route.query.draft_id;
           this.reloadExhibitionInfo();
+          this.loadSpecificDraft(token, this.draft_id);
         }
-        this.loadLatestDraft(token);
       })
       .catch(() => {
         this.$auth
