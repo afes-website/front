@@ -144,6 +144,11 @@
                   </template>
                   <template v-if="admin_or_teacher_logged_in">
                     <li>
+                      <b-link :to="{ name: 'admin_draft_post' }">
+                        展示更新リクエスト
+                      </b-link>
+                    </li>
+                    <li>
                       <b-link :to="{ name: 'admin_exh_list' }">展示一覧</b-link>
                     </li>
                     <li>

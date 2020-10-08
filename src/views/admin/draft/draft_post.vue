@@ -2,6 +2,44 @@
   <forbidden :is-forbidden="forbidden" :title="page_title" class="box wide-box">
     <breadcrumb :text="page_title" />
     <h1>{{ page_title }}</h1>
+    <b-form-group label="展示 id:" v-if="admin_logged_in">
+      <b-input v-model="exh_id" />
+    </b-form-group>
+    <b-form-group>
+      <b-button-group>
+        <b-button
+          @click="reloadLatestDraft"
+          :disabled="!exh_id"
+          :pressed="draftLatestButtonPressed"
+          variant="primary"
+        >
+          最新 draft を取得
+        </b-button>
+        <b-button
+          @click="reloadExhibition"
+          :disabled="!exh_id"
+          :pressed="exhibitionButtonPressed"
+          variant="primary"
+        >
+          最新 exhibition を取得
+        </b-button>
+      </b-button-group>
+    </b-form-group>
+    <b-form-group label="draft id:" v-if="admin_logged_in">
+      <b-input v-model="draft_id" />
+    </b-form-group>
+    <b-form-group>
+      <b-button-group>
+        <b-button
+          @click="reloadSpecificDraft"
+          :disabled="!draft_id"
+          :pressed="draftSpecificButtonPressed"
+          variant="primary"
+        >
+          指定の draft を取得
+        </b-button>
+      </b-button-group>
+    </b-form-group>
     <IntegratedMarkdownEditor v-model="content" :old="latest_content" id="ime">
       <template v-slot:beforePreview>
         <h1>{{ _exh_name }}</h1>
@@ -78,6 +116,10 @@ export default class DraftPost extends Vue {
   latest_content = "";
   exh_id: string | null = null;
   exh_name: string | null = null;
+  draft_id: number | null = null;
+  admin_logged_in = false;
+
+  loadMode: "draft@latest" | "draft@specific" | "exhibition" = "draft@latest";
 
   get _exh_name() {
     return this.exh_name || "";
@@ -100,59 +142,163 @@ export default class DraftPost extends Vue {
 
   load() {
     this.forbidden = false;
+    this.admin_logged_in = false;
+    this.content = this.latest_content = "";
+    this.exh_id = null;
+    this.exh_name = null;
+    this.draft_id = null;
+
     this.$auth
-      .attempt_get_JWT("exhibition")
-      .then(() => {
-        this.exh_id = this.$auth.get_current_user_id || "";
-        this.exh_name = this.$auth.get_current_user?.name || "";
-        this.loadLatestContent();
+      .attempt_get_JWT(["blogAdmin", "teacher"])
+      .then((token) => {
+        this.admin_logged_in = true;
+        if (typeof this.$route.query.exh_id === "string") {
+          this.exh_id = this.$route.query.exh_id;
+          this.reloadExhibitionInfo();
+        }
+        if (!isNaN(+this.$route.query.draft_id)) {
+          this.draft_id = +this.$route.query.draft_id;
+          this.reloadExhibitionInfo();
+        }
+        this.loadLatestDraft(token);
       })
       .catch(() => {
-        this.forbidden = true;
+        this.$auth
+          .attempt_get_JWT("exhibition")
+          .then((token) => {
+            this.exh_id = this.$auth.get_current_user_id || "";
+            this.exh_name = this.$auth.get_current_user?.name || "";
+            this.loadLatestDraft(token);
+          })
+          .catch(() => {
+            this.forbidden = true;
+          });
       });
   }
 
-  loadLatestContent() {
+  reloadExhibitionInfo() {
     if (this.exh_id) {
       api(aspida())
         .online.exhibition._id(this.exh_id)
         .$get()
-        .then((res) => {
-          this.content = this.latest_content = res.content;
+        .then((exh) => {
+          this.exh_name = exh.name;
         });
     }
+  }
+
+  reloadLatestDraft() {
+    this.$auth
+      .attempt_get_JWT(["exhibition", "blogAdmin", "teacher"])
+      .then((token) => {
+        this.loadLatestDraft(token);
+        this.reloadExhibitionInfo();
+      });
+  }
+
+  loadLatestDraft(token: string) {
+    if (this.exh_id !== null) {
+      api(aspida())
+        .online.drafts.$get({
+          headers: { Authorization: "bearer " + token },
+          query: { exh_id: this.exh_id },
+        })
+        .then((drafts) => {
+          if (drafts.length) {
+            const latestDraft = drafts.slice(-1)[0];
+            if (latestDraft.exhibition.id === this.exh_id) {
+              const draft = drafts.slice(-1)[0];
+              this.content = this.latest_content = draft.content;
+              this.loadMode = "draft@latest";
+            }
+          }
+        });
+      // TODO: catch
+    }
+  }
+
+  get draftLatestButtonPressed(): boolean {
+    return this.loadMode === "draft@latest";
+  }
+
+  reloadSpecificDraft() {
+    this.$auth
+      .attempt_get_JWT(["exhibition", "blogAdmin", "teacher"])
+      .then((token) => {
+        if (this.draft_id !== null)
+          this.loadSpecificDraft(token, this.draft_id);
+        this.reloadExhibitionInfo();
+      });
+  }
+
+  loadSpecificDraft(token: string, draft_id: number) {
+    api(aspida())
+      .online.drafts._id(draft_id)
+      .$get({ headers: { Authorization: "bearer " + token } })
+      .then((draft) => {
+        this.content = this.latest_content = draft.content;
+        this.loadMode = "draft@specific";
+        this.exh_id = draft.exhibition.id;
+      });
+  }
+
+  get draftSpecificButtonPressed(): boolean {
+    return this.loadMode === "draft@specific";
+  }
+
+  reloadExhibition() {
+    this.loadExhibition();
+    this.reloadExhibitionInfo();
+  }
+
+  loadExhibition() {
+    if (this.exh_id !== null) {
+      api(aspida())
+        .online.exhibition._id(this.exh_id)
+        .$get()
+        .then((exh) => {
+          this.content = this.latest_content = exh.content;
+          this.loadMode = "exhibition";
+        });
+    }
+  }
+
+  get exhibitionButtonPressed(): boolean {
+    return this.loadMode === "exhibition";
   }
 
   post() {
     this.status = "pending";
 
-    this.$auth.attempt_get_JWT("exhibition").then((token) => {
-      api(aspida())
-        .online.drafts.$post({
-          body: {
-            content: this.content,
-            exh_id: this.$auth.get_current_user_id || "",
-          },
-          headers: {
-            Authorization: "bearer " + token,
-          },
-        })
-        .then((data: Draft) => {
-          this.status = "idle";
-          this.$bvToast.toast("Exhibition Draft Created: " + data.id, {
-            // TODO: toast won't shows (main.scss causes?)
-            title: "Create new draft",
-            autoHideDelay: 5000,
+    if (this.exh_id !== null)
+      this.$auth.attempt_get_JWT("exhibition").then((token) => {
+        api(aspida())
+          .online.drafts.$post({
+            body: {
+              content: this.content,
+              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+              exh_id: this.exh_id!,
+            },
+            headers: {
+              Authorization: "bearer " + token,
+            },
+          })
+          .then((data: Draft) => {
+            this.status = "idle";
+            this.$bvToast.toast("Exhibition Draft Created: " + data.id, {
+              title: "Create new draft",
+              autoHideDelay: 5000,
+            });
+            this.$router.push({
+              name: "admin_exh_manage",
+              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+              params: { id: this.exh_id! },
+            });
+          })
+          .catch(() => {
+            this.status = "fail";
           });
-          this.$router.push({
-            name: "admin_exh_manage",
-            params: { id: this.$auth.get_current_user_id || "" },
-          });
-        })
-        .catch(() => {
-          this.status = "fail";
-        });
-    });
+      });
   }
 
   get can_post() {
