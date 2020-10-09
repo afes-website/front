@@ -84,7 +84,7 @@
       :disabled="!can_post"
     >
       post
-      <fetch-status-icon :status="status" small />
+      <fetch-status-icon :status="post_status" small />
     </b-button>
   </forbidden>
 </template>
