@@ -26,6 +26,13 @@
           </b-tr>
         </b-tbody>
       </b-table-simple>
+      <b-button
+        :to="{ name: 'admin_draft_post', query: { exh_id: id } }"
+        variant="secondary"
+      >
+        <font-awesome-icon icon="edit" class="fa-fw" />
+        Edit and Post New Draft
+      </b-button>
     </section>
     <section>
       <h2>プレビュー</h2>

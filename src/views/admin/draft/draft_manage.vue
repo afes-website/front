@@ -54,10 +54,17 @@
           </b-tr>
         </b-tbody>
       </b-table-simple>
+      <b-button
+        :to="{ name: 'admin_draft_post', query: { draft_id: id } }"
+        variant="secondary"
+      >
+        <font-awesome-icon icon="edit" class="fa-fw" />
+        Edit and Post New Draft
+      </b-button>
     </section>
     <section>
       <h2>Review</h2>
-      <p>
+      <p class="mb-2">
         Preview ボタンで確認後、Accept / Reject ボタンでレビューしてください。
       </p>
       <b-button-group>
