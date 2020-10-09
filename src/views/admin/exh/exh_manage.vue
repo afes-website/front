@@ -136,14 +136,10 @@ export default class ExhManage extends Vue {
     api(aspida())
       .online.drafts.$get({
         headers: { Authorization: "bearer " + token },
+        query: { exh_id: this.exh_id },
       })
       .then((res) => {
-        // TODO: query 化 (docs 対応・back 実装)
-        this.drafts.splice(
-          0,
-          this.drafts.length,
-          ...res.filter((draft) => draft.exhibition.id === this.exh_id)
-        );
+        this.drafts.splice(0, this.drafts.length, ...res);
       });
   }
 
