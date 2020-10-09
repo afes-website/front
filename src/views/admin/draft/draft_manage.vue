@@ -279,7 +279,7 @@ export default class DraftManage extends Vue {
   }
 
   get diff_from_latest(): string {
-    if (!this.exhibition || !this.draft) return "";
+    if (!this.exhibition || !this.draft || !this.exhibition.content) return "";
     const diff = DiffLib.unifiedDiff(
       this.exhibition.content.split("\n"), // old
       this.draft.content.split("\n"), // new

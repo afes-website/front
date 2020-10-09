@@ -219,7 +219,7 @@ export default class DraftPost extends Vue {
         .online.exhibition._id(this.exh_id)
         .$get()
         .then((exh) => {
-          this.content = this.latest_content = exh.content;
+          this.content = this.latest_content = exh.content || "";
           this.load_mode = "exhibition";
           this.exhibition_load_status = "idle";
         })
