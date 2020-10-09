@@ -95,7 +95,7 @@
     <section>
       <h2>差分</h2>
       <p>現在の展示コンテンツとの差分です。</p>
-      <!-- // TODO: diff  -->
+      <div class="diff-view" v-html="diff_from_latest" />
     </section>
     <section>
       <h2>Raw Markdown</h2>
@@ -104,7 +104,28 @@
   </forbidden>
 </template>
 
-<style lang="scss"></style>
+<style lang="scss">
+/* ==== !! be careful - NOT scoped !! ==== */
+
+@import "~diff2html/bundles/css/diff2html.min.css";
+
+.diff-view {
+  .d2h-file-list-wrapper {
+    display: none;
+  }
+
+  .d2h-wrapper {
+    .d2h-file-header {
+      display: none;
+    }
+
+    td {
+      padding: 0;
+      position: unset;
+    }
+  }
+}
+</style>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
@@ -115,12 +136,15 @@ import CommentList from "@/components/CommentList.vue";
 import api, {
   Draft,
   DraftComment,
+  Exhibition,
   ExhibitionSummary,
   ReviewStatus,
   UserInfo,
 } from "@afes-website/docs";
 import aspida from "@aspida/axios";
 import { getStringTime } from "@/libs/string_date";
+import DiffLib from "difflib";
+import * as Diff2Html from "diff2html";
 
 @Component({
   components: {
@@ -133,6 +157,7 @@ export default class DraftManage extends Vue {
   page_title = "展示リクエスト管理";
   forbidden = false;
   draft: Draft | null = null;
+  exhibition: Exhibition | null = null;
 
   admin_logged_in = false;
 
@@ -169,8 +194,15 @@ export default class DraftManage extends Vue {
       .$get({
         headers: { Authorization: "bearer " + token },
       })
-      .then((res) => {
-        this.draft = res;
+      .then((draft) => {
+        this.draft = draft;
+
+        api(aspida())
+          .online.exhibition._id(this.draft.exhibition.id)
+          .$get()
+          .then((exh) => {
+            this.exhibition = exh;
+          });
       });
   }
 
@@ -244,6 +276,24 @@ export default class DraftManage extends Vue {
 
   get comments(): DraftComment[] {
     return this.draft?.comments || [];
+  }
+
+  get diff_from_latest(): string {
+    if (!this.exhibition || !this.draft) return "";
+    const diff = DiffLib.unifiedDiff(
+      this.exhibition.content.split("\n"), // old
+      this.draft.content.split("\n"), // new
+      {
+        fromfile: "Original",
+        tofile: "Current",
+        lineterm: "",
+      }
+    ).join("\n");
+    return Diff2Html.html(diff, {
+      drawFileList: true,
+      matching: "lines",
+      outputFormat: "side-by-side",
+    });
   }
 
   /* ==== formatter ==== */
