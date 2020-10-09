@@ -220,6 +220,7 @@ export default class DraftPost extends Vue {
         .$get()
         .then((exh) => {
           this.content = this.latest_content = exh.content || "";
+          this.draft_id = exh.draft_id;
           this.load_mode = "exhibition";
           this.exhibition_load_status = "idle";
         })
@@ -251,6 +252,7 @@ export default class DraftPost extends Vue {
           if (drafts.length) {
             const draft = drafts.slice(-1)[0];
             this.content = this.latest_content = draft.content;
+            this.draft_id = draft.id;
             this.load_mode = "draft@latest";
             this.draft_latest_status = "idle";
           } else this.draft_specific_load_status = "fail";
