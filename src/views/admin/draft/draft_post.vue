@@ -3,7 +3,10 @@
     <breadcrumb :text="page_title" />
     <h1>{{ page_title }}</h1>
     <b-form-group label="展示 id:" v-if="admin_logged_in">
-      <b-input v-model="exh_id" />
+      <b-input v-model="exh_id" :state="exhIdFormState" />
+      <b-form-invalid-feedback v-show="exhibitionNotFound">
+        該当する展示が見つかりませんでした。
+      </b-form-invalid-feedback>
     </b-form-group>
     <b-form-group>
       <b-button-group>
@@ -26,7 +29,10 @@
       </b-button-group>
     </b-form-group>
     <b-form-group label="draft id:" v-if="admin_logged_in">
-      <b-input v-model="draft_id" />
+      <b-input v-model="draft_id" :state="draftIdFormState" />
+      <b-form-invalid-feedback v-show="draftNotFound">
+        該当する draft が見つかりませんでした。
+      </b-form-invalid-feedback>
     </b-form-group>
     <b-form-group>
       <b-button-group>
@@ -119,14 +125,47 @@ export default class DraftPost extends Vue {
   draft_id: number | null = null;
   admin_logged_in = false;
 
-  loadMode: "draft@latest" | "draft@specific" | "exhibition" = "draft@latest";
+  loadMode: "draft@latest" | "draft@specific" | "exhibition" | null = null;
+
+  draftLatestLoadStatus: FetchStatus = "idle";
+  draftSpecificLoadStatus: FetchStatus = "idle";
+  exhibitionLoadStatus: FetchStatus = "idle";
+  postStatus: FetchStatus = "idle";
+
+  get exhIdFormState(): boolean | null {
+    if (
+      this.draftLatestLoadStatus === "fail" ||
+      this.exhibitionLoadStatus === "fail"
+    )
+      return false;
+    return null;
+  }
+
+  get exhibitionNotFound() {
+    return (
+      this.draftLatestLoadStatus === "fail" ||
+      this.exhibitionLoadStatus === "fail"
+    );
+  }
+
+  get draftIdFormState(): boolean | null {
+    if (this.draftSpecificLoadStatus === "fail") return false;
+    return null;
+  }
+
+  get draftNotFound() {
+    return this.draftSpecificLoadStatus === "fail";
+  }
+
+  resetAllStatus() {
+    this.draftLatestLoadStatus = "idle";
+    this.draftSpecificLoadStatus = "idle";
+    this.exhibitionLoadStatus = "idle";
+  }
 
   get _exh_name() {
     return this.exh_name || "";
   }
-
-  status: FetchStatus = "idle";
-  fetch_status: FetchStatus = "idle";
 
   forbidden = false;
 
@@ -189,6 +228,7 @@ export default class DraftPost extends Vue {
   }
 
   reloadLatestDraft() {
+    this.resetAllStatus();
     this.$auth
       .attempt_get_JWT(["exhibition", "blogAdmin", "teacher"])
       .then((token) => {
@@ -198,6 +238,7 @@ export default class DraftPost extends Vue {
   }
 
   loadLatestDraft(token: string) {
+    this.draftLatestLoadStatus = "pending";
     if (this.exh_id !== null) {
       api(aspida())
         .online.drafts.$get({
@@ -211,10 +252,15 @@ export default class DraftPost extends Vue {
               const draft = drafts.slice(-1)[0];
               this.content = this.latest_content = draft.content;
               this.loadMode = "draft@latest";
+              this.draftLatestLoadStatus = "idle";
             }
           }
+        })
+        .catch(() => {
+          this.draftLatestLoadStatus = "fail";
         });
-      // TODO: catch
+    } else {
+      this.draftLatestLoadStatus = "idle";
     }
   }
 
@@ -223,6 +269,7 @@ export default class DraftPost extends Vue {
   }
 
   reloadSpecificDraft() {
+    this.resetAllStatus();
     this.$auth
       .attempt_get_JWT(["exhibition", "blogAdmin", "teacher"])
       .then((token) => {
@@ -233,6 +280,7 @@ export default class DraftPost extends Vue {
   }
 
   loadSpecificDraft(token: string, draft_id: number) {
+    this.draftSpecificLoadStatus = "pending";
     api(aspida())
       .online.drafts._id(draft_id)
       .$get({ headers: { Authorization: "bearer " + token } })
@@ -240,6 +288,10 @@ export default class DraftPost extends Vue {
         this.content = this.latest_content = draft.content;
         this.loadMode = "draft@specific";
         this.exh_id = draft.exhibition.id;
+        this.draftSpecificLoadStatus = "idle";
+      })
+      .catch(() => {
+        this.draftSpecificLoadStatus = "fail";
       });
   }
 
@@ -248,11 +300,13 @@ export default class DraftPost extends Vue {
   }
 
   reloadExhibition() {
+    this.resetAllStatus();
     this.loadExhibition();
     this.reloadExhibitionInfo();
   }
 
   loadExhibition() {
+    this.exhibitionLoadStatus = "pending";
     if (this.exh_id !== null) {
       api(aspida())
         .online.exhibition._id(this.exh_id)
@@ -260,6 +314,10 @@ export default class DraftPost extends Vue {
         .then((exh) => {
           this.content = this.latest_content = exh.content;
           this.loadMode = "exhibition";
+          this.exhibitionLoadStatus = "idle";
+        })
+        .catch(() => {
+          this.exhibitionLoadStatus = "fail";
         });
     }
   }
@@ -269,7 +327,7 @@ export default class DraftPost extends Vue {
   }
 
   post() {
-    this.status = "pending";
+    this.postStatus = "pending";
 
     if (this.exh_id !== null)
       this.$auth.attempt_get_JWT("exhibition").then((token) => {
@@ -285,7 +343,7 @@ export default class DraftPost extends Vue {
             },
           })
           .then((data: Draft) => {
-            this.status = "idle";
+            this.postStatus = "idle";
             this.$bvToast.toast("Exhibition Draft Created: " + data.id, {
               title: "Create new draft",
               autoHideDelay: 5000,
@@ -297,7 +355,7 @@ export default class DraftPost extends Vue {
             });
           })
           .catch(() => {
-            this.status = "fail";
+            this.postStatus = "fail";
           });
       });
   }
