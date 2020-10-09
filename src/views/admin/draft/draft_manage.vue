@@ -62,7 +62,7 @@
         Edit and Post New Draft
       </b-button>
     </section>
-    <section>
+    <section v-if="admin_logged_in">
       <h2>Review</h2>
       <p class="mb-2">
         Preview ボタンで確認後、Accept / Reject ボタンでレビューしてください。
@@ -134,17 +134,21 @@ export default class DraftManage extends Vue {
   forbidden = false;
   draft: Draft | null = null;
 
+  admin_logged_in = false;
+
   mounted() {
     this.load();
     auth_eventhub.onUpdateAuth(this.load);
   }
 
   load() {
+    this.admin_logged_in = false;
     this.$auth
       .attempt_get_JWT(["blogAdmin", "teacher"])
       .then((token) => {
         this.forbidden = false;
         this.fetchData(token);
+        this.admin_logged_in = true;
       })
       .catch(() => {
         this.$auth
