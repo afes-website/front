@@ -1,5 +1,11 @@
 <template>
-  <forbidden :is-forbidden="forbidden" :title="page_title" class="box wide-box">
+  <not-found v-if="notfound" />
+  <forbidden
+    v-else
+    :is-forbidden="forbidden"
+    :title="page_title"
+    class="box wide-box"
+  >
     <breadcrumb :text="page_title" />
     <h1>{{ page_title }}</h1>
     <section>
@@ -71,9 +77,11 @@ import DraftTable from "@/components/DraftTable.vue";
 import api, { Draft, Exhibition } from "@afes-website/docs";
 import aspida from "@aspida/axios";
 import { getStringTime } from "@/libs/string_date";
+import NotFound from "@/views/NotFound.vue";
 
 @Component({
   components: {
+    NotFound,
     Breadcrumb,
     Forbidden,
     ExhibitionCard,
@@ -83,6 +91,7 @@ import { getStringTime } from "@/libs/string_date";
 export default class ExhManage extends Vue {
   page_title = "展示管理";
   forbidden = false;
+  notfound = false;
   exhibition: Exhibition | null = null;
   drafts: Draft[] = [];
   exh_id = "";
@@ -126,12 +135,15 @@ export default class ExhManage extends Vue {
 
   fetchData(token: string) {
     this.forbidden = false;
-    // TODO: 404, 500, etc...
+    this.notfound = false;
     api(aspida())
       .online.exhibition._id(this.exh_id)
       .$get()
       .then((res) => {
         this.exhibition = res;
+      })
+      .catch(() => {
+        this.notfound = true;
       });
     api(aspida())
       .online.drafts.$get({
