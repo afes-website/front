@@ -17,6 +17,10 @@
           variant="primary"
         >
           最新 draft を取得
+          <b-spinner
+            v-show="isLoadingDraftLatest"
+            style="height: 24px; width: 24px"
+          />
         </b-button>
         <b-button
           @click="reloadExhibition"
@@ -25,6 +29,10 @@
           variant="primary"
         >
           最新 exhibition を取得
+          <b-spinner
+            v-show="isLoadingExhibition"
+            style="height: 24px; width: 24px"
+          />
         </b-button>
       </b-button-group>
     </b-form-group>
@@ -43,6 +51,10 @@
           variant="primary"
         >
           指定の draft を取得
+          <b-spinner
+            v-show="isLoadingDraftSpecific"
+            style="height: 24px; width: 24px"
+          />
         </b-button>
       </b-button-group>
     </b-form-group>
@@ -141,11 +153,18 @@ export default class DraftPost extends Vue {
     return null;
   }
 
-  get exhibitionNotFound() {
+  get exhibitionNotFound(): boolean {
     return (
       this.draftLatestLoadStatus === "fail" ||
       this.exhibitionLoadStatus === "fail"
     );
+  }
+
+  get isLoadingDraftLatest(): boolean {
+    return this.draftLatestLoadStatus === "pending";
+  }
+  get isLoadingExhibition(): boolean {
+    return this.exhibitionLoadStatus === "pending";
   }
 
   get draftIdFormState(): boolean | null {
@@ -155,6 +174,10 @@ export default class DraftPost extends Vue {
 
   get draftNotFound() {
     return this.draftSpecificLoadStatus === "fail";
+  }
+
+  get isLoadingDraftSpecific(): boolean {
+    return this.draftSpecificLoadStatus === "pending";
   }
 
   resetAllStatus() {
@@ -253,6 +276,8 @@ export default class DraftPost extends Vue {
               this.content = this.latest_content = draft.content;
               this.loadMode = "draft@latest";
               this.draftLatestLoadStatus = "idle";
+            } else {
+              this.draftLatestLoadStatus = "fail";
             }
           }
         })
