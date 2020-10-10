@@ -103,7 +103,7 @@
         </b-tooltip>
       </template>
       <template v-slot:cell(comment_count)="row">
-        <b-badge variant="primary">
+        <b-badge :variant="get_comments_variant(row)">
           <font-awesome-icon icon="comment" class="fa-fw" />
           {{ get_comments_count(row) }}
         </b-badge>
@@ -435,6 +435,10 @@ export default class DraftTable extends Vue {
 
   get_comments_count(row: { item: Draft }) {
     return row.item.comments.length;
+  }
+
+  get_comments_variant(row: { item: Draft }) {
+    return row.item.comments.length > 0 ? "primary" : "secondary";
   }
 
   get_draft_status_is_accepted(row: { item: Draft }) {
