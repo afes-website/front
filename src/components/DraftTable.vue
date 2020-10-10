@@ -232,9 +232,6 @@ export default class DraftTable extends Vue {
   @Prop({ required: true, default: [] })
   readonly value?: Draft[];
 
-  @Prop({ required: false, default: null })
-  readonly exh_id?: string;
-
   @Prop({ required: false, default: false })
   readonly busy?: boolean;
 
@@ -368,10 +365,7 @@ export default class DraftTable extends Vue {
 
   get filteredDrafts(): DraftOnTable[] {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const draftsOnTable: DraftOnTable[] = this.value!.filter((draft) => {
-      if (this.exh_id) draft.exhibition.id === this.exh_id;
-      return true;
-    }).map((draft) => {
+    const draftsOnTable: DraftOnTable[] = this.value!.map((draft) => {
       return { _rowVariant: this.get_status_variant(draft.status), ...draft };
     });
 
