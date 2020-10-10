@@ -65,7 +65,7 @@
     <section v-if="admin_logged_in">
       <h2>Review</h2>
       <p class="mb-2">
-        Preview ボタンで確認後、Accept / Reject ボタンでレビューしてください。
+        Preview ボタンで確認し、Accept / Reject ボタンでレビューしてください。
       </p>
       <b-button-group>
         <b-button
