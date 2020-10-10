@@ -36,10 +36,11 @@
         </b-button>
       </b-button-group>
     </b-form-group>
-    <b-form-group label="draft id:" v-if="admin_logged_in">
+    <b-form-group label="draft id:">
       <b-input v-model="draft_id" :state="draft_id_state" />
       <b-form-invalid-feedback v-show="draft_not_found">
-        該当する draft が見つかりませんでした。
+        該当する draft を取得できませんでした。<br />
+        draft が存在しないか、権限がありません。
       </b-form-invalid-feedback>
     </b-form-group>
     <b-form-group>
