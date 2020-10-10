@@ -32,8 +32,8 @@
       </b-tab>
       <b-tab>
         <template v-slot:title>
-          <font-awesome-icon icon="archive" class="fa-fw" />
-          Archived
+          <font-awesome-icon icon="inbox" class="fa-fw" />
+          Published
         </template>
       </b-tab>
     </b-tabs>
@@ -376,12 +376,12 @@ export default class DraftTable extends Vue {
         return draftsOnTable.filter((draft) => draft.status === "waiting");
       case 2:
         return draftsOnTable.filter(
-          (draft) => draft.status === "accepted" && !draft.deleted
+          (draft) => draft.status === "accepted" && !draft.published
         );
       case 3:
         return draftsOnTable.filter((draft) => draft.status === "rejected");
       case 4:
-        return draftsOnTable.filter((draft) => draft.deleted);
+        return draftsOnTable.filter((draft) => draft.published);
       default:
         return draftsOnTable.filter((draft) => !draft.deleted);
     }
