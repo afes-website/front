@@ -49,7 +49,7 @@
     </section>
     <section>
       <h2>リクエスト一覧</h2>
-      <DraftTable v-model="drafts" :exh_id="exh_id" />
+      <DraftTable v-model="drafts" :exh_id="exh_id" :busy="busy" />
     </section>
     <section>
       <h2>Raw Markdown</h2>
@@ -95,6 +95,7 @@ export default class ExhManage extends Vue {
   exhibition: Exhibition | null = null;
   drafts: Draft[] = [];
   exh_id = "";
+  busy = false;
 
   mounted() {
     this.confirmPermission();
@@ -136,6 +137,7 @@ export default class ExhManage extends Vue {
   fetchData(token: string) {
     this.forbidden = false;
     this.notfound = false;
+    this.busy = true;
     api(aspida())
       .online.exhibition._id(this.exh_id)
       .$get()
@@ -152,6 +154,10 @@ export default class ExhManage extends Vue {
       })
       .then((res) => {
         this.drafts.splice(0, this.drafts.length, ...res);
+        this.busy = false;
+      })
+      .catch(() => {
+        this.busy = false;
       });
   }
 

@@ -2,7 +2,7 @@
   <forbidden :is-forbidden="forbidden" :title="page_title" class="box wide-box">
     <breadcrumb :text="page_title" />
     <h1>{{ page_title }}</h1>
-    <DraftTable v-model="drafts" />
+    <DraftTable v-model="drafts" :busy="busy" />
   </forbidden>
 </template>
 
@@ -27,12 +27,15 @@ export default class DraftList extends Vue {
   forbidden = false;
   drafts: Draft[] = [];
 
+  busy = false;
+
   mounted() {
     this.load();
     auth_eventhub.onUpdateAuth(this.load);
   }
 
   load() {
+    this.busy = true;
     this.$auth
       .attempt_get_JWT(["blogAdmin", "teacher"])
       .then((token) => {
@@ -43,10 +46,12 @@ export default class DraftList extends Vue {
           })
           .then((res) => {
             this.drafts.splice(0, this.drafts.length, ...res);
+            this.busy = false;
           });
       })
       .catch(() => {
         this.forbidden = true;
+        this.busy = false;
       });
   }
 }

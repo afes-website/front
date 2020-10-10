@@ -12,6 +12,7 @@
       :filter="exhFilter"
       :sort-by.sync="sortBy"
       :sort-desc.sync="sortDesc"
+      :busy="busy"
     >
       <template v-slot:cell(show)="row">
         <b-button-group size="sm">
@@ -36,6 +37,12 @@
             Preview
           </b-button>
         </b-button-group>
+      </template>
+      <template v-slot:table-busy>
+        <div class="text-center text-theme-dark my-2">
+          <b-spinner class="align-middle mr-2"></b-spinner>
+          <strong>Loading...</strong>
+        </div>
       </template>
     </b-table>
   </forbidden>
@@ -62,6 +69,7 @@ export default class ExhList extends Vue {
   page_title = "展示管理";
   forbidden = false;
   exh_list: Exhibition[] = [];
+  busy = false;
 
   readonly exhFields = [
     { key: "id", label: "ID", sortable: true },
@@ -84,6 +92,7 @@ export default class ExhList extends Vue {
   }
 
   load() {
+    this.busy = true;
     this.$auth
       .attempt_get_JWT()
       .then(() => {
@@ -92,10 +101,12 @@ export default class ExhList extends Vue {
           .online.exhibition.$get()
           .then((res) => {
             this.exh_list.splice(0, this.exh_list.length, ...res);
+            this.busy = false;
           });
       })
       .catch(() => {
         this.forbidden = true;
+        this.busy = false;
       });
   }
 

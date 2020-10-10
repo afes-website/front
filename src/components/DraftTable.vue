@@ -47,6 +47,7 @@
       :filter="draftFilter"
       :sort-by.sync="sortBy"
       :sort-desc.sync="sortDesc"
+      :busy="busy"
     >
       <template v-slot:cell(published_icon)="row">
         <template v-if="get_published(row)">
@@ -189,6 +190,12 @@
           </b-button>
         </b-button-group>
       </template>
+      <template v-slot:table-busy>
+        <div class="text-center text-theme-dark my-2">
+          <b-spinner class="align-middle mr-2"></b-spinner>
+          <strong>Loading...</strong>
+        </div>
+      </template>
     </b-table>
   </div>
 </template>
@@ -227,6 +234,9 @@ export default class DraftTable extends Vue {
 
   @Prop({ required: false, default: null })
   readonly exh_id?: string;
+
+  @Prop({ required: false, default: false })
+  readonly busy?: boolean;
 
   currentUser: UserInfo | null = null;
   draftFields: BvTableField[] = [];
