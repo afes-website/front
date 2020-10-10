@@ -142,6 +142,7 @@
             @click="accept_draft(get_id(row))"
             variant="success"
             class="mb-0"
+            :disabled="get_is_accepted(get_current_user_review_status(row))"
           >
             Accept
           </b-button>
@@ -149,6 +150,7 @@
             @click="reject_draft(get_id(row))"
             variant="danger"
             class="mb-0"
+            :disabled="get_is_rejected(get_current_user_review_status(row))"
           >
             Reject
           </b-button>
@@ -447,6 +449,14 @@ export default class DraftTable extends Vue {
     );
   }
 
+  get_current_user_review_status(row: { item: Draft }): ReviewStatus | null {
+    if (this.currentUser?.permissions.blogAdmin)
+      return this.get_review_status(row);
+    if (this.currentUser?.permissions.teacher)
+      return this.get_teacher_review_status(row);
+    return null;
+  }
+
   /* ==== formatter ==== */
 
   get_formatted_exh_name(exh: ExhibitionSummary) {
@@ -489,7 +499,7 @@ export default class DraftTable extends Vue {
     }
   }
 
-  get_status_variant(status: "waiting" | "accepted" | "rejected") {
+  get_status_variant(status: ReviewStatus) {
     switch (status) {
       case "accepted":
         return "success";
@@ -498,6 +508,14 @@ export default class DraftTable extends Vue {
       case "waiting":
         return "warning";
     }
+  }
+
+  get_is_accepted(status: ReviewStatus | null) {
+    return status === "accepted";
+  }
+
+  get_is_rejected(status: ReviewStatus) {
+    return status === "rejected";
   }
 }
 </script>
