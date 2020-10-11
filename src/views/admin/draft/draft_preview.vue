@@ -14,6 +14,14 @@
       </b-alert>
       <h1>{{ page_title }}</h1>
       <div class="under-title">
+        <b-button
+          variant="secondary"
+          size="sm"
+          :to="{ name: 'admin_draft_manage', params: { id: draft_id } }"
+        >
+          <font-awesome-icon icon="wrench" class="fa-fw" />
+          Draft を管理
+        </b-button>
         <p>
           <span>
             <font-awesome-icon :icon="'clock'" class="fa-fw" />
