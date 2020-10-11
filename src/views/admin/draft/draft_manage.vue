@@ -59,7 +59,7 @@
         variant="secondary"
       >
         <font-awesome-icon icon="edit" class="fa-fw" />
-        Edit and Post New Draft
+        この Draft を元に編集
       </b-button>
     </section>
     <section v-if="admin_logged_in">

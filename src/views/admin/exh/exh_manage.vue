@@ -37,7 +37,7 @@
         variant="secondary"
       >
         <font-awesome-icon icon="edit" class="fa-fw" />
-        Edit and Post New Draft
+        編集
       </b-button>
     </section>
     <section>
