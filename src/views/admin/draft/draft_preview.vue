@@ -14,20 +14,28 @@
       </b-alert>
       <h1>{{ page_title }}</h1>
       <div class="under-title">
-        <b-button
-          variant="secondary"
-          size="sm"
-          :to="{ name: 'admin_draft_manage', params: { id: draft_id } }"
-        >
-          <font-awesome-icon icon="wrench" class="fa-fw" />
-          Draft を管理
-        </b-button>
-        <p>
-          <span>
-            <font-awesome-icon :icon="'clock'" class="fa-fw" />
-            {{ timestamp }}
-          </span>
-        </p>
+        <span>
+          <font-awesome-icon :icon="'clock'" class="fa-fw" />
+          {{ timestamp }}
+        </span>
+        <b-button-group>
+          <b-button
+            variant="secondary"
+            size="sm"
+            :to="{ name: 'admin_draft_manage', params: { id: draft_id } }"
+          >
+            <font-awesome-icon icon="wrench" class="fa-fw" />
+            Draft 管理ページ
+          </b-button>
+          <b-button
+            variant="secondary"
+            size="sm"
+            :to="{ name: 'admin_exh_manage', params: { id: exhibition_id } }"
+          >
+            <font-awesome-icon icon="wrench" class="fa-fw" />
+            Exhibition 管理ページ
+          </b-button>
+        </b-button-group>
       </div>
       <div class="main-content" v-html="rendered_md" />
     </template>
@@ -134,6 +142,10 @@ export default class DraftPreview extends Vue {
 
   get draft_id() {
     return this.draft?.id;
+  }
+
+  get exhibition_id() {
+    return this.draft?.exhibition.id;
   }
 
   get status_color() {
