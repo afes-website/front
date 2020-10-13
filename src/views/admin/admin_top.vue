@@ -10,28 +10,61 @@
         パスワード変更
       </b-button>
     </section>
-    <template v-if="is_writer">
-      <section>
-        <h2>新規リクエスト</h2>
-        <p>投稿の新規リクエストはこちらから。</p>
-        <b-button :to="{ name: 'new_revision' }" variant="outline-theme-dark"
-          >新規リクエスト</b-button
-        >
+    <h2>近況</h2>
+    <section v-if="is_blog_writer">
+      <h3>新規記事リクエスト</h3>
+      <span class="sub-title">近況への新規記事リクエスト</span>
+      <b-button :to="{ name: 'new_revision' }" variant="outline-theme-dark">
+        新規記事リクエスト
+      </b-button>
+    </section>
+    <section v-if="is_blog_writer">
+      <h3>記事リクエスト一覧</h3>
+      <span class="sub-title">自分がリクエストした記事一覧</span>
+      <b-button :to="{ name: 'revision_list' }" variant="outline-theme-dark">
+        記事リクエスト一覧
+      </b-button>
+      <section v-if="is_blog_admin">
+        <h3>記事一覧･管理</h3>
+        <span class="sub-title">
+          投稿リクエストの承認･却下や、記事管理･削除
+        </span>
+        <b-button :to="{ name: 'path_list' }" variant="outline-theme-dark">
+          記事一覧
+        </b-button>
       </section>
-      <section>
-        <h2>投稿リクエスト一覧</h2>
-        <p>自分がリクエストした投稿一覧はこっち。</p>
-        <b-button :to="{ name: 'revision_list' }" variant="outline-theme-dark"
-          >リクエスト一覧</b-button
-        >
-      </section>
-    </template>
-    <section v-if="is_admin">
-      <h2>記事一覧･管理</h2>
-      <p>Writerからの投稿リクエストの承認･却下や、記事削除はここ。</p>
-      <b-button :to="{ name: 'path_list' }" variant="outline-theme-dark"
-        >リクエスト一覧</b-button
+    </section>
+    <h2>オンライン展示</h2>
+    <section v-if="can_post_draft">
+      <h3>展示更新リクエスト</h3>
+      <span class="sub-title">オンライン展示の更新リクエスト</span>
+      <b-button :to="{ name: 'admin_draft_post' }" variant="outline-theme-dark">
+        展示更新リクエスト
+      </b-button>
+    </section>
+    <section v-if="is_exhibition">
+      <h3>展示管理 @{{ user_id }}</h3>
+      <span class="sub-title">自展示の管理画面</span>
+      <b-button
+        :to="{ name: 'admin_exh_manage', params: { id: user_id } }"
+        variant="outline-theme-dark"
       >
+        展示管理 @{{ user_id }}
+      </b-button>
+    </section>
+    <section v-if="is_exhibition_admin">
+      <h3>展示一覧</h3>
+      <span class="sub-title">オンライン展示出展団体一覧</span>
+      <b-button :to="{ name: 'admin_exh_list' }" variant="outline-theme-dark">
+        展示一覧
+      </b-button>
+    </section>
+    <section v-if="is_exhibition_admin">
+      <h3>展示更新リクエスト一覧</h3>
+      <span class="sub-title">展示更新リクエストの一覧</span>
+      <b-button :to="{ name: 'admin_draft_list' }" variant="outline-theme-dark">
+        展示リクエスト一覧
+      </b-button>
     </section>
     <change-password-modal v-model="password_modal_shown" />
   </div>
@@ -47,6 +80,12 @@
     .btn {
       margin-left: 0.5rem;
     }
+  }
+  .sub-title {
+    display: block;
+    color: var(--gray);
+    margin-bottom: 16px;
+    margin-top: -4px;
   }
 }
 </style>
@@ -65,7 +104,7 @@ import auth_eventhub from "@/libs/auth/auth_eventhub";
   },
 })
 export default class AdminTop extends Vue {
-  readonly page_title = "ブログ管理";
+  readonly page_title = "管理";
   password_modal_shown = false;
 
   user: StorageUserInfo | null = null;
@@ -99,11 +138,24 @@ export default class AdminTop extends Vue {
     return get_user_icon(this.user);
   }
 
-  get is_writer() {
+  get is_blog_writer() {
     return this.user?.permissions.blogWriter;
   }
-  get is_admin() {
+  get is_exhibition() {
+    return this.user?.permissions.exhibition;
+  }
+  get is_blog_admin() {
     return this.user?.permissions.blogAdmin;
+  }
+  get is_teacher() {
+    return this.user?.permissions.teacher;
+  }
+
+  get can_post_draft() {
+    return this.is_exhibition || this.is_exhibition_admin;
+  }
+  get is_exhibition_admin() {
+    return this.is_blog_admin || this.is_teacher;
   }
 }
 </script>
