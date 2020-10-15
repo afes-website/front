@@ -62,7 +62,7 @@
         この Draft を元に編集
       </b-button>
     </section>
-    <section v-if="admin_logged_in">
+    <section v-if="has_permission_blog_admin">
       <h2>Review</h2>
       <p class="mb-2">
         Preview ボタンで確認し、Accept / Reject ボタンでレビューしてください。
@@ -159,7 +159,7 @@ export default class DraftManage extends Vue {
   draft: Draft | null = null;
   exhibition: Exhibition | null = null;
 
-  admin_logged_in = false;
+  has_permission_blog_admin = false;
 
   mounted() {
     this.load();
@@ -167,13 +167,13 @@ export default class DraftManage extends Vue {
   }
 
   load() {
-    this.admin_logged_in = false;
+    this.has_permission_blog_admin = false;
     this.$auth
       .attempt_get_JWT(["blogAdmin", "teacher"])
       .then((token) => {
         this.forbidden = false;
         this.fetchData(token);
-        this.admin_logged_in = true;
+        this.has_permission_blog_admin = true;
       })
       .catch(() => {
         this.$auth

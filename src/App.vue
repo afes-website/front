@@ -109,7 +109,7 @@
               <li>
                 <b-link :to="{ name: 'admin_top' }">管理</b-link>
                 <ul class="menu-secondary" v-if="is_in_admin_route">
-                  <template v-if="writer_logged_in">
+                  <template v-if="has_permission_blog_writer">
                     <li>
                       <b-link :to="{ name: 'new_revision' }"
                         >新規記事リクエスト</b-link
@@ -121,11 +121,11 @@
                       >
                     </li>
                   </template>
-                  <li v-if="admin_logged_in">
+                  <li v-if="has_permission_blog_admin">
                     <b-link :to="{ name: 'path_list' }">記事一覧</b-link>
                   </li>
                   <hr v-if="is_need_hr" />
-                  <template v-if="exhibition_logged_in">
+                  <template v-if="has_permission_exhibition">
                     <li>
                       <b-link :to="{ name: 'admin_draft_post' }">
                         展示更新リクエスト
@@ -142,7 +142,7 @@
                       </b-link>
                     </li>
                   </template>
-                  <template v-if="admin_or_teacher_logged_in">
+                  <template v-if="has_permission_blog_admin_or_teacher">
                     <li>
                       <b-link :to="{ name: 'admin_draft_post' }">
                         展示更新リクエスト
@@ -618,6 +618,7 @@ import getCategories from "@/libs/categories";
 import NotFound from "@/views/NotFound.vue";
 import UserMenu from "@/components/UserMenu.vue";
 import auth_eventhub from "@/libs/auth/auth_eventhub";
+import { StorageUserInfo } from "@/libs/auth/auth";
 
 Vue.use(Vue2TouchEvents);
 
@@ -627,15 +628,25 @@ Vue.use(Vue2TouchEvents);
 export default class Layout extends Vue {
   sidebar_shown = false;
   show_404 = false;
-  admin_logged_in = false;
-  writer_logged_in = false;
-  exhibition_logged_in = false;
-  teacher_logged_in = false;
   categories: Categories = {};
   exh_id = "";
 
-  get admin_or_teacher_logged_in() {
-    return this.admin_logged_in || this.teacher_logged_in;
+  currentUser: StorageUserInfo | null = null;
+
+  get has_permission_blog_admin(): boolean {
+    return !!this.currentUser?.permissions.blogAdmin;
+  }
+  get has_permission_blog_writer(): boolean {
+    return !!this.currentUser?.permissions.blogWriter;
+  }
+  get has_permission_exhibition(): boolean {
+    return !!this.currentUser?.permissions.exhibition;
+  }
+  get has_permission_teacher(): boolean {
+    return !!this.currentUser?.permissions.teacher;
+  }
+  get has_permission_blog_admin_or_teacher(): boolean {
+    return this.has_permission_blog_admin || this.has_permission_teacher;
   }
 
   readonly instagramIcon = require("@/assets/sns/instagram.svg");
@@ -692,24 +703,18 @@ export default class Layout extends Vue {
   }
 
   reload_login_status() {
-    this.admin_logged_in = !!this.$auth.get_current_user?.permissions
-      ?.blogAdmin;
-    this.writer_logged_in = !!this.$auth.get_current_user?.permissions
-      ?.blogWriter;
-    this.exhibition_logged_in = !!this.$auth.get_current_user?.permissions
-      ?.exhibition;
-    this.teacher_logged_in = !!this.$auth.get_current_user?.permissions.teacher;
+    this.currentUser = this.$auth.get_current_user;
 
-    this.exh_id = this.exhibition_logged_in
+    this.exh_id = this.has_permission_exhibition
       ? this.$auth.get_current_user?.id || ""
       : "";
   }
 
   get is_need_hr() {
     return (
-      ((this.writer_logged_in || this.admin_logged_in) &&
-        this.exhibition_logged_in) ||
-      this.admin_logged_in
+      ((this.has_permission_blog_writer || this.has_permission_blog_admin) &&
+        this.has_permission_exhibition) ||
+      this.has_permission_blog_admin
     );
   }
 

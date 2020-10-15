@@ -2,7 +2,7 @@
   <forbidden :is-forbidden="forbidden" :title="page_title" class="box wide-box">
     <breadcrumb :text="page_title" />
     <h1>{{ page_title }}</h1>
-    <b-form-group label="展示 id:" v-if="admin_logged_in">
+    <b-form-group label="展示 id:" v-if="has_permission_blog_admin">
       <b-input v-model="exh_id" :state="exh_id_state" />
       <b-form-invalid-feedback v-show="exh_not_found">
         該当する展示が見つかりませんでした。
@@ -139,7 +139,7 @@ export default class DraftPost extends Vue {
   exh_id: string | null = null;
   _exh_name: string | null = null;
   draft_id: number | null = null;
-  admin_logged_in = false;
+  has_permission_blog_admin = false;
 
   get exh_name() {
     return this._exh_name || "";
@@ -159,7 +159,7 @@ export default class DraftPost extends Vue {
 
   load() {
     this.forbidden = false;
-    this.admin_logged_in = false;
+    this.has_permission_blog_admin = false;
     this.content = this.latest_content = "";
     this.exh_id = null;
     this._exh_name = null;
@@ -169,7 +169,7 @@ export default class DraftPost extends Vue {
     this.$auth
       .attempt_get_JWT(["blogAdmin", "teacher"])
       .then(() => {
-        this.admin_logged_in = true;
+        this.has_permission_blog_admin = true;
         if (typeof this.$route.query.exh_id === "string") {
           this.exh_id = this.$route.query.exh_id;
           this.loadExhibitionName();
