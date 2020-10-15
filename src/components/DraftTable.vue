@@ -231,7 +231,7 @@ type DraftOnTable = {
 
 @Component
 export default class DraftTable extends Vue {
-  @Prop({ required: true, default: [] })
+  @Prop({ required: true })
   readonly value?: Draft[];
 
   @Prop({ required: false, default: false })

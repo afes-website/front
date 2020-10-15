@@ -55,7 +55,7 @@ import * as Diff2Html from "diff2html";
 
 @Component({ components: { MarkdownEditor, MarkdownRenderer } })
 export default class IntegratedMarkdownEditor extends Vue {
-  @Prop({ required: true, default: "" })
+  @Prop({ required: true })
   value?: string;
 
   get _value() {

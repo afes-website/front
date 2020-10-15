@@ -174,7 +174,7 @@ import Markdown from "@/libs/markdown";
 
 @Component
 export default class CommentList extends Vue {
-  @Prop({ required: true, default: [] })
+  @Prop({ required: true })
   value?: Draft;
 
   get comments(): DraftComment[] {
