@@ -57,13 +57,13 @@ export default class Forbidden extends Vue {
   readonly forbidden_title = "403 Forbidden";
 
   @Prop({ required: true })
-  isForbidden = false;
+  isForbidden!: boolean;
 
   @Prop({ required: true })
-  title?: string;
+  title!: string;
 
   get page_title(): string {
-    return this.isForbidden ? this.forbidden_title : this.title || "";
+    return this.isForbidden ? this.forbidden_title : this.title;
   }
 }
 </script>

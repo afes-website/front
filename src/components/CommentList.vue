@@ -175,7 +175,7 @@ import Markdown from "@/libs/markdown";
 @Component
 export default class CommentList extends Vue {
   @Prop({ required: true })
-  value?: Draft;
+  value!: Draft;
 
   get comments(): DraftComment[] {
     if (this.value) return this.value.comments || [];
@@ -183,7 +183,7 @@ export default class CommentList extends Vue {
   }
 
   @Prop({ required: true })
-  draftId?: number;
+  draftId!: number;
 
   newComment = "";
 
@@ -203,8 +203,7 @@ export default class CommentList extends Vue {
       .attempt_get_JWT(["exhibition", "blogAdmin", "teacher"])
       .then((token) => {
         api(aspida())
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          .online.drafts._id(this.draftId!)
+          .online.drafts._id(this.draftId)
           .comment.$post({
             headers: { Authorization: "bearer " + token },
             body: { comment: this.newComment },

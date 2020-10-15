@@ -232,7 +232,7 @@ type DraftOnTable = {
 @Component
 export default class DraftTable extends Vue {
   @Prop({ required: true })
-  readonly value?: Draft[];
+  readonly value!: Draft[];
 
   @Prop({ required: false, default: false })
   readonly busy?: boolean;
@@ -315,8 +315,7 @@ export default class DraftTable extends Vue {
         .then((res) => {
           this.$emit(
             "input",
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            this.value!.map((draft) => {
+            this.value.map((draft) => {
               if (draft.id === res.id) draft = res;
               return draft;
             })

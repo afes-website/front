@@ -1,7 +1,7 @@
 <template>
   <div class="exhibition-card">
-    <img :src="_imageUrl" :alt="_title" class="thumb-img" />
-    <span class="exh-name">{{ _title }}</span>
+    <img :src="imageUrl" :alt="title" class="thumb-img" />
+    <span class="exh-name">{{ title }}</span>
   </div>
 </template>
 
@@ -46,15 +46,9 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 @Component
 export default class ExhibitionCard extends Vue {
   @Prop({ required: true })
-  readonly title?: string;
-  get _title() {
-    return this.title || "";
-  }
+  readonly title!: string;
 
   @Prop({ required: true })
-  readonly imageUrl?: string;
-  get _imageUrl() {
-    return this.imageUrl || "";
-  }
+  readonly imageUrl!: string;
 }
 </script>
