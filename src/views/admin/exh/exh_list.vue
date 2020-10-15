@@ -66,7 +66,7 @@ import { getStringTime } from "@/libs/string_date";
   },
 })
 export default class ExhList extends Vue {
-  page_title = "展示管理";
+  page_title = "展示一覧";
   forbidden = false;
   exh_list: Exhibition[] = [];
   busy = false;

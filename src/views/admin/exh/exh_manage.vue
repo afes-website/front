@@ -89,7 +89,11 @@ import NotFound from "@/views/NotFound.vue";
   },
 })
 export default class ExhManage extends Vue {
-  page_title = "展示管理";
+  get page_title() {
+    const _page_title = "展示管理";
+    if (this.exh_id !== "") return `${_page_title} @${this.exh_id}`;
+    return _page_title;
+  }
   forbidden = false;
   notfound = false;
   exhibition: Exhibition | null = null;
