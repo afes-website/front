@@ -48,8 +48,6 @@
   </forbidden>
 </template>
 
-<style lang="scss"></style>
-
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import auth_eventhub from "@/libs/auth/auth_eventhub";
