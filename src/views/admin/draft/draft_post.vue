@@ -168,26 +168,25 @@ export default class DraftPost extends Vue {
 
     this.$auth
       .attempt_get_JWT(["blogAdmin", "teacher"])
-      .then((token) => {
+      .then(() => {
         this.admin_logged_in = true;
         if (typeof this.$route.query.exh_id === "string") {
           this.exh_id = this.$route.query.exh_id;
           this.loadExhibitionName();
-          this.loadLatestDraft(token);
+          this.hookLatestDraft();
         }
         if (!isNaN(+this.$route.query.draft_id)) {
           this.draft_id = +this.$route.query.draft_id;
           this.loadExhibitionName();
-          this.loadSpecificDraft(token, this.draft_id);
+          this.hookSpecificDraft();
         }
       })
       .catch(() => {
         this.$auth
           .attempt_get_JWT("exhibition")
-          .then((token) => {
+          .then(() => {
             this.exh_id = this.$auth.get_current_user_id || "";
-            this._exh_name = this.$auth.get_current_user?.name || "";
-            this.loadLatestDraft(token);
+            this.hookLatestDraft();
           })
           .catch(() => {
             this.forbidden = true;
