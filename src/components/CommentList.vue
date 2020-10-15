@@ -244,7 +244,7 @@ export default class CommentList extends Vue {
 
   get_html(markdown: string | undefined) {
     if (markdown) return Markdown.render(markdown);
-    return "Parser Error";
+    return "Parse Error";
   }
 }
 </script>
