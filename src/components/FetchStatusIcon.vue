@@ -16,7 +16,7 @@ import FetchStatus from "@/libs/fetch_status";
 @Component
 export default class FetchStatusIcon extends Vue {
   @Prop({ required: true })
-  status?: FetchStatus;
+  status!: FetchStatus;
 
   @Prop({ default: false })
   small?: boolean;

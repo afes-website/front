@@ -41,7 +41,7 @@
           </b-button>
         </b-button-group>
       </div>
-      <div class="main-content" v-html="rendered_md" />
+      <markdown-renderer :content="article_content" v-if="article" />
       <share-buttons :title="page_title_for_share" />
     </template>
     <template v-else>
@@ -68,24 +68,24 @@ article {
 
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
-import api from "@/apis/$api";
+import api from "@afes-website/docs";
 import aspida from "@aspida/axios";
-import { BlogArticle } from "@/apis/blog/articles/@types";
+import { BlogArticle } from "@afes-website/docs";
 import is_axios_error from "@/libs/is_axios_error";
 import FetchStatus from "@/libs/fetch_status";
 import Markdown from "@/libs/markdown";
-import { Categories } from "@/apis/blog/categories/@types";
+import { Categories } from "@afes-website/docs";
 import getCategories from "@/libs/categories";
 import Breadcrumb from "@/components/Breadcrumb.vue";
 import ShareButtons from "@/components/ShareButtons.vue";
-import AdminAuth from "@/libs/auth/admin_auth";
-import WriterAuth from "@/libs/auth/writer_auth";
+import MarkdownRenderer from "@/components/MarkdownRenderer.vue";
 import { getStringTime } from "@/libs/string_date";
 
 @Component({
   components: {
     Breadcrumb,
     ShareButtons,
+    MarkdownRenderer,
   },
 })
 export default class ShowArticle extends Vue {
@@ -136,20 +136,22 @@ export default class ShowArticle extends Vue {
       });
   }
 
-  get rendered_md(): string | null {
+  get article_content(): string | null {
     if (this.article == null) return null;
-    return Markdown.render(this.article.content);
+    return this.article.content;
   }
 
   get can_edit() {
-    const jwt = WriterAuth.getJWT();
-    if (jwt === null) return false;
+    const user = this.$auth.get_current_user;
+    if (!user) return false;
     if (this.article === null) return false;
-    return this.article.author.id === jwt.userId;
+    return this.article.author.id === user.id && user.permissions.blogWriter;
   }
 
   get can_manage() {
-    return AdminAuth.getJWT() !== null;
+    const user = this.$auth.get_current_user;
+    if (!user) return false;
+    return user.permissions.blogAdmin;
   }
 
   get found_article() {

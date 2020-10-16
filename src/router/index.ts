@@ -48,51 +48,103 @@ const routes = [
       ),
   },
   {
-    path: "/blog/admin",
+    path: "/admin",
     name: "admin_top",
     component: () =>
-      import(
-        /* webpackChunkName: "admin_top" */ "@/views/blog/admin/admin_top.vue"
-      ),
+      import(/* webpackChunkName: "admin_top" */ "@/views/admin/admin_top.vue"),
   },
   {
-    path: "/blog/admin/post",
+    path: "/admin/login",
+    name: "login",
+    component: () =>
+      import(/* webpackChunkName: "login" */ "@/views/admin/login.vue"),
+  },
+  {
+    path: "/admin/blog/post",
     name: "new_revision",
     component: () =>
       import(
-        /* webpackChunkName: "new_revision" */ "@/views/blog/admin/new_revision.vue"
+        /* webpackChunkName: "new_revision" */ "@/views/admin/blog/new_revision.vue"
       ),
   },
   {
-    path: "/blog/admin/paths",
+    path: "/admin/blog/paths",
     name: "path_list",
     component: () =>
       import(
-        /* webpackChunkName: "path_list" */ "@/views/blog/admin/path_list.vue"
+        /* webpackChunkName: "path_list" */ "@/views/admin/blog/path_list.vue"
       ),
   },
   {
-    path: "/blog/admin/paths/:id",
+    path: "/admin/blog/paths/:id",
     name: "manage_path",
     component: () =>
       import(
-        /* webpackChunkName: "manage_path" */ "@/views/blog/admin/manage_path.vue"
+        /* webpackChunkName: "manage_path" */ "@/views/admin/blog/manage_path.vue"
       ),
   },
   {
-    path: "/blog/admin/revisions",
+    path: "/admin/blog/revisions",
     name: "revision_list",
     component: () =>
       import(
-        /* webpackChunkName: "revision_list" */ "@/views/blog/admin/revision_list.vue"
+        /* webpackChunkName: "revision_list" */ "@/views/admin/blog/revision_list.vue"
       ),
   },
   {
-    path: "/blog/admin/revisions/:id(\\d+)",
+    path: "/admin/blog/revisions/:id(\\d+)",
     name: "revision_preview",
     component: () =>
       import(
-        /* webpackChunkName: "revision_preview" */ "@/views/blog/admin/revision_preview.vue"
+        /* webpackChunkName: "revision_preview" */ "@/views/admin/blog/revision_preview.vue"
+      ),
+  },
+  {
+    path: "/admin/exh",
+    name: "admin_exh_list",
+    component: () =>
+      import(
+        /* webpackChunkName: "admin_exh_list" */ "@/views/admin/exh/exh_list.vue"
+      ),
+  },
+  {
+    path: "/admin/exh/:id",
+    name: "admin_exh_manage",
+    component: () =>
+      import(
+        /* webpackChunkName: "admin_exh_manage" */ "@/views/admin/exh/exh_manage.vue"
+      ),
+  },
+  {
+    path: "/admin/draft",
+    name: "admin_draft_list",
+    component: () =>
+      import(
+        /* webpackChunkName: "admin_draft_list" */ "@/views/admin/draft/draft_list.vue"
+      ),
+  },
+  {
+    path: "/admin/draft/post",
+    name: "admin_draft_post",
+    component: () =>
+      import(
+        /* webpackChunkName: "admin_draft_post" */ "@/views/admin/draft/draft_post.vue"
+      ),
+  },
+  {
+    path: "/admin/draft/:id(\\d+)",
+    name: "admin_draft_manage",
+    component: () =>
+      import(
+        /* webpackChunkName: "admin_draft_manage" */ "@/views/admin/draft/draft_manage.vue"
+      ),
+  },
+  {
+    path: "/admin/draft/:id(\\d+)/preview",
+    name: "admin_draft_preview",
+    component: () =>
+      import(
+        /* webpackChunkName: "admin_draft_preview" */ "@/views/admin/draft/draft_preview.vue"
       ),
   },
   {

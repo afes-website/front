@@ -37,8 +37,3 @@ declare module "markdown-it-imsize" {
   import MarkdownIt from "markdown-it";
   export default function (md: MarkdownIt): void;
 }
-
-declare module "markdown-it-sanitizer" {
-  import MarkdownIt from "markdown-it";
-  export default function (md: MarkdownIt): void;
-}

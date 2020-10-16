@@ -1,18 +1,17 @@
 <template>
-  <b-modal
-    id="modal-1"
-    title="Uploading image"
-    @ok="modal_ok"
-    v-model="_value"
-    centered
-  >
-    <b-form>
-      <b-form-group id="input-group-file" label="file:" label-for="input-file">
-        <b-form-file
-          v-model="file"
-          :state="!!file"
-          placeholder="画像ファイルを選択"
-        ></b-form-file>
+  <b-modal id="modal-1" title="Change Password" v-model="_value" @ok="modal_ok">
+    <b-form @submit.stop.prevent="change_password">
+      <b-form-group
+        id="input-group-password"
+        label="New Password:"
+        label-for="input-password"
+      >
+        <b-form-input
+          id="input-password"
+          v-model="password"
+          required
+          type="password"
+        ></b-form-input>
       </b-form-group>
     </b-form>
 
@@ -22,21 +21,17 @@
     </template>
   </b-modal>
 </template>
-
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
-
 import aspida from "@aspida/axios";
-import api from "@afes-website/docs";
 import FetchStatus from "@/libs/fetch_status";
 import FetchStatusIcon from "@/components/FetchStatusIcon.vue";
+import { api } from "@afes-website/docs";
 
 @Component({ components: { FetchStatusIcon } })
-export default class ImageUploadModal extends Vue {
+export default class ChangePasswordModal extends Vue {
+  password = "";
   status: FetchStatus = "idle";
-  client = aspida();
-
-  file: File | null = null;
 
   @Prop({ default: false })
   value = false;
@@ -51,27 +46,30 @@ export default class ImageUploadModal extends Vue {
 
   modal_ok(e: Event) {
     e.preventDefault();
+    this.change_password();
+  }
+
+  change_password() {
     this.status = "pending";
-    if (!this.file) throw "file not selected";
-    this.$auth.attempt_get_JWT("blogWriter").then((token) => {
-      api(this.client)
-        .images.$post({
-          body: {
-            content: this.file as File,
-          },
+    if (this.$auth.get_current_user)
+      api(aspida())
+        .auth.change_password.$post({
+          body: { password: this.password },
           headers: {
-            Authorization: "bearer " + token,
+            Authorization: "bearer " + this.$auth.get_current_user.token,
           },
         })
-        .then((data: { id: string }) => {
+        .then(() => {
           this.status = "idle";
           this._value = false;
-          this.$emit("uploaded", data.id);
+          this.$bvToast.toast("パスワードを変更しました。", {
+            title: "Change Password",
+            autoHideDelay: 5000,
+          });
         })
         .catch(() => {
           this.status = "fail";
         });
-    });
   }
 }
 </script>

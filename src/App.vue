@@ -107,28 +107,62 @@
                 </ul>
               </li>
               <li>
-                <b-link :to="{ name: 'admin_top' }">ブログ管理</b-link>
+                <b-link :to="{ name: 'admin_top' }">管理</b-link>
                 <ul class="menu-secondary" v-if="is_in_admin_route">
-                  <template v-if="writer_logged_in">
+                  <template v-if="has_permission_blog_writer">
                     <li>
                       <b-link :to="{ name: 'new_revision' }"
-                        >新規リクエスト</b-link
+                        >新規記事リクエスト</b-link
                       >
                     </li>
                     <li>
                       <b-link :to="{ name: 'revision_list' }"
-                        >リクエスト一覧</b-link
+                        >記事リクエスト一覧</b-link
                       >
                     </li>
                   </template>
-                  <li v-if="admin_logged_in">
+                  <li v-if="has_permission_blog_admin">
                     <b-link :to="{ name: 'path_list' }">記事一覧</b-link>
                   </li>
+                  <hr v-if="is_need_hr" />
+                  <template v-if="has_permission_exhibition">
+                    <li>
+                      <b-link :to="{ name: 'admin_draft_post' }">
+                        展示更新リクエスト
+                      </b-link>
+                    </li>
+                    <li>
+                      <b-link
+                        :to="{
+                          name: 'admin_exh_manage',
+                          params: { id: exh_id },
+                        }"
+                      >
+                        展示管理
+                      </b-link>
+                    </li>
+                  </template>
+                  <template v-if="has_permission_blog_admin_or_teacher">
+                    <li>
+                      <b-link :to="{ name: 'admin_draft_post' }">
+                        展示更新リクエスト
+                      </b-link>
+                    </li>
+                    <li>
+                      <b-link :to="{ name: 'admin_exh_list' }">展示一覧</b-link>
+                    </li>
+                    <li>
+                      <b-link :to="{ name: 'admin_draft_list' }">
+                        展示リクエスト一覧
+                      </b-link>
+                    </li>
+                  </template>
                 </ul>
               </li>
               <li><b-link :to="{ name: 'document' }">文化祭資料</b-link></li>
             </ul>
           </nav>
+          <UserMenu id="user-menu" />
         </div>
         <div
           id="menu-fade"
@@ -168,8 +202,6 @@
         </footer>
       </div>
     </div>
-    <admin-login-modal />
-    <writer-login-modal />
   </div>
 </template>
 
@@ -273,6 +305,12 @@ header {
         //border: 1px solid #eee;
         border-radius: 0.5rem;
 
+        hr {
+          display: block;
+          border-bottom: 1px solid #fff;
+          margin: 0.25rem 0;
+        }
+
         & > ul {
           padding-left: 0;
           margin: 0;
@@ -284,7 +322,7 @@ header {
 
             a {
               display: block;
-              padding: 0.25rem 2rem;
+              padding: 0.25rem 1.5rem;
               width: 100%;
               &:hover {
                 background: darken($theme-dark, 6%);
@@ -293,9 +331,16 @@ header {
 
             & > ul {
               padding: 0;
+              font-size: 1rem;
+
+              hr {
+                margin-left: 2.5rem;
+                width: calc(100% - 2.5rem - 1rem);
+              }
+
               & > li > a {
                 padding: 0.25rem 0;
-                padding-left: 3rem;
+                padding-left: 2.5rem;
               }
             }
           }
@@ -309,6 +354,10 @@ header {
             opacity: 0.65;
           }
         }
+      }
+      #user-menu {
+        margin: 16px 0;
+        box-shadow: 0 0 1em rgba(0, 0, 0, 0.3);
       }
     }
   }
@@ -489,6 +538,7 @@ header {
             }
 
             ul li a {
+              font-size: 1.3rem;
               padding-left: 1em;
             }
           }
@@ -499,9 +549,9 @@ header {
         padding: calc(3.5rem - 1px) 1.6rem 0 1.6rem;
         font-size: 1.3rem;
         position: fixed;
-        width: 60%;
+        width: 70%;
         max-width: 300px;
-        left: -60%;
+        left: -70%;
         height: var(--vh);
         border-radius: 0;
         overflow-y: auto;
@@ -511,7 +561,7 @@ header {
         hr {
           display: block;
           position: relative;
-          width: 60vw;
+          width: 70vw;
           left: -1.6rem;
           margin: 0.5rem 0;
           border: none;
@@ -563,32 +613,47 @@ header {
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
 import Vue2TouchEvents from "vue2-touch-events";
-import AdminLoginModal from "./components/AdminLoginModal.vue";
-import WriterLoginModal from "./components/WriterLoginModal.vue";
-import { Categories } from "@/apis/blog/categories/@types";
+import { Categories } from "@afes-website/docs";
 import getCategories from "@/libs/categories";
 import NotFound from "@/views/NotFound.vue";
-import AdminAuth from "@/libs/auth/admin_auth";
-import WriterAuth from "@/libs/auth/writer_auth";
-import admin_auth_eventhub from "@/libs/auth/admin_auth_eventhub";
-import writer_auth_eventhub from "@/libs/auth/writer_auth_eventhub";
+import UserMenu from "@/components/UserMenu.vue";
+import auth_eventhub from "@/libs/auth/auth_eventhub";
+import { StorageUserInfo } from "@/libs/auth/auth";
 
 Vue.use(Vue2TouchEvents);
 
-@Component({ components: { AdminLoginModal, WriterLoginModal, NotFound } })
+@Component({
+  components: { NotFound, UserMenu },
+})
 export default class Layout extends Vue {
   sidebar_shown = false;
   show_404 = false;
-  admin_logged_in = false;
-  writer_logged_in = false;
   categories: Categories = {};
+  exh_id = "";
+
+  currentUser: StorageUserInfo | null = null;
+
+  get has_permission_blog_admin(): boolean {
+    return !!this.currentUser?.permissions.blogAdmin;
+  }
+  get has_permission_blog_writer(): boolean {
+    return !!this.currentUser?.permissions.blogWriter;
+  }
+  get has_permission_exhibition(): boolean {
+    return !!this.currentUser?.permissions.exhibition;
+  }
+  get has_permission_teacher(): boolean {
+    return !!this.currentUser?.permissions.teacher;
+  }
+  get has_permission_blog_admin_or_teacher(): boolean {
+    return this.has_permission_blog_admin || this.has_permission_teacher;
+  }
 
   readonly instagramIcon = require("@/assets/sns/instagram.svg");
   readonly azabuIcon = require("@/assets/sns/azabu.svg");
 
   created() {
-    admin_auth_eventhub.onLoginSuccess(this.reload_login_status);
-    writer_auth_eventhub.onLoginSuccess(this.reload_login_status);
+    auth_eventhub.onUpdateAuth(this.reload_login_status);
   }
   mounted() {
     this.resize();
@@ -607,6 +672,9 @@ export default class Layout extends Vue {
   route_changed() {
     this.sidebar_shown = false;
     this.show_404 = false;
+
+    if (this.is_need_auth && !this.$auth.get_current_user_id)
+      this.$router.push({ name: "login" });
   }
 
   resize() {
@@ -635,12 +703,30 @@ export default class Layout extends Vue {
   }
 
   reload_login_status() {
-    this.admin_logged_in = AdminAuth.getJWT() !== null;
-    this.writer_logged_in = WriterAuth.getJWT() !== null;
+    this.currentUser = this.$auth.get_current_user;
+
+    this.exh_id = this.has_permission_exhibition
+      ? this.$auth.get_current_user?.id || ""
+      : "";
+  }
+
+  get is_need_hr() {
+    return (
+      ((this.has_permission_blog_writer || this.has_permission_blog_admin) &&
+        this.has_permission_exhibition) ||
+      this.has_permission_blog_admin
+    );
   }
 
   get is_in_admin_route() {
-    return this.$route.path.startsWith("/blog/admin");
+    return this.$route.path.startsWith("/admin");
+  }
+
+  get is_need_auth() {
+    return (
+      this.$route.path.startsWith("/blog/admin") &&
+      !this.$route.path.startsWith("/blog/admin/login")
+    );
   }
 
   get is_top_page() {
