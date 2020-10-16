@@ -56,14 +56,14 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 export default class Forbidden extends Vue {
   readonly forbidden_title = "403 Forbidden";
 
-  @Prop({ required: true, default: false })
-  isForbidden = false;
+  @Prop({ required: true })
+  isForbidden!: boolean;
 
-  @Prop({ required: true, default: "" })
-  title?: string;
+  @Prop({ required: true })
+  title!: string;
 
   get page_title(): string {
-    return this.isForbidden ? this.forbidden_title : this.title || "";
+    return this.isForbidden ? this.forbidden_title : this.title;
   }
 }
 </script>

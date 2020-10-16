@@ -55,11 +55,11 @@ import * as Diff2Html from "diff2html";
 
 @Component({ components: { MarkdownEditor, MarkdownRenderer } })
 export default class IntegratedMarkdownEditor extends Vue {
-  @Prop({ required: true, default: "" })
-  value?: string;
+  @Prop({ required: true })
+  value!: string;
 
   get _value() {
-    return this.value || "";
+    return this.value;
   }
   set _value(_new_val: string) {
     this.$emit("input", _new_val);

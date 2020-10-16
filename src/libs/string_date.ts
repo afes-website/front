@@ -7,3 +7,8 @@ export function getStringTime(date: string) {
 export function getStringDate(date: string) {
   return moment(date).format("YYYY.MM.DD");
 }
+
+export function getStringFromNow(date: string) {
+  moment.locale("ja");
+  return moment(date).fromNow();
+}
