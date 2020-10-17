@@ -49,7 +49,7 @@
     </section>
     <section>
       <h2>リクエスト一覧</h2>
-      <DraftTable v-model="drafts" :busy="busy" />
+      <DraftTable v-model="drafts" :busy="busy" :exh_id="exh_id" />
     </section>
     <section>
       <h2>Raw Markdown</h2>
