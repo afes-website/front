@@ -108,7 +108,11 @@ export default class DraftPreview extends Vue {
     let token = "";
 
     try {
-      token = await this.$auth.attempt_get_JWT(["exhibition", "blogAdmin"]);
+      token = await this.$auth.attempt_get_JWT([
+        "exhibition",
+        "blogAdmin",
+        "teacher",
+      ]);
     } catch {
       this.forbidden = true;
       return;
