@@ -1,176 +1,180 @@
 <template>
   <div id="app" v-touch:swipe.right="show" v-touch:swipe.left="hide">
     <div id="background-image" />
-    <header>
-      <div id="top">
-        <font-awesome-icon
-          icon="bars"
-          size="2x"
-          id="hamburger"
-          class="fa-fw"
-          @click="toggle_sidebar"
-        />
-        <font-awesome-icon
-          icon="times"
-          size="2x"
-          id="hamburger-closer"
-          class="fa-fw"
-          :class="{ open: sidebar_shown }"
-          @click="toggle_sidebar"
-        />
-        <b-link id="brand" :to="{ name: 'Home' }">
-          <img src="./assets/logo.svg" alt="logo" />
-        </b-link>
-        <div id="menu" :class="{ shown: sidebar_shown }">
-          <hr />
-          <div id="menu-icons">
-            <b-link
-              target="_blank"
-              title="Twitter"
-              href="https://twitter.com/73_Afes"
-            >
-              <font-awesome-icon :icon="['fab', 'twitter']" size="2x" />
-            </b-link>
-            <b-link
-              target="_blank"
-              title="Instagram"
-              href="https://www.instagram.com/73_afes/"
-              id="tooltip-target-instagram"
-            >
-              <object
-                :data="instagramIcon"
-                type="image/svg+xml"
-                width="32"
-                height="32"
-              />
-            </b-link>
-            <b-tooltip
-              target="tooltip-target-instagram"
-              triggers="hover"
-              placement="bottom"
-            >
-              &copy; Alexo88 2017
+    <div id="left-wrapper">
+      <header>
+        <div id="top">
+          <font-awesome-icon
+            icon="bars"
+            size="2x"
+            id="hamburger"
+            class="fa-fw"
+            @click="toggle_sidebar"
+          />
+          <font-awesome-icon
+            icon="times"
+            size="2x"
+            id="hamburger-closer"
+            class="fa-fw"
+            :class="{ open: sidebar_shown }"
+            @click="toggle_sidebar"
+          />
+          <b-link id="brand" :to="{ name: 'Home' }">
+            <img src="./assets/logo.svg" alt="logo" />
+          </b-link>
+          <div id="menu" :class="{ shown: sidebar_shown }">
+            <hr />
+            <div id="menu-icons">
               <b-link
-                href="https://commons.wikimedia.org/wiki/File:Instagram.svg"
                 target="_blank"
+                title="Twitter"
+                href="https://twitter.com/73_Afes"
               >
-                source
+                <font-awesome-icon :icon="['fab', 'twitter']" size="2x" />
               </b-link>
-            </b-tooltip>
-            <b-link
-              target="_blank"
-              title="School Website"
-              href="https://www.azabu-jh.ed.jp/"
-            >
-              <object
-                :data="azabuIcon"
-                type="image/svg+xml"
-                width="32"
-                height="32"
-              />
-            </b-link>
-          </div>
-          <hr />
-          <nav id="menu-nav">
-            <ul>
-              <li>
-                <b-link :to="{ name: 'about' }">ごあいさつ</b-link>
-              </li>
-              <li>
-                <b-link :to="{ name: 'access' }">アクセス</b-link>
-              </li>
-              <li>
-                <b-link disabled>展示一覧</b-link>
-              </li>
-              <li>
-                <b-link disabled>タイムテーブル</b-link>
-              </li>
-              <li>
-                <b-link disabled>校内マップ</b-link>
-              </li>
-              <li>
-                <b-link :to="{ name: 'article_list' }">近況</b-link>
-                <ul class="menu-secondary">
-                  <li
-                    v-for="(cat_name, cat_id) of visible_categories"
-                    :key="cat_id"
-                  >
-                    <b-link
-                      :to="{
-                        name: 'article_list',
-                        params: { category: cat_id },
-                      }"
+              <b-link
+                target="_blank"
+                title="Instagram"
+                href="https://www.instagram.com/73_afes/"
+                id="tooltip-target-instagram"
+              >
+                <object
+                  :data="instagramIcon"
+                  type="image/svg+xml"
+                  width="32"
+                  height="32"
+                />
+              </b-link>
+              <b-tooltip
+                target="tooltip-target-instagram"
+                triggers="hover"
+                placement="bottom"
+              >
+                &copy; Alexo88 2017
+                <b-link
+                  href="https://commons.wikimedia.org/wiki/File:Instagram.svg"
+                  target="_blank"
+                >
+                  source
+                </b-link>
+              </b-tooltip>
+              <b-link
+                target="_blank"
+                title="School Website"
+                href="https://www.azabu-jh.ed.jp/"
+              >
+                <object
+                  :data="azabuIcon"
+                  type="image/svg+xml"
+                  width="32"
+                  height="32"
+                />
+              </b-link>
+            </div>
+            <hr />
+            <nav id="menu-nav">
+              <ul>
+                <li>
+                  <b-link :to="{ name: 'about' }">ごあいさつ</b-link>
+                </li>
+                <li>
+                  <b-link :to="{ name: 'access' }">アクセス</b-link>
+                </li>
+                <li>
+                  <b-link disabled>展示一覧</b-link>
+                </li>
+                <li>
+                  <b-link disabled>タイムテーブル</b-link>
+                </li>
+                <li>
+                  <b-link disabled>校内マップ</b-link>
+                </li>
+                <li>
+                  <b-link :to="{ name: 'article_list' }">近況</b-link>
+                  <ul class="menu-secondary">
+                    <li
+                      v-for="(cat_name, cat_id) of visible_categories"
+                      :key="cat_id"
                     >
-                      {{ cat_name }}
-                    </b-link>
-                  </li>
-                </ul>
-              </li>
-              <li>
-                <b-link :to="{ name: 'admin_top' }">管理</b-link>
-                <ul class="menu-secondary" v-if="is_in_admin_route">
-                  <template v-if="has_permission_blog_writer">
-                    <li>
-                      <b-link :to="{ name: 'new_revision' }"
-                        >新規記事リクエスト</b-link
-                      >
-                    </li>
-                    <li>
-                      <b-link :to="{ name: 'revision_list' }"
-                        >記事リクエスト一覧</b-link
-                      >
-                    </li>
-                  </template>
-                  <li v-if="has_permission_blog_admin">
-                    <b-link :to="{ name: 'path_list' }">記事一覧</b-link>
-                  </li>
-                  <hr v-if="is_need_hr" />
-                  <template v-if="has_permission_exhibition">
-                    <li>
-                      <b-link :to="{ name: 'admin_draft_post' }">
-                        展示更新リクエスト
-                      </b-link>
-                    </li>
-                    <li>
                       <b-link
                         :to="{
-                          name: 'admin_exh_manage',
-                          params: { id: exh_id },
+                          name: 'article_list',
+                          params: { category: cat_id },
                         }"
                       >
-                        展示管理
+                        {{ cat_name }}
                       </b-link>
                     </li>
-                  </template>
-                  <template v-if="has_permission_blog_admin_or_teacher">
-                    <li>
-                      <b-link :to="{ name: 'admin_draft_post' }">
-                        展示更新リクエスト
-                      </b-link>
+                  </ul>
+                </li>
+                <li>
+                  <b-link :to="{ name: 'admin_top' }">管理</b-link>
+                  <ul class="menu-secondary" v-if="is_in_admin_route">
+                    <template v-if="has_permission_blog_writer">
+                      <li>
+                        <b-link :to="{ name: 'new_revision' }"
+                          >新規記事リクエスト</b-link
+                        >
+                      </li>
+                      <li>
+                        <b-link :to="{ name: 'revision_list' }"
+                          >記事リクエスト一覧</b-link
+                        >
+                      </li>
+                    </template>
+                    <li v-if="has_permission_blog_admin">
+                      <b-link :to="{ name: 'path_list' }">記事一覧</b-link>
                     </li>
-                    <li>
-                      <b-link :to="{ name: 'admin_exh_list' }">展示一覧</b-link>
-                    </li>
-                    <li>
-                      <b-link :to="{ name: 'admin_draft_list' }">
-                        展示リクエスト一覧
-                      </b-link>
-                    </li>
-                  </template>
-                </ul>
-              </li>
-              <li><b-link :to="{ name: 'document' }">文化祭資料</b-link></li>
-            </ul>
-          </nav>
-          <UserMenu id="user-menu" />
+                    <hr v-if="is_need_hr" />
+                    <template v-if="has_permission_exhibition">
+                      <li>
+                        <b-link :to="{ name: 'admin_draft_post' }">
+                          展示更新リクエスト
+                        </b-link>
+                      </li>
+                      <li>
+                        <b-link
+                          :to="{
+                            name: 'admin_exh_manage',
+                            params: { id: exh_id },
+                          }"
+                        >
+                          展示管理
+                        </b-link>
+                      </li>
+                    </template>
+                    <template v-if="has_permission_blog_admin_or_teacher">
+                      <li>
+                        <b-link :to="{ name: 'admin_draft_post' }">
+                          展示更新リクエスト
+                        </b-link>
+                      </li>
+                      <li>
+                        <b-link :to="{ name: 'admin_exh_list' }"
+                          >展示一覧</b-link
+                        >
+                      </li>
+                      <li>
+                        <b-link :to="{ name: 'admin_draft_list' }">
+                          展示リクエスト一覧
+                        </b-link>
+                      </li>
+                    </template>
+                  </ul>
+                </li>
+                <li><b-link :to="{ name: 'document' }">文化祭資料</b-link></li>
+              </ul>
+            </nav>
+            <UserMenu id="user-menu" />
+          </div>
+          <div
+            id="menu-fade"
+            :class="{ shown: sidebar_shown }"
+            @click="hide"
+          ></div>
         </div>
-        <div
-          id="menu-fade"
-          :class="{ shown: sidebar_shown }"
-          @click="hide"
-        ></div>
-      </div>
-    </header>
+      </header>
+    </div>
     <div id="main-wrapper" @scroll="resize">
       <div
         id="main-box"
@@ -207,7 +211,6 @@
 
 <style lang="scss" scoped>
 #app {
-  height: var(--vh);
   margin: 0;
   display: flex;
 }
@@ -236,128 +239,149 @@
   }
 }
 
-header {
-  width: 16rem;
-  min-width: 16rem;
-  padding: 1.5rem 0 0 3rem;
+#left-wrapper {
   height: var(--vh);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: stretch;
-  z-index: 1003;
-  #top {
-    flex-grow: 1;
-    #hamburger,
-    #hamburger-closer {
-      display: none;
-    }
-    #brand {
-      img {
-        margin-left: -1rem;
-        width: calc(100% + 30px);
-        filter: drop-shadow(2px 2px 1px #fff) drop-shadow(-2px 2px 1px #fff)
-          drop-shadow(2px -2px 1px #fff) drop-shadow(-2px -2px 1px #fff);
-      }
-    }
-    #menu {
-      hr {
+  overflow-y: auto;
+  padding: 1.5rem 3rem 0 3rem;
+  position: fixed;
+
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  header {
+    width: 13rem;
+    min-width: 13rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+    z-index: 1003;
+
+    #top {
+      flex-grow: 1;
+
+      #hamburger,
+      #hamburger-closer {
         display: none;
       }
 
-      #menu-icons {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-around;
-        margin-bottom: 8px;
-        filter: drop-shadow(2px 2px 1px #fff) drop-shadow(-2px 2px 1px #fff)
-          drop-shadow(2px -2px 1px #fff) drop-shadow(-2px -2px 1px #fff);
-        a {
-          display: block;
-          margin: 8px;
-          height: min-content;
-          width: min-content;
-        }
-        svg {
-          width: 32px;
-          height: 32px;
-        }
-        object {
-          pointer-events: none;
-        }
-        .fa-twitter {
-          color: #1da1f2;
+      #brand {
+        img {
+          margin-left: -1rem;
+          width: calc(100% + 30px);
+          filter: drop-shadow(2px 2px 1px #fff) drop-shadow(-2px 2px 1px #fff)
+            drop-shadow(2px -2px 1px #fff) drop-shadow(-2px -2px 1px #fff);
         }
       }
 
-      #menu-nav {
-        pointer-events: auto;
-        background: $theme-dark;
-        color: #fff;
-        font-weight: 500;
-        font-size: 1.1rem;
-        width: 100%;
-
-        box-shadow: 0 0 1em rgba(0, 0, 0, 0.3);
-
-        text-align: left;
-        padding: 1rem 0;
-        //border: 1px solid #eee;
-        border-radius: 0.5rem;
-
+      #menu {
         hr {
-          display: block;
-          border-bottom: 1px solid #fff;
-          margin: 0.25rem 0;
+          display: none;
         }
 
-        & > ul {
-          padding-left: 0;
-          margin: 0;
+        #menu-icons {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-around;
+          margin-bottom: 8px;
+          filter: drop-shadow(2px 2px 1px #fff) drop-shadow(-2px 2px 1px #fff)
+            drop-shadow(2px -2px 1px #fff) drop-shadow(-2px -2px 1px #fff);
 
-          li {
+          a {
+            display: block;
+            margin: 8px;
+            height: min-content;
+            width: min-content;
+          }
+
+          svg {
+            width: 32px;
+            height: 32px;
+          }
+
+          object {
+            pointer-events: none;
+          }
+
+          .fa-twitter {
+            color: #1da1f2;
+          }
+        }
+
+        #menu-nav {
+          pointer-events: auto;
+          background: $theme-dark;
+          color: #fff;
+          font-weight: 500;
+          font-size: 1.1rem;
+          width: 100%;
+
+          box-shadow: 0 0 1em rgba(0, 0, 0, 0.3);
+
+          text-align: left;
+          padding: 1rem 0;
+          //border: 1px solid #eee;
+          border-radius: 0.5rem;
+
+          hr {
+            display: block;
+            border-bottom: 1px solid #fff;
+            margin: 0.25rem 0;
+          }
+
+          & > ul {
+            padding-left: 0;
             margin: 0;
-            list-style-type: none;
-            width: 100%;
 
-            a {
-              display: block;
-              padding: 0.25rem 1.5rem;
+            li {
+              margin: 0;
+              list-style-type: none;
               width: 100%;
-              &:hover {
-                background: darken($theme-dark, 6%);
+
+              a {
+                display: block;
+                padding: 0.25rem 1.5rem;
+                width: 100%;
+
+                &:hover {
+                  background: darken($theme-dark, 6%);
+                }
+              }
+
+              & > ul {
+                padding: 0;
+                font-size: 1rem;
+
+                hr {
+                  margin-left: 2.5rem;
+                  width: calc(100% - 2.5rem - 1rem);
+                }
+
+                & > li > a {
+                  padding: 0.25rem 0;
+                  padding-left: 2.5rem;
+                }
               }
             }
+          }
 
-            & > ul {
-              padding: 0;
-              font-size: 1rem;
+          a {
+            color: inherit;
+            text-decoration: none;
 
-              hr {
-                margin-left: 2.5rem;
-                width: calc(100% - 2.5rem - 1rem);
-              }
-
-              & > li > a {
-                padding: 0.25rem 0;
-                padding-left: 2.5rem;
-              }
+            &.disabled {
+              opacity: 0.65;
             }
           }
         }
 
-        a {
-          color: inherit;
-          text-decoration: none;
-
-          &.disabled {
-            opacity: 0.65;
-          }
+        #user-menu {
+          margin: 16px 0;
+          box-shadow: 0 0 1em rgba(0, 0, 0, 0.3);
         }
-      }
-      #user-menu {
-        margin: 16px 0;
-        box-shadow: 0 0 1em rgba(0, 0, 0, 0.3);
       }
     }
   }
@@ -365,14 +389,13 @@ header {
 
 #main-wrapper {
   flex-grow: 1;
-  height: var(--vh);
-  overflow: auto;
   padding: 0;
+  margin-left: 19rem;
 
   #main-box {
     max-width: 1000px;
     padding: 1rem 1.5rem;
-    margin: 0 auto 0 3rem;
+    margin: 0 auto 0 0;
     background: rgba(#fff, 0.9);
     min-height: var(--vh);
     height: max-content;
@@ -382,7 +405,7 @@ header {
 
     &.main-box-wide {
       max-width: unset;
-      width: calc(100% - 3rem);
+      width: 100%;
       background: rgba(#fafafa, 0.9);
       @media screen and (max-width: 900px) {
         width: 100%;
@@ -390,7 +413,7 @@ header {
     }
     &.main-box-hide {
       max-width: unset;
-      width: calc(100% - 3rem);
+      width: 100%;
       background: none;
       padding: 0;
       @media screen and (max-width: 900px) {
@@ -444,138 +467,160 @@ header {
     display: none;
   }
 
-  header {
-    display: block;
-    padding: 0;
+  #left-wrapper {
     height: auto;
-    position: fixed;
-    top: 0;
-    #top {
-      height: 4rem;
-      width: 100vw;
-      border-bottom: 1px solid $theme-dark;
-      background-color: #fff;
-      display: flex;
-      align-items: center;
-      padding: 0.5rem;
-      #hamburger {
-        display: inline-block;
-        position: absolute;
-        top: 0.7rem;
-        left: 1rem;
-        color: $theme-dark;
-        height: 2.5rem;
-      }
-      #hamburger-closer {
-        display: block;
-        color: $theme-dark;
-        transition: opacity 0.3s;
-        z-index: 1002;
-        opacity: 0;
-        position: absolute;
-        top: 0.7rem;
-        left: 1rem;
-        height: 2.5rem;
-        &.open {
-          opacity: 1;
+    padding: 0;
+
+    header {
+      display: block;
+      height: auto;
+      position: fixed;
+      top: 0;
+
+      #top {
+        height: 4rem;
+        width: 100vw;
+        border-bottom: 1px solid $theme-dark;
+        background-color: #fff;
+        display: flex;
+        align-items: center;
+        padding: 0.5rem;
+
+        #hamburger {
+          display: inline-block;
+          position: absolute;
+          top: 0.7rem;
+          left: 1rem;
+          color: $theme-dark;
+          height: 2.5rem;
         }
-      }
-      #brand {
-        display: block;
-        text-align: center;
-        width: 100%;
-        img {
-          margin: 0 auto;
-          margin-top: 5px;
-          height: 64px;
-          width: auto;
-        }
-      }
-      #menu {
-        &,
-        &-fade {
-          transition: opacity, left 0.3s;
-        }
-        z-index: 1001;
-        &-fade {
-          z-index: 1000;
-          position: fixed;
-          left: 0;
-          top: 0;
-          height: var(--vh);
-          width: 100vw;
-          background-color: #000;
+
+        #hamburger-closer {
+          display: block;
+          color: $theme-dark;
+          transition: opacity 0.3s;
+          z-index: 1002;
           opacity: 0;
-          pointer-events: none;
-          &.shown {
-            pointer-events: auto;
-            opacity: 0.3;
+          position: absolute;
+          top: 0.7rem;
+          left: 1rem;
+          height: 2.5rem;
+
+          &.open {
+            opacity: 1;
           }
         }
-        #menu-icons {
-          margin: 0;
-          padding: 0;
+
+        #brand {
+          display: block;
+          text-align: center;
+          width: 100%;
+
           img {
-            margin-bottom: 8px;
+            margin: 0 auto;
+            margin-top: 5px;
+            height: 64px;
+            width: auto;
           }
         }
-        #menu-nav {
-          background-color: inherit;
-          color: inherit;
-          font-weight: inherit;
-          font-size: inherit;
-          width: unset;
-          margin: 0;
-          padding: 0;
-          box-shadow: none;
-          ul li {
-            a {
-              line-height: 1.5;
-              padding: 0.25rem 0;
-              &:hover {
-                background: unset;
+
+        #menu {
+          &,
+          &-fade {
+            transition: opacity, left 0.3s;
+          }
+
+          z-index: 1001;
+
+          &-fade {
+            z-index: 1000;
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: var(--vh);
+            width: 100vw;
+            background-color: #000;
+            opacity: 0;
+            pointer-events: none;
+
+            &.shown {
+              pointer-events: auto;
+              opacity: 0.3;
+            }
+          }
+
+          #menu-icons {
+            margin: 0;
+            padding: 0;
+
+            img {
+              margin-bottom: 8px;
+            }
+          }
+
+          #menu-nav {
+            background-color: inherit;
+            color: inherit;
+            font-weight: inherit;
+            font-size: inherit;
+            width: unset;
+            margin: 0;
+            padding: 0;
+            box-shadow: none;
+
+            ul li {
+              a {
+                line-height: 1.5;
+                padding: 0.25rem 0;
+
+                &:hover {
+                  background: unset;
+                }
+              }
+
+              ul li a {
+                font-size: 1.3rem;
+                padding-left: 1em;
               }
             }
-
-            ul li a {
-              font-size: 1.3rem;
-              padding-left: 1em;
-            }
           }
-        }
-        background-color: #fff;
-        color: $theme-dark;
-        font-weight: 700;
-        padding: calc(3.5rem - 1px) 1.6rem 0 1.6rem;
-        font-size: 1.3rem;
-        position: fixed;
-        width: 70%;
-        max-width: 300px;
-        left: -70%;
-        height: var(--vh);
-        border-radius: 0;
-        overflow-y: auto;
-        top: 0;
-        box-shadow: none;
 
-        hr {
-          display: block;
-          position: relative;
-          width: 70vw;
-          left: -1.6rem;
-          margin: 0.5rem 0;
-          border: none;
-          border-top: 1px solid #87acce;
-        }
+          background-color: #fff;
+          color: $theme-dark;
+          font-weight: 700;
+          padding: calc(3.5rem - 1px) 1.6rem 0 1.6rem;
+          font-size: 1.3rem;
+          position: fixed;
+          width: 70%;
+          max-width: 300px;
+          left: -70%;
+          height: var(--vh);
+          border-radius: 0;
+          overflow-y: auto;
+          top: 0;
+          box-shadow: none;
 
-        &.shown {
-          left: 0;
-          box-shadow: 0 0 1em rgba(0, 0, 0, 0.3);
+          hr {
+            display: block;
+            position: relative;
+            width: 70vw;
+            left: -1.6rem;
+            margin: 0.5rem 0;
+            border: none;
+            border-top: 1px solid #87acce;
+          }
+
+          &.shown {
+            left: 0;
+            box-shadow: 0 0 1em rgba(0, 0, 0, 0.3);
+          }
         }
       }
     }
   }
   #main-wrapper {
+    margin: 0;
+
     #main-box {
       margin: 4rem 0 0 0;
       overflow-y: visible;
