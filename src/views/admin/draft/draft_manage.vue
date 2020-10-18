@@ -55,6 +55,18 @@
         </b-tbody>
       </b-table-simple>
       <b-button
+        :to="{
+          name: 'admin_draft_preview',
+          params: { id: id },
+        }"
+        variant="primary"
+        block
+        class="mb-3"
+      >
+        <font-awesome-icon :icon="['far', 'file']" class="fa-fw" />
+        Preview
+      </b-button>
+      <b-button
         :to="{ name: 'admin_draft_post', query: { draft_id: id } }"
         variant="secondary"
       >
@@ -65,19 +77,10 @@
     <section v-if="has_permission_blog_admin">
       <h2>Review</h2>
       <p class="mb-2">
-        Preview ボタンで確認し、Accept / Reject ボタンでレビューしてください。
+        上の Preview ボタンで確認したあと、Accept / Reject
+        ボタンでレビューしてください。
       </p>
       <b-button-group>
-        <b-button
-          :to="{
-            name: 'admin_draft_preview',
-            params: { id: id },
-          }"
-          variant="primary"
-        >
-          <font-awesome-icon :icon="['far', 'file']" class="fa-fw" />
-          Preview
-        </b-button>
         <b-button @click="accept_draft()" variant="success">
           <font-awesome-icon icon="check-circle" class="fa-fw" />
           Accept
