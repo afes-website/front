@@ -62,6 +62,7 @@
         variant="primary"
         block
         class="mb-3"
+        target="_blank"
       >
         <font-awesome-icon :icon="['far', 'file']" class="fa-fw" />
         Preview
