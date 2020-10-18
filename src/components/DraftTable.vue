@@ -186,6 +186,7 @@
               params: { id: get_id(row) },
             }"
             variant="link"
+            target="_blank"
           >
             <font-awesome-icon :icon="['far', 'file']" class="fa-fw" />
             Preview
