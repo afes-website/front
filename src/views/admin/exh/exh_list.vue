@@ -26,16 +26,6 @@
             <font-awesome-icon icon="wrench" class="fa-fw" />
             Manage
           </b-button>
-          <b-button
-            :to="{
-              name: '',
-              params: { id: get_id(row) },
-            }"
-            variant="link"
-          >
-            <font-awesome-icon :icon="['far', 'file']" class="fa-fw" />
-            Preview
-          </b-button>
         </b-button-group>
       </template>
       <template v-slot:table-busy>

@@ -186,6 +186,7 @@
               params: { id: get_id(row) },
             }"
             variant="link"
+            target="_blank"
           >
             <font-awesome-icon :icon="['far', 'file']" class="fa-fw" />
             Preview
@@ -236,6 +237,9 @@ export default class DraftTable extends Vue {
 
   @Prop({ required: false, default: false })
   readonly busy?: boolean;
+
+  @Prop({ required: false, default: null })
+  readonly exh_id?: string | null;
 
   currentUser: UserInfo | null = null;
   draftFields: BvTableField[] = [];
@@ -358,7 +362,13 @@ export default class DraftTable extends Vue {
             })
             .then((res) => {
               // all drafts refresh
-              this.$emit("input", res);
+              this.$emit(
+                "input",
+                res.filter((value) => {
+                  if (this.exh_id === null) return true;
+                  return value.exhibition.id === this.exh_id;
+                })
+              );
             });
         });
     });
