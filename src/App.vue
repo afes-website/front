@@ -244,6 +244,7 @@
   overflow-y: auto;
   padding: 1.5rem 3rem 0 3rem;
   position: fixed;
+  z-index: 1003;
 
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -258,7 +259,6 @@
     flex-direction: column;
     justify-content: center;
     align-items: stretch;
-    z-index: 1003;
 
     #top {
       flex-grow: 1;
@@ -391,6 +391,7 @@
   flex-grow: 1;
   padding: 0;
   margin-left: 19rem;
+  z-index: 0;
 
   #main-box {
     max-width: 1000px;
