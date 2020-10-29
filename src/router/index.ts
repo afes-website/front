@@ -22,6 +22,14 @@ const routes = [
       import(/* webpackChunkName: "access" */ "@/views/access.vue"),
   },
   {
+    path: "/exhibitions",
+    name: "exhibition_list",
+    component: () =>
+      import(
+        /* webpackChunkName: "exhibition_list" */ "@/views/exhibition/exh_list.vue"
+      ),
+  },
+  {
     path: "/contact",
     name: "contact",
     component: () =>

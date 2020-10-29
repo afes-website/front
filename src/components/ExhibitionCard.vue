@@ -1,6 +1,7 @@
 <template>
   <div class="exhibition-card">
-    <img :src="imageUrl" :alt="title" class="thumb-img" />
+    <b-skeleton-img aspect="1:1" />
+    <img :src="imageUrl" :alt="title" class="thumb-img" height="1" width="1" />
     <span class="exh-name">{{ title }}</span>
   </div>
 </template>
@@ -11,9 +12,10 @@
   cursor: pointer;
   border-radius: 4px;
   box-shadow: 0 0 16px rgba(#000, 0.4);
-  background: $theme-dark;
+  background: #fff;
   color: #fff;
   overflow: hidden;
+  position: relative;
 
   transition: background-color 0.3s, color 0.2s;
   &:hover {
@@ -23,7 +25,11 @@
 
   .thumb-img {
     width: 100%;
+    height: auto;
     object-fit: cover;
+    position: absolute;
+    top: 0;
+    z-index: 1;
   }
   .exh-name {
     display: block;
@@ -32,10 +38,15 @@
     font-size: 1.1rem;
     font-weight: 500;
     text-align: center;
+    background: $theme-dark;
     // 省略表示
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+
+    @media screen and (max-width: 900px) {
+      font-size: 0.9rem;
+    }
   }
 }
 </style>
