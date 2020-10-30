@@ -16,6 +16,7 @@
           class="exh-card"
           :title="get_exh_name(exh)"
           :image-url="get_exh_thumbnail_url(exh)"
+          :room-id="get_exh_room_id(exh)"
         />
       </div>
     </div>
@@ -116,5 +117,8 @@ export default class ExhList extends Vue {
     api(aspida())
       .images._id(exh.thumbnail_image_id)
       .$path({ query: { w: 300, h: 300 } });
+
+  readonly get_exh_room_id = (exh: Exhibition): string | undefined =>
+    exh.room_id || undefined;
 }
 </script>

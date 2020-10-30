@@ -2,6 +2,7 @@
   <div class="exhibition-card">
     <b-skeleton-img aspect="1:1" />
     <img :src="imageUrl" :alt="title" class="thumb-img" height="1" width="1" />
+    <span class="room-id" v-if="roomId">{{ roomId }}</span>
     <span class="exh-name">{{ title }}</span>
   </div>
 </template>
@@ -33,6 +34,19 @@
     top: 0;
     z-index: 1;
   }
+
+  .room-id {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: inline-block;
+    background-color: rgba(darken($theme-dark, 30%), 0.5);
+    color: #fff;
+    z-index: 2;
+    padding: 1px 5px;
+    border-radius: 0 0 4px 0;
+  }
+
   .exh-name {
     display: block;
     padding: 6px;
@@ -63,5 +77,8 @@ export default class ExhibitionCard extends Vue {
 
   @Prop({ required: true })
   readonly imageUrl!: string;
+
+  @Prop({ required: false })
+  readonly roomId?: string | null;
 }
 </script>
