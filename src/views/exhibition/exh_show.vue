@@ -9,6 +9,7 @@
       </span>
     </div>
     <div class="main-content" v-html="rendered_md" />
+    <share-buttons :title="page_title_for_share" />
   </div>
 </template>
 
@@ -41,10 +42,12 @@ import FetchStatus from "@/libs/fetch_status";
 import Markdown from "@/libs/markdown";
 import Breadcrumb from "@/components/Breadcrumb.vue";
 import { getStringTime } from "@/libs/string_date";
+import ShareButtons from "@/components/ShareButtons.vue";
 
 @Component({
   components: {
     Breadcrumb,
+    ShareButtons,
   },
 })
 export default class ExhShow extends Vue {
@@ -83,6 +86,10 @@ export default class ExhShow extends Vue {
           if (e.response && e.response.status == 404) this.$emit("not_found");
         this.fetch_status = "fail";
       });
+  }
+
+  get page_title_for_share() {
+    return this.page_title + " - 第73回麻布学園文化祭";
   }
 
   get rendered_md(): string | null {
