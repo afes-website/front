@@ -471,12 +471,14 @@
   #left-wrapper {
     height: auto;
     padding: 0;
+    position: static; // remove position sticky
 
     header {
       display: block;
       height: auto;
       position: fixed; // bug
       top: 0;
+      z-index: 1003;
 
       #top {
         height: 4rem;
