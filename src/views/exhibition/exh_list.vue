@@ -86,7 +86,17 @@ export default class ExhList extends Vue {
   }
 
   get current_exhibitions() {
-    return this.exhibitions.filter((exh) => exh.type === this.current_type);
+    return this.exhibitions
+      .filter((exh) => exh.type === this.current_type)
+      .sort((a, b) => {
+        if (
+          [a, b].some((exh) => exh.room_id !== null && !isNaN(+exh.room_id))
+        ) {
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          return +b.room_id! - +a.room_id!;
+        }
+        return 1;
+      });
   }
 
   readonly get_exh_id = (exh: Exhibition) => exh.id;
