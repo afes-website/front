@@ -1,7 +1,7 @@
 <template>
   <div id="exh-list">
     <h1>オンライン展示一覧</h1>
-    <b-tabs v-model="current_type_num" fill justified>
+    <b-tabs v-model="current_type_num" fill justified nav-class="tab-wrapper">
       <b-tab value="normal" title="一般展示"></b-tab>
       <b-tab value="frontier" title="フロンティア展示"></b-tab>
       <b-tab value="stage" title="ステージ展示"></b-tab>
@@ -43,6 +43,15 @@
         }
       }
     }
+  }
+}
+</style>
+
+<style lang="scss">
+// ==== not scoped ====
+#exh-list {
+  .tab-wrapper {
+    white-space: nowrap;
   }
 }
 </style>
