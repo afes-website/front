@@ -19,8 +19,10 @@
 
   transition: background-color 0.3s, color 0.2s;
   &:hover {
-    background: darken($theme-dark, 10%);
-    color: #fff;
+    .exh-name {
+      background: darken($theme-dark, 10%);
+      color: #fff;
+    }
   }
 
   .thumb-img {
