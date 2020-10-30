@@ -2,21 +2,7 @@
   <div id="home">
     <div id="pc">
       <div id="first-view">
-        <div>
-          <b-alert
-            show
-            variant="theme-dark"
-            class="top-page-alert mt-3"
-            style="line-height: 1.7; font-size: 0.95rem"
-          >
-            長期に渡る協議の結果、<b>10/31～11/1の２日間</b> に
-            <b>内部生･保護者のみ</b> で開催することとなりました。<br />
-            また、オンラインでの開催についても検討を進めています。<br />
-            <b-link to="/blog/news/schedule-declaration" class="alert-link">
-              詳細はこちら
-            </b-link>
-          </b-alert>
-        </div>
+        <div></div>
         <div id="center-box">
           <img id="logo" src="../assets/logo_white.svg" alt="logo" />
         </div>
@@ -55,16 +41,19 @@
         <h1>第73回 麻布中学校･高等学校 文化祭</h1>
         <p>第73回 麻布学園文化祭 公式ウェブサイトです。</p>
         <p>
-          2020年10月31日から11月1日の2日間に、内部生とその保護者のみで開催いたします。<br />
-          <b-link to="/blog/news/schedule-declaration">詳細はこちら</b-link>
+          2020年10月31日から11月1日の2日間に、内部生とその保護者のみで開催しています。<br />
+          一般の方はご来場いただけません。予めご了承ください。<br />
+          <b-link to="/blog/news/schedule-declaration">
+            日程について詳細はこちら
+          </b-link>
         </p>
         <p>
-          また、外部への発表、及び交流の代替手段として、オンラインでの文化祭企画などの検討を進めています。
-          近日中に発表いたしますので、発表をお待ちください。
+          また、外部への発表、及び交流の代替手段として、2020年10月31日から11月15日の間、オンラインでの文化祭企画を公開中です。<br />
+          <b-link :to="{ name: 'exhibition_list' }">
+            オンライン公開中の展示一覧はこちら
+          </b-link>
         </p>
-        <p>
-          当日の展示に関する情報や、日々の活動の様子（近況）などを掲載しています。
-        </p>
+        <hr />
         <p>
           このウェブサイトは生徒自治団体である文化祭実行委員会が製作したものであり、教職員は関係していません。
           なにかございましたら
