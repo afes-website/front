@@ -61,6 +61,16 @@ function get_blog_title($id) {
   return json_decode($res)->title;
 }
 
+function get_exhibition_title($id) {
+  $context = stream_context_create(array(
+    'http' => array('ignore_errors' => true)
+  ));
+
+  $res = file_get_contents(API_BASE . '/online/exhibition/' . $id, false, $context);
+  if (strpos($http_response_header[0], '200') === false) return '';
+  return json_decode($res)->name;
+}
+
 function get_blog_category_name($id) {
   $json = file_get_contents(API_BASE . '/blog/categories');
   $json = mb_convert_encoding($json, 'UTF8', 'ASCII,JIS,UTF-8,EUC-JP,SJIS-WIN');
@@ -91,6 +101,8 @@ function _get_title($uri) {
       return '学校長・委員長挨拶';
     case '/access':
       return 'アクセス';
+    case '/exhibitions':
+      return 'オンライン展示一覧';
     case '/contact':
       return 'お問い合わせ';
     case '/policy':
@@ -120,6 +132,11 @@ function _get_title($uri) {
     } else if(count($parts) == 4) { // article
       return get_blog_title($parts[3]);
     }
+  }
+
+  if (starts_with($uri, '/exhibitions/')) {
+    $parts = explode('/', $uri);
+    return get_exhibition_title($parts[2]);
   }
 
   // Admin routes are disabled
