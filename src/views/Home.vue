@@ -36,8 +36,7 @@
         <top-page-button
           icon-name="list"
           button-name="展示一覧"
-          link-address="exhibition"
-          disabled
+          link-address="exhibition_list"
         />
         <top-page-button
           icon-name="user-tie"
