@@ -18,6 +18,7 @@
           :title="get_exh_name(exh)"
           :image-url="get_exh_thumbnail_url(exh)"
           :room-id="get_exh_room_id(exh)"
+          :is-disabled="is_exh_disabled(exh)"
         />
       </div>
     </div>
@@ -122,10 +123,14 @@ export default class ExhList extends Vue {
   readonly get_exh_room_id = (exh: Exhibition): string | undefined =>
     exh.room_id || undefined;
 
-  readonly go_to_exh_show = (exh: Exhibition) =>
-    this.$router.push({
-      name: "exhibition_show",
-      params: { id: exh.id },
-    });
+  readonly go_to_exh_show = (exh: Exhibition) => {
+    if (!this.is_exh_disabled(exh))
+      this.$router.push({
+        name: "exhibition_show",
+        params: { id: exh.id },
+      });
+  };
+
+  readonly is_exh_disabled = (exh: Exhibition) => exh.content === null;
 }
 </script>
