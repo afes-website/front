@@ -59,6 +59,7 @@ export default class Breadcrumb extends Vue {
       // static routes
       { text: "Top", to: { name: "Home" } },
       { text: "近況", to: { name: "article_list" } },
+      { text: "展示一覧", to: { name: "exhibition_list" } },
       { text: "管理", to: { name: "admin_top" } },
       { text: "記事一覧", to: { name: "path_list" } },
       { text: "記事リクエスト一覧", to: { name: "revision_list" } },

@@ -81,7 +81,7 @@
                   <b-link :to="{ name: 'access' }">アクセス</b-link>
                 </li>
                 <li>
-                  <b-link disabled>展示一覧</b-link>
+                  <b-link :to="{ name: 'exhibition_list' }">展示一覧</b-link>
                 </li>
                 <li>
                   <b-link disabled>タイムテーブル</b-link>
@@ -475,7 +475,7 @@
     header {
       display: block;
       height: auto;
-      position: fixed;
+      position: fixed; // bug
       top: 0;
 
       #top {
