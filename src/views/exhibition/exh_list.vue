@@ -11,6 +11,7 @@
         class="exh-wrapper"
         v-for="exh in current_exhibitions"
         :key="get_exh_id(exh)"
+        @click="go_to_exh_show(exh)"
       >
         <exhibition-card
           class="exh-card"
@@ -120,5 +121,11 @@ export default class ExhList extends Vue {
 
   readonly get_exh_room_id = (exh: Exhibition): string | undefined =>
     exh.room_id || undefined;
+
+  readonly go_to_exh_show = (exh: Exhibition) =>
+    this.$router.push({
+      name: "exhibition_show",
+      params: { id: exh.id },
+    });
 }
 </script>

@@ -30,6 +30,14 @@ const routes = [
       ),
   },
   {
+    path: "/exhibitions/:id",
+    name: "exhibition_show",
+    component: () =>
+      import(
+        /* webpackChunkName: "exhibition_show" */ "@/views/exhibition/exh_show.vue"
+      ),
+  },
+  {
     path: "/contact",
     name: "contact",
     component: () =>
