@@ -1,6 +1,7 @@
 <template>
   <div id="exh-list">
-    <h1>オンライン展示一覧</h1>
+    <breadcrumb :text="page_title" />
+    <h1>{{ page_title }}</h1>
     <b-tabs v-model="current_type_num" fill justified nav-class="tab-wrapper">
       <b-tab value="normal" title="一般展示"></b-tab>
       <b-tab value="frontier" title="フロンティア展示"></b-tab>
@@ -64,11 +65,13 @@ import { Vue, Component } from "vue-property-decorator";
 import api, { Exhibition, ExhibitionType } from "@afes-website/docs";
 import aspida from "@aspida/axios";
 import ExhibitionCard from "@/components/ExhibitionCard.vue";
+import Breadcrumb from "@/components/Breadcrumb.vue";
 
 @Component({
-  components: { ExhibitionCard },
+  components: { Breadcrumb, ExhibitionCard },
 })
 export default class ExhList extends Vue {
+  readonly page_title = "オンライン展示一覧";
   current_type_num = 0;
   exhibitions: Exhibition[] = [];
 
