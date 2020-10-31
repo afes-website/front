@@ -184,7 +184,7 @@ function detect_embed_type(content: string): EmbedInfo {
   }
   {
     const match = strip_content.match(
-      /^youtube\.com\/watch(?:\/?\?v=|\/)(\w+)/
+      /^youtube\.com\/watch(?:\/?\?v=|\/)([A-Za-z0-9-]+)/
     );
     if (match)
       return {
@@ -193,7 +193,7 @@ function detect_embed_type(content: string): EmbedInfo {
       };
   }
   {
-    const match = strip_content.match(/^youtu\.be\/(\w+)/);
+    const match = strip_content.match(/^youtu\.be\/([A-Za-z0-9-]+)/);
     if (match)
       return {
         type: "youtube",
