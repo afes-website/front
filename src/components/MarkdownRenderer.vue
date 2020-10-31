@@ -1,5 +1,7 @@
 <template>
-  <div class="markdown-output" v-html="rendered"></div>
+  <div>
+    <div class="markdown-output" v-html="rendered" ref="mdOut"></div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -20,8 +22,16 @@ export default class MarkdownRenderer extends Vue {
     return Markdown.render(this.content);
   }
 
+  mounted() {
+    this.post_render();
+  }
   updated() {
-    Markdown.post_render();
+    this.post_render();
+  }
+
+  post_render() {
+    Markdown.post_render(this.$el);
   }
 }
 </script>
+2
