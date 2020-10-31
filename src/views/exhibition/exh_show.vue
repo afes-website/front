@@ -32,10 +32,6 @@
   }
 }
 
-.alert {
-  margin-top: 1rem;
-}
-
 span {
   margin-right: 0.5em;
   white-space: nowrap;
