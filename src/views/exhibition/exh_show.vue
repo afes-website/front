@@ -9,10 +9,10 @@
       </span>
     </div>
     <div class="main-content" v-html="rendered_md" />
-    <div class="alert alert-primary">
-      展示大賞の投票へのご協力をお願いします
-      <a href="https://forms.gle/hdqAidpNvnbjRj7s7">投票フォーム</a>
-    </div>
+    <b-alert show variant="primary" class="mt-1">
+      展示大賞の投票へのご協力をお願いします<br>
+      <b-link href="https://forms.gle/hdqAidpNvnbjRj7s7">投票フォーム</b-link>
+    </b-alert>
     <share-buttons :title="page_title_for_share" />
   </div>
 </template>
