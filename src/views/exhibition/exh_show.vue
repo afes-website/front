@@ -9,6 +9,10 @@
       </span>
     </div>
     <div class="main-content" v-html="rendered_md" />
+    <div class="alert alert-primary">
+      展示大賞の投票へのご協力をお願いします
+      <a href="https://forms.gle/hdqAidpNvnbjRj7s7">投票フォーム</a>
+    </div>
     <share-buttons :title="page_title_for_share" />
   </div>
 </template>
@@ -27,6 +31,11 @@
     }
   }
 }
+
+.alert {
+  margin-top: 1rem;
+}
+
 span {
   margin-right: 0.5em;
   white-space: nowrap;
