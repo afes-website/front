@@ -187,11 +187,12 @@
           color: #fff;
         }
         h1,
-        h2 {
-          border-color: darken($theme-light, 10%);
+        h2,
+        hr {
+          border-color: lighten($theme-dark, 20%);
         }
         a {
-          color: $theme-light;
+          color: #fff;
           text-decoration: underline;
         }
         tr {
@@ -220,7 +221,7 @@
         color: #fff;
       }
       a {
-        color: $theme-light;
+        color: #fff;
         text-decoration: underline;
       }
       & > nav > ul {
