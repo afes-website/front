@@ -6,7 +6,7 @@
         <div id="center-box">
           <img id="logo" src="../assets/logo_white.svg" alt="logo" />
         </div>
-        <b-link v-scroll-to="'#main-content'">
+        <b-link v-scroll-to="'#main-box'">
           <font-awesome-icon id="down-angle" icon="chevron-down" size="3x" />
         </b-link>
       </div>
@@ -155,14 +155,26 @@
     }
 
     #main-box {
-      background: rgba($theme-dark, 0.8);
       width: 100%;
       display: flex;
       justify-content: center;
+      position: relative;
+
+      &::after {
+        position: absolute;
+        content: "";
+        left: 0;
+        width: calc(100% + 304px);
+        background: rgba($theme-dark, 0.8);
+        height: 100%;
+        z-index: -1;
+        transform: translateX(-304px);
+      }
 
       #main-content {
         padding: 2rem 1.5rem 1rem 1.5rem;
         max-width: 1000px;
+        z-index: 0;
 
         * {
           color: #fff;
@@ -182,9 +194,20 @@
     }
     #footer {
       text-align: center;
-      background: rgba($theme-dark, 0.8);
-      border-top: 2px solid rgba(#bdf, 0.8);
       padding: 0.5rem 0 1rem 0;
+      position: relative;
+
+      &::after {
+        position: absolute;
+        content: "";
+        left: 0;
+        top: 0;
+        width: calc(100% + 304px);
+        background: rgba($theme-dark, 0.8);
+        height: 100%;
+        z-index: -1;
+        transform: translateX(-304px);
+      }
 
       * {
         color: #fff;
