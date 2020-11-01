@@ -6,7 +6,7 @@
         <div id="center-box">
           <img id="logo" src="../assets/logo_white.svg" alt="logo" />
         </div>
-        <b-link v-scroll-to="'#main-box'">
+        <b-link v-scroll-to="'#main-content'">
           <font-awesome-icon id="down-angle" icon="chevron-down" size="3x" />
         </b-link>
       </div>
