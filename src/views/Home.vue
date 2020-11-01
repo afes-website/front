@@ -6,7 +6,13 @@
         <div id="center-box">
           <img id="logo" src="../assets/logo_white.svg" alt="logo" />
         </div>
-        <b-link v-scroll-to="'#main-content'">
+        <b-link
+          v-scroll-to="{
+            el: '#main-content',
+            duration: 1000,
+            easing: 'ease-out',
+          }"
+        >
           <font-awesome-icon id="down-angle" icon="chevron-down" size="3x" />
         </b-link>
       </div>
@@ -144,8 +150,9 @@
 
         #down-angle {
           margin-bottom: 1rem;
-          color: #beffff;
-          filter: drop-shadow(0 4px 3px rgba(#222, 0.6));
+          color: $theme-dark;
+          filter: drop-shadow(2px 2px 1px #fff) drop-shadow(-2px 2px 1px #fff)
+            drop-shadow(2px -2px 1px #fff) drop-shadow(-2px -2px 1px #fff);
         }
       }
     }
