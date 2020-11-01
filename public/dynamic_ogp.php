@@ -27,7 +27,7 @@ function main() {
   print_meta('og:country-name', 'Japan');
   print_meta('og:email', 'contact@afes.info');
   print_meta('og:description',
-    '第73回麻布学園文化祭公式ウェブサイトです。新型コロナウイルス感染症（COVID-19）の流行状況により、２学期以降への無期限延期となりました。当日の展示に関する情報や、日々の活動の様子などを掲載しています。');
+    '第73回麻布学園文化祭公式ウェブサイトです。外部への発表、及び交流の代替手段として、2020年10月31日から11月15日の間、オンラインでの文化祭企画を公開中です。');
 }
 
 function should_support_ogp() {
