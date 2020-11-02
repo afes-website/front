@@ -9,7 +9,7 @@
       </span>
     </div>
     <div class="main-content" v-html="rendered_md" />
-    <b-alert show="" variant="primary" class="mt-1">
+    <b-alert show variant="primary" class="mt-1">
       オンライン展示に関するアンケートへのご協力をお願いします<br />
       <small>
         ※回答するにはログインが必要です。また、2度以上回答することはできません。
