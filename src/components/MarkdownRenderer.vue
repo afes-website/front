@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="markdown-output" v-html="rendered" ref="mdOut"></div>
+    <div class="markdown-output" v-html="rendered"></div>
   </div>
 </template>
 
