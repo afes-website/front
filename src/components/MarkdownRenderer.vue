@@ -34,4 +34,3 @@ export default class MarkdownRenderer extends Vue {
   }
 }
 </script>
-2
