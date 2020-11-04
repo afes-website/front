@@ -10,8 +10,14 @@
     </div>
     <div class="main-content" v-html="rendered_md" />
     <b-alert show variant="primary" class="mt-1">
-      展示大賞の投票へのご協力をお願いします<br />
-      <b-link href="https://forms.gle/hdqAidpNvnbjRj7s7">投票フォーム</b-link>
+      オンライン展示に関するアンケートへのご協力をお願いします<br />
+      <small>
+        ※回答するにはログインが必要です。また、2度以上回答することはできません。
+      </small>
+      <br />
+      <b-link href="https://forms.gle/4qMswbgBQmryH2tS8">
+        アンケートフォーム
+      </b-link>
     </b-alert>
     <share-buttons :title="page_title_for_share" />
   </div>
