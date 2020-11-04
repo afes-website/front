@@ -5,7 +5,7 @@ declare module "twitter-widgets" {
 interface Window {
   twttr: {
     widgets: {
-      load: () => void;
+      load: (el?: Element) => void;
     };
   };
 }

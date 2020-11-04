@@ -37,7 +37,7 @@
           </b-button>
         </b-button-group>
       </div>
-      <div class="main-content" v-html="rendered_md" />
+      <markdown-renderer :content="draft_content" />
     </template>
     <template v-else>
       <p>{{ fetch_status }}</p>
@@ -72,16 +72,17 @@ import api, { Draft } from "@afes-website/docs";
 import aspida from "@aspida/axios";
 import is_axios_error from "@/libs/is_axios_error";
 import FetchStatus from "@/libs/fetch_status";
-import Markdown from "@/libs/markdown";
 import Breadcrumb from "@/components/Breadcrumb.vue";
 import { getStringTime } from "@/libs/string_date";
 import Forbidden from "@/components/Forbidden.vue";
 import auth_eventhub from "@/libs/auth/auth_eventhub";
+import MarkdownRenderer from "@/components/MarkdownRenderer.vue";
 
 @Component({
   components: {
     Breadcrumb,
     Forbidden,
+    MarkdownRenderer,
   },
 })
 export default class DraftPreview extends Vue {
@@ -135,9 +136,8 @@ export default class DraftPreview extends Vue {
       });
   }
 
-  get rendered_md(): string | null {
-    if (this.draft == null) return null;
-    return Markdown.render(this.draft.content);
+  get draft_content() {
+    return this.draft?.content || "";
   }
 
   get found_draft() {
