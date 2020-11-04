@@ -27,7 +27,7 @@ function main() {
   print_meta('og:country-name', 'Japan');
   print_meta('og:email', 'contact@afes.info');
   print_meta('og:description',
-    '第73回麻布学園文化祭公式ウェブサイトです。外部への発表、及び交流の代替手段として、2020年10月31日から11月15日の間、オンラインでの文化祭企画を公開中です。');
+    '第73回麻布学園文化祭公式ウェブサイトです。オンラインでの文化祭企画を2020年11月15日まで公開中です。');
 }
 
 function should_support_ogp() {
