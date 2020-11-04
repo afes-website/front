@@ -253,7 +253,7 @@
           height: 100%;
           object-fit: cover;
           position: relative;
-          opacity: 75%;
+          opacity: 0.75;
           filter: blur(1px);
         }
 
