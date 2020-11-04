@@ -18,28 +18,13 @@
       </div>
     </div>
     <div id="smartphone">
-      <img id="top-img" src="../assets/back.jpg" alt="img" />
-      <div id="buttons">
-        <top-page-button
-          icon-name="map-marker-alt"
-          button-name="アクセス"
-          link-address="access"
-        />
-        <top-page-button
-          icon-name="list"
-          button-name="展示一覧"
-          link-address="exhibition_list"
-        />
-        <top-page-button
-          icon-name="user-tie"
-          button-name="ご挨拶"
-          link-address="about"
-        />
-        <top-page-button
-          icon-name="book"
-          button-name="ブログ"
-          link-address="article_list"
-        />
+      <div id="top-img-wrapper">
+        <img id="top-img" src="../assets/back.jpg" alt="img" />
+        <img id="top-logo" src="../assets/logo_white.svg" alt="logo" />
+        <div id="top-img-button" @click="linkToExhibitionList">
+          <span class="button-text">オンライン展示一覧</span>
+          <font-awesome-icon icon="angle-right" class="button-icon" />
+        </div>
       </div>
     </div>
     <div id="main-box">
@@ -252,22 +237,61 @@
     }
 
     #smartphone {
-      display: unset;
+      display: block;
       font-size: 1.1rem;
+      margin-bottom: 16px;
 
-      #top-img {
+      #top-img-wrapper {
+        position: relative;
         width: 100vw;
+        height: 100vw / 4 * 3;
         margin-left: calc((100vw - 100%) / 2 * -1);
         margin-top: -12.8px;
-      }
-      #buttons {
-        width: 100vw;
-        margin-left: calc((100vw - 100%) / 2 * -1);
-        display: flex;
-        flex-wrap: wrap;
-        margin-bottom: 8px;
-        .top-page-button {
-          width: calc((100% - 1.5rem) / 2);
+        background: darken($theme-dark, 10%);
+
+        #top-img {
+          height: 100%;
+          object-fit: cover;
+          position: relative;
+          opacity: 75%;
+          filter: blur(1px);
+        }
+
+        #top-logo {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width: 80%;
+        }
+
+        #top-img-button {
+          position: absolute;
+          top: 85%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          margin: 0;
+          $height: 40px;
+          height: $height;
+          border-radius: $height / 2;
+          line-height: $height;
+          padding: 0 $height * 0.4;
+          font-size: $height * 0.4;
+          border: 1px solid #fff;
+          color: #fff;
+          transition: background-color 1s;
+          white-space: nowrap;
+
+          &:hover {
+            background: rgba(#fff, 0.6);
+          }
+
+          .button-text {
+            font-weight: 500;
+          }
+          .button-icon {
+            margin-left: 16px;
+          }
         }
       }
     }
@@ -322,7 +346,6 @@ import aspida from "@aspida/axios";
 import { BlogArticle } from "@afes-website/docs";
 import { Categories } from "@afes-website/docs";
 import getCategories from "@/libs/categories";
-import TopPageButton from "@/components/TopPageButton.vue";
 import { getStringDate } from "@/libs/string_date";
 
 import VueScrollTo from "vue-scrollto";
@@ -330,11 +353,7 @@ Vue.use(VueScrollTo, {
   container: "#main-wrapper",
 });
 
-@Component({
-  components: {
-    TopPageButton,
-  },
-})
+@Component
 export default class Home extends Vue {
   readonly page_title = "";
   articles: BlogArticle[] = [];
@@ -378,6 +397,10 @@ export default class Home extends Vue {
     });
     return ret_articles.slice(0, 10);
   }
+
+  readonly linkToExhibitionList = () => {
+    this.$router.push({ name: "exhibition_list" });
+  };
 
   linkToArticle(article: BlogArticle) {
     this.$router.push({
