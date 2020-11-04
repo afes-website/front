@@ -74,6 +74,6 @@ export function get_plaintext(tag: string) {
   return `[${name} 埋め込み]`;
 }
 
-export function post_render() {
-  window.twttr.widgets.load();
+export function post_render(el?: Element) {
+  window.twttr.widgets.load(el);
 }

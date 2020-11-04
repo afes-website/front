@@ -366,34 +366,36 @@ export default class DraftPost extends Vue {
     this.post_status = "pending";
 
     if (this.exh_id !== null)
-      this.$auth.attempt_get_JWT("exhibition").then((token) => {
-        api(aspida())
-          .online.drafts.$post({
-            body: {
-              content: this.content,
-              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-              exh_id: this.exh_id!,
-            },
-            headers: {
-              Authorization: "bearer " + token,
-            },
-          })
-          .then((data: Draft) => {
-            this.post_status = "idle";
-            this.$bvToast.toast("Exhibition Draft Created: " + data.id, {
-              title: "Create new draft",
-              autoHideDelay: 5000,
+      this.$auth
+        .attempt_get_JWT(["exhibition", "blogAdmin", "teacher"])
+        .then((token) => {
+          api(aspida())
+            .online.drafts.$post({
+              body: {
+                content: this.content,
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                exh_id: this.exh_id!,
+              },
+              headers: {
+                Authorization: "bearer " + token,
+              },
+            })
+            .then((data: Draft) => {
+              this.post_status = "idle";
+              this.$bvToast.toast("Exhibition Draft Created: " + data.id, {
+                title: "Create new draft",
+                autoHideDelay: 5000,
+              });
+              this.$router.push({
+                name: "admin_exh_manage",
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                params: { id: this.exh_id! },
+              });
+            })
+            .catch(() => {
+              this.post_status = "fail";
             });
-            this.$router.push({
-              name: "admin_exh_manage",
-              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-              params: { id: this.exh_id! },
-            });
-          })
-          .catch(() => {
-            this.post_status = "fail";
-          });
-      });
+        });
   }
 
   get can_post() {

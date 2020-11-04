@@ -19,7 +19,7 @@
       </b-thead>
       <b-tbody>
         <b-tr
-          v-for="revision in sorted_revisions"
+          v-for="revision in filtered_revisions"
           :key="get_revision_id(revision)"
           :variant="get_status_color(revision)"
           @click="open_revision(revision)"
@@ -194,6 +194,12 @@ export default class RevisionList extends Vue {
       return a.id - b.id;
     });
     return ret_revisions;
+  }
+
+  get filtered_revisions() {
+    return this.sorted_revisions.filter(
+      (rev) => rev.author.id === this.$auth.get_current_user_id
+    );
   }
 
   open_revision(revision: BlogRevisionWithArticle) {
