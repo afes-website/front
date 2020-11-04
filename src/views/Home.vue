@@ -6,34 +6,25 @@
         <div id="center-box">
           <img id="logo" src="../assets/logo_white.svg" alt="logo" />
         </div>
-        <b-link v-scroll-to="'#main-content'">
+        <b-link
+          v-scroll-to="{
+            el: '#main-content',
+            duration: 1000,
+            easing: 'ease-out',
+          }"
+        >
           <font-awesome-icon id="down-angle" icon="chevron-down" size="3x" />
         </b-link>
       </div>
     </div>
     <div id="smartphone">
-      <img id="top-img" src="../assets/back.jpg" alt="img" />
-      <div id="buttons">
-        <top-page-button
-          icon-name="map-marker-alt"
-          button-name="アクセス"
-          link-address="access"
-        />
-        <top-page-button
-          icon-name="list"
-          button-name="展示一覧"
-          link-address="exhibition_list"
-        />
-        <top-page-button
-          icon-name="user-tie"
-          button-name="ご挨拶"
-          link-address="about"
-        />
-        <top-page-button
-          icon-name="book"
-          button-name="ブログ"
-          link-address="article_list"
-        />
+      <div id="top-img-wrapper">
+        <img id="top-img" src="../assets/back.jpg" alt="img" />
+        <img id="top-logo" src="../assets/logo_white.svg" alt="logo" />
+        <div id="top-img-button" @click="linkToExhibitionList">
+          <span class="button-text">オンライン展示一覧</span>
+          <font-awesome-icon icon="angle-right" class="button-icon" />
+        </div>
       </div>
     </div>
     <div id="main-box">
@@ -41,16 +32,15 @@
         <h1>第73回 麻布中学校･高等学校 文化祭</h1>
         <p>第73回 麻布学園文化祭 公式ウェブサイトです。</p>
         <p>
-          2020年10月31日から11月1日の2日間に、内部生とその保護者のみで開催しています。<br />
-          一般の方はご来場いただけません。予めご了承ください。<br />
-          <b-link to="/blog/news/schedule-declaration">
-            日程について詳細はこちら
+          オンラインでの文化祭企画を2020年11月15日まで公開中です。<br />
+          <b-link :to="{ name: 'exhibition_list' }">
+            オンライン公開中の展示一覧はこちら
           </b-link>
         </p>
         <p>
-          また、外部への発表、及び交流の代替手段として、2020年10月31日から11月15日の間、オンラインでの文化祭企画を公開中です。<br />
-          <b-link :to="{ name: 'exhibition_list' }">
-            オンライン公開中の展示一覧はこちら
+          また、第73回麻布学園文化祭は、2020年10月31日と11月1日の2日間の日程を終え、終了しました。<br />
+          <b-link to="/blog/news/schedule-declaration">
+            日程について詳細はこちら
           </b-link>
         </p>
         <hr />
@@ -145,8 +135,9 @@
 
         #down-angle {
           margin-bottom: 1rem;
-          color: #beffff;
-          filter: drop-shadow(0 4px 3px rgba(#222, 0.6));
+          color: $theme-dark;
+          filter: drop-shadow(2px 2px 1px #fff) drop-shadow(-2px 2px 1px #fff)
+            drop-shadow(2px -2px 1px #fff) drop-shadow(-2px -2px 1px #fff);
         }
       }
     }
@@ -156,24 +147,37 @@
     }
 
     #main-box {
-      background: rgba($theme-dark, 0.8);
       width: 100%;
       display: flex;
       justify-content: center;
+      position: relative;
+
+      &::after {
+        position: absolute;
+        content: "";
+        left: 0;
+        width: calc(100% + 304px);
+        background: rgba($theme-dark, 0.8);
+        height: 100%;
+        z-index: -1;
+        transform: translateX(-304px);
+      }
 
       #main-content {
         padding: 2rem 1.5rem 1rem 1.5rem;
         max-width: 1000px;
+        z-index: 0;
 
         * {
           color: #fff;
         }
         h1,
-        h2 {
-          border-color: darken($theme-light, 10%);
+        h2,
+        hr {
+          border-color: lighten($theme-dark, 20%);
         }
         a {
-          color: $theme-light;
+          color: #fff;
           text-decoration: underline;
         }
         tr {
@@ -183,15 +187,26 @@
     }
     #footer {
       text-align: center;
-      background: rgba($theme-dark, 0.8);
-      border-top: 2px solid rgba(#bdf, 0.8);
       padding: 0.5rem 0 1rem 0;
+      position: relative;
+
+      &::after {
+        position: absolute;
+        content: "";
+        left: 0;
+        top: 0;
+        width: calc(100% + 304px);
+        background: rgba($theme-dark, 0.8);
+        height: 100%;
+        z-index: -1;
+        transform: translateX(-304px);
+      }
 
       * {
         color: #fff;
       }
       a {
-        color: $theme-light;
+        color: #fff;
         text-decoration: underline;
       }
       & > nav > ul {
@@ -222,22 +237,61 @@
     }
 
     #smartphone {
-      display: unset;
+      display: block;
       font-size: 1.1rem;
+      margin-bottom: 16px;
 
-      #top-img {
+      #top-img-wrapper {
+        position: relative;
         width: 100vw;
+        height: 100vw / 4 * 3;
         margin-left: calc((100vw - 100%) / 2 * -1);
         margin-top: -12.8px;
-      }
-      #buttons {
-        width: 100vw;
-        margin-left: calc((100vw - 100%) / 2 * -1);
-        display: flex;
-        flex-wrap: wrap;
-        margin-bottom: 8px;
-        .top-page-button {
-          width: calc((100% - 1.5rem) / 2);
+        background: darken($theme-dark, 10%);
+
+        #top-img {
+          height: 100%;
+          object-fit: cover;
+          position: relative;
+          opacity: 75%;
+          filter: blur(1px);
+        }
+
+        #top-logo {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width: 80%;
+        }
+
+        #top-img-button {
+          position: absolute;
+          top: 85%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          margin: 0;
+          $height: 40px;
+          height: $height;
+          border-radius: $height / 2;
+          line-height: $height;
+          padding: 0 $height * 0.4;
+          font-size: $height * 0.4;
+          border: 1px solid #fff;
+          color: #fff;
+          transition: background-color 1s;
+          white-space: nowrap;
+
+          &:hover {
+            background: rgba(#fff, 0.6);
+          }
+
+          .button-text {
+            font-weight: 500;
+          }
+          .button-icon {
+            margin-left: 16px;
+          }
         }
       }
     }
@@ -292,7 +346,6 @@ import aspida from "@aspida/axios";
 import { BlogArticle } from "@afes-website/docs";
 import { Categories } from "@afes-website/docs";
 import getCategories from "@/libs/categories";
-import TopPageButton from "@/components/TopPageButton.vue";
 import { getStringDate } from "@/libs/string_date";
 
 import VueScrollTo from "vue-scrollto";
@@ -300,11 +353,7 @@ Vue.use(VueScrollTo, {
   container: "#main-wrapper",
 });
 
-@Component({
-  components: {
-    TopPageButton,
-  },
-})
+@Component
 export default class Home extends Vue {
   readonly page_title = "";
   articles: BlogArticle[] = [];
@@ -348,6 +397,10 @@ export default class Home extends Vue {
     });
     return ret_articles.slice(0, 10);
   }
+
+  readonly linkToExhibitionList = () => {
+    this.$router.push({ name: "exhibition_list" });
+  };
 
   linkToArticle(article: BlogArticle) {
     this.$router.push({

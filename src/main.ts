@@ -44,6 +44,9 @@ Vue.prototype.$auth = new Auth(() => {
 import TwitterWidgets from "twitter-widgets";
 TwitterWidgets.load();
 
+import VueScrollTo from "vue-scrollto";
+Vue.use(VueScrollTo);
+
 new Vue({
   router,
   render: (h) => h(App),
