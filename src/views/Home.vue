@@ -103,14 +103,16 @@
       width: 100%;
 
       #first-view {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: space-between;
+        position: relative;
 
         height: 100vh;
 
         #center-box {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+
           display: flex;
           flex-direction: column;
           align-items: center;
@@ -134,7 +136,11 @@
         }
 
         #down-angle {
-          margin-bottom: 1rem;
+          position: absolute;
+          bottom: 1rem;
+          left: 50%;
+          transform: translate(-50%, 0);
+
           color: $theme-dark;
           filter: drop-shadow(2px 2px 1px #fff) drop-shadow(-2px 2px 1px #fff)
             drop-shadow(2px -2px 1px #fff) drop-shadow(-2px -2px 1px #fff);
