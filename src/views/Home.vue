@@ -2,7 +2,6 @@
   <div id="home">
     <div id="pc">
       <div id="first-view">
-        <div></div>
         <div id="center-box">
           <img id="logo" src="../assets/logo_white.svg" alt="logo" />
         </div>
