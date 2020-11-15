@@ -131,38 +131,38 @@ const routes = [
   //       /* webpackChunkName: "admin_exh_manage" */ "@/views/admin/exh/exh_manage.vue"
   //     ),
   // },
-  {
-    path: "/admin/draft",
-    name: "admin_draft_list",
-    component: () =>
-      import(
-        /* webpackChunkName: "admin_draft_list" */ "@/views/admin/draft/draft_list.vue"
-      ),
-  },
-  {
-    path: "/admin/draft/post",
-    name: "admin_draft_post",
-    component: () =>
-      import(
-        /* webpackChunkName: "admin_draft_post" */ "@/views/admin/draft/draft_post.vue"
-      ),
-  },
-  {
-    path: "/admin/draft/:id(\\d+)",
-    name: "admin_draft_manage",
-    component: () =>
-      import(
-        /* webpackChunkName: "admin_draft_manage" */ "@/views/admin/draft/draft_manage.vue"
-      ),
-  },
-  {
-    path: "/admin/draft/:id(\\d+)/preview",
-    name: "admin_draft_preview",
-    component: () =>
-      import(
-        /* webpackChunkName: "admin_draft_preview" */ "@/views/admin/draft/draft_preview.vue"
-      ),
-  },
+  // {
+  //   path: "/admin/draft",
+  //   name: "admin_draft_list",
+  //   component: () =>
+  //     import(
+  //       /* webpackChunkName: "admin_draft_list" */ "@/views/admin/draft/draft_list.vue"
+  //     ),
+  // },
+  // {
+  //   path: "/admin/draft/post",
+  //   name: "admin_draft_post",
+  //   component: () =>
+  //     import(
+  //       /* webpackChunkName: "admin_draft_post" */ "@/views/admin/draft/draft_post.vue"
+  //     ),
+  // },
+  // {
+  //   path: "/admin/draft/:id(\\d+)",
+  //   name: "admin_draft_manage",
+  //   component: () =>
+  //     import(
+  //       /* webpackChunkName: "admin_draft_manage" */ "@/views/admin/draft/draft_manage.vue"
+  //     ),
+  // },
+  // {
+  //   path: "/admin/draft/:id(\\d+)/preview",
+  //   name: "admin_draft_preview",
+  //   component: () =>
+  //     import(
+  //       /* webpackChunkName: "admin_draft_preview" */ "@/views/admin/draft/draft_preview.vue"
+  //     ),
+  // },
   {
     path: "/blog/:category?",
     name: "article_list",
