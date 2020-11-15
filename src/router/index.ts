@@ -21,22 +21,22 @@ const routes = [
     component: () =>
       import(/* webpackChunkName: "access" */ "@/views/access.vue"),
   },
-  {
-    path: "/exhibitions",
-    name: "exhibition_list",
-    component: () =>
-      import(
-        /* webpackChunkName: "exhibition_list" */ "@/views/exhibition/exh_list.vue"
-      ),
-  },
-  {
-    path: "/exhibitions/:id",
-    name: "exhibition_show",
-    component: () =>
-      import(
-        /* webpackChunkName: "exhibition_show" */ "@/views/exhibition/exh_show.vue"
-      ),
-  },
+  // {
+  //   path: "/exhibitions",
+  //   name: "exhibition_list",
+  //   component: () =>
+  //     import(
+  //       /* webpackChunkName: "exhibition_list" */ "@/views/exhibition/exh_list.vue"
+  //     ),
+  // },
+  // {
+  //   path: "/exhibitions/:id",
+  //   name: "exhibition_show",
+  //   component: () =>
+  //     import(
+  //       /* webpackChunkName: "exhibition_show" */ "@/views/exhibition/exh_show.vue"
+  //     ),
+  // },
   {
     path: "/contact",
     name: "contact",
@@ -115,22 +115,22 @@ const routes = [
         /* webpackChunkName: "revision_preview" */ "@/views/admin/blog/revision_preview.vue"
       ),
   },
-  {
-    path: "/admin/exh",
-    name: "admin_exh_list",
-    component: () =>
-      import(
-        /* webpackChunkName: "admin_exh_list" */ "@/views/admin/exh/exh_list.vue"
-      ),
-  },
-  {
-    path: "/admin/exh/:id",
-    name: "admin_exh_manage",
-    component: () =>
-      import(
-        /* webpackChunkName: "admin_exh_manage" */ "@/views/admin/exh/exh_manage.vue"
-      ),
-  },
+  // {
+  //   path: "/admin/exh",
+  //   name: "admin_exh_list",
+  //   component: () =>
+  //     import(
+  //       /* webpackChunkName: "admin_exh_list" */ "@/views/admin/exh/exh_list.vue"
+  //     ),
+  // },
+  // {
+  //   path: "/admin/exh/:id",
+  //   name: "admin_exh_manage",
+  //   component: () =>
+  //     import(
+  //       /* webpackChunkName: "admin_exh_manage" */ "@/views/admin/exh/exh_manage.vue"
+  //     ),
+  // },
   {
     path: "/admin/draft",
     name: "admin_draft_list",
