@@ -80,9 +80,9 @@
                 <li>
                   <b-link :to="{ name: 'access' }">アクセス</b-link>
                 </li>
-                <li>
-                  <b-link :to="{ name: 'exhibition_list' }">展示一覧</b-link>
-                </li>
+                <!--<li>-->
+                <!--  <b-link :to="{ name: 'exhibition_list' }">展示一覧</b-link>-->
+                <!--</li>-->
                 <li>
                   <b-link disabled>タイムテーブル</b-link>
                 </li>
@@ -125,41 +125,41 @@
                     <li v-if="has_permission_blog_admin">
                       <b-link :to="{ name: 'path_list' }">記事一覧</b-link>
                     </li>
-                    <hr v-if="is_need_hr" />
-                    <template v-if="has_permission_exhibition">
-                      <li>
-                        <b-link :to="{ name: 'admin_draft_post' }">
-                          展示更新リクエスト
-                        </b-link>
-                      </li>
-                      <li>
-                        <b-link
-                          :to="{
-                            name: 'admin_exh_manage',
-                            params: { id: exh_id },
-                          }"
-                        >
-                          展示管理
-                        </b-link>
-                      </li>
-                    </template>
-                    <template v-if="has_permission_blog_admin_or_teacher">
-                      <li>
-                        <b-link :to="{ name: 'admin_draft_post' }">
-                          展示更新リクエスト
-                        </b-link>
-                      </li>
-                      <li>
-                        <b-link :to="{ name: 'admin_exh_list' }"
-                          >展示一覧</b-link
-                        >
-                      </li>
-                      <li>
-                        <b-link :to="{ name: 'admin_draft_list' }">
-                          展示リクエスト一覧
-                        </b-link>
-                      </li>
-                    </template>
+                    <!--<hr v-if="is_need_hr" />-->
+                    <!--<template v-if="has_permission_exhibition">-->
+                    <!--  <li>-->
+                    <!--    <b-link :to="{ name: 'admin_draft_post' }">-->
+                    <!--      展示更新リクエスト-->
+                    <!--    </b-link>-->
+                    <!--  </li>-->
+                    <!--  <li>-->
+                    <!--    <b-link-->
+                    <!--      :to="{-->
+                    <!--        name: 'admin_exh_manage',-->
+                    <!--        params: { id: exh_id },-->
+                    <!--      }"-->
+                    <!--    >-->
+                    <!--      展示管理-->
+                    <!--    </b-link>-->
+                    <!--  </li>-->
+                    <!--</template>-->
+                    <!--<template v-if="has_permission_blog_admin_or_teacher">-->
+                    <!--  <li>-->
+                    <!--    <b-link :to="{ name: 'admin_draft_post' }">-->
+                    <!--      展示更新リクエスト-->
+                    <!--    </b-link>-->
+                    <!--  </li>-->
+                    <!--  <li>-->
+                    <!--    <b-link :to="{ name: 'admin_exh_list' }"-->
+                    <!--      >展示一覧</b-link-->
+                    <!--    >-->
+                    <!--  </li>-->
+                    <!--  <li>-->
+                    <!--    <b-link :to="{ name: 'admin_draft_list' }">-->
+                    <!--      展示リクエスト一覧-->
+                    <!--    </b-link>-->
+                    <!--  </li>-->
+                    <!--</template>-->
                   </ul>
                 </li>
                 <li><b-link :to="{ name: 'document' }">文化祭資料</b-link></li>

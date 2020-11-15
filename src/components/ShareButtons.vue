@@ -130,7 +130,7 @@ export default class ShareButtons extends Vue {
   readonly account = "@73_AFes";
 
   get encodedUrl() {
-    return encodeURIComponent("https://afes.info" + this.$route.path);
+    return encodeURIComponent("https://73.afes.info" + this.$route.path);
   }
   get encodedTitle() {
     return encodeURIComponent(this.title);
