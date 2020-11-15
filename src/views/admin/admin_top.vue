@@ -34,38 +34,38 @@
         </b-button>
       </section>
     </section>
-    <h2>オンライン展示</h2>
-    <section v-if="can_post_draft">
-      <h3>展示更新リクエスト</h3>
-      <span class="sub-title">オンライン展示の更新リクエスト</span>
-      <b-button :to="{ name: 'admin_draft_post' }" variant="outline-theme-dark">
-        展示更新リクエスト
-      </b-button>
-    </section>
-    <section v-if="is_exhibition">
-      <h3>展示管理 @{{ user_id }}</h3>
-      <span class="sub-title">自展示の管理画面</span>
-      <b-button
-        :to="{ name: 'admin_exh_manage', params: { id: user_id } }"
-        variant="outline-theme-dark"
-      >
-        展示管理 @{{ user_id }}
-      </b-button>
-    </section>
-    <section v-if="is_exhibition_admin">
-      <h3>展示一覧</h3>
-      <span class="sub-title">オンライン展示出展団体一覧</span>
-      <b-button :to="{ name: 'admin_exh_list' }" variant="outline-theme-dark">
-        展示一覧
-      </b-button>
-    </section>
-    <section v-if="is_exhibition_admin">
-      <h3>展示更新リクエスト一覧</h3>
-      <span class="sub-title">展示更新リクエストの一覧</span>
-      <b-button :to="{ name: 'admin_draft_list' }" variant="outline-theme-dark">
-        展示リクエスト一覧
-      </b-button>
-    </section>
+    <!--<h2>オンライン展示</h2>-->
+    <!--<section v-if="can_post_draft">-->
+    <!--  <h3>展示更新リクエスト</h3>-->
+    <!--  <span class="sub-title">オンライン展示の更新リクエスト</span>-->
+    <!--  <b-button :to="{ name: 'admin_draft_post' }" variant="outline-theme-dark">-->
+    <!--    展示更新リクエスト-->
+    <!--  </b-button>-->
+    <!--</section>-->
+    <!--<section v-if="is_exhibition">-->
+    <!--  <h3>展示管理 @{{ user_id }}</h3>-->
+    <!--  <span class="sub-title">自展示の管理画面</span>-->
+    <!--  <b-button-->
+    <!--    :to="{ name: 'admin_exh_manage', params: { id: user_id } }"-->
+    <!--    variant="outline-theme-dark"-->
+    <!--  >-->
+    <!--    展示管理 @{{ user_id }}-->
+    <!--  </b-button>-->
+    <!--</section>-->
+    <!--<section v-if="is_exhibition_admin">-->
+    <!--  <h3>展示一覧</h3>-->
+    <!--  <span class="sub-title">オンライン展示出展団体一覧</span>-->
+    <!--  <b-button :to="{ name: 'admin_exh_list' }" variant="outline-theme-dark">-->
+    <!--    展示一覧-->
+    <!--  </b-button>-->
+    <!--</section>-->
+    <!--<section v-if="is_exhibition_admin">-->
+    <!--  <h3>展示更新リクエスト一覧</h3>-->
+    <!--  <span class="sub-title">展示更新リクエストの一覧</span>-->
+    <!--  <b-button :to="{ name: 'admin_draft_list' }" variant="outline-theme-dark">-->
+    <!--    展示リクエスト一覧-->
+    <!--  </b-button>-->
+    <!--</section>-->
     <change-password-modal v-model="password_modal_shown" />
   </div>
 </template>
