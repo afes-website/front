@@ -33,7 +33,7 @@
     "markdown-it-imsize": "^2.0.1",
     "markdown-it-ins": "^3.0.0",
     "markdown-it-mark": "^3.0.0",
-    "moment": "^2.27.0",
+    "moment": "^2.29.4",
     "twitter-widgets": "^2.0.0",
     "vue": "^2.6.12",
     "vue-class-component": "^7.2.5",
